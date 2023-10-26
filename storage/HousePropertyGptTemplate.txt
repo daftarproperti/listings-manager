@@ -1,0 +1,26 @@
+{
+    "title": "..",
+    "address": <address>
+    "description": <other than price, lot_size, building_size, keep newline format>,
+    "price": <number>,
+    "lotSize": <number>,
+    "buildingSize": <number>,
+    "carCount": <number>,
+    "bedroomCount": <number>,
+    "bathroomCount": <number>,
+    "floorCount": <number>,
+    "facing": "..",
+    "ownership": "..",
+    "city": <city>
+    "coordinate":
+    "contacts": {
+        "name": <contact name|nullable>,
+        "profilePictureURL": <contact profile picture|nullable>,
+        "sourceURL": <url>,
+        "provider" : <agency>
+    }
+    "coordinate": {
+        "latitude" : <get latitude from city attribute>,
+        "longitude : <get longitude from city attribute>
+    }
+}
