@@ -1,0 +1,121 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "MLS API",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/tele-app/properties": {
+            "get": {
+                "tags": [
+                    "Properties"
+                ],
+                "summary": "Get list of property",
+                "description": "Returns list of property",
+                "operationId": "index",
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "properties": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Property"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Property": {
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "title": {
+                        "type": "string"
+                    },
+                    "address": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "price": {
+                        "type": "integer"
+                    },
+                    "lotSize": {
+                        "type": "integer"
+                    },
+                    "buildingSize": {
+                        "type": "integer"
+                    },
+                    "carCount": {
+                        "type": "integer"
+                    },
+                    "bedroomCount": {
+                        "type": "integer"
+                    },
+                    "bathroomCount": {
+                        "type": "integer"
+                    },
+                    "floorCount": {
+                        "type": "integer"
+                    },
+                    "facing": {
+                        "type": "string"
+                    },
+                    "ownership": {
+                        "type": "string"
+                    },
+                    "city": {
+                        "type": "string"
+                    },
+                    "coordinate": {
+                        "properties": {
+                            "latitude": {
+                                "type": "integer"
+                            },
+                            "longitude": {
+                                "type": "integer"
+                            }
+                        },
+                        "type": "object"
+                    },
+                    "contacts": {
+                        "properties": {
+                            "name": {
+                                "type": "string"
+                            },
+                            "profilePictureURL": {
+                                "type": "string"
+                            },
+                            "phoneNumber": {
+                                "type": "string"
+                            },
+                            "sourceURL": {
+                                "type": "string"
+                            },
+                            "provider": {
+                                "type": "string"
+                            }
+                        },
+                        "type": "object"
+                    }
+                },
+                "type": "object"
+            }
+        }
+    }
+}

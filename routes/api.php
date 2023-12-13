@@ -17,7 +17,10 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('webhook')->group(function () {
     Route::post('{secret_token}/telegram', 'Api\WebhookController@receiveTelegramMessage')->middleware(['telegram-webhook']);
     Route::post('tasks/gpt', 'Api\WebhookController@processGpt')->middleware('queue-webhook');
-
 });
 
-
+Route::prefix('tele-app')->group(function () {
+    Route::prefix('properties')->group(function () {
+        Route::get('/', 'Api\PropertiesController@index');
+    });
+});

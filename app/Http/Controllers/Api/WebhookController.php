@@ -61,5 +61,4 @@ class WebhookController extends Controller
             return response()->json(['error' => $e->getMessage()], $e->status ?? 500);
         }
     }
-
 }

@@ -160,6 +160,7 @@ return [
          * Package Service Providers...
          */
         MongoDB\Laravel\MongoDBServiceProvider::class,
+        L5Swagger\L5SwaggerServiceProvider::class,
 
         /*
          * Application Service Providers...
