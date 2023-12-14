@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -22,5 +21,6 @@ Route::prefix('webhook')->group(function () {
 Route::prefix('tele-app')->group(function () {
     Route::prefix('properties')->group(function () {
         Route::get('/', 'Api\PropertiesController@index');
+        Route::get('/{id}', 'Api\PropertiesController@show');
     });
 });

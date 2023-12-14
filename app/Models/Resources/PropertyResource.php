@@ -12,8 +12,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
  */
 class PropertyResource extends JsonResource
 {
-    public static $wrap = 'user';
-
+    public static $wrap = null;
     /**
      * @OA\Property(property="id",type="string")
      * @OA\Property(property="title",type="string")
