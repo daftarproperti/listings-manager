@@ -33,6 +33,7 @@ return [
 
     'telegram' => [
         'webhook_access_secret' => env('TELEGRAM_WEBHOOK_SECRET'),
+        'bot_token' => env('TELEGRAM_BOT_TOKEN'),
     ],
 
     'chatgpt' => [
