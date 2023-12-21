@@ -34,3 +34,4 @@ env_variables:
   GOOGLE_QUEUE_WEBHOOK_SECRET: "somescret"
   GOOGLE_QUEUE_WEBHOOK_URL: "https://link.to"
   CHATGPT_KEY: "secret"
+  GOOGLE_BUCKET_NAME: "xxx"

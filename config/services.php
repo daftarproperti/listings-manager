@@ -42,12 +42,13 @@ return [
         'model_version' => env('CHATGPT_MODEL_VERSION', 'gpt-3.5-turbo'),
     ],
 
-    'google_cloud_tasks' => [
+    'google' => [
         'project_id' => env('GOOGLE_PROJECT_ID'),
         'queue_name' => env('GOOGLE_QUEUE_NAME'),
         'queue_location' => env('GOOGLE_QUEUE_LOCATION'),
         'webhook_access_secret' => env('GOOGLE_QUEUE_WEBHOOK_SECRET'),
         'webhook_url' => env('GOOGLE_QUEUE_WEBHOOK_URL'),
+        'bukcet_name' => env('GOOGLE_BUCKET_NAME'),
     ]
 
 ];

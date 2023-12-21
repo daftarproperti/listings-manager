@@ -35,4 +35,18 @@ class ReceiveMessageService
 
         return (count($containKeyword) / count($keyWords) * 100) >= $threshold;
     }
+
+    public function pictureUrls(array $photoData): array
+    {
+        $pictureUrls = [];
+
+        foreach ($photoData as $photo) {
+            $pictureUrls[] = route('telegram-photo', [
+                'fileId' => $photo['file_id'],
+                'fileUniqueId' => $photo['file_unique_id'],
+            ]);
+        }
+
+        return $pictureUrls;
+    }
 }

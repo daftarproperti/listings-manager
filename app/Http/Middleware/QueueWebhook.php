@@ -18,7 +18,7 @@ class QueueWebhook
     {
         $secretToken = $request->header('access-token');
 
-        if (!$secretToken || $secretToken !== config('services.google_cloud_tasks.webhook_access_secret')) {
+        if (!$secretToken || $secretToken !== config('services.google.webhook_access_secret')) {
             return response()->json(['error' => 'Unauthorized'], 403);
         }
 

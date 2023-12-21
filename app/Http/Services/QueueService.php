@@ -12,9 +12,9 @@ class QueueService
 {
     public function queueGptProcess(string $message)
     {
-        $queueName = config('services.google_cloud_tasks.queue_name');
-        $projectId = config('services.google_cloud_tasks.project_id');
-        $location = config('services.google_cloud_tasks.queue_location');
+        $queueName = config('services.google.queue_name');
+        $projectId = config('services.google.project_id');
+        $location = config('services.google.queue_location');
 
         $credentials = new ServiceAccountCredentials('https://www.googleapis.com/auth/cloud-tasks', storage_path('gpc-auth.json'));
 
@@ -24,10 +24,10 @@ class QueueService
         $task = new Task();
         $task->setHttpRequest(new HttpRequest([
             'http_method' => HttpMethod::POST,
-            'url' => config('services.google_cloud_tasks.webhook_url'),
+            'url' => config('services.google.webhook_url'),
             'headers' => [
                 'Content-Type' => 'application/json',
-                'access-token' => config('services.google_cloud_tasks.webhook_access_secret'),
+                'access-token' => config('services.google.webhook_access_secret'),
             ],
             'body' => json_encode(['message' => $message]),
         ]));

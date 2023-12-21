@@ -23,22 +23,51 @@ class WebhookController extends Controller
                 'callback_query' => 'nullable',
             ]);
 
+            //to avoid same message processing
+            $dataExists = RawMessage::where('update_id', (int) $params['update_id'])->exists();
+            if ($dataExists) {
+                return response()->json(['success' => true], 200);
+            }
+
+            //when message contain photo use 'caption' as message, because 'text' is not available.
+            $message = !empty($params['message']['caption']) ? $params['message']['caption'] : ($params['message']['text'] ?? '');
+
             //to do next: use AI to check message is about property informations or not.
-            $isPropertyInformationMessage = $receiveMessageService->isPropertyInformationMessage($params['message']['text'] ?? '');
+            $isPropertyInformationMessage = $receiveMessageService
+                ->isPropertyInformationMessage(
+                    $message,
+                    10
+                );
+
+                $isPropertyInformationMessage = true;
 
             if ($isPropertyInformationMessage) {
-                $receiveMessageService->saveRawMessage($params);
+                $message = $receiveMessageService->saveRawMessage($params);
+
+                $pictureUrls = [];
+                if (!empty($params['message']['photo'])) {
+                    $pictureUrls = $receiveMessageService->pictureUrls($params['message']['photo']);
+                }
 
                 $template = storage_path('HousePropertyGptTemplate.txt');
                 $templateString = file_get_contents($template);
 
-                $queueService->queueGptProcess(
-                    'Please give me json only '."\n".
-                    $params['message']['text']."\n".'with following format:'."\n".$templateString
+                $mainPrompt = sprintf(
+                    '%s%s',
+                    $message,
+                    !empty($pictureUrls) ? "\n Picture Urls:\n" . implode("\n", $pictureUrls) . "\n" : ''
                 );
+
+                $queueService->queueGptProcess(
+                    'Please give me json only also trim the value'."\n".
+                    $mainPrompt."\n".'with following format:'."\n".$templateString
+                );
+            } else {
+                Log::info('is not property informations', $params);
             }
 
         } catch (\Throwable $e) {
+            Log::error($e->getMessage());
             return response()->json(['error' => $e->getMessage()], $e->status ?? 500);
         }
 

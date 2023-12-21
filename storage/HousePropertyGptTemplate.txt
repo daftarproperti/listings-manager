@@ -1,7 +1,7 @@
 {
-    "title": "..",
-    "address": <address>
-    "description": <other than price, lot_size, building_size, keep newline format>,
+    "title": <first sentence or predicted from description>,
+    "address": <address: can predicted from description>
+    "description": <main description>,
     "price": <number>,
     "lotSize": <number>,
     "buildingSize": <number>,
@@ -9,15 +9,16 @@
     "bedroomCount": <number>,
     "bathroomCount": <number>,
     "floorCount": <number>,
-    "facing": "..",
-    "ownership": "..",
+    "facing": <nullable:utara,selatan,barat,timur>,
+    "ownership": <SHM|HGB|GIRIK>,
     "city": <city>
+    "pictureUrls": [image-type-url|Picture Urls],
     "coordinate":
     "contacts": {
         "name": <contact name|nullable>,
         "profilePictureURL": <contact profile picture|nullable>,
-        "sourceURL": <url>,
-        "provider" : <agency>
+        "sourceURL": <url|nullable>,
+        "provider" : <agency|nullable>
     }
     "coordinate": {
         "latitude" : <get latitude from city attribute>,
