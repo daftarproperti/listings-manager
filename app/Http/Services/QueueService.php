@@ -2,7 +2,7 @@
 
 namespace App\Http\Services;
 
-use App\Models\UserProperty;
+use App\Models\PropertyUser;
 use Google\Cloud\Tasks\V2\CloudTasksClient;
 use Google\Cloud\Tasks\V2\HttpMethod;
 use Google\Cloud\Tasks\V2\HttpRequest;
@@ -11,7 +11,7 @@ use Google\Auth\Credentials\ServiceAccountCredentials;
 
 class QueueService
 {
-    public function queueGptProcess(string $message, UserProperty $user)
+    public function queueGptProcess(string $message, PropertyUser $user)
     {
         $queueName = config('services.google.queue_name');
         $projectId = config('services.google.project_id');

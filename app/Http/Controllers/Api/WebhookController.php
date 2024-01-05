@@ -6,8 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Services\ChatGptService;
 use App\Http\Services\QueueService;
 use App\Http\Services\ReceiveMessageService;
+use App\Models\PropertyUser;
 use App\Models\RawMessage;
-use App\Models\UserProperty;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -60,16 +60,16 @@ class WebhookController extends Controller
                     !empty($pictureUrls) ? "\n Picture Urls:\n" . implode("\n", $pictureUrls) . "\n" : ''
                 );
 
-                $userProperty = new UserProperty();
-                $userProperty->name = trim(sprintf('%s %s', $params['message']['from']['first_name'], $params['message']['from']['last_name']));
-                $userProperty->userName = $params['message']['from']['username'] ?? null;
-                $userProperty->userId = $params['message']['from']['id'];
-                $userProperty->source = 'telegram';
+                $propertyUser = new PropertyUser();
+                $propertyUser->name = trim(sprintf('%s %s', $params['message']['from']['first_name'], $params['message']['from']['last_name']));
+                $propertyUser->userName = $params['message']['from']['username'] ?? null;
+                $propertyUser->userId = $params['message']['from']['id'];
+                $propertyUser->source = 'telegram';
 
                 $queueService->queueGptProcess(
                     'Please give me json only also trim the value'."\n".
                     $mainPrompt."\n".'with following format:'."\n".$templateString,
-                    $userProperty
+                    $propertyUser
                 );
             } else {
                 Log::info('is not property informations', $params);

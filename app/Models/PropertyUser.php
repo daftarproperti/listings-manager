@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-class UserProperty{
+class PropertyUser{
     public $name;
     public $userName;
     public $userId;
