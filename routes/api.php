@@ -24,4 +24,4 @@ Route::prefix('tele-app')->group(function () {
         Route::get('/{id}', 'Api\PropertiesController@show');
     });
     Route::get('photo/{fileId}/{fileUniqueId}', 'Api\PhotoController@telegramPhoto')->name('telegram-photo');
-});
+})->middleware('telegram-app');

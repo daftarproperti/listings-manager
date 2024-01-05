@@ -19,7 +19,10 @@ class TelegramApp
     {
         $initData = $request->header('x-init-data');
 
-        if (!is_string($initData) || !TelegramInitDataValidator::isSafe(config('services.telegram.bot_token'), $initData)) {
+        if (
+            !is_string($initData) ||
+            !TelegramInitDataValidator::isSafe(config('services.telegram.bot_token'), $initData)
+        ) {
             return response()->json(['error' => 'Unauthorized'], 403);
         }
 

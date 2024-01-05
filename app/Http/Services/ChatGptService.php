@@ -41,12 +41,16 @@ class ChatGptService
         return $responseData['choices'][0]['message']['content'];
     }
 
-    public function saveAnswer(object $data): ? Property
+    public function saveAnswer(object $data, $user = null): ? Property
     {
         $property = new Property();
 
         foreach ($data as $key => $value) {
             $property->$key = $value;
+        }
+
+        if ($user) {
+            $property->user = $user;
         }
 
         $property->save();
