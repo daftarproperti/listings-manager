@@ -39,6 +39,7 @@ class PropertyResource extends JsonResource
      *      @OA\Property(property="sourceURL",type="string"),
      *      @OA\Property(property="provider",type="string")
      * )
+     * @OA\Property(property="userCanEdit",type="boolean")
      * @return array
      */
     public function toArray($request)
@@ -67,7 +68,8 @@ class PropertyResource extends JsonResource
                 'profilePictureURL' => $this->contacts['profilePictureURL'],
                 'sourceURL' => $this->contacts['sourceURL'],
                 'provider' => $this->contacts['provider']
-            ]
+            ],
+            'userCanEdit' => $this->user_can_edit
         ];
     }
 }

@@ -3,8 +3,10 @@
 namespace App\Http\Middleware;
 
 use App\Helpers\TelegramInitDataValidator;
+use App\Models\TelegramUser;
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 
 class TelegramApp
 {
@@ -26,6 +28,27 @@ class TelegramApp
             return response()->json(['error' => 'Unauthorized'], 403);
         }
 
+        $telegramUser = $this->telegramUserAuth($initData);
+        App::singleton(TelegramUser::class, static function () use ($telegramUser) {
+            return $telegramUser;
+        });
+
         return $next($request);
+    }
+
+    private function telegramUserAuth($initData) : TelegramUser
+    {
+        parse_str(rawurldecode($initData), $initDataArray);
+        $user = json_decode($initDataArray['user'], true);
+
+        $telegramUser = TelegramUser::where('user_id', $user['id'])
+            ->firstOrCreate([
+                'user_id' => $user['id'],
+                'first_name' => $user['first_name'],
+                'last_name' => $user['last_name'] ?? null,
+                'username' => $user['username'] ?? null
+            ]);
+
+        return $telegramUser;
     }
 }

@@ -160,6 +160,9 @@
                             }
                         },
                         "type": "object"
+                    },
+                    "userCanEdit": {
+                        "type": "boolean"
                     }
                 },
                 "type": "object"
