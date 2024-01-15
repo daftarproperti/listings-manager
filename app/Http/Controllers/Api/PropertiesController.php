@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UpdatePropertyRequest;
 use App\Models\Property;
 use App\Models\Resources\PropertyCollection;
 use App\Models\Resources\PropertyResource;
@@ -73,8 +74,72 @@ class PropertiesController extends Controller
      * )
      */
 
-    public function show($propertyId)
+    public function show(Property $property)
     {
-        return new PropertyResource(Property::find($propertyId));
+        return new PropertyResource($property);
+    }
+
+    /**
+     * @OA\Post(
+     *     path="/api/tele-app/properties/{id}",
+     *     tags={"Properties"},
+     *     summary="Update property",
+     *     operationId="update",
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="Property Id",
+     *         @OA\Schema(
+     *             type="string"
+     *         ),
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *              ref="#/components/schemas/UpdatePropertyRequest"
+     *          )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="success",
+     *         @OA\JsonContent(
+     *              ref="#/components/schemas/Property"
+     *         ),
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Property not found",
+     *         @OA\JsonContent(
+     *              @OA\Property(
+     *                  property="error",
+     *                  type="string",
+     *                  example="Property not found"
+     *              )
+     *         ),
+     *     ),
+     * )
+     */
+
+    public function update(Property $property, UpdatePropertyRequest $request)
+    {
+        $validatedRequest = $request->validated();
+        $this->fillUpdateProperty($validatedRequest, $property);
+        $property->save();
+
+        return new PropertyResource($property);
+    }
+
+    private function fillUpdateProperty($data, &$property)
+    {
+        foreach ($data as $key => $value) {
+            if(!is_array($value)) {
+                $property->{$key} = $value;
+            } else {
+                $currentData = $property->{$key};
+                $updatedData = array_merge($currentData, $value);
+                $property->{$key} = $updatedData;
+            }
+        }
     }
 }

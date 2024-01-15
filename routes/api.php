@@ -21,7 +21,8 @@ Route::prefix('webhook')->group(function () {
 Route::group(['prefix' => 'tele-app', 'middleware' => ['telegram-app']], function () {
     Route::prefix('properties')->group(function () {
         Route::get('/', 'Api\PropertiesController@index');
-        Route::get('/{id}', 'Api\PropertiesController@show');
+        Route::get('/{property}', 'Api\PropertiesController@show');
+        Route::post('/{property}', 'Api\PropertiesController@update')->middleware('property-user');
     });
     Route::get('photo/{fileId}/{fileUniqueId}', 'Api\PhotoController@telegramPhoto')->name('telegram-photo');
 });
