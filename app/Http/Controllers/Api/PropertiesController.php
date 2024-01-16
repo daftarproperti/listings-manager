@@ -95,10 +95,11 @@ class PropertiesController extends Controller
      *         ),
      *     ),
      *     @OA\RequestBody(
+     *          @OA\MediaType(
+     *              mediaType="multipart/form-data",
+     *              @OA\Schema(type="object", ref="#/components/schemas/UpdatePropertyRequest")
+     *          ),
      *         required=true,
-     *         @OA\JsonContent(
-     *              ref="#/components/schemas/UpdatePropertyRequest"
-     *          )
      *     ),
      *     @OA\Response(
      *         response=200,

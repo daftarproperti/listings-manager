@@ -28,6 +28,7 @@ class PropertyResource extends JsonResource
      * @OA\Property(property="facing",type="string")
      * @OA\Property(property="ownership",type="string")
      * @OA\Property(property="city",type="string")
+     * @OA\Property(property="pictureUrls",type="array",@OA\Items(type="string", format="uri", example="https://example.com/image.jpg"))
      * @OA\Property(property="coordinate",type="object",
      *      @OA\Property(property="latitude",type="integer"),
      *      @OA\Property(property="longitude",type="integer")
@@ -40,6 +41,7 @@ class PropertyResource extends JsonResource
      *      @OA\Property(property="provider",type="string")
      * )
      * @OA\Property(property="userCanEdit",type="boolean")
+     * @OA\Property(property="isPrivate",type="boolean")
      * @return array
      */
     public function toArray($request)
@@ -59,6 +61,7 @@ class PropertyResource extends JsonResource
             'facing' => $this->facing,
             'ownership' => $this->facing,
             'city' => $this->city,
+            'pictureUrls' => $this->pictureUrls,
             'coordinate' => [
                 'latitude' => $this->latitude,
                 'longitude' => $this->logitude
@@ -69,7 +72,8 @@ class PropertyResource extends JsonResource
                 'sourceURL' => $this->contacts['sourceURL'],
                 'provider' => $this->contacts['provider']
             ],
-            'userCanEdit' => $this->user_can_edit
+            'userCanEdit' => $this->user_can_edit,
+            'isPrivate' => $this->isPrivate ?? false
         ];
     }
 }

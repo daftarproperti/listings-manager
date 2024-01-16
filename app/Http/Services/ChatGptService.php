@@ -53,6 +53,9 @@ class ChatGptService
             $property->user = $user;
         }
 
+        //set default to public view
+        $property->isPrivate = false;
+
         $property->save();
 
         return $property;

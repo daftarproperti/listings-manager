@@ -26,6 +26,7 @@ class UpdatePropertyRequest extends BaseApiRequest
      * @OA\Property(property="facing",type="string", example="Utara")
      * @OA\Property(property="ownership",type="string", example="SHM")
      * @OA\Property(property="city",type="string", example="Bandung")
+     * @OA\Property(property="pictureUrls",type="array", @OA\Items(format="binary", type="string"))
      * @OA\Property(property="coordinate",type="object",
      *      @OA\Property(property="latitude",type="integer"),
      *      @OA\Property(property="longitude",type="integer")
@@ -37,6 +38,7 @@ class UpdatePropertyRequest extends BaseApiRequest
      *      @OA\Property(property="sourceURL",type="string"),
      *      @OA\Property(property="provider",type="string")
      * )
+     * @OA\Property(property="isPrivate",type="boolean", example=false)
      */
 
 
@@ -68,6 +70,7 @@ class UpdatePropertyRequest extends BaseApiRequest
             'contacts.provider' => 'nullable|string',
             'coordinate.latitude' => 'nullable|string',
             'coordinate.longitude' => 'nullable|string',
+            'isPrivate' => 'required|boolean',
         ];
     }
 }
