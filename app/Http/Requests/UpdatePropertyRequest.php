@@ -64,6 +64,7 @@ class UpdatePropertyRequest extends BaseApiRequest
             'facing' => 'nullable|string',
             'ownership' => 'nullable|string',
             'pictureUrls' => 'nullable|array',
+            'pictureUrls.*' => 'nullable|mimes:jpeg,jpg,png',
             'contacts.name' => 'nullable|string',
             'contacts.profilePictureURL' => 'nullable|string',
             'contacts.sourceURL' => 'nullable|string',

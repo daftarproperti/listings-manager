@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UpdatePropertyRequest;
+use App\Http\Services\GoogleStorageService;
 use App\Models\Property;
 use App\Models\Resources\PropertyCollection;
 use App\Models\Resources\PropertyResource;
@@ -135,12 +136,34 @@ class PropertiesController extends Controller
     {
         foreach ($data as $key => $value) {
             if(!is_array($value)) {
-                $property->{$key} = $value;
+                $property->{$key} = $key == 'isPrivate' ? (bool) $value : $value;
             } else {
-                $currentData = $property->{$key};
+                if ($key == 'pictureUrls') {
+                    $uploadedImages = $this->uploadImages($value);
+                    $property->{$key} = $uploadedImages;
+                    continue;
+                }
+
+                $currentData = array_filter($property->{$key});
                 $updatedData = array_merge($currentData, $value);
                 $property->{$key} = $updatedData;
             }
         }
+    }
+
+    private function uploadImages($images)
+    {
+        $googleStorageService = app()->make(GoogleStorageService::class);
+
+        $uploadedImages = [];
+        foreach ($images as $image)
+        {
+            $fileName = sprintf('%s.%s', md5($image->getClientOriginalName()) , $image->getClientOriginalExtension());
+            $flieId = time();
+            $googleStorageService->uploadFile(file_get_contents($image->getRealPath()), sprintf('%s_%s', $flieId, $fileName));
+            $uploadedImages[] = route('telegram-photo', [$flieId, $fileName]);
+        }
+
+        return $uploadedImages;
     }
 }
