@@ -8,6 +8,9 @@ use App\Http\Services\GoogleStorageService;
 use App\Models\Property;
 use App\Models\Resources\PropertyCollection;
 use App\Models\Resources\PropertyResource;
+use App\Models\TelegramUser;
+use App\Repositories\PropertyRepository;
+use Illuminate\Http\Request;
 
 class PropertiesController extends Controller
 {
@@ -34,9 +37,23 @@ class PropertiesController extends Controller
      * )
      */
 
-    public function index()
+    public function index(Request $request, PropertyRepository $repository)
     {
-        return new PropertyCollection(Property::all());
+        $filters = $request->only([
+            'collection',
+        ]);
+
+        //if collection not present in filters, default set to true
+        if (!isset($filters['collection'])) {
+            $filters['collection'] = true;
+        }
+
+        if (boolval($filters['collection'])) {
+            $currentUserId = app(TelegramUser::class)->user_id ?? null;
+            $filters['user_id'] = $currentUserId;
+        }
+
+        return new PropertyCollection($repository->list($filters));
     }
 
     /**
