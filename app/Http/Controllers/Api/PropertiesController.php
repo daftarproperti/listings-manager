@@ -157,7 +157,7 @@ class PropertiesController extends Controller
             } else {
                 if ($key == 'pictureUrls') {
                     $uploadedImages = $this->uploadImages($value);
-                    $property->{$key} = $uploadedImages;
+                    $property->pictureUrls = $uploadedImages;
                     continue;
                 }
 
@@ -175,10 +175,14 @@ class PropertiesController extends Controller
         $uploadedImages = [];
         foreach ($images as $image)
         {
-            $fileName = sprintf('%s.%s', md5($image->getClientOriginalName()) , $image->getClientOriginalExtension());
-            $flieId = time();
-            $googleStorageService->uploadFile(file_get_contents($image->getRealPath()), sprintf('%s_%s', $flieId, $fileName));
-            $uploadedImages[] = route('telegram-photo', [$flieId, $fileName]);
+            if (is_a($image, \Illuminate\Http\UploadedFile::class)) {
+                $fileName = sprintf('%s.%s', md5($image->getClientOriginalName()) , $image->getClientOriginalExtension());
+                $flieId = time();
+                $googleStorageService->uploadFile(file_get_contents($image->getRealPath()), sprintf('%s_%s', $flieId, $fileName));
+                $uploadedImages[] = route('telegram-photo', [$flieId, $fileName]);
+            } else {
+                $uploadedImages[] = (string) $image;
+            }
         }
 
         return $uploadedImages;

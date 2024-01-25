@@ -26,7 +26,14 @@ class UpdatePropertyRequest extends BaseApiRequest
      * @OA\Property(property="facing",type="string", example="Utara")
      * @OA\Property(property="ownership",type="string", example="SHM")
      * @OA\Property(property="city",type="string", example="Bandung")
-     * @OA\Property(property="pictureUrls",type="array", @OA\Items(format="binary", type="string"))
+     * @OA\Property(property="pictureUrls",type="array",
+     *      @OA\Items(
+     *          oneOf={
+     *              @OA\Schema(type="string", format="binary", example="\x00\x00\x00\x04\x00\x00\x00\x04"),
+     *              @OA\Schema(type="string", format="url", example="https://example.com/image.jpg"),
+     *          },
+     *  )
+     * )
      * @OA\Property(property="coordinate",type="object",
      *      @OA\Property(property="latitude",type="integer"),
      *      @OA\Property(property="longitude",type="integer")
@@ -63,8 +70,7 @@ class UpdatePropertyRequest extends BaseApiRequest
             'floorCount' => 'nullable|numeric',
             'facing' => 'nullable|string',
             'ownership' => 'nullable|string',
-            'pictureUrls' => 'nullable|array',
-            'pictureUrls.*' => 'nullable|mimes:jpeg,jpg,png',
+            'pictureUrls' => 'nullable|array|max:10',
             'contacts.name' => 'nullable|string',
             'contacts.profilePictureURL' => 'nullable|string',
             'contacts.sourceURL' => 'nullable|string',
