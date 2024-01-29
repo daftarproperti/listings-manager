@@ -13,6 +13,136 @@
                 "summary": "Get list of property",
                 "description": "Returns list of property",
                 "operationId": "index",
+                "parameters": [
+                    {
+                        "name": "collection",
+                        "in": "query",
+                        "description": "If set to true, it will only return user's collection",
+                        "required": false,
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    },
+                    {
+                        "name": "price[min]",
+                        "in": "query",
+                        "description": "Minimum price",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "price[max]",
+                        "in": "query",
+                        "description": "Maximum price",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "type",
+                        "in": "query",
+                        "description": "Property type",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "house",
+                                "apartment",
+                                "land"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "bedroom_count",
+                        "in": "query",
+                        "description": "Bedroom count",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "bathroom_count",
+                        "in": "query",
+                        "description": "Bathroom count",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "lot_size[min]",
+                        "in": "query",
+                        "description": "Minimum lot size",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "lot_size[max]",
+                        "in": "query",
+                        "description": "Maximum lot size",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "building_size[min]",
+                        "in": "query",
+                        "description": "Minimum building size",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "building_size[max]",
+                        "in": "query",
+                        "description": "Maximum building size",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "ownership",
+                        "in": "query",
+                        "description": "Ownership",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "shm",
+                                "hgb",
+                                "girik",
+                                "lainnya"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "car_count",
+                        "in": "query",
+                        "description": "Car count",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "electricity",
+                        "in": "query",
+                        "description": "Electricity",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "success",

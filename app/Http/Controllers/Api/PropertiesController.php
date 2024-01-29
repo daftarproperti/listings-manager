@@ -21,6 +21,125 @@ class PropertiesController extends Controller
      *     summary="Get list of property",
      *     description="Returns list of property",
      *     operationId="index",
+     *     @OA\Parameter(
+     *        in="query",
+     *        name="collection",
+     *        description="If set to true, it will only return user's collection",
+     *        required=false,
+     *        @OA\Schema(
+     *            type="boolean"
+     *        )
+     *     ),
+     *     @OA\Parameter(
+     *        in="query",
+     *        name="price[min]",
+     *        description="Minimum price",
+     *        required=false,
+     *        @OA\Schema(
+     *            type="integer"
+     *        )
+     *     ),
+     *     @OA\Parameter(
+     *        in="query",
+     *        name="price[max]",
+     *        description="Maximum price",
+     *        required=false,
+     *        @OA\Schema(
+     *            type="integer"
+     *        )
+     *     ),
+     *     @OA\Parameter(
+     *        in="query",
+     *        name="type",
+     *        description="Property type",
+     *        required=false,
+     *        @OA\Schema(
+     *            type="string",
+     *            enum={"house", "apartment", "land"}
+     *        )
+     *     ),
+     *     @OA\Parameter(
+     *        in="query",
+     *        name="bedroom_count",
+     *        description="Bedroom count",
+     *        required=false,
+     *        @OA\Schema(
+     *            type="integer"
+     *        )
+     *     ),
+     *     @OA\Parameter(
+     *        in="query",
+     *        name="bathroom_count",
+     *        description="Bathroom count",
+     *        required=false,
+     *        @OA\Schema(
+     *            type="integer"
+     *        )
+     *     ),
+     *     @OA\Parameter(
+     *        in="query",
+     *        name="lot_size[min]",
+     *        description="Minimum lot size",
+     *        required=false,
+     *        @OA\Schema(
+     *            type="integer"
+     *        )
+     *     ),
+     *     @OA\Parameter(
+     *        in="query",
+     *        name="lot_size[max]",
+     *        description="Maximum lot size",
+     *        required=false,
+     *        @OA\Schema(
+     *            type="integer"
+     *        )
+     *     ),
+     *     @OA\Parameter(
+     *        in="query",
+     *        name="building_size[min]",
+     *        description="Minimum building size",
+     *        required=false,
+     *        @OA\Schema(
+     *            type="integer"
+     *        )
+     *     ),
+     *     @OA\Parameter(
+     *        in="query",
+     *        name="building_size[max]",
+     *        description="Maximum building size",
+     *        required=false,
+     *        @OA\Schema(
+     *            type="integer"
+     *        )
+     *     ),
+     *     @OA\Parameter(
+     *        in="query",
+     *        name="ownership",
+     *        description="Ownership",
+     *        required=false,
+     *        @OA\Schema(
+     *            type="string",
+     *            enum={"shm", "hgb", "girik", "lainnya"}
+     *        )
+     *     ),
+     *     @OA\Parameter(
+     *        in="query",
+     *        name="car_count",
+     *        description="Car count",
+     *        required=false,
+     *        @OA\Schema(
+     *            type="integer"
+     *        )
+     *     ),
+     *     @OA\Parameter(
+     *        in="query",
+     *        name="electricity",
+     *        description="Electricity",
+     *        required=false,
+     *        @OA\Schema(
+     *            type="integer"
+     *        )
+     *     ),
      *     @OA\Response(
      *         response=200,
      *         description="success",
@@ -41,6 +160,16 @@ class PropertiesController extends Controller
     {
         $filters = $request->only([
             'collection',
+            'price',
+            'type',
+            'bedroom_count',
+            'bathroom_count',
+            'lot_size',
+            'lot_size',
+            'building_size',
+            'ownership',
+            'car_count',
+            'electricity'
         ]);
 
         //if collection not present in filters, default set to true

@@ -61,7 +61,7 @@ class WebhookController extends Controller
                 );
 
                 $propertyUser = new PropertyUser();
-                $propertyUser->name = trim(sprintf('%s %s', $params['message']['from']['first_name'], $params['message']['from']['last_name']));
+                $propertyUser->name = trim(sprintf('%s %s', $params['message']['from']['first_name'], $params['message']['from']['last_name'] ?? ''));
                 $propertyUser->userName = $params['message']['from']['username'] ?? null;
                 $propertyUser->userId = $params['message']['from']['id'];
                 $propertyUser->source = 'telegram';

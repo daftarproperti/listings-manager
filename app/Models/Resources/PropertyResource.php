@@ -59,7 +59,7 @@ class PropertyResource extends JsonResource
             'bathroomCount' => $this->bathroomCount,
             'floorCount' => $this->floorCount,
             'facing' => $this->facing,
-            'ownership' => $this->facing,
+            'ownership' => $this->ownership,
             'city' => $this->city,
             'pictureUrls' => $this->pictureUrls,
             'coordinate' => [
