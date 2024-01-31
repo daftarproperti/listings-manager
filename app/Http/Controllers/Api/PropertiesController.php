@@ -133,7 +133,7 @@ class PropertiesController extends Controller
      *     ),
      *     @OA\Parameter(
      *        in="query",
-     *        name="electricity",
+     *        name="electric_power",
      *        description="Electricity",
      *        required=false,
      *        @OA\Schema(
@@ -169,7 +169,7 @@ class PropertiesController extends Controller
             'building_size',
             'ownership',
             'car_count',
-            'electricity'
+            'electric_power'
         ]);
 
         //if collection not present in filters, default set to true

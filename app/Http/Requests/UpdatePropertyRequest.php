@@ -23,6 +23,7 @@ class UpdatePropertyRequest extends BaseApiRequest
      * @OA\Property(property="bedroomCount",type="integer", example=3)
      * @OA\Property(property="bathroomCount",type="integer", example=2)
      * @OA\Property(property="floorCount",type="integer", example=2)
+     * @OA\Property(property="electricPower",type="integer", example=2200)
      * @OA\Property(property="facing",type="string", example="Utara")
      * @OA\Property(property="ownership",type="string", example="SHM")
      * @OA\Property(property="city",type="string", example="Bandung")
@@ -68,6 +69,7 @@ class UpdatePropertyRequest extends BaseApiRequest
             'buildingSize' => 'required|numeric',
             'carCount' => 'nullable|numeric',
             'floorCount' => 'nullable|numeric',
+            'electricPower' => 'nullable|numeric',
             'facing' => 'nullable|string',
             'ownership' => 'nullable|string',
             'pictureUrls' => 'nullable|array|max:10',

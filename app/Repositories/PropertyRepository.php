@@ -61,8 +61,8 @@ class PropertyRepository
             $query->where('carCount', (int) $filters['car_count']);
         });
 
-        $query->when(isset($filters['electricity']), function ($query) use ($filters) {
-            $query->where('electricity', (int) $filters['electricity']);
+        $query->when(isset($filters['electric_power']), function ($query) use ($filters) {
+            $query->where('electric_power', (int) $filters['electric_power']);
         });
 
         return $query->paginate($itemsPerPage);

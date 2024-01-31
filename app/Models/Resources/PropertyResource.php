@@ -25,6 +25,7 @@ class PropertyResource extends JsonResource
      * @OA\Property(property="bedroomCount",type="integer")
      * @OA\Property(property="bathroomCount",type="integer")
      * @OA\Property(property="floorCount",type="integer")
+     * @OA\Property(property="electricPower",type="integer")
      * @OA\Property(property="facing",type="string")
      * @OA\Property(property="ownership",type="string")
      * @OA\Property(property="city",type="string")
@@ -58,6 +59,7 @@ class PropertyResource extends JsonResource
             'bedroomCount' => $this->bedroomCount ? (int) $this->bedroomCount : null,
             'bathroomCount' => $this->bathroomCount ? (int) $this->bathroomCount : null,
             'floorCount' => $this->floorCount ? (int) $this->floorCount : null,
+            'electricPower' => $this->electricPower ? (int) $this->electricPower : null,
             'facing' => $this->facing,
             'ownership' => $this->ownership,
             'city' => $this->city,

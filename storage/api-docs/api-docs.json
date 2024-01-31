@@ -134,7 +134,7 @@
                         }
                     },
                     {
-                        "name": "electricity",
+                        "name": "electric_power",
                         "in": "query",
                         "description": "Electricity",
                         "required": false,
@@ -314,6 +314,10 @@
                         "type": "integer",
                         "example": 2
                     },
+                    "electricPower": {
+                        "type": "integer",
+                        "example": 2200
+                    },
                     "facing": {
                         "type": "string",
                         "example": "Utara"
@@ -414,6 +418,9 @@
                         "type": "integer"
                     },
                     "floorCount": {
+                        "type": "integer"
+                    },
+                    "electricPower": {
                         "type": "integer"
                     },
                     "facing": {
