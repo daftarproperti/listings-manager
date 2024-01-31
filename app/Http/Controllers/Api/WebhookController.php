@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Helpers\TelegramInteractionHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Services\ChatGptService;
 use App\Http\Services\QueueService;
@@ -66,11 +67,19 @@ class WebhookController extends Controller
                 $propertyUser->userId = $params['message']['from']['id'];
                 $propertyUser->source = 'telegram';
 
+                $chatId = isset($params['message']['chat']) ? $params['message']['chat']['id'] : null;
+
                 $queueService->queueGptProcess(
                     'Please give me json only also trim the value'."\n".
                     $mainPrompt."\n".'with following format:'."\n".$templateString,
-                    $propertyUser
+                    $propertyUser,
+                    $chatId
                 );
+
+                if ($chatId) {
+                    TelegramInteractionHelper::sendMessage($chatId, 'Terimakasih atas informasi yang diberikan.'."\n".'Informasi sedang kami proses.');
+                }
+
             } else {
                 Log::info('is not property informations', $params);
             }
@@ -88,11 +97,16 @@ class WebhookController extends Controller
         try {
             $params = $request->validate([
                 'message' => 'required',
-                'user' => 'nullable'
+                'user' => 'nullable',
+                'chat_id' => 'nullable'
             ]);
 
             $answer = $chatGptService->seekAnswer($params['message']);
             $chatGptService->saveAnswer(json_decode($answer), $params['user'] ?? null);
+
+            if (!empty($params['chat_id'])) {
+                TelegramInteractionHelper::sendMessage($params['chat_id'], 'Informasi telah selesai kami proses.');
+            }
 
             return response()->json(['answer' => json_decode($answer)], 200);
 

@@ -11,7 +11,7 @@ use Google\Auth\Credentials\ServiceAccountCredentials;
 
 class QueueService
 {
-    public function queueGptProcess(string $message, PropertyUser $user)
+    public function queueGptProcess(string $message, PropertyUser $user, $chatId = null)
     {
         $queueName = config('services.google.queue_name');
         $projectId = config('services.google.project_id');
@@ -30,7 +30,7 @@ class QueueService
                 'Content-Type' => 'application/json',
                 'access-token' => config('services.google.webhook_access_secret'),
             ],
-            'body' => json_encode(['message' => $message, 'user' => $user]),
+            'body' => json_encode(['message' => $message, 'user' => $user, 'chat_id' => $chatId]),
         ]));
 
         $response = $client->createTask($parent, $task);

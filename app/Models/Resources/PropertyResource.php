@@ -67,10 +67,10 @@ class PropertyResource extends JsonResource
                 'longitude' => $this->logitude
             ],
             'contacts' => [
-                'name' => $this->contacts ? $this->contacts['name'] : null,
-                'profilePictureURL' => $this->contacts ? $this->contacts['profilePictureURL'] : null,
-                'sourceURL' =>  $this->contacts ? $this->contacts['sourceURL'] : null,
-                'provider' =>  $this->contacts ? $this->contacts['provider'] : null
+                'name' => $this->contacts ? ($this->contacts['name'] ?? null) :  null,
+                'profilePictureURL' => $this->contacts ? ($this->contacts['profilePictureURL'] ?? null) : null,
+                'sourceURL' =>  $this->contacts ? ($this->contacts['sourceURL'] ?? null) : null,
+                'provider' =>  $this->contacts ? ($this->contacts['provider'] ?? null) : null,
             ],
             'userCanEdit' => $this->user_can_edit,
             'isPrivate' => $this->isPrivate ?? false
