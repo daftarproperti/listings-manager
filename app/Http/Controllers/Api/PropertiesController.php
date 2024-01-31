@@ -282,7 +282,17 @@ class PropertiesController extends Controller
     {
         foreach ($data as $key => $value) {
             if(!is_array($value)) {
-                $property->{$key} = $key == 'isPrivate' ? (bool) $value : $value;
+                if ($key == 'isPrivate') {
+                    $property->{$key} = (bool) $value;
+                    continue;
+                }
+
+                if (is_numeric($value)) {
+                    $property->{$key} = (int) $value;
+                    continue;
+                }
+
+                $property->{$key} = $value;
             } else {
                 if ($key == 'pictureUrls') {
                     $uploadedImages = $this->uploadImages($value);
