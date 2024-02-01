@@ -23,6 +23,7 @@ Route::group(['prefix' => 'tele-app', 'middleware' => ['telegram-app']], functio
         Route::get('/', 'Api\PropertiesController@index');
         Route::get('/{property}', 'Api\PropertiesController@show');
         Route::post('/{property}', 'Api\PropertiesController@update')->middleware('property-user');
+        Route::delete('/{property}', 'Api\PropertiesController@delete')->middleware('property-user');
     });
 });
 

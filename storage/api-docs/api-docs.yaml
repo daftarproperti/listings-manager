@@ -190,6 +190,30 @@ paths:
                     type: string
                     example: 'Property not found'
                 type: object
+    delete:
+      tags:
+        - Properties
+      summary: 'Delete property'
+      operationId: delete
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'Property Id'
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                properties:
+                  message:
+                    type: string
+                    example: 'Property deleted successfully'
+                type: object
 components:
   schemas:
     UpdatePropertyRequest:

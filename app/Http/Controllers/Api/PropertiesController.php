@@ -278,6 +278,41 @@ class PropertiesController extends Controller
         return new PropertyResource($property);
     }
 
+    /**
+     * @OA\Delete(
+     *     path="/api/tele-app/properties/{id}",
+     *     tags={"Properties"},
+     *     summary="Delete property",
+     *     operationId="delete",
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="Property Id",
+     *         @OA\Schema(
+     *             type="string"
+     *         ),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="success",
+     *         @OA\JsonContent(
+     *              @OA\Property(
+     *                  property="message",
+     *                  type="string",
+     *                  example="Property deleted successfully"
+     *              )
+     *         ),
+     *     )
+     * )
+     **/
+    public function delete(Property $property)
+    {
+        $property->delete();
+        return response()->json(['message' => 'Property deleted successfully'], 200);
+    }
+
+
     private function fillUpdateProperty($data, &$property)
     {
         foreach ($data as $key => $value) {
