@@ -107,7 +107,7 @@ paths:
         -
           name: electric_power
           in: query
-          description: Electricity
+          description: 'Electric Power'
           required: false
           schema:
             type: integer

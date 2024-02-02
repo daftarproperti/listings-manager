@@ -134,7 +134,7 @@ class PropertiesController extends Controller
      *     @OA\Parameter(
      *        in="query",
      *        name="electric_power",
-     *        description="Electricity",
+     *        description="Electric Power",
      *        required=false,
      *        @OA\Schema(
      *            type="integer"
