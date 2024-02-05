@@ -4,8 +4,8 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                composer install
-                vendor/bin/phpstan analyse
+                sh 'composer install'
+                sh 'vendor/bin/phpstan analyse'
             }
         }
     }
