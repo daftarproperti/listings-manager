@@ -1,0 +1,31 @@
+version: '3.7'
+services:
+  test-app:
+    depends_on:
+      - test-mongodb
+    build:
+      context: ..
+      dockerfile: test-env/Dockerfile-app
+    networks:
+      - test_network
+      - global_network
+    command: test-env/run-tests.sh
+    environment:
+      MONGODB_SRV: "mongodb://admin:testpassword@test-mongodb/?authSource=admin"
+  test-mongodb:
+    build:
+      context: .
+      dockerfile: Dockerfile-mongodb
+    ports:
+      - "27017:27017"
+    networks:
+      - test_network
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: testpassword
+
+networks:
+  test_network:
+    internal: true
+  global_network:
+    external: true

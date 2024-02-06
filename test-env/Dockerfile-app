@@ -1,0 +1,18 @@
+# Container for mls-sys feature tests.
+
+FROM php:8.2.15-cli-bullseye
+
+RUN apt-get update
+RUN apt-get install -y git zip unzip curl
+
+# Needs SSL library for mongodb
+RUN apt-get install -y libcurl4-openssl-dev pkg-config libssl-dev
+RUN pecl install mongodb && docker-php-ext-enable mongodb
+
+# Needs `nc` to probe mongodb readiness
+RUN apt-get install -y netcat
+
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer --version=2.6.5
+
+WORKDIR /usr/src/mls-sys
+COPY ./ ./

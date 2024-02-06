@@ -24,6 +24,21 @@ Running tests:
 * Prepare test environment (see test-utils/)
 * Run `php artisan test`
 
+### Running tests in a container
+To make it easy to run tests in an isolated environment, e.g. in a CI, a
+docker-compose is provided in test-env/.
+
+1. Create necessary docker external resources:
+```
+$ docker network create global_network
+```
+
+2. Build image and run the container:
+```
+$ docker-compose -f test-env/docker-compose.yml build
+$ docker-compose -f test-env/docker-compose.yml run test-app
+```
+
 ### Production Deployment
 TODO
 

@@ -1,0 +1,6 @@
+# Use the official MongoDB image
+FROM mongo:latest
+
+# Set environment variables for MongoDB
+ENV MONGO_INITDB_ROOT_USERNAME=admin
+ENV MONGO_INITDB_ROOT_PASSWORD=testpassword
