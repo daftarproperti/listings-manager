@@ -42,8 +42,6 @@ class WebhookController extends Controller
                     10
                 );
 
-                $isPropertyInformationMessage = true;
-
             if ($isPropertyInformationMessage) {
                 $message = $receiveMessageService->saveRawMessage($params);
 
@@ -57,7 +55,7 @@ class WebhookController extends Controller
 
                 $mainPrompt = sprintf(
                     '%s%s',
-                    $message,
+                    $params['message']['text'] ?? '',
                     !empty($pictureUrls) ? "\n Picture Urls:\n" . implode("\n", $pictureUrls) . "\n" : ''
                 );
 
@@ -71,7 +69,7 @@ class WebhookController extends Controller
 
                 $queueService->queueGptProcess(
                     'Please give me json only also trim the value'."\n".
-                    $mainPrompt."\n".'with following format:'."\n".$templateString,
+                    $mainPrompt."\n\n".'with following format:'."\n\n".$templateString,
                     $propertyUser,
                     $chatId
                 );
@@ -102,7 +100,16 @@ class WebhookController extends Controller
             ]);
 
             $answer = $chatGptService->seekAnswer($params['message']);
-            $chatGptService->saveAnswer(json_decode($answer), $params['user'] ?? null);
+
+            //avoid insert empty informations
+            $extractedData = json_decode($answer);
+
+            if (!$extractedData->title || !$extractedData->description) {
+                TelegramInteractionHelper::sendMessage($params['chat_id'], 'Mohon maaf terjadi kesalahan pemrosesan informasi. Silahkan coba kembali.');
+                return response()->json(['answer' => $answer], 200);
+            }
+
+            $chatGptService->saveAnswer($extractedData, $params['user'] ?? null);
 
             if (!empty($params['chat_id'])) {
                 TelegramInteractionHelper::sendMessage($params['chat_id'], 'Informasi telah selesai kami proses.');

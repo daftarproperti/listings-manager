@@ -46,7 +46,7 @@ class ChatGptService
         $property = new Property();
 
         foreach ($data as $key => $value) {
-            $property->$key = $value;
+            $property->$key = $this->formatValue($key, $value);
         }
 
         if ($user) {
@@ -59,5 +59,21 @@ class ChatGptService
         $property->save();
 
         return $property;
+    }
+
+    private function formatValue($key, $value)
+    {
+        $integerFields = ['lotSize', 'buildingSize', 'carCount', 'bedroomCount', 'bathroomCount', 'floorCount', 'electricPower'];
+        $floatFields = ['price'];
+
+        if (in_array($key, $integerFields)) {
+            return (int) $value;
+        }
+
+        if (in_array($key, $floatFields)) {
+            return (float) $value;
+        }
+
+        return $value;
     }
 }
