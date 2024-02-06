@@ -97,7 +97,7 @@ return [
             'driver' => 'mongodb',
             'dsn' => env('MONGODB_SRV', 'mongodb+srv://username:password@<atlas-cluster-uri>/myappdb?retryWrites=true&w=majority'),
             'options'  => [
-                'ssl' => true
+                'ssl' => env('MONGODB_SSL', true),
             ],
             'database' => env('MONGODB_COLLECTION', 'mls'),
         ]

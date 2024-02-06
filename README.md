@@ -20,6 +20,10 @@ Running development server:
 Running static analyzer:
 * Run `vendor/bin/phpstan analyse`
 
+Running tests:
+* Prepare test environment (see test-utils/)
+* Run `php artisan test`
+
 ### Production Deployment
 TODO
 
