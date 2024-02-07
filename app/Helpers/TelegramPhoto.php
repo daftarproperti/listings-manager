@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Helpers;
 
 use App\Http\Services\GoogleStorageService;
@@ -7,7 +8,7 @@ use Illuminate\Support\Facades\Log;
 
 class TelegramPhoto
 {
-    public static function getPhotoUrl($fileId, $fileUniqueId): ?string
+    public static function getPhotoUrl(string $fileId, string $fileUniqueId): ?string
     {
         $telegramFileUrl = null;
 
@@ -21,26 +22,32 @@ class TelegramPhoto
         }
 
         try {
-            $fileInfoEndpoint = sprintf('https://api.telegram.org/bot%s/getFile', config('services.telegram.bot_token'));
+            $fileInfoEndpoint = sprintf(
+                'https://api.telegram.org/bot%s/getFile',
+                Assert::string(config('services.telegram.bot_token'))
+            );
             $fileInfoRequest = Http::get($fileInfoEndpoint, [
                 'file_id' => $fileId,
                 'file_unique_id' => $fileUniqueId
             ]);
 
             if ($fileInfoRequest->successful()) {
+                /** @var array<string> $fileInfo */
                 $fileInfo = $fileInfoRequest->json('result');
                 if (isset($fileInfo['file_path'])) {
-                    $telegramFileUrl = sprintf('https://api.telegram.org/file/bot%s/%s', config('services.telegram.bot_token'), $fileInfo['file_path']);
+                    $telegramFileUrl = sprintf(
+                        'https://api.telegram.org/file/bot%s/%s',
+                        Assert::string(config('services.telegram.bot_token')),
+                        $fileInfo['file_path']
+                    );
                     //put file in bucket
                     $googleStorageService->uploadFile(file_get_contents($telegramFileUrl), $fileName);
                 }
             }
-
         } catch (\Throwable $th) {
             Log::error($th->getMessage());
         }
 
         return $telegramFileUrl;
     }
-
 }

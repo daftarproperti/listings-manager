@@ -4,7 +4,10 @@ namespace App\Helpers;
 
 class HousePropertyKeywords
 {
-    public static function Keywords() : array
+    /**
+     * @return array<string>
+     */
+    public static function Keywords(): array
     {
         //TODO: PUT KEYWORDS ON DATABASE SO WE CAN MANAGE EASILY
         return [

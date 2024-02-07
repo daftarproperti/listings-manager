@@ -55,7 +55,10 @@ class UpdatePropertyRequest extends BaseApiRequest
         return true;
     }
 
-    public function rules()
+    /**
+     * @return array<string, string>
+     */
+    public function rules(): array
     {
         return [
             'title' => 'required|string',

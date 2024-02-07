@@ -1,18 +1,22 @@
 <?php
+
 namespace App\Helpers;
 
 use Illuminate\Support\Facades\Http;
 
 class TelegramInteractionHelper
 {
-    public static function sendMessage($chatId, $message,)
+    public static function sendMessage(string $chatId, string $message): mixed
     {
         $params = [
             'chat_id' => $chatId,
             'text' => $message,
         ];
 
-        $url = sprintf('https://api.telegram.org/bot%s/sendMessage', config('services.telegram.bot_token'));
+        $url = sprintf(
+            'https://api.telegram.org/bot%s/sendMessage',
+            Assert::string(config('services.telegram.bot_token'))
+        );
 
         $sendRequest = Http::get($url, $params);
 

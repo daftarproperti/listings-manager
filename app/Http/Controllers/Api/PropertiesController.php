@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Helpers\Assert;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UpdatePropertyRequest;
 use App\Http\Services\GoogleStorageService;
@@ -10,7 +11,9 @@ use App\Models\Resources\PropertyCollection;
 use App\Models\Resources\PropertyResource;
 use App\Models\TelegramUser;
 use App\Repositories\PropertyRepository;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
 
 class PropertiesController extends Controller
 {
@@ -156,7 +159,7 @@ class PropertiesController extends Controller
      * )
      */
 
-    public function index(Request $request, PropertyRepository $repository)
+    public function index(Request $request, PropertyRepository $repository): JsonResource
     {
         $filters = $request->only([
             'collection',
@@ -221,7 +224,7 @@ class PropertiesController extends Controller
      * )
      */
 
-    public function show(Property $property)
+    public function show(Property $property): JsonResource
     {
         return new PropertyResource($property);
     }
@@ -269,7 +272,7 @@ class PropertiesController extends Controller
      * )
      */
 
-    public function update(Property $property, UpdatePropertyRequest $request)
+    public function update(Property $property, UpdatePropertyRequest $request): JsonResource
     {
         $validatedRequest = $request->validated();
         $this->fillUpdateProperty($validatedRequest, $property);
@@ -306,14 +309,17 @@ class PropertiesController extends Controller
      *     )
      * )
      **/
-    public function delete(Property $property)
+    public function delete(Property $property): JsonResponse
     {
         $property->delete();
         return response()->json(['message' => 'Property deleted successfully'], 200);
     }
 
 
-    private function fillUpdateProperty($data, &$property)
+    /**
+     * @param array<string, mixed> $data
+     */
+    private function fillUpdateProperty(array $data, Property &$property): void
     {
         foreach ($data as $key => $value) {
             if(!is_array($value)) {
@@ -342,20 +348,25 @@ class PropertiesController extends Controller
         }
     }
 
-    private function uploadImages($images)
+    /**
+     * @param array<mixed> $images
+     *
+     * @return array<string>
+     */
+    private function uploadImages(array $images): array
     {
         $googleStorageService = app()->make(GoogleStorageService::class);
 
         $uploadedImages = [];
         foreach ($images as $image)
         {
-            if (is_a($image, \Illuminate\Http\UploadedFile::class)) {
+            if (is_object($image) && is_a($image, \Illuminate\Http\UploadedFile::class)) {
                 $fileName = sprintf('%s.%s', md5($image->getClientOriginalName()) , $image->getClientOriginalExtension());
                 $flieId = time();
                 $googleStorageService->uploadFile(file_get_contents($image->getRealPath()), sprintf('%s_%s', $flieId, $fileName));
                 $uploadedImages[] = route('telegram-photo', [$flieId, $fileName]);
             } else {
-                $uploadedImages[] = (string) $image;
+                $uploadedImages[] = Assert::string($image);
             }
         }
 

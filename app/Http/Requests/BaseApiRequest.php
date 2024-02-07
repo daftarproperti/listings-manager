@@ -13,7 +13,7 @@ abstract class BaseApiRequest extends LaravelFormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array
+     * @return array<string, string>
      */
     abstract public function rules();
 

@@ -48,7 +48,7 @@ return [
         'queue_location' => env('GOOGLE_QUEUE_LOCATION'),
         'webhook_access_secret' => env('GOOGLE_QUEUE_WEBHOOK_SECRET'),
         'webhook_url' => env('GOOGLE_QUEUE_WEBHOOK_URL'),
-        'bukcet_name' => env('GOOGLE_BUCKET_NAME'),
+        'bucket_name' => env('GOOGLE_BUCKET_NAME'),
     ]
 
 ];

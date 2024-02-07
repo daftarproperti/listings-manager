@@ -2,6 +2,7 @@
 
 namespace App\Http\Services;
 
+use App\Helpers\Assert;
 use App\Models\PropertyUser;
 use Google\Cloud\Tasks\V2\CloudTasksClient;
 use Google\Cloud\Tasks\V2\HttpMethod;
@@ -11,11 +12,11 @@ use Google\Auth\Credentials\ServiceAccountCredentials;
 
 class QueueService
 {
-    public function queueGptProcess(string $message, PropertyUser $user, $chatId = null)
+    public function queueGptProcess(string $message, PropertyUser $user, string $chatId = null): string
     {
-        $queueName = config('services.google.queue_name');
-        $projectId = config('services.google.project_id');
-        $location = config('services.google.queue_location');
+        $queueName = Assert::string(config('services.google.queue_name'));
+        $projectId = Assert::string(config('services.google.project_id'));
+        $location = Assert::string(config('services.google.queue_location'));
 
         $credentials = new ServiceAccountCredentials('https://www.googleapis.com/auth/cloud-tasks', storage_path('gpc-auth.json'));
 

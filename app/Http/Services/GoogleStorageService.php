@@ -2,12 +2,14 @@
 
 namespace App\Http\Services;
 
+use App\Helpers\Assert;
+use Google\Cloud\Storage\Bucket;
 use Google\Cloud\Storage\StorageClient;
 use Google\Cloud\Storage\StorageObject;
 
 class GoogleStorageService
 {
-    protected $bucket;
+    protected Bucket $bucket;
 
     public function __construct()
     {
@@ -16,10 +18,10 @@ class GoogleStorageService
             'keyFilePath' => storage_path('gpc-auth.json'),
         ]);
 
-        $this->bucket = $storageClient->bucket(config('services.google.bukcet_name'));
+        $this->bucket = $storageClient->bucket(Assert::string(config('services.google.bucket_name')));
     }
 
-    public function uploadFile($fileContent, $fileName): ?StorageObject
+    public function uploadFile(string $fileContent, string $fileName): ?StorageObject
     {
         $object = $this->bucket->upload($fileContent, [
             'name' => $fileName
@@ -28,7 +30,7 @@ class GoogleStorageService
         return $object;
     }
 
-    public function getFile($fileName): StorageObject
+    public function getFile(string $fileName): StorageObject
     {
         $file = $this->bucket->object($fileName);
         return $file;

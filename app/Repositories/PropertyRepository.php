@@ -3,10 +3,16 @@
 namespace App\Repositories;
 
 use App\Models\Property;
+use Illuminate\Contracts\Pagination\Paginator;
 
 class PropertyRepository
 {
-    public function list(array $filters = [], $itemsPerPage = 20)
+    /**
+     * @param array<mixed> $filters
+     *
+     * @return Paginator<Property>
+     */
+    public function list(array $filters = [], int $itemsPerPage = 20): Paginator
     {
         $query = Property::query();
 

@@ -7,6 +7,9 @@ use App\Models\RawMessage;
 
 class ReceiveMessageService
 {
+    /**
+     * @param array<string> $params
+     */
     public function saveRawMessage(array $params): ?RawMessage
     {
         if (isset($params['message'])) {
@@ -36,6 +39,11 @@ class ReceiveMessageService
         return (count($containKeyword) / count($keyWords) * 100) >= $threshold;
     }
 
+    /**
+     * @param array<array<string>> $photoData
+     *
+     * @return array<string>
+     */
     public function pictureUrls(array $photoData): array
     {
         $pictureUrls = [];

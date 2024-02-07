@@ -9,6 +9,7 @@ use App\Http\Services\QueueService;
 use App\Http\Services\ReceiveMessageService;
 use App\Models\PropertyUser;
 use App\Models\RawMessage;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -18,7 +19,7 @@ class WebhookController extends Controller
         Request $request,
         ReceiveMessageService $receiveMessageService,
         QueueService $queueService
-    ) {
+    ): JsonResponse {
         try {
             $params = $request->validate([
                 'update_id' => 'required',
@@ -68,20 +69,18 @@ class WebhookController extends Controller
                 $chatId = isset($params['message']['chat']) ? $params['message']['chat']['id'] : null;
 
                 $queueService->queueGptProcess(
-                    'Please give me json only also trim the value'."\n".
-                    $mainPrompt."\n\n".'with following format:'."\n\n".$templateString,
+                    'Please give me json only also trim the value' . "\n" .
+                        $mainPrompt . "\n\n" . 'with following format:' . "\n\n" . $templateString,
                     $propertyUser,
                     $chatId
                 );
 
                 if ($chatId) {
-                    TelegramInteractionHelper::sendMessage($chatId, 'Terimakasih atas informasi yang diberikan.'."\n".'Informasi sedang kami proses.');
+                    TelegramInteractionHelper::sendMessage($chatId, 'Terimakasih atas informasi yang diberikan.' . "\n" . 'Informasi sedang kami proses.');
                 }
-
             } else {
                 Log::info('is not property informations', $params);
             }
-
         } catch (\Throwable $e) {
             Log::error($e->getMessage());
             return response()->json(['error' => $e->getMessage()], $e->status ?? 500);
@@ -90,7 +89,8 @@ class WebhookController extends Controller
         return response()->json(['success' => true], 200);
     }
 
-    public function processGpt(Request $request, ChatGptService $chatGptService) {
+    public function processGpt(Request $request, ChatGptService $chatGptService): JsonResponse
+    {
 
         try {
             $params = $request->validate([
@@ -102,9 +102,10 @@ class WebhookController extends Controller
             $answer = $chatGptService->seekAnswer($params['message']);
 
             //avoid insert empty informations
-            $extractedData = json_decode($answer);
+            /** @var array<string> $extractedData */
+            $extractedData = json_decode($answer, true);
 
-            if (!$extractedData->title || !$extractedData->description) {
+            if (!$extractedData['title'] || !$extractedData['description']) {
                 TelegramInteractionHelper::sendMessage($params['chat_id'], 'Mohon maaf terjadi kesalahan pemrosesan informasi. Silahkan coba kembali.');
                 return response()->json(['answer' => $answer], 200);
             }
@@ -116,7 +117,6 @@ class WebhookController extends Controller
             }
 
             return response()->json(['answer' => json_decode($answer)], 200);
-
         } catch (\Throwable $e) {
             Log::error($e->getMessage());
             return response()->json(['error' => $e->getMessage()], $e->status ?? 500);

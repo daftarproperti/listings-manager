@@ -43,40 +43,42 @@ class PropertyResource extends JsonResource
      * )
      * @OA\Property(property="userCanEdit",type="boolean")
      * @OA\Property(property="isPrivate",type="boolean")
-     * @return array
+     * @return array<mixed>
      */
     public function toArray($request)
     {
+        /** @var \App\Models\Property $prop */
+        $prop = $this->resource;
         return [
-            'id' => $this->id,
-            'title' => $this->title,
-            'address' => $this->address,
-            'description' => $this->description,
-            'price' => $this->price ? (int) $this->price : null,
-            'lotSize' => $this->lotSize ? (int) $this->lotSize : null,
-            'buildingSize' => $this->buildingSize ? (int) $this->buildingSize : null,
-            'carCount' => $this->carCount ? (int) $this->carCount : null,
-            'bedroomCount' => $this->bedroomCount ? (int) $this->bedroomCount : null,
-            'bathroomCount' => $this->bathroomCount ? (int) $this->bathroomCount : null,
-            'floorCount' => $this->floorCount ? (int) $this->floorCount : null,
-            'electricPower' => $this->electricPower ? (int) $this->electricPower : null,
-            'facing' => $this->facing,
-            'ownership' => $this->ownership,
-            'city' => $this->city,
-            'pictureUrls' => $this->pictureUrls,
+            'id' => $prop->id,
+            'title' => $prop->title,
+            'address' => $prop->address,
+            'description' => $prop->description,
+            'price' => $prop->price ? (int) $prop->price : null,
+            'lotSize' => $prop->lotSize ? (int) $prop->lotSize : null,
+            'buildingSize' => $prop->buildingSize ? (int) $prop->buildingSize : null,
+            'carCount' => $prop->carCount ? (int) $prop->carCount : null,
+            'bedroomCount' => $prop->bedroomCount ? (int) $prop->bedroomCount : null,
+            'bathroomCount' => $prop->bathroomCount ? (int) $prop->bathroomCount : null,
+            'floorCount' => $prop->floorCount ? (int) $prop->floorCount : null,
+            'electricPower' => $prop->electricPower ? (int) $prop->electricPower : null,
+            'facing' => $prop->facing,
+            'ownership' => $prop->ownership,
+            'city' => $prop->city,
+            'pictureUrls' => $prop->pictureUrls,
             'coordinate' => [
-                'latitude' => $this->latitude,
-                'longitude' => $this->logitude
+                'latitude' => $prop->latitude,
+                'longitude' => $prop->longitude,
             ],
             'contacts' => [
-                'name' => $this->contacts ? ($this->contacts['name'] ?? null) :  null,
-                'phoneNumber' => $this->contacts ? ($this->contacts['phoneNumber'] ?? null) : null,
-                'profilePictureURL' => $this->contacts ? ($this->contacts['profilePictureURL'] ?? null) : null,
-                'sourceURL' =>  $this->contacts ? ($this->contacts['sourceURL'] ?? null) : null,
-                'provider' =>  $this->contacts ? ($this->contacts['provider'] ?? null) : null,
+                'name' => $prop->contacts ? ($prop->contacts['name'] ?? null) :  null,
+                'phoneNumber' => $prop->contacts ? ($prop->contacts['phoneNumber'] ?? null) : null,
+                'profilePictureURL' => $prop->contacts ? ($prop->contacts['profilePictureURL'] ?? null) : null,
+                'sourceURL' =>  $prop->contacts ? ($prop->contacts['sourceURL'] ?? null) : null,
+                'provider' =>  $prop->contacts ? ($prop->contacts['provider'] ?? null) : null,
             ],
-            'userCanEdit' => $this->user_can_edit,
-            'isPrivate' => $this->isPrivate ?? false
+            'userCanEdit' => $prop->user_can_edit,
+            'isPrivate' => $prop->isPrivate ?? false
         ];
     }
 }

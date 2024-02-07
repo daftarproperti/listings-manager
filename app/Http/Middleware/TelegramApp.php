@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Helpers\Assert;
 use App\Helpers\TelegramInitDataValidator;
 use App\Models\TelegramUser;
 use Closure;
@@ -23,7 +24,7 @@ class TelegramApp
 
         if (
             !is_string($initData) ||
-            !TelegramInitDataValidator::isSafe(config('services.telegram.bot_token'), $initData)
+            !TelegramInitDataValidator::isSafe(Assert::string(config('services.telegram.bot_token')), $initData)
         ) {
             return response()->json(['error' => 'Unauthorized'], 403);
         }
@@ -36,9 +37,11 @@ class TelegramApp
         return $next($request);
     }
 
-    private function telegramUserAuth($initData) : TelegramUser
+    private function telegramUserAuth(string $initData) : TelegramUser
     {
         parse_str(rawurldecode($initData), $initDataArray);
+        assert(is_string($initDataArray['user']));
+        /** @var array<string> $user */
         $user = json_decode($initDataArray['user'], true);
 
         $telegramUser = TelegramUser::where('user_id', $user['id'])

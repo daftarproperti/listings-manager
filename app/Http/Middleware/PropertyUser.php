@@ -17,7 +17,10 @@ class PropertyUser
      */
     public function handle(Request $request, Closure $next)
     {
-        $propertyUser = $request->property->user;
+        /** @var \App\Models\Property $property */
+        $property = $request->property;
+        /** @var array<string, string> $propertyUser */
+        $propertyUser = $property->user;
 
         if (!$propertyUser || ($propertyUser['userId'] !== app(TelegramUser::class)->user_id)) {
             return response()->json(['error' => 'Unauthorized'], 403);
