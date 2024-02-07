@@ -6,7 +6,6 @@ use App\Models\Property;
 use App\Models\PropertyUser;
 use App\Models\TelegramUser;
 use Illuminate\Support\Facades\Config;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class ApiTest extends TestCase
@@ -17,6 +16,8 @@ class ApiTest extends TestCase
     /**
      * Generates fake init data and appends valid hash according to Telegram spec:
      * https://core.telegram.org/bots/webapps#validating-data-received-via-the-mini-app
+     *
+     * @return array<string, string|bool>
      */
     private function generate_telegram_init_data(): array
     {
@@ -42,7 +43,7 @@ class ApiTest extends TestCase
         return $initData;
     }
 
-    private function addProperty($title, $userId): void
+    private function addProperty(string $title, string $userId): Property
     {
         $propertyUser = new PropertyUser();
         $propertyUser->userId = $userId;
@@ -50,6 +51,7 @@ class ApiTest extends TestCase
         $property->title = $title;
         $property->user = $propertyUser;
         $property->save();
+        return $property;
     }
 
     protected function setUp(): void
@@ -92,5 +94,44 @@ class ApiTest extends TestCase
                 ],
             ],
         ]);
+    }
+
+    public function test_can_show_property(): void
+    {
+        $property = $this->addProperty("Dijual Rumah", $this->fakeUserId);
+
+        $response = $this->withHeaders([
+            'x-init-data' => http_build_query($this->generate_telegram_init_data()),
+        ])->get("/api/tele-app/properties/{$property->id}");
+
+        $response->assertStatus(200);
+
+        // TODO: Test more fields other than title.
+        $response->assertJson([
+            'id' => $property->id,
+            'title' => $property->title,
+        ]);
+    }
+
+    public function test_can_update_property(): void
+    {
+        $property = $this->addProperty("Dijual Rumah", $this->fakeUserId);
+
+        $response = $this->withHeaders([
+            'x-init-data' => http_build_query($this->generate_telegram_init_data()),
+        ])->post("/api/tele-app/properties/{$property->id}", [
+            'title' => 'Lagi Dijual',
+            'address' => 'Jl. itu',
+            'description' => 'Dijual rumah bagus',
+            'price' => '1000000000',
+            'lotSize' => '230',
+            'buildingSize' => '200',
+            'city' => 'Jakarta',
+            'bedroomCount' => '3',
+            'bathroomCount' => '2',
+            'isPrivate' => false,
+        ]);
+
+        $response->assertStatus(200);
     }
 }
