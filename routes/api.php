@@ -1,6 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\PhotoController;
+use App\Http\Controllers\Api\PropertiesController;
+use App\Http\Controllers\Api\WebhookController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,17 +17,17 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::prefix('webhook')->group(function () {
-    Route::post('{secret_token}/telegram', 'Api\WebhookController@receiveTelegramMessage')->middleware(['telegram-webhook']);
-    Route::post('tasks/gpt', 'Api\WebhookController@processGpt')->middleware('queue-webhook');
+    Route::post('{secret_token}/telegram', [WebhookController::class, 'receiveTelegramMessage'])->middleware(['telegram-webhook']);
+    Route::post('tasks/gpt', [WebhookController::class, 'processGpt'])->middleware('queue-webhook');
 });
 
 Route::group(['prefix' => 'tele-app', 'middleware' => ['telegram-app']], function () {
     Route::prefix('properties')->group(function () {
-        Route::get('/', 'Api\PropertiesController@index');
-        Route::get('/{property}', 'Api\PropertiesController@show');
-        Route::post('/{property}', 'Api\PropertiesController@update')->middleware('property-user');
-        Route::delete('/{property}', 'Api\PropertiesController@delete')->middleware('property-user');
+        Route::get('/', [PropertiesController::class, 'index']);
+        Route::get('/{property}', [PropertiesController::class, 'show']);
+        Route::post('/{property}', [PropertiesController::class, 'update'])->middleware('property-user');
+        Route::delete('/{property}', [PropertiesController::class, 'delete'])->middleware('property-user');
     });
 });
 
-Route::get('photo/{fileId}/{fileUniqueId}', 'Api\PhotoController@telegramPhoto')->name('telegram-photo');
+Route::get('photo/{fileId}/{fileUniqueId}', [PhotoController::class, 'telegramPhoto'])->name('telegram-photo');
