@@ -13,6 +13,6 @@ class Assert
     public static function string($value): string
     {
         assert(is_string($value));
-        return $value;
+        return $value ? $value : '';
     }
 }

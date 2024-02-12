@@ -4,9 +4,10 @@ namespace App\Http\Controllers\Api;
 
 use App\Helpers\Assert;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\UpdatePropertyRequest;
+use App\Http\Requests\PropertyRequest;
 use App\Http\Services\GoogleStorageService;
 use App\Models\Property;
+use App\Models\PropertyUser;
 use App\Models\Resources\PropertyCollection;
 use App\Models\Resources\PropertyResource;
 use App\Models\TelegramUser;
@@ -247,7 +248,7 @@ class PropertiesController extends Controller
      *     @OA\RequestBody(
      *          @OA\MediaType(
      *              mediaType="multipart/form-data",
-     *              @OA\Schema(type="object", ref="#/components/schemas/UpdatePropertyRequest")
+     *              @OA\Schema(type="object", ref="#/components/schemas/PropertyRequest")
      *          ),
      *         required=true,
      *     ),
@@ -272,14 +273,48 @@ class PropertiesController extends Controller
      * )
      */
 
-    public function update(Property $property, UpdatePropertyRequest $request): JsonResource
+    public function update(Property $property, PropertyRequest $request): JsonResource
     {
         $validatedRequest = $request->validated();
-        $this->fillUpdateProperty($validatedRequest, $property);
+        $this->fillCreateUpdateProperty($validatedRequest, $property);
         $property->save();
 
         return new PropertyResource($property);
     }
+
+    /**
+     * @OA\Post(
+     *     path="/api/tele-app/properties",
+     *     tags={"Properties"},
+     *     summary="Create property",
+     *     operationId="create",
+     *     @OA\RequestBody(
+     *          @OA\MediaType(
+     *              mediaType="multipart/form-data",
+     *              @OA\Schema(type="object", ref="#/components/schemas/UpdatePropertyRequest")
+     *          ),
+     *         required=true,
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="success",
+     *         @OA\JsonContent(
+     *              ref="#/components/schemas/Property"
+     *         ),
+     *     )
+     * )
+     */
+
+     public function create(PropertyRequest $request): JsonResource
+     {
+         $validatedRequest = $request->validated();
+         $property = new Property();
+         $this->fillCreateUpdateProperty($validatedRequest, $property);
+         $property->user = $this->getPropertyUser();
+         $property->save();
+
+         return new PropertyResource($property);
+     }
 
     /**
      * @OA\Delete(
@@ -318,8 +353,9 @@ class PropertiesController extends Controller
 
     /**
      * @param array<string, mixed> $data
+     * @param Property $property
      */
-    private function fillUpdateProperty(array $data, Property &$property): void
+    private function fillCreateUpdateProperty(array $data, Property &$property): void
     {
         foreach ($data as $key => $value) {
             if(!is_array($value)) {
@@ -348,6 +384,18 @@ class PropertiesController extends Controller
         }
     }
 
+    private function getPropertyUser(): PropertyUser
+    {
+        $user = app(TelegramUser::class);
+        $propertyUser = new PropertyUser();
+        $propertyUser->name = $user->first_name . ' ' . ($user->last_name ?? '');
+        $propertyUser->userName = $user->username ?? null;
+        $propertyUser->userId = $user->user_id;
+        $propertyUser->source = 'telegram';
+
+        return $propertyUser;
+    }
+
     /**
      * @param array<mixed> $images
      *
@@ -362,9 +410,12 @@ class PropertiesController extends Controller
         {
             if (is_object($image) && is_a($image, \Illuminate\Http\UploadedFile::class)) {
                 $fileName = sprintf('%s.%s', md5($image->getClientOriginalName()) , $image->getClientOriginalExtension());
-                $flieId = time();
-                $googleStorageService->uploadFile(file_get_contents($image->getRealPath()), sprintf('%s_%s', $flieId, $fileName));
-                $uploadedImages[] = route('telegram-photo', [$flieId, $fileName]);
+                $fileId = time();
+                $googleStorageService->uploadFile(
+                    Assert::string(file_get_contents($image->getRealPath())),
+                    sprintf('%s_%s', $fileId, $fileName)
+                );
+                $uploadedImages[] = route('telegram-photo', [$fileId, $fileName]);
             } else {
                 $uploadedImages[] = Assert::string($image);
             }

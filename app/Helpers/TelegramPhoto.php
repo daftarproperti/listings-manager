@@ -41,7 +41,9 @@ class TelegramPhoto
                         $fileInfo['file_path']
                     );
                     //put file in bucket
-                    $googleStorageService->uploadFile(file_get_contents($telegramFileUrl), $fileName);
+                    $googleStorageService->uploadFile(
+                        Assert::string(file_get_contents($telegramFileUrl)),
+                        $fileName);
                 }
             }
         } catch (\Throwable $th) {

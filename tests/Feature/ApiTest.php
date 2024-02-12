@@ -134,4 +134,43 @@ class ApiTest extends TestCase
 
         $response->assertStatus(200);
     }
+
+    public function test_can_create_property(): void
+    {
+        $response = $this->withHeaders([
+            'x-init-data' => http_build_query($this->generate_telegram_init_data()),
+        ])->post("/api/tele-app/properties", [
+            'title' => 'Lagi Dijual',
+            'address' => 'Jl. itu',
+            'description' => 'Dijual rumah bagus',
+            'price' => '1000000000',
+            'lotSize' => '230',
+            'buildingSize' => '200',
+            'city' => 'Jakarta',
+            'bedroomCount' => '3',
+            'bathroomCount' => '2',
+            'isPrivate' => false,
+        ]);
+
+        $response->assertStatus(201);
+    }
+
+    public function test_create_property_fail_params(): void
+    {
+        $response = $this->withHeaders([
+            'x-init-data' => http_build_query($this->generate_telegram_init_data()),
+        ])->post("/api/tele-app/properties", [
+            'address' => 'Jl. itu',
+            'description' => 'Dijual rumah bagus',
+            'price' => '1000000000',
+            'lotSize' => '230',
+            'buildingSize' => '200',
+            'city' => 'Jakarta',
+            'bedroomCount' => '3',
+            'bathroomCount' => '2',
+            'isPrivate' => false,
+        ]);
+
+        $response->assertStatus(422);
+    }
 }

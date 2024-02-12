@@ -5,12 +5,12 @@ use App\Http\Requests\BaseApiRequest;
 
 /**
  * @OA\Schema(
- *     schema="UpdatePropertyRequest",
+ *     schema="PropertyRequest",
  *     type="object",
  *)
  */
 
-class UpdatePropertyRequest extends BaseApiRequest
+class PropertyRequest extends BaseApiRequest
 {
     /**
      * @OA\Property(property="title",type="string", example="Rumah dijual di daerah pasteur")
@@ -58,7 +58,7 @@ class UpdatePropertyRequest extends BaseApiRequest
     /**
      * @return array<string, string>
      */
-    public function rules(): array
+    public function rules()
     {
         return [
             'title' => 'required|string',

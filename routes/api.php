@@ -24,6 +24,7 @@ Route::prefix('webhook')->group(function () {
 Route::group(['prefix' => 'tele-app', 'middleware' => ['telegram-app']], function () {
     Route::prefix('properties')->group(function () {
         Route::get('/', [PropertiesController::class, 'index']);
+        Route::post('/', [PropertiesController::class, 'create']);
         Route::get('/{property}', [PropertiesController::class, 'show']);
         Route::post('/{property}', [PropertiesController::class, 'update'])->middleware('property-user');
         Route::delete('/{property}', [PropertiesController::class, 'delete'])->middleware('property-user');
