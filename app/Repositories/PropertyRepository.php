@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Models\Property;
 use Illuminate\Contracts\Pagination\Paginator;
+use Illuminate\Support\Str;
 
 class PropertyRepository
 {
@@ -16,7 +17,7 @@ class PropertyRepository
     {
         $query = Property::query();
 
-        $query->when($filters['collection'] && $filters['user_id'] , function ($query) use ($filters) {
+        $query->when(isset($filters['collection']) && isset($filters['user_id']) , function ($query) use ($filters) {
             $query->where('user.userId', $filters['user_id']);
         });
 
@@ -68,7 +69,15 @@ class PropertyRepository
         });
 
         $query->when(isset($filters['electric_power']), function ($query) use ($filters) {
-            $query->where('electric_power', (int) $filters['electric_power']);
+            $query->where('electricPower', (int) $filters['electric_power']);
+        });
+
+        $query->when(isset($filters['sort']), function ($query) use ($filters) {
+            $order = isset($filters['order']) &&
+                in_array(strtolower($filters['order']), ['asc', 'desc']) ? strtolower($filters['order']) : 'asc';
+            $sort = Str::camel($filters['sort']);
+
+            $query->orderBy($sort, $order);
         });
 
         return $query->paginate($itemsPerPage);

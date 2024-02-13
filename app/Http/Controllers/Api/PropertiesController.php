@@ -144,6 +144,26 @@ class PropertiesController extends Controller
      *            type="integer"
      *        )
      *     ),
+     *     @OA\Parameter(
+     *        in="query",
+     *        name="sort",
+     *        description="Sort By",
+     *        required=false,
+     *        @OA\Schema(
+     *            type="string",
+     *            enum={"price", "bedroom_count", "lot_size"}
+     *        )
+     *     ),
+     *     @OA\Parameter(
+     *        in="query",
+     *        name="order",
+     *        description="Order By",
+     *        required=false,
+     *        @OA\Schema(
+     *            type="string",
+     *            enum={"asc", "desc"}
+     *        )
+     *     ),
      *     @OA\Response(
      *         response=200,
      *         description="success",
@@ -173,7 +193,9 @@ class PropertiesController extends Controller
             'building_size',
             'ownership',
             'car_count',
-            'electric_power'
+            'electric_power',
+            'sort',
+            'order'
         ]);
 
         //if collection not present in filters, default set to true
@@ -291,7 +313,7 @@ class PropertiesController extends Controller
      *     @OA\RequestBody(
      *          @OA\MediaType(
      *              mediaType="multipart/form-data",
-     *              @OA\Schema(type="object", ref="#/components/schemas/UpdatePropertyRequest")
+     *              @OA\Schema(type="object", ref="#/components/schemas/PropertyRequest")
      *          ),
      *         required=true,
      *     ),
