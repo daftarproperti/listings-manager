@@ -360,6 +360,57 @@
                     }
                 }
             }
+        },
+        "/api/tele-app/users/profile": {
+            "get": {
+                "tags": [
+                    "Telegram Users"
+                ],
+                "summary": "Get profile",
+                "description": "Returns user profile",
+                "operationId": "profile",
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TelegramUserProfile"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Telegram Users"
+                ],
+                "summary": "Update profile",
+                "operationId": "updateProfile",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/TelegramUserProfileRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TelegramUserProfile"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     },
     "components": {
@@ -477,6 +528,32 @@
                 },
                 "type": "object"
             },
+            "TelegramUserProfileRequest": {
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "example": "Jono Doe"
+                    },
+                    "city": {
+                        "type": "string",
+                        "example": "Surabaya"
+                    },
+                    "description": {
+                        "type": "string",
+                        "example": "Agen terpercaya"
+                    },
+                    "company": {
+                        "type": "string",
+                        "example": "Agen XXX"
+                    },
+                    "picture": {
+                        "type": "string",
+                        "format": "binary",
+                        "example": "\\x00\\x00\\x00\\x04\\x00\\x00\\x00\\x04"
+                    }
+                },
+                "type": "object"
+            },
             "Property": {
                 "properties": {
                     "id": {
@@ -568,6 +645,35 @@
                     },
                     "isPrivate": {
                         "type": "boolean"
+                    }
+                },
+                "type": "object"
+            },
+            "TelegramUserProfile": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": "123"
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "John Doe"
+                    },
+                    "city": {
+                        "type": "string",
+                        "example": "New York"
+                    },
+                    "description": {
+                        "type": "string",
+                        "example": "I am a programmer"
+                    },
+                    "pricture": {
+                        "type": "string",
+                        "example": "https://example.com/image.jpg"
+                    },
+                    "company": {
+                        "type": "string",
+                        "example": "Google"
                     }
                 },
                 "type": "object"

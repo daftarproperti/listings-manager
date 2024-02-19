@@ -11,7 +11,7 @@ use Tests\TestCase;
 class ApiTest extends TestCase
 {
     private string $fakeBotToken = 'fake-bot-token';
-    private string $fakeUserId = '12345';
+    private int $fakeUserId = 12345;
 
     /**
      * Generates fake init data and appends valid hash according to Telegram spec:
@@ -43,7 +43,7 @@ class ApiTest extends TestCase
         return $initData;
     }
 
-    private function addProperty(string $title, string $userId): Property
+    private function addProperty(string $title, int $userId): Property
     {
         $propertyUser = new PropertyUser();
         $propertyUser->userId = $userId;
@@ -172,5 +172,45 @@ class ApiTest extends TestCase
         ]);
 
         $response->assertStatus(422);
+    }
+
+    public function test_get_profile(): void
+    {
+        $response = $this->withHeaders([
+            'x-init-data' => http_build_query($this->generate_telegram_init_data()),
+        ])->get('/api/tele-app/users/profile');
+
+        $response->assertStatus(201);
+        $response->assertJsonStructure([
+            'id',
+            'name',
+            'city',
+            'description',
+            'company',
+            'picture',
+        ]);
+    }
+
+    public function test_set_profile(): void
+    {
+        $response = $this->withHeaders([
+            'x-init-data' => http_build_query($this->generate_telegram_init_data()),
+        ])->post('/api/tele-app/users/profile', [
+            'name' => 'John No',
+            'city' => 'Jakarta',
+        ]);
+
+        $response->assertStatus(201);
+        $response->assertJsonStructure([
+            'id',
+            'name',
+            'city',
+            'description',
+            'company',
+            'picture',
+        ]);
+
+        $this->assertEquals('John No', $response->json('name'));
+        $this->assertEquals('Jakarta', $response->json('city'));
     }
 }

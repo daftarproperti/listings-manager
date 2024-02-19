@@ -49,6 +49,6 @@ class Property extends Model
 
         $propertyUser = (object) $this->user;
 
-        return $currentUserId === ($propertyUser->userId ?? null);
+        return $currentUserId == ($propertyUser->userId ?? null);
     }
 }

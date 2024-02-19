@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\PhotoController;
 use App\Http\Controllers\Api\PropertiesController;
+use App\Http\Controllers\Api\TelegramUserController;
 use App\Http\Controllers\Api\WebhookController;
 
 /*
@@ -28,6 +29,10 @@ Route::group(['prefix' => 'tele-app', 'middleware' => ['telegram-app']], functio
         Route::get('/{property}', [PropertiesController::class, 'show']);
         Route::post('/{property}', [PropertiesController::class, 'update'])->middleware('property-user');
         Route::delete('/{property}', [PropertiesController::class, 'delete'])->middleware('property-user');
+    });
+    Route::prefix('users')->group(function () {
+        Route::get('/profile', [TelegramUserController::class, 'profile']);
+        Route::post('/profile', [TelegramUserController::class, 'updateProfile']);
     });
 });
 

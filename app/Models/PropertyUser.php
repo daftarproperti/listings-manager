@@ -6,6 +6,6 @@ class PropertyUser
 {
     public string $name;
     public ?string $userName;
-    public string $userId;
+    public int $userId;
     public string $source;
 }

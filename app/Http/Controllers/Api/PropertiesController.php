@@ -399,7 +399,7 @@ class PropertiesController extends Controller
                     continue;
                 }
 
-                $currentData = array_filter($property->{$key});
+                $currentData = $property->{$key} ? array_filter($property->{$key}) : [];
                 $updatedData = array_merge($currentData, $value);
                 $property->{$key} = $updatedData;
             }
@@ -412,7 +412,7 @@ class PropertiesController extends Controller
         $propertyUser = new PropertyUser();
         $propertyUser->name = $user->first_name . ' ' . ($user->last_name ?? '');
         $propertyUser->userName = $user->username ?? null;
-        $propertyUser->userId = $user->user_id;
+        $propertyUser->userId = (int) $user->user_id;
         $propertyUser->source = 'telegram';
 
         return $propertyUser;
