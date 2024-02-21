@@ -1,0 +1,34 @@
+service: default
+runtime: php
+env: flex
+
+# based on https://cloud.google.com/appengine/docs/standard/lifecycle/support-schedule#php
+runtime_config:
+  operating_system: "ubuntu22"
+  runtime_version: "8.2"
+  document_root: public
+
+build_env_variables:
+  GOOGLE_COMPOSER_VERSION: 2.5.8
+
+# Contains the configurations for dev environment, except that the secret ones
+# (keys/passwords) need to be replaced.
+env_variables:
+  APP_DEBUG: true
+  APP_ENV: production
+  APP_KEY: "appkey"
+  APP_NAME: "Daftar Properti Dev"
+  LOG_LEVEL: debug
+  CACHE_DRIVER: file
+  SESSION_DRIVER: file
+  MONGODB_SRV: "mongodb+srv://usernam:password@host/"
+  MONGODB_COLLECTION: "mls"
+  TELEGRAM_WEBHOOK_SECRET: "secret"
+  TELEGRAM_BOT_TOKEN: "123:abc"
+  GOOGLE_PROJECT_ID: "daftar-properti-dev"
+  GOOGLE_QUEUE_NAME: "gptqueue"
+  GOOGLE_QUEUE_LOCATION: "asia-southeast2"
+  GOOGLE_QUEUE_WEBHOOK_SECRET: "somescret"
+  GOOGLE_QUEUE_WEBHOOK_URL: "https://daftar-properti-dev.et.r.appspot.com/api/webhook/tasks/gpt"
+  CHATGPT_KEY: "secret"
+  GOOGLE_BUCKET_NAME: "mls-staging"
