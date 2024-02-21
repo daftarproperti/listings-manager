@@ -534,6 +534,10 @@
                         "type": "string",
                         "example": "Jono Doe"
                     },
+                    "phone_number": {
+                        "type": "string",
+                        "example": "081111111111"
+                    },
                     "city": {
                         "type": "string",
                         "example": "Surabaya"
@@ -640,6 +644,20 @@
                         },
                         "type": "object"
                     },
+                    "user": {
+                        "properties": {
+                            "name": {
+                                "type": "string"
+                            },
+                            "profilePictureURL": {
+                                "type": "string"
+                            },
+                            "phoneNumber": {
+                                "type": "string"
+                            }
+                        },
+                        "type": "object"
+                    },
                     "userCanEdit": {
                         "type": "boolean"
                     },
@@ -658,6 +676,10 @@
                     "name": {
                         "type": "string",
                         "example": "John Doe"
+                    },
+                    "phoneNumber": {
+                        "type": "string",
+                        "example": "0811111"
                     },
                     "city": {
                         "type": "string",

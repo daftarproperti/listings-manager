@@ -28,8 +28,8 @@ use MongoDB\Laravel\Eloquent\SoftDeletes;
  * @property array<string, string> $contacts
  * @property bool $user_can_edit
  * @property bool $isPrivate
- *
- * @property PropertyUser $user
+ * @property TelegramUserProfile $user_profile
+ * @property PropertyUser|null $user
  */
 class Property extends Model
 {
@@ -50,5 +50,24 @@ class Property extends Model
         $propertyUser = (object) $this->user;
 
         return $currentUserId == ($propertyUser->userId ?? null);
+    }
+
+    public function getUserProfileAttribute(): ?TelegramUserProfile
+    {
+        $user = $this->user ? (object) $this->user : null;
+        $userSource = $user ? ($user->source ?? null) : null;
+
+        if (!$userSource || !$user) {
+            return null;
+        }
+
+        switch($userSource) {
+            case 'telegram':
+                $teleUser = TelegramUser::where('user_id', $user->userId)->first();
+                $profile = $teleUser->profile ?? null;
+                return $profile ? new TelegramUserProfile((array) $profile) : null;
+            default:
+                return null;
+        }
     }
 }

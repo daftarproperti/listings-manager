@@ -41,6 +41,11 @@ class PropertyResource extends JsonResource
      *      @OA\Property(property="sourceURL",type="string"),
      *      @OA\Property(property="provider",type="string")
      * )
+     * @OA\Property(property="user",type="object",
+     *      @OA\Property(property="name",type="string"),
+     *      @OA\Property(property="profilePictureURL",type="string"),
+     *      @OA\Property(property="phoneNumber",type="string"),
+     * )
      * @OA\Property(property="userCanEdit",type="boolean")
      * @OA\Property(property="isPrivate",type="boolean")
      * @return array<mixed>
@@ -49,6 +54,7 @@ class PropertyResource extends JsonResource
     {
         /** @var \App\Models\Property $prop */
         $prop = $this->resource;
+
         return [
             'id' => $prop->id,
             'title' => $prop->title,
@@ -76,6 +82,11 @@ class PropertyResource extends JsonResource
                 'profilePictureURL' => $prop->contacts ? ($prop->contacts['profilePictureURL'] ?? null) : null,
                 'sourceURL' =>  $prop->contacts ? ($prop->contacts['sourceURL'] ?? null) : null,
                 'provider' =>  $prop->contacts ? ($prop->contacts['provider'] ?? null) : null,
+            ],
+            'user' => [
+                'name' => $prop->user_profile ? $prop->user_profile->name : null,
+                'phoneNumber' => $prop->user_profile ? $prop->user_profile->phoneNumber : null,
+                'profilePictureURL' => $prop->user_profile ? $prop->user_profile->picture : null
             ],
             'userCanEdit' => $prop->user_can_edit,
             'isPrivate' => $prop->isPrivate ?? false

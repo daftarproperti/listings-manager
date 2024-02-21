@@ -188,6 +188,7 @@ class ApiTest extends TestCase
             'description',
             'company',
             'picture',
+            'phoneNumber'
         ]);
     }
 
@@ -208,6 +209,7 @@ class ApiTest extends TestCase
             'description',
             'company',
             'picture',
+            'phoneNumber'
         ]);
 
         $this->assertEquals('John No', $response->json('name'));

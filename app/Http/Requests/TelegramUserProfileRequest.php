@@ -14,6 +14,7 @@ class TelegramUserProfileRequest extends BaseApiRequest
 {
     /**
      * @OA\Property(property="name",type="string", example="Jono Doe")
+     * @OA\Property(property="phone_number",type="string", example="081111111111")
      * @OA\Property(property="city",type="string", example="Surabaya")
      * @OA\Property(property="description",type="string", example="Agen terpercaya")
      * @OA\Property(property="company",type="string", example="Agen XXX")
@@ -33,6 +34,7 @@ class TelegramUserProfileRequest extends BaseApiRequest
     {
         return [
             'name' => 'required|string',
+            'phone_number' => 'nullable|string',
             'city' => 'nullable|string',
             'description' => 'nullable|string',
             'company' => 'nullable|string',
