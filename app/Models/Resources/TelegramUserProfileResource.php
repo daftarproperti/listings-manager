@@ -37,7 +37,7 @@ class TelegramUserProfileResource extends JsonResource
             'description' => $profile?->description ?? null,
             'company' => $profile?->company ?? null,
             'picture' => $profile?->picture ?? null,
-            'phoneNumber' => $profile?->phone_number ?? null,
+            'phoneNumber' => $profile?->phoneNumber ?? null,
         ];
     }
 }
