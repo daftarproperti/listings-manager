@@ -8,20 +8,22 @@ use Google\Cloud\Tasks\V2\CloudTasksClient;
 use Google\Cloud\Tasks\V2\HttpMethod;
 use Google\Cloud\Tasks\V2\HttpRequest;
 use Google\Cloud\Tasks\V2\Task;
-use Google\Auth\Credentials\ServiceAccountCredentials;
 
 class QueueService
 {
+    private CloudTasksClient $cloudTasksClient;
+
+    public function __construct(CloudTasksClient $cloudTasksClient) {
+        $this->cloudTasksClient = $cloudTasksClient;
+    }
+
     public function queueGptProcess(string $message, PropertyUser $user, string $chatId = null): string
     {
         $queueName = Assert::string(config('services.google.queue_name'));
         $projectId = Assert::string(config('services.google.project_id'));
         $location = Assert::string(config('services.google.queue_location'));
 
-        $credentials = new ServiceAccountCredentials('https://www.googleapis.com/auth/cloud-tasks', storage_path('gpc-auth.json'));
-
-        $client = new CloudTasksClient(['credentials' => $credentials]);
-        $parent = $client->queueName($projectId, $location, $queueName);
+        $parent = $this->cloudTasksClient->queueName($projectId, $location, $queueName);
 
         $task = new Task();
         $task->setHttpRequest(new HttpRequest([
@@ -34,7 +36,7 @@ class QueueService
             'body' => json_encode(['message' => $message, 'user' => $user, 'chat_id' => $chatId]),
         ]));
 
-        $response = $client->createTask($parent, $task);
+        $response = $this->cloudTasksClient->createTask($parent, $task);
 
         return $response->getName();
     }
