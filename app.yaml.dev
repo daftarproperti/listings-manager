@@ -7,6 +7,9 @@ runtime_config:
   operating_system: "ubuntu22"
   runtime_version: "8.2"
   document_root: public
+  # Enable log daemon so our app isn't blocked
+  # https://cloud.google.com/logging/docs/setup/php#gae-config
+  enable_stackdriver_integration: true
 
 build_env_variables:
   GOOGLE_COMPOSER_VERSION: 2.5.8
@@ -32,3 +35,4 @@ env_variables:
   GOOGLE_QUEUE_WEBHOOK_URL: "https://daftar-properti-dev.et.r.appspot.com/api/webhook/tasks/gpt"
   CHATGPT_KEY: "secret"
   GOOGLE_BUCKET_NAME: "mls-staging"
+  LOG_CHANNEL: "gcp"
