@@ -14,7 +14,7 @@ class ReceiveMessageService
     {
         if (isset($params['message'])) {
             $message = new RawMessage();
-            $message->update_id = $params['update_id'];
+            $message->update_id = (int) $params['update_id'];
             $message->message = $params['message'];
             $message->save();
 

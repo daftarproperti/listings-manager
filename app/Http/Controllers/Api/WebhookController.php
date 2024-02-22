@@ -30,6 +30,7 @@ class WebhookController extends Controller
             //to avoid same message processing
             $dataExists = RawMessage::where('update_id', (int) $params['update_id'])->exists();
             if ($dataExists) {
+                Log::warning("Update id {$params['update_id']} already exists, ignoring.");
                 return response()->json(['success' => true], 200);
             }
 

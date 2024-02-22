@@ -5,7 +5,7 @@ namespace App\Models;
 use MongoDB\Laravel\Eloquent\Model;
 
 /**
- * @property string $update_id
+ * @property int $update_id
  * @property string $message
  */
 class RawMessage extends Model
