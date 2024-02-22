@@ -5,6 +5,7 @@
 /public/storage
 /storage/*.key
 /storage/gpc-auth.json
+/storage/pail
 /vendor
 .env
 .env.backup
