@@ -2,11 +2,12 @@
 
 namespace App\Models;
 
+use App\DTO\Telegram\Message;
 use MongoDB\Laravel\Eloquent\Model;
 
 /**
  * @property int $update_id
- * @property string $message
+ * @property Message $message
  */
 class RawMessage extends Model
 {

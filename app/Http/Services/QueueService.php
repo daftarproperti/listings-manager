@@ -13,11 +13,12 @@ class QueueService
 {
     private CloudTasksClient $cloudTasksClient;
 
-    public function __construct(CloudTasksClient $cloudTasksClient) {
+    public function __construct(CloudTasksClient $cloudTasksClient)
+    {
         $this->cloudTasksClient = $cloudTasksClient;
     }
 
-    public function queueGptProcess(string $message, PropertyUser $user, string $chatId = null): string
+    public function queueGptProcess(string $message, PropertyUser $user, int $chatId = null): string
     {
         $queueName = Assert::string(config('services.google.queue_name'));
         $projectId = Assert::string(config('services.google.project_id'));
@@ -40,5 +41,4 @@ class QueueService
 
         return $response->getName();
     }
-
 }

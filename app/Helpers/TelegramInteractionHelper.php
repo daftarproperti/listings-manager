@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Http;
 
 class TelegramInteractionHelper
 {
-    public static function sendMessage(string $chatId, string $message): mixed
+    public static function sendMessage(int $chatId, string $message): mixed
     {
         $params = [
             'chat_id' => $chatId,

@@ -2,20 +2,22 @@
 
 namespace App\Http\Services;
 
+use App\DTO\Telegram\PhotoSize;
+use App\DTO\Telegram\Update;
 use App\Helpers\HousePropertyKeywords;
 use App\Models\RawMessage;
 
 class ReceiveMessageService
 {
     /**
-     * @param array<string> $params
+     * @param Update $update
      */
-    public function saveRawMessage(array $params): ?RawMessage
+    public function saveRawMessage(Update $update): ?RawMessage
     {
-        if (isset($params['message'])) {
+        if (isset($update->message)) {
             $message = new RawMessage();
-            $message->update_id = (int) $params['update_id'];
-            $message->message = $params['message'];
+            $message->update_id = $update->update_id;
+            $message->message = $update->message;
             $message->save();
 
             return $message;
@@ -40,7 +42,7 @@ class ReceiveMessageService
     }
 
     /**
-     * @param array<array<string>> $photoData
+     * @param array<PhotoSize> $photoData
      *
      * @return array<string>
      */
@@ -48,10 +50,10 @@ class ReceiveMessageService
     {
         $pictureUrls = [];
 
-        foreach ($photoData as $photo) {
+        foreach ($photoData as $photoSize) {
             $pictureUrls[] = route('telegram-photo', [
-                'fileId' => $photo['file_id'],
-                'fileUniqueId' => $photo['file_unique_id'],
+                'fileId' => $photoSize->file_id,
+                'fileUniqueId' => $photoSize->file_unique_id,
             ]);
         }
 

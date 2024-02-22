@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\DTO\Telegram\Update;
 use App\Helpers\TelegramInteractionHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Services\ChatGptService;
@@ -12,9 +13,17 @@ use App\Models\RawMessage;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Symfony\Component\Serializer\Serializer;
 
 class WebhookController extends Controller
 {
+    private Serializer $serializer;
+
+    public function __construct(Serializer $serializer)
+    {
+        $this->serializer = $serializer;
+    }
+
     public function receiveTelegramMessage(
         Request $request,
         ReceiveMessageService $receiveMessageService,
@@ -27,15 +36,18 @@ class WebhookController extends Controller
                 'callback_query' => 'nullable',
             ]);
 
+            /** @var Update $update */
+            $update = $this->serializer->denormalize($params, Update::class);
+
             //to avoid same message processing
-            $dataExists = RawMessage::where('update_id', (int) $params['update_id'])->exists();
+            $dataExists = RawMessage::where('update_id', $update->update_id)->exists();
             if ($dataExists) {
-                Log::warning("Update id {$params['update_id']} already exists, ignoring.");
+                Log::warning("Update id {$update->update_id} already exists, ignoring.");
                 return response()->json(['success' => true], 200);
             }
 
             //when message contain photo use 'caption' as message, because 'text' is not available.
-            $message = !empty($params['message']['caption']) ? $params['message']['caption'] : ($params['message']['text'] ?? '');
+            $message = !empty($update->message->caption) ? $update->message->caption : ($update->message->text ?? '');
 
             //to do next: use AI to check message is about property informations or not.
             $isPropertyInformationMessage = $receiveMessageService
@@ -45,11 +57,11 @@ class WebhookController extends Controller
                 );
 
             if ($isPropertyInformationMessage) {
-                $message = $receiveMessageService->saveRawMessage($params);
+                $message = $receiveMessageService->saveRawMessage($update);
 
                 $pictureUrls = [];
-                if (!empty($params['message']['photo'])) {
-                    $pictureUrls = $receiveMessageService->pictureUrls($params['message']['photo']);
+                if (!empty($update->message->photo)) {
+                    $pictureUrls = $receiveMessageService->pictureUrls($update->message->photo);
                 }
 
                 $template = storage_path('HousePropertyGptTemplate.txt');
@@ -57,17 +69,21 @@ class WebhookController extends Controller
 
                 $mainPrompt = sprintf(
                     '%s%s',
-                    $params['message']['text'] ?? '',
+                    $update->message->text ?? '',
                     !empty($pictureUrls) ? "\n Picture Urls:\n" . implode("\n", $pictureUrls) . "\n" : ''
                 );
 
                 $propertyUser = new PropertyUser();
-                $propertyUser->name = trim(sprintf('%s %s', $params['message']['from']['first_name'], $params['message']['from']['last_name'] ?? ''));
-                $propertyUser->userName = $params['message']['from']['username'] ?? null;
-                $propertyUser->userId = $params['message']['from']['id'];
+                $propertyUser->name = trim(sprintf(
+                    '%s %s',
+                    $update->message->from->first_name,
+                    $update->message->from->last_name ?? ''
+                ));
+                $propertyUser->userName = $update->message->from->username ?? null;
+                $propertyUser->userId = $update->message->from->id;
                 $propertyUser->source = 'telegram';
 
-                $chatId = isset($params['message']['chat']) ? $params['message']['chat']['id'] : null;
+                $chatId = isset($update->message->chat) ? $update->message->chat->id : null;
 
                 $queueService->queueGptProcess(
                     'Please give me json only also trim the value' . "\n" .
@@ -80,7 +96,7 @@ class WebhookController extends Controller
                     TelegramInteractionHelper::sendMessage($chatId, 'Terimakasih atas informasi yang diberikan.' . "\n" . 'Informasi sedang kami proses.');
                 }
             } else {
-                Log::info('is not property informations', $params);
+                Log::info('is not property informations: ' . print_r($update, TRUE));
             }
         } catch (\Throwable $e) {
             Log::error($e->getMessage());

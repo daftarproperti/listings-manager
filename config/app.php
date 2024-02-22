@@ -171,6 +171,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\GoogleCloudServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        App\Providers\SymfonySerializerServiceProvider::class,
     ])->toArray(),
 
     /*
