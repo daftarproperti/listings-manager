@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Helpers\TelegramInitDataValidator;
 use App\Models\Property;
 use App\Models\PropertyUser;
 use App\Models\TelegramUser;
@@ -17,30 +18,20 @@ class ApiTest extends TestCase
      * Generates fake init data and appends valid hash according to Telegram spec:
      * https://core.telegram.org/bots/webapps#validating-data-received-via-the-mini-app
      *
-     * @return array<string, string|bool>
+     * @return array<string, string>
      */
     private function generate_telegram_init_data(): array
     {
-        $initData = [
-            'user' => json_encode([
+        return TelegramInitDataValidator::generateInitData(
+            $this->fakeBotToken,
+            0,
+            [
                 'id' => $this->fakeUserId,
                 'first_name' => "John",
                 'last_name' => "Smith",
                 'username' => "johnsmith",
-            ]),
-            'foo' => 'bar',
-        ];
-
-        $secretKey = hash_hmac('sha256', $this->fakeBotToken, 'WebAppData', true);
-        $dataCheckString = collect($initData)
-            ->sort()
-            ->map(fn ($value, $key) => "$key=$value")
-            ->join("\n");
-
-        $hash = hash_hmac('sha256', $dataCheckString, $secretKey);
-
-        $initData['hash'] = $hash;
-        return $initData;
+            ]
+        );
     }
 
     private function addProperty(string $title, int $userId): Property

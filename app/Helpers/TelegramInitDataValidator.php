@@ -5,6 +5,12 @@ namespace App\Helpers;
 /** TELEGRAM DOCS: https://core.telegram.org/bots/webapps#validating-data-received-via-the-mini-app */
 class TelegramInitDataValidator
 {
+    private static function generateHash(string $botToken, string $data): string {
+        $secretKey = hash_hmac('sha256', $botToken, 'WebAppData', true);
+        $hash = hash_hmac('sha256', $data, $secretKey);
+        return $hash;
+    }
+
     /**
      * validate initData to ensure that it is from Telegram.
      *
@@ -17,8 +23,8 @@ class TelegramInitDataValidator
     {
         [$checksum, $sortedInitData] = self::convertInitData($initData);
 
-        $secretKey = hash_hmac('sha256', $botToken, 'WebAppData', true);
-        $hash = bin2hex(hash_hmac('sha256', $sortedInitData, $secretKey, true));
+        $hash = self::generateHash($botToken, $sortedInitData);
+
         return $hash === $checksum;
     }
 
@@ -45,5 +51,29 @@ class TelegramInitDataValidator
         sort($initDataArray);
 
         return [$hash, implode("\n", $initDataArray)];
+    }
+
+    /**
+     * Generates telegram init data with checksum.
+     *
+     * @param array{id: int, first_name: string, last_name: string} $user
+     *
+     * @return array<string, string>
+     */
+    public static function generateInitData(string $botToken, int $authDate, array $user): array
+    {
+        $initData = [
+            'auth_date' => (string) $authDate,
+            'user' => Assert::string(json_encode($user)),
+        ];
+
+        $dataCheckString = collect($initData)
+            ->sort()
+            ->map(fn ($value, $key) => "$key=$value")
+            ->join("\n");
+
+        $initData['hash'] = self::generateHash($botToken, $dataCheckString);
+
+        return $initData;
     }
 }
