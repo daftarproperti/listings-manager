@@ -71,6 +71,14 @@ return [
             'after_commit' => false,
         ],
 
+        'cloudtasks' => [
+            'driver' => 'cloudtasks',
+            'project' => env('GOOGLE_PROJECT_ID'),
+            'location' => env('GOOGLE_QUEUE_LOCATION'),
+            'queue' => env('GOOGLE_QUEUE_NAME'),
+            'app_engine' => TRUE,
+            'app_engine_service' => 'default',
+        ],
     ],
 
     /*

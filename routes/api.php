@@ -19,7 +19,6 @@ use App\Http\Controllers\Api\WebhookController;
 
 Route::prefix('webhook')->group(function () {
     Route::post('{secret_token}/telegram', [WebhookController::class, 'receiveTelegramMessage'])->middleware(['telegram-webhook']);
-    Route::post('tasks/gpt', [WebhookController::class, 'processGpt'])->middleware('queue-webhook');
 });
 
 Route::group(['prefix' => 'tele-app', 'middleware' => ['telegram-app']], function () {

@@ -5,9 +5,8 @@ namespace App\Http\Controllers\Api;
 use App\DTO\Telegram\Update;
 use App\Helpers\TelegramInteractionHelper;
 use App\Http\Controllers\Controller;
-use App\Http\Services\ChatGptService;
-use App\Http\Services\QueueService;
 use App\Http\Services\ReceiveMessageService;
+use App\Jobs\ParseListingJob;
 use App\Models\PropertyUser;
 use App\Models\RawMessage;
 use Illuminate\Http\JsonResponse;
@@ -27,7 +26,6 @@ class WebhookController extends Controller
     public function receiveTelegramMessage(
         Request $request,
         ReceiveMessageService $receiveMessageService,
-        QueueService $queueService
     ): JsonResponse {
         try {
             $params = $request->validate([
@@ -85,7 +83,7 @@ class WebhookController extends Controller
 
                 $chatId = isset($update->message->chat) ? $update->message->chat->id : null;
 
-                $queueService->queueGptProcess(
+                ParseListingJob::dispatch(
                     'Please give me json only also trim the value' . "\n" .
                         $mainPrompt . "\n\n" . 'with following format:' . "\n\n" . $templateString,
                     $propertyUser,
@@ -104,39 +102,5 @@ class WebhookController extends Controller
         }
 
         return response()->json(['success' => true], 200);
-    }
-
-    public function processGpt(Request $request, ChatGptService $chatGptService): JsonResponse
-    {
-
-        try {
-            $params = $request->validate([
-                'message' => 'required',
-                'user' => 'nullable',
-                'chat_id' => 'nullable'
-            ]);
-
-            $answer = $chatGptService->seekAnswer($params['message']);
-
-            //avoid insert empty informations
-            /** @var array<string> $extractedData */
-            $extractedData = json_decode($answer, true);
-
-            if (!$extractedData['title'] || !$extractedData['description']) {
-                TelegramInteractionHelper::sendMessage($params['chat_id'], 'Mohon maaf terjadi kesalahan pemrosesan informasi. Silahkan coba kembali.');
-                return response()->json(['answer' => $answer], 200);
-            }
-
-            $chatGptService->saveAnswer($extractedData, $params['user'] ?? null);
-
-            if (!empty($params['chat_id'])) {
-                TelegramInteractionHelper::sendMessage($params['chat_id'], 'Informasi telah selesai kami proses.');
-            }
-
-            return response()->json(['answer' => json_decode($answer)], 200);
-        } catch (\Throwable $e) {
-            Log::error($e->getMessage());
-            return response()->json(['error' => $e->getMessage()], $e->status ?? 500);
-        }
     }
 }

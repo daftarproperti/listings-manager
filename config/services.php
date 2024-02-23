@@ -44,10 +44,6 @@ return [
 
     'google' => [
         'project_id' => env('GOOGLE_PROJECT_ID'),
-        'queue_name' => env('GOOGLE_QUEUE_NAME'),
-        'queue_location' => env('GOOGLE_QUEUE_LOCATION'),
-        'webhook_access_secret' => env('GOOGLE_QUEUE_WEBHOOK_SECRET'),
-        'webhook_url' => env('GOOGLE_QUEUE_WEBHOOK_URL'),
         'bucket_name' => env('GOOGLE_BUCKET_NAME'),
     ]
 

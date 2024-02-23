@@ -31,7 +31,5 @@ env_variables:
   GOOGLE_PROJECT_ID: "someproject-399607"
   GOOGLE_QUEUE_NAME: "queuename"
   GOOGLE_QUEUE_LOCATION: "asia-southeast2"
-  GOOGLE_QUEUE_WEBHOOK_SECRET: "somescret"
-  GOOGLE_QUEUE_WEBHOOK_URL: "https://link.to"
   CHATGPT_KEY: "secret"
   GOOGLE_BUCKET_NAME: "xxx"

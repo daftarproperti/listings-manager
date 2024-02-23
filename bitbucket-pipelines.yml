@@ -11,7 +11,6 @@ pipelines:
             - cp app.yaml.dev app.yaml
             - sed -i 's|\<\(APP_KEY:\).*|\1 '"$DEV_APP_KEY"'|' app.yaml
             - sed -i 's|\<\(CHATGPT_KEY:\).*|\1 '"$DEV_OPENAI_KEY"'|' app.yaml
-            - sed -i 's|\<\(GOOGLE_QUEUE_WEBHOOK_SECRET:\).*|\1 '"$DEV_Q_WEBHOOK_SECRET"'|' app.yaml
             - sed -i 's|\<\(MONGODB_SRV:\).*|\1 '"$DEV_MONGODB_SRV"'|' app.yaml
             - sed -i 's|\<\(TELEGRAM_BACKDOOR_KEY:\).*|\1 '"$DEV_TELEGRAM_BACKDOOR_KEY"'|' app.yaml
             - sed -i 's|\<\(TELEGRAM_BOT_TOKEN:\).*|\1 '"$DEV_TELEGRAM_BOT_TOKEN"'|' app.yaml

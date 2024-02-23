@@ -45,14 +45,18 @@ class ChatGptService
     }
 
     /**
-     * @param array<string> $data
+     * @param array<mixed> $data
      */
     public function saveAnswer(array $data, PropertyUser $user = null): ?Property
     {
         $property = new Property();
 
         foreach ($data as $key => $value) {
-            $property->$key = $this->formatValue($key, $value);
+            if (is_string($value)) {
+                $property->$key = $this->formatValue($key, $value);
+            } else {
+                $property->$key = $value;
+            }
         }
 
         if ($user) {
