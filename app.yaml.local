@@ -1,0 +1,37 @@
+# Recommended template for local environment
+# Use build-gae-image.sh to build local docker image based on this app.yaml.
+service: default
+runtime: php
+env: flex
+
+# based on https://cloud.google.com/appengine/docs/standard/lifecycle/support-schedule#php
+runtime_config:
+  operating_system: "ubuntu22"
+  runtime_version: "8.2"
+  document_root: public
+
+build_env_variables:
+  GOOGLE_COMPOSER_VERSION: 2.6.5
+
+# Contains the configurations for local environment, except that the secret ones
+# (keys/passwords) need to be replaced.
+env_variables:
+  APP_DEBUG: "true"
+  APP_ENV: "local"
+  APP_KEY: "appkey" # can generate with `php artisan key:generate --show`
+  APP_NAME: "Daftar Properti Local"
+  LOG_LEVEL: "debug"
+  CACHE_DRIVER: "file"
+  SESSION_DRIVER: "file"
+  MONGODB_SRV: "mongodb://admin:testpassword@host.docker.internal/?authSource=admin"
+  MONGODB_SSL: "false"
+  MONGODB_COLLECTION: "daftarproperti"
+  TELEGRAM_WEBHOOK_SECRET: "secret"
+  TELEGRAM_BOT_TOKEN: "123:abc"
+  GOOGLE_PROJECT_ID: "daftar-properti-local"
+  GOOGLE_QUEUE_NAME: "dp-queue"
+  GOOGLE_QUEUE_LOCATION: "asia-southeast2"
+  CHATGPT_KEY: "secret"
+  GOOGLE_BUCKET_NAME: "daftarproperti-local"
+  LOG_CHANNEL: "single"
+  QUEUE_CONNECTION: "sync"
