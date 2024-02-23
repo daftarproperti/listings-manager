@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use MongoDB\Laravel\Eloquent\Model;
 use MongoDB\Laravel\Eloquent\SoftDeletes;
+use Symfony\Component\Serializer\Serializer;
 
 /**
  * @property string $id
@@ -38,6 +39,10 @@ class Property extends Model
 
     protected $connection = 'mongodb';
     protected $collection = 'properties';
+
+    protected $casts = [
+        'user' => PropertyUser::class,
+    ];
 
     public function getUserCanEditAttribute(): bool
     {

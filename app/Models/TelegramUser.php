@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use MongoDB\Laravel\Eloquent\Model;
 
 /**
- * @property string $user_id
+ * @property int $user_id
  * @property string $first_name
  * @property string $last_name
  * @property string $username

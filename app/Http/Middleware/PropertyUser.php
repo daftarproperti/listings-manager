@@ -19,10 +19,8 @@ class PropertyUser
     {
         /** @var \App\Models\Property $property */
         $property = $request->property;
-        /** @var array<string, string> $propertyUser */
-        $propertyUser = $property->user;
 
-        if (!$propertyUser || ($propertyUser['userId'] !== app(TelegramUser::class)->user_id)) {
+        if (!$property->user || ($property->user->userId !== app(TelegramUser::class)->user_id)) {
             return response()->json(['error' => 'Unauthorized'], 403);
         }
 
