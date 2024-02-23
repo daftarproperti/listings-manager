@@ -179,7 +179,8 @@ class PropertyApiTest extends TestCase
             'description',
             'company',
             'picture',
-            'phoneNumber'
+            'phoneNumber',
+            'isPublicProfile'
         ]);
     }
 
@@ -200,7 +201,8 @@ class PropertyApiTest extends TestCase
             'description',
             'company',
             'picture',
-            'phoneNumber'
+            'phoneNumber',
+            'isPublicProfile'
         ]);
 
         $this->assertEquals('John No', $response->json('name'));

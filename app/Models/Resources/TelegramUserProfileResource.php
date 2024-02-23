@@ -22,6 +22,7 @@ class TelegramUserProfileResource extends JsonResource
      * @OA\Property(property="description",type="string",example="I am a programmer")
      * @OA\Property(property="pricture",type="string",example="https://example.com/image.jpg")
      * @OA\Property(property="company",type="string",example="Google")
+     * @OA\Property(property="isPublicProfile",type="bool", example=true)
      * @return array<mixed>
      */
 
@@ -38,6 +39,7 @@ class TelegramUserProfileResource extends JsonResource
             'company' => $profile?->company ?? null,
             'picture' => $profile?->picture ?? null,
             'phoneNumber' => $profile?->phoneNumber ?? null,
+            'isPublicProfile' => $profile?->isPublicProfile ?? null,
         ];
     }
 }

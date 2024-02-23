@@ -20,6 +20,7 @@ class TelegramUserProfileResourceTest extends TestCase
                 'company' => 'some company',
                 'picture' => 'some picture',
                 'phoneNumber' => '333333333',
+                'isPublicProfile' => true,
             ]
         ];
 
@@ -47,6 +48,7 @@ class TelegramUserProfileResourceTest extends TestCase
                 'company' => 'some company',
                 'picture' => 'some picture',
                 'phone_number' => '333333333',
+                'isPublicProfile' => true,
             ]
         ];
 

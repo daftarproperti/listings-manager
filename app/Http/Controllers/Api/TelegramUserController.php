@@ -92,6 +92,7 @@ class TelegramUserController extends Controller
         $profile->description = isset($validatedRequest['description']) ? Assert::string($validatedRequest['description']) : $currentProfile?->description;
         $profile->company = isset($validatedRequest['company']) ? Assert::string($validatedRequest['company']) : $currentProfile?->company;
         $profile->picture = $pictureUrl ?? $currentProfile?->picture ?? null;
+        $profile->isPublicProfile = isset($validatedRequest['isPublicProfile']) ? Assert::boolean($validatedRequest['isPublicProfile']) : $currentProfile?->isPublicProfile ?? false;
 
         $currentUser->profile = $profile;
         $currentUser->save();

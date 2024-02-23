@@ -15,4 +15,16 @@ class Assert
         assert(is_string($value));
         return $value ? $value : '';
     }
+
+    /**
+     * Asserts that a given value is a boolean.
+     *
+     * @param mixed $value The value to check.
+     * @return bool The boolean value, if the assertion passed.
+     */
+    public static function boolean($value): bool
+    {
+        assert(is_bool($value));
+        return (bool)$value;
+    }
 }

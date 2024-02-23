@@ -10,9 +10,10 @@ class TelegramUserProfile
     public ?string $description = null;
     public ?string $company = null;
     public ?string $picture = null;
+    public ?bool $isPublicProfile = null;
 
     /**
-     * @param array<string|null> $data
+     * @param array<mixed> $data
      **/
     public function __construct(array $data = [])
     {
@@ -23,6 +24,7 @@ class TelegramUserProfile
             $this->description = $data['description'] ?? null;
             $this->company = $data['company'] ?? null;
             $this->picture = $data['picture'] ?? null;
+            $this->isPublicProfile = $data['isPublicProfile'] ?? null;
         }
     }
 }

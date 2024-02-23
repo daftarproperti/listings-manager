@@ -718,6 +718,9 @@ components:
           type: string
           format: binary
           example: \x00\x00\x00\x04\x00\x00\x00\x04
+        isPublicProfile:
+          type: boolean
+          example: true
       type: object
     Listing:
       properties:
@@ -886,4 +889,7 @@ components:
         company:
           type: string
           example: Google
+        isPublicProfile:
+          type: boolean
+          example: true
       type: object
