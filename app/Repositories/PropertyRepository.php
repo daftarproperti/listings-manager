@@ -17,8 +17,8 @@ class PropertyRepository
     {
         $query = Property::query();
 
-        $query->when(isset($filters['collection']) && isset($filters['user_id']) , function ($query) use ($filters) {
-            $query->where('user.userId', $filters['user_id']);
+        $query->when(isset($filters['collection']) && isset($filters['userId']) , function ($query) use ($filters) {
+            $query->where('user.userId', $filters['userId']);
         });
 
         $query->when(isset($filters['price']), function ($query) use ($filters) {
@@ -34,29 +34,29 @@ class PropertyRepository
             $query->where('type', $filters['type']);
         });
 
-        $query->when(isset($filters['bedroom_count']), function ($query) use ($filters) {
-            $query->where('bedroomCount', (int) $filters['bedroom_count']);
+        $query->when(isset($filters['bedroomCount']), function ($query) use ($filters) {
+            $query->where('bedroomCount', (int) $filters['bedroomCount']);
         });
 
-        $query->when(isset($filters['bathroom_count']), function ($query) use ($filters) {
-            $query->where('bathroomCount', (int) $filters['bathroom_count']);
+        $query->when(isset($filters['bathroomCount']), function ($query) use ($filters) {
+            $query->where('bathroomCount', (int) $filters['bathroomCount']);
         });
 
-        $query->when(isset($filters['lot_size']), function ($query) use ($filters) {
-            if (isset($filters['lot_size']['min'])) {
-                $query->where('lotSize', '>=', (int) $filters['lot_size']['min']);
+        $query->when(isset($filters['lotSize']), function ($query) use ($filters) {
+            if (isset($filters['lotSize']['min'])) {
+                $query->where('lotSize', '>=', (int) $filters['lotSize']['min']);
             }
-            if (isset($filters['lot_size']['max'])) {
-                $query->where('lotSize', '<=', (int) $filters['lot_size']['max']);
+            if (isset($filters['lotSize']['max'])) {
+                $query->where('lotSize', '<=', (int) $filters['lotSize']['max']);
             }
         });
 
-        $query->when(isset($filters['building_size']), function ($query) use ($filters) {
-            if (isset($filters['building_size']['min'])) {
-                $query->where('buildingSize', '>=', (int) $filters['building_size']['min']);
+        $query->when(isset($filters['buildingSize']), function ($query) use ($filters) {
+            if (isset($filters['buildingSize']['min'])) {
+                $query->where('buildingSize', '>=', (int) $filters['buildingSize']['min']);
             }
-            if (isset($filters['building_size']['max'])) {
-                $query->where('buildingSize', '<=', (int) $filters['building_size']['max']);
+            if (isset($filters['buildingSize']['max'])) {
+                $query->where('buildingSize', '<=', (int) $filters['buildingSize']['max']);
             }
         });
 
@@ -64,12 +64,12 @@ class PropertyRepository
             $query->where('ownership', $filters['ownership']);
         });
 
-        $query->when(isset($filters['car_count']), function ($query) use ($filters) {
-            $query->where('carCount', (int) $filters['car_count']);
+        $query->when(isset($filters['carCount']), function ($query) use ($filters) {
+            $query->where('carCount', (int) $filters['carCount']);
         });
 
-        $query->when(isset($filters['electric_power']), function ($query) use ($filters) {
-            $query->where('electricPower', (int) $filters['electric_power']);
+        $query->when(isset($filters['electricPower']), function ($query) use ($filters) {
+            $query->where('electricPower', (int) $filters['electricPower']);
         });
 
         $query->when(isset($filters['sort']), function ($query) use ($filters) {

@@ -87,7 +87,7 @@ class TelegramUserController extends Controller
         $profile = new TelegramUserProfile();
 
         $profile->name = Assert::string($validatedRequest['name']);
-        $profile->phoneNumber = isset($validatedRequest['phone_number']) ? Assert::string($validatedRequest['phone_number']) : $currentProfile?->phoneNumber;
+        $profile->phoneNumber = isset($validatedRequest['phoneNumber']) ? Assert::string($validatedRequest['phoneNumber']) : $currentProfile?->phoneNumber;
         $profile->city = isset($validatedRequest['city']) ? Assert::string($validatedRequest['city']) : $currentProfile?->city;
         $profile->description = isset($validatedRequest['description']) ? Assert::string($validatedRequest['description']) : $currentProfile?->description;
         $profile->company = isset($validatedRequest['company']) ? Assert::string($validatedRequest['company']) : $currentProfile?->company;

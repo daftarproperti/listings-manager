@@ -44,42 +44,42 @@ paths:
               - apartment
               - land
         -
-          name: bedroom_count
+          name: bedroomCount
           in: query
           description: 'Bedroom count'
           required: false
           schema:
             type: integer
         -
-          name: bathroom_count
+          name: bathroomCount
           in: query
           description: 'Bathroom count'
           required: false
           schema:
             type: integer
         -
-          name: 'lot_size[min]'
+          name: 'lotSize[min]'
           in: query
           description: 'Minimum lot size'
           required: false
           schema:
             type: integer
         -
-          name: 'lot_size[max]'
+          name: 'lotSize[max]'
           in: query
           description: 'Maximum lot size'
           required: false
           schema:
             type: integer
         -
-          name: 'building_size[min]'
+          name: 'buildingSize[min]'
           in: query
           description: 'Minimum building size'
           required: false
           schema:
             type: integer
         -
-          name: 'building_size[max]'
+          name: 'buildingSize[max]'
           in: query
           description: 'Maximum building size'
           required: false
@@ -98,14 +98,14 @@ paths:
               - girik
               - lainnya
         -
-          name: car_count
+          name: carCount
           in: query
           description: 'Car count'
           required: false
           schema:
             type: integer
         -
-          name: electric_power
+          name: electricPower
           in: query
           description: 'Electric Power'
           required: false
@@ -120,8 +120,8 @@ paths:
             type: string
             enum:
               - price
-              - bedroom_count
-              - lot_size
+              - bedroomCount
+              - lotSize
         -
           name: order
           in: query
@@ -372,7 +372,7 @@ components:
         name:
           type: string
           example: 'Jono Doe'
-        phone_number:
+        phoneNumber:
           type: string
           example: '081111111111'
         city:

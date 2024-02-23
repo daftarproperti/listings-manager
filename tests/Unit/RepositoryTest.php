@@ -41,7 +41,7 @@ class RepositoryTest extends TestCase
         $repository = new PropertyRepository();
         $filters = [
             'collection' => true,
-            'user_id' => 1
+            'userId' => 1
         ];
 
         $properties = $repository->list($filters);
@@ -81,7 +81,7 @@ class RepositoryTest extends TestCase
 
         $repository = new PropertyRepository();
         $filters = [
-            'bedroom_count' => 2
+            'bedroomCount' => 2
         ];
 
         $properties = $repository->list($filters);
@@ -101,7 +101,7 @@ class RepositoryTest extends TestCase
 
         $repository = new PropertyRepository();
         $filters = [
-            'bathroom_count' => 2
+            'bathroomCount' => 2
         ];
 
         $properties = $repository->list($filters);
@@ -121,7 +121,7 @@ class RepositoryTest extends TestCase
 
         $repository = new PropertyRepository();
         $filters = [
-            'lot_size' => ['min' => 170, 'max' => 200]
+            'lotSize' => ['min' => 170, 'max' => 200]
         ];
 
         $properties = $repository->list($filters);
@@ -141,7 +141,7 @@ class RepositoryTest extends TestCase
 
         $repository = new PropertyRepository();
         $filters = [
-            'building_size' => ['min' => 10, 'max' => 90]
+            'buildingSize' => ['min' => 10, 'max' => 90]
         ];
 
         $properties = $repository->list($filters);
@@ -181,7 +181,7 @@ class RepositoryTest extends TestCase
 
         $repository = new PropertyRepository();
         $filters = [
-            'car_count' => 1
+            'carCount' => 1
         ];
 
         $properties = $repository->list($filters);
@@ -201,7 +201,7 @@ class RepositoryTest extends TestCase
 
         $repository = new PropertyRepository();
         $filters = [
-            'electric_power' => 5500
+            'electricPower' => 5500
         ];
 
         $properties = $repository->list($filters);
@@ -225,7 +225,7 @@ class RepositoryTest extends TestCase
 
         $repository = new PropertyRepository();
         $filters = [
-            'sort' => 'building_size',
+            'sort' => 'buildingSize',
             'order' => 'desc'
         ];
 
@@ -250,7 +250,7 @@ class RepositoryTest extends TestCase
 
         $repository = new PropertyRepository();
         $filters = [
-            'sort' => 'building_size',
+            'sort' => 'buildingSize',
             'order' => 'asc'
         ];
 

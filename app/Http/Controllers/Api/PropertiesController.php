@@ -64,7 +64,7 @@ class PropertiesController extends Controller
      *     ),
      *     @OA\Parameter(
      *        in="query",
-     *        name="bedroom_count",
+     *        name="bedroomCount",
      *        description="Bedroom count",
      *        required=false,
      *        @OA\Schema(
@@ -73,7 +73,7 @@ class PropertiesController extends Controller
      *     ),
      *     @OA\Parameter(
      *        in="query",
-     *        name="bathroom_count",
+     *        name="bathroomCount",
      *        description="Bathroom count",
      *        required=false,
      *        @OA\Schema(
@@ -82,7 +82,7 @@ class PropertiesController extends Controller
      *     ),
      *     @OA\Parameter(
      *        in="query",
-     *        name="lot_size[min]",
+     *        name="lotSize[min]",
      *        description="Minimum lot size",
      *        required=false,
      *        @OA\Schema(
@@ -91,7 +91,7 @@ class PropertiesController extends Controller
      *     ),
      *     @OA\Parameter(
      *        in="query",
-     *        name="lot_size[max]",
+     *        name="lotSize[max]",
      *        description="Maximum lot size",
      *        required=false,
      *        @OA\Schema(
@@ -100,7 +100,7 @@ class PropertiesController extends Controller
      *     ),
      *     @OA\Parameter(
      *        in="query",
-     *        name="building_size[min]",
+     *        name="buildingSize[min]",
      *        description="Minimum building size",
      *        required=false,
      *        @OA\Schema(
@@ -109,7 +109,7 @@ class PropertiesController extends Controller
      *     ),
      *     @OA\Parameter(
      *        in="query",
-     *        name="building_size[max]",
+     *        name="buildingSize[max]",
      *        description="Maximum building size",
      *        required=false,
      *        @OA\Schema(
@@ -128,7 +128,7 @@ class PropertiesController extends Controller
      *     ),
      *     @OA\Parameter(
      *        in="query",
-     *        name="car_count",
+     *        name="carCount",
      *        description="Car count",
      *        required=false,
      *        @OA\Schema(
@@ -137,7 +137,7 @@ class PropertiesController extends Controller
      *     ),
      *     @OA\Parameter(
      *        in="query",
-     *        name="electric_power",
+     *        name="electricPower",
      *        description="Electric Power",
      *        required=false,
      *        @OA\Schema(
@@ -151,7 +151,7 @@ class PropertiesController extends Controller
      *        required=false,
      *        @OA\Schema(
      *            type="string",
-     *            enum={"price", "bedroom_count", "lot_size"}
+     *            enum={"price", "bedroomCount", "lotSize"}
      *        )
      *     ),
      *     @OA\Parameter(
@@ -186,14 +186,14 @@ class PropertiesController extends Controller
             'collection',
             'price',
             'type',
-            'bedroom_count',
-            'bathroom_count',
-            'lot_size',
-            'lot_size',
-            'building_size',
+            'bedroomCount',
+            'bathroomCount',
+            'lotSize',
+            'lotSize',
+            'buildingSize',
             'ownership',
-            'car_count',
-            'electric_power',
+            'carCount',
+            'electricPower',
             'sort',
             'order'
         ]);
@@ -205,7 +205,7 @@ class PropertiesController extends Controller
 
         if (boolval($filters['collection'])) {
             $currentUserId = app(TelegramUser::class)->user_id ?? null;
-            $filters['user_id'] = $currentUserId;
+            $filters['userId'] = $currentUserId;
         }
 
         return new PropertyCollection($repository->list($filters));
