@@ -48,3 +48,4 @@ Route::group(['prefix' => 'tele-app', 'middleware' => ['telegram-app']], functio
 });
 
 Route::get('photo/{fileId}/{fileUniqueId}', [PhotoController::class, 'telegramPhoto'])->name('telegram-photo');
+Route::post('upload/image', [PhotoController::class, 'uploadImage'])->middleware('listing-user');

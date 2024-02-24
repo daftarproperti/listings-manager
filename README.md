@@ -12,6 +12,7 @@ One-time set up:
 * Install composer for your OS
 * Run `composer install`
 * Set up local `.env` file (copy and edit from .env.example)
+* Run `php artisan key:generate`
 
 Running development server:
 * Run `php artisan serve`
