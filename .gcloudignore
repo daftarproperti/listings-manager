@@ -3,7 +3,11 @@
 # The rest are copied from .gitignore
 /.phpunit.cache
 /node_modules
-/public/build
+
+# We want to upload /public/build even though it's not in git, because app engine php flex runtime does not provide
+# nodejs so we build it locally before uploading /public/build to app engine.
+#/public/build
+
 /public/hot
 /public/storage
 /storage/*.key

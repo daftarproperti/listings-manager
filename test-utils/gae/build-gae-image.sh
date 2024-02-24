@@ -26,6 +26,11 @@ trap "rm -rf $TEMP_DIR" EXIT
 git archive HEAD | tar -x -C $TEMP_DIR
 cp app.yaml $TEMP_DIR/
 
+# Bring output of `npm run build`. This has to be built first locally because App Engine's buildpack builder image
+# does not contain nodejs.
+npm install && npm run build
+cp -a public/build $TEMP_DIR/public/
+
 # Change to temp dir to do the buildpack in a clean checkout.
 pushd $TEMP_DIR
 pack build daftarproperti --builder gcr.io/gae-runtimes/buildpacks/google-gae-22/php/builder \
