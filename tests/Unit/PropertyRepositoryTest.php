@@ -8,7 +8,7 @@ use Illuminate\Contracts\Pagination\Paginator;
 use Tests\TestCase;
 
 
-class RepositoryTest extends TestCase
+class PropertyRepositoryTest extends TestCase
 {
     protected function setUp(): void
     {

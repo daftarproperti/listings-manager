@@ -35,6 +35,5 @@ class GetProperty extends Command
         }
 
         $this->line("property = " . print_r($property, TRUE));
-        $this->line("user = " . print_r($property->user, TRUE));
     }
 }

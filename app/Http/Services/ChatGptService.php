@@ -3,8 +3,8 @@
 namespace App\Http\Services;
 
 use App\Helpers\Assert;
-use App\Models\Property;
-use App\Models\PropertyUser;
+use App\Models\Listing;
+use App\Models\ListingUser;
 use Illuminate\Support\Facades\Http;
 
 class ChatGptService
@@ -47,28 +47,28 @@ class ChatGptService
     /**
      * @param array<mixed> $data
      */
-    public function saveAnswer(array $data, PropertyUser $user = null): ?Property
+    public function saveAnswer(array $data, ListingUser $user = null): ?Listing
     {
-        $property = new Property();
+        $listing = new Listing();
 
         foreach ($data as $key => $value) {
             if (is_string($value)) {
-                $property->$key = $this->formatValue($key, $value);
+                $listing->$key = $this->formatValue($key, $value);
             } else {
-                $property->$key = $value;
+                $listing->$key = $value;
             }
         }
 
         if ($user) {
-            $property->user = $user;
+            $listing->user = $user;
         }
 
         //set default to public view
-        $property->isPrivate = false;
+        $listing->isPrivate = false;
 
-        $property->save();
+        $listing->save();
 
-        return $property;
+        return $listing;
     }
 
     private function formatValue(string $key, string $value): int|float|string

@@ -9,7 +9,7 @@ use App\Models\TelegramUser;
 use Illuminate\Support\Facades\Config;
 use Tests\TestCase;
 
-class ApiTest extends TestCase
+class PropertyApiTest extends TestCase
 {
     private string $fakeBotToken = 'fake-bot-token';
     private int $fakeUserId = 12345;

@@ -68,6 +68,7 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'telegram-webhook' => \App\Http\Middleware\TelegramWebhook::class,
         'telegram-app' => \App\Http\Middleware\TelegramApp::class,
-        'property-user' => \App\Http\Middleware\PropertyUser::class
+        'property-user' => \App\Http\Middleware\PropertyUser::class,
+        'listing-user' => \App\Http\Middleware\ListingUser::class
     ];
 }

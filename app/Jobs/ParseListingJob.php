@@ -10,20 +10,20 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
 use App\Helpers\TelegramInteractionHelper;
 use App\Http\Services\ChatGptService;
-use App\Models\PropertyUser;
+use App\Models\ListingUser;
 
 class ParseListingJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     private string $message;
-    private PropertyUser $user;
+    private ListingUser $user;
     private ?int $chatId;
 
     /**
      * Create a new job instance.
      */
-    public function __construct(string $message, PropertyUser $user, int $chatId = null)
+    public function __construct(string $message, ListingUser $user, int $chatId = null)
     {
         $this->message = $message;
         $this->user = $user;

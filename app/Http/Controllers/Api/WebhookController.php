@@ -7,6 +7,7 @@ use App\Helpers\TelegramInteractionHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Services\ReceiveMessageService;
 use App\Jobs\ParseListingJob;
+use App\Models\ListingUser;
 use App\Models\PropertyUser;
 use App\Models\RawMessage;
 use Illuminate\Http\JsonResponse;
@@ -71,22 +72,22 @@ class WebhookController extends Controller
                     !empty($pictureUrls) ? "\n Picture Urls:\n" . implode("\n", $pictureUrls) . "\n" : ''
                 );
 
-                $propertyUser = new PropertyUser();
-                $propertyUser->name = trim(sprintf(
+                $listingUser = new ListingUser();
+                $listingUser->name = trim(sprintf(
                     '%s %s',
                     $update->message->from->first_name,
                     $update->message->from->last_name ?? ''
                 ));
-                $propertyUser->userName = $update->message->from->username ?? null;
-                $propertyUser->userId = $update->message->from->id;
-                $propertyUser->source = 'telegram';
+                $listingUser->userName = $update->message->from->username ?? null;
+                $listingUser->userId = $update->message->from->id;
+                $listingUser->source = 'telegram';
 
                 $chatId = isset($update->message->chat) ? $update->message->chat->id : null;
 
                 ParseListingJob::dispatch(
                     'Please give me json only also trim the value' . "\n" .
                         $mainPrompt . "\n\n" . 'with following format:' . "\n\n" . $templateString,
-                    $propertyUser,
+                    $listingUser,
                     $chatId
                 );
 
