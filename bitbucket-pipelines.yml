@@ -4,6 +4,25 @@ pipelines:
   branches:
     main:
       - step:
+          name: Build JS
+          caches:
+            - composer
+            - node
+          script:
+            # We actually just need to build the JS to public/build, but the JS build needs a JS package ziggy-js
+            # that is installed in composer vendor. So we also have to do composer install although this vendor dir
+            # will not get uploaded to app engine at deploy step.
+            - apt-get update
+            - apt-get install -y zip # needed for one of composer package
+            - curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer --version=2.6.5
+            - composer install --no-dev
+            - curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
+            - apt-get install -y nodejs
+            - npm install
+            - npm run build
+          artifacts:
+            - public/build
+      - step:
           name: Deploy to GAE dev environment
           script:
             # Populate app.yaml from the template of dev environment.
@@ -19,3 +38,4 @@ pipelines:
               variables:
                 KEY_FILE: $KEY_FILE
                 PROJECT: daftar-properti-dev
+                STOP_PREVIOUS_VERSION: "true"
