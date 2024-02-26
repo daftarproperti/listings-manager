@@ -2,6 +2,8 @@
 
 namespace App\DTO\Telegram;
 
+use App\Models\BaseAttributeCaster;
+
 /**
  * https://core.telegram.org/bots/api#chat
  */
@@ -55,7 +57,7 @@ class Message
  * Represents Telegram update to webhook.
  * https://core.telegram.org/bots/api#update
  */
-class Update
+class Update extends BaseAttributeCaster
 {
     public int $update_id;
     public Message $message;

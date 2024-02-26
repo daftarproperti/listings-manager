@@ -13,17 +13,9 @@ use App\Models\RawMessage;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
-use Symfony\Component\Serializer\Serializer;
 
 class WebhookController extends Controller
 {
-    private Serializer $serializer;
-
-    public function __construct(Serializer $serializer)
-    {
-        $this->serializer = $serializer;
-    }
-
     public function receiveTelegramMessage(
         Request $request,
         ReceiveMessageService $receiveMessageService,
@@ -35,8 +27,7 @@ class WebhookController extends Controller
                 'callback_query' => 'nullable',
             ]);
 
-            /** @var Update $update */
-            $update = $this->serializer->denormalize($params, Update::class);
+            $update = Update::fromArray($params);
 
             //to avoid same message processing
             $dataExists = RawMessage::where('update_id', $update->update_id)->exists();
