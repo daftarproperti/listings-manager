@@ -24,6 +24,19 @@ Running tests:
 * Prepare test environment (see test-utils/)
 * Run `php artisan test`
 
+### Setting up a Telegram Bot
+Daftar Properti uses Telegram Bot to receive new listings. Here is a guide how to set up your own development bot:
+
+* Chat with `BotFather` and type `/newbot`. Full reference: https://core.telegram.org/bots/features#botfather
+* Follow the prompts, e.g. set the bot name and id. At the end, BotFather will give you a bot token. Keep this token
+  safely and securely.
+* Use the bot token in your env var called `TELEGRAM_BOT_TOKEN`. The system uses this token to verify user
+  authentication, send reply messages, etc.
+* You can use the helper script to further set up your bot: `php artisan app:setup-telegram-bot {base-url}`, with
+  `base-url` being your publicly accessible address of the backend.
+* Your bot is ready to use for development. Chat with it by searching for its bot id and you should be able to forward
+  listings to the bot. If your setup is correct, the webhook handler will handle incoming messages and reply.
+
 ### Running tests in a container
 To make it easy to run tests in an isolated environment, e.g. in a CI, a
 docker-compose is provided in test-env/.
