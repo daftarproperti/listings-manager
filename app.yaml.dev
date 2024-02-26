@@ -2,6 +2,10 @@ service: default
 runtime: php
 env: flex
 
+# For dev, force single instance so it's easier to debug.
+manual_scaling:
+  instances: 1
+
 # based on https://cloud.google.com/appengine/docs/standard/lifecycle/support-schedule#php
 runtime_config:
   operating_system: "ubuntu22"
