@@ -21,7 +21,7 @@ pipelines:
             - npm install
             - npm run build
           artifacts:
-            - public/build
+            - public/build/**
       - step:
           name: Deploy to GAE dev environment
           script:
