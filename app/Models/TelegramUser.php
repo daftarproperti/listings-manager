@@ -19,4 +19,8 @@ class TelegramUser extends Model
     protected $connection = 'mongodb';
     protected $collection = 'telegram_users';
     protected $fillable = ['user_id', 'first_name', 'last_name', 'username'];
+
+    protected $casts = [
+        'profile' => TelegramUserProfile::class,
+    ];
 }

@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-class TelegramUserProfile
+class TelegramUserProfile extends BaseAttributeCaster
 {
     public ?string $name = null;
     public ?string $phoneNumber = null;

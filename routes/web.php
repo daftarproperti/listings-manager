@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\GoogleLoginController;
+use App\Http\Controllers\Web\PublicController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -26,4 +27,11 @@ Route::group(['prefix' => 'admin'], function () {
         Route::get('/login/google', [GoogleLoginController::class, 'redirectToGoogle'])->name('auth.google');
         Route::get('/login/google/callback', [GoogleLoginController::class, 'handleGoogleCallback']);
     });
+});
+
+// Implicitly bind ID with corresponding model
+// Ref: https://laravel.com/docs/10.x/routing#implicit-binding
+Route::group(['prefix' => 'public'], function () {
+    Route::get('/agent/{telegramUser}', [PublicController::class, 'publicAgentPage'])->name('agentpwp');
+    Route::get('/listing/{listing}', [PublicController::class, 'publicListingPage'])->name('listingpwp');
 });

@@ -436,7 +436,7 @@ class ListingsController extends Controller
         return response()->json(['message' => 'Listing deleted successfully'], 200);
     }
 
-
+    
     /**
      * @param array<string, mixed> $data
      * @param Listing $listing
