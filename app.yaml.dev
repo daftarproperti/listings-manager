@@ -37,5 +37,8 @@ env_variables:
   GOOGLE_QUEUE_LOCATION: "asia-southeast2"
   CHATGPT_KEY: "secret"
   GOOGLE_BUCKET_NAME: "mls-staging"
+  GOOGLE_CLIENT_ID: "secret"
+  GOOGLE_CLIENT_SECRET: "secret"
+  GOOGLE_REDIRECT_URI: "https://daftar-properti-dev.et.r.appspot.com/admin/login/google/callback"
   LOG_CHANNEL: "gcp"
   QUEUE_CONNECTION: "cloudtasks"

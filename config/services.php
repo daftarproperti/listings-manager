@@ -45,6 +45,9 @@ return [
     'google' => [
         'project_id' => env('GOOGLE_PROJECT_ID'),
         'bucket_name' => env('GOOGLE_BUCKET_NAME'),
+        'client_id' => env('GOOGLE_CLIENT_ID'),
+        'client_secret' => env('GOOGLE_CLIENT_SECRET'),
+        'redirect' => env('GOOGLE_REDIRECT_URI'),
     ]
 
 ];

@@ -1,7 +1,8 @@
 <?php
 
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\GoogleLoginController;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,11 +16,14 @@ use Inertia\Inertia;
 */
 
 Route::group(['prefix' => 'admin'], function () {
-    Route::get('/', function () {
-        return Inertia::render('Welcome');
-    })->name('home');
+    Route::group(['middleware' => ['auth:admin', 'no-cache']], function () {
+        Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
+        Route::post('/logout', [GoogleLoginController::class, 'handleLogout'])->name('logout');
+    });
 
-    Route::get('/dashboard', function () {
-        return Inertia::render('Dashboard');
-    })->middleware(['auth', 'verified'])->name('dashboard');
+    Route::group(['middleware' => ['guest:admin', 'no-cache']], function () {
+        Route::get('/', [DashboardController::class, 'home'])->name('home');
+        Route::get('/login/google', [GoogleLoginController::class, 'redirectToGoogle'])->name('auth.google');
+        Route::get('/login/google/callback', [GoogleLoginController::class, 'handleGoogleCallback']);
+    });
 });
