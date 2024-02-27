@@ -27,7 +27,7 @@ class WebhookController extends Controller
                 'callback_query' => 'nullable',
             ]);
 
-            $update = Update::fromArray($params);
+            $update = Update::from($params);
 
             //to avoid same message processing
             $dataExists = RawMessage::where('update_id', $update->update_id)->exists();

@@ -2,6 +2,8 @@
 
 namespace Tests\Feature;
 
+use App\DTO\Telegram\Message;
+use App\DTO\Telegram\Update;
 use App\Models\BaseAttributeCaster;
 use Tests\TestCase;
 
@@ -30,7 +32,7 @@ class AttributeCasterTest extends TestCase
         $expected->bar->title = 'The Bar';
         $expected->bar->check = TRUE;
 
-        $foo = CastTestFoo::fromArray([
+        $foo = CastTestFoo::from([
             'id' => 101,
             'name' => 'John',
             'bar' => [
@@ -47,5 +49,26 @@ class AttributeCasterTest extends TestCase
         $this->assertSame($expected->name, $foo->name);
         $this->assertSame($expected->bar->title, $foo->bar->title);
         $this->assertSame($expected->bar->check, $foo->bar->check);
+    }
+
+    public function test_telegram_dto(): void
+    {
+        $update = Update::from([
+            'update_id' => 2,
+            'message' => [
+                'message_id' => 5,
+                'text' => 'Hello!',
+                'unknown-should-be-ignored' => 1000,
+            ],
+            'unknown-field' => 'Hi',
+        ]);
+
+        $expected = new Update();
+        $expected->update_id = 2;
+        $expected->message = new Message();
+        $expected->message->message_id = 5;
+        $expected->message->text = 'Hello!';
+
+        $this->assertEquals($expected, $update);
     }
 }

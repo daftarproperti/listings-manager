@@ -3,11 +3,12 @@
 namespace App\DTO\Telegram;
 
 use App\Models\BaseAttributeCaster;
+use Spatie\LaravelData\Data;
 
 /**
  * https://core.telegram.org/bots/api#chat
  */
-class Chat
+class Chat extends Data
 {
     public int $id;
     public string $type;
@@ -19,7 +20,7 @@ class Chat
 /**
  * https://core.telegram.org/bots/api#user
  */
-class User
+class User extends Data
 {
     public int $id;
     public bool $is_bot;
@@ -31,7 +32,7 @@ class User
 /**
  * https://core.telegram.org/bots/api#photosize
  */
-class PhotoSize
+class PhotoSize extends Data
 {
     public string $file_id;
     public string $file_unique_id;
@@ -40,7 +41,7 @@ class PhotoSize
 /**
  * https://core.telegram.org/bots/api#message
  */
-class Message
+class Message extends Data
 {
     public int $message_id;
     public int $message_thread_id;
