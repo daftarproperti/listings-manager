@@ -16,7 +16,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ListingController extends Controller
+class ListingsController extends Controller
 {
     /**
      * @OA\Get(
@@ -73,8 +73,44 @@ class ListingController extends Controller
      *     ),
      *     @OA\Parameter(
      *        in="query",
+     *        name="bedroomCount[min]",
+     *        description="Minimum Bedroom count",
+     *        required=false,
+     *        @OA\Schema(
+     *            type="integer"
+     *        )
+     *     ),
+     *     @OA\Parameter(
+     *        in="query",
+     *        name="bedroomCount[max]",
+     *        description="Maximum Bedroom count",
+     *        required=false,
+     *        @OA\Schema(
+     *            type="integer"
+     *        )
+     *     ),
+     *     @OA\Parameter(
+     *        in="query",
      *        name="bathroomCount",
      *        description="Bathroom count",
+     *        required=false,
+     *        @OA\Schema(
+     *            type="integer"
+     *        )
+     *     ),
+     *     @OA\Parameter(
+     *        in="query",
+     *        name="bathroomCount[min]",
+     *        description="Minimum Bathroom count",
+     *        required=false,
+     *        @OA\Schema(
+     *            type="integer"
+     *        )
+     *     ),
+     *     @OA\Parameter(
+     *        in="query",
+     *        name="bathroomCount[max]",
+     *        description="Maximum Bathroom count",
      *        required=false,
      *        @OA\Schema(
      *            type="integer"
@@ -130,6 +166,24 @@ class ListingController extends Controller
      *        in="query",
      *        name="carCount",
      *        description="Car count",
+     *        required=false,
+     *        @OA\Schema(
+     *            type="integer"
+     *        )
+     *     ),
+     *     @OA\Parameter(
+     *        in="query",
+     *        name="carCount[min]",
+     *        description="Minimum Car count",
+     *        required=false,
+     *        @OA\Schema(
+     *            type="integer"
+     *        )
+     *     ),
+     *     @OA\Parameter(
+     *        in="query",
+     *        name="carCount[max]",
+     *        description="Maximum Car count",
      *        required=false,
      *        @OA\Schema(
      *            type="integer"
@@ -270,7 +324,7 @@ class ListingController extends Controller
      *     @OA\RequestBody(
      *          @OA\MediaType(
      *              mediaType="multipart/form-data",
-     *              @OA\Schema(type="object", ref="#/components/schemas/PropertyRequest")
+     *              @OA\Schema(type="object", ref="#/components/schemas/ListingRequest")
      *          ),
      *         required=true,
      *     ),
@@ -313,7 +367,7 @@ class ListingController extends Controller
      *     @OA\RequestBody(
      *          @OA\MediaType(
      *              mediaType="multipart/form-data",
-     *              @OA\Schema(type="object", ref="#/components/schemas/PropertyRequest")
+     *              @OA\Schema(type="object", ref="#/components/schemas/ListingRequest")
      *          ),
      *         required=true,
      *     ),

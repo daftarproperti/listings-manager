@@ -35,11 +35,37 @@ class ListingRepository
         });
 
         $query->when(isset($filters['bedroomCount']), function ($query) use ($filters) {
-            $query->where('bedroomCount', (int) $filters['bedroomCount']);
+
+            $query->when(is_array($filters['bedroomCount']), function ($q) use ($filters) {
+
+                if (isset($filters['bedroomCount']['min'])) {
+                    $q->where('bedroomCount', '>=', (int) $filters['bedroomCount']['min']);
+                }
+                if (isset($filters['bedroomCount']['max'])) {
+                    $q->where('bedroomCount', '<=', (int) $filters['bedroomCount']['max']);
+                }
+
+            }, function($q) use ($filters) {
+                $q->where('bedroomCount', (int) $filters['bedroomCount']);
+            });
+
         });
 
         $query->when(isset($filters['bathroomCount']), function ($query) use ($filters) {
-            $query->where('bathroomCount', (int) $filters['bathroomCount']);
+
+            $query->when(is_array($filters['bathroomCount']), function ($q) use ($filters) {
+
+                if (isset($filters['bathroomCount']['min'])) {
+                    $q->where('bathroomCount', '>=', (int) $filters['bathroomCount']['min']);
+                }
+                if (isset($filters['bathroomCount']['max'])) {
+                    $q->where('bathroomCount', '<=', (int) $filters['bathroomCount']['max']);
+                }
+
+            }, function($q) use ($filters) {
+                $q->where('bathroomCount', (int) $filters['bathroomCount']);
+            });
+
         });
 
         $query->when(isset($filters['lotSize']), function ($query) use ($filters) {
@@ -61,11 +87,22 @@ class ListingRepository
         });
 
         $query->when(isset($filters['ownership']), function ($query) use ($filters) {
-            $query->where('ownership', $filters['ownership']);
+            $query->where('ownership', 'like', $filters['ownership']);
         });
 
         $query->when(isset($filters['carCount']), function ($query) use ($filters) {
-            $query->where('carCount', (int) $filters['carCount']);
+            $query->when(is_array($filters['carCount']), function ($q) use ($filters) {
+
+                if (isset($filters['carCount']['min'])) {
+                    $q->where('carCount', '>=', (int) $filters['carCount']['min']);
+                }
+                if (isset($filters['carCount']['max'])) {
+                    $q->where('carCount', '<=', (int) $filters['carCount']['max']);
+                }
+
+            }, function($q) use ($filters) {
+                $q->where('carCount', (int) $filters['carCount']);
+            });
         });
 
         $query->when(isset($filters['electricPower']), function ($query) use ($filters) {

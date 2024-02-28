@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Api\ListingController;
+use App\Http\Controllers\Api\ListingsController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\PhotoController;
 use App\Http\Controllers\Api\PropertiesController;
@@ -34,11 +34,11 @@ Route::group(['prefix' => 'tele-app', 'middleware' => ['telegram-app']], functio
     });
 
     Route::prefix('listings')->group(function () {
-        Route::get('/', [ListingController::class, 'index']);
-        Route::post('/', [ListingController::class, 'create']);
-        Route::get('/{listing}', [ListingController::class, 'show']);
-        Route::post('/{listing}', [ListingController::class, 'update'])->middleware('listing-user');
-        Route::delete('/{listing}', [ListingController::class, 'delete'])->middleware('listing-user');
+        Route::get('/', [ListingsController::class, 'index']);
+        Route::post('/', [ListingsController::class, 'create']);
+        Route::get('/{listing}', [ListingsController::class, 'show']);
+        Route::post('/{listing}', [ListingsController::class, 'update'])->middleware('listing-user');
+        Route::delete('/{listing}', [ListingsController::class, 'delete'])->middleware('listing-user');
     });
 
     Route::prefix('users')->group(function () {

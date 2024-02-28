@@ -89,6 +89,67 @@ class ListingRepositoryTest extends TestCase
         $this->assertCount(5, $listings->items());
     }
 
+    public function test_listing_list_filter_bedroom_count_min(): void
+    {
+        Listing::factory(5)->create([
+            'bedroomCount' => 2,
+        ]);
+
+        Listing::factory(2)->create([
+            'bedroomCount' => 3,
+        ]);
+
+        $repository = new ListingRepository();
+        $filters = [
+            'bedroomCount' => ['min' => 3]
+        ];
+
+        $listings = $repository->list($filters);
+        $this->assertInstanceOf(Paginator::class, $listings);
+        $this->assertCount(2, $listings->items());
+    }
+
+    public function test_listing_list_filter_bedroom_count_max(): void
+    {
+        Listing::factory(5)->create([
+            'bedroomCount' => 2,
+        ]);
+
+        Listing::factory(2)->create([
+            'bedroomCount' => 3,
+        ]);
+
+        $repository = new ListingRepository();
+        $filters = [
+            'bedroomCount' => ['max' => 3]
+        ];
+
+        $listings = $repository->list($filters);
+        $this->assertInstanceOf(Paginator::class, $listings);
+        $this->assertCount(7, $listings->items());
+    }
+
+    public function test_listing_list_filter_bedroom_count_min_max(): void
+    {
+        Listing::factory(5)->create([
+            'bedroomCount' => 2,
+        ]);
+
+        Listing::factory(2)->create([
+            'bedroomCount' => 3,
+        ]);
+
+        $repository = new ListingRepository();
+        $filters = [
+            'bedroomCount' => ['min' => 1, 'max' => 2]
+        ];
+
+        $listings = $repository->list($filters);
+        $this->assertInstanceOf(Paginator::class, $listings);
+        $this->assertCount(5, $listings->items());
+    }
+
+
     public function test_listing_list_filter_bathroom_count(): void
     {
         Listing::factory(5)->create([
@@ -102,6 +163,66 @@ class ListingRepositoryTest extends TestCase
         $repository = new ListingRepository();
         $filters = [
             'bathroomCount' => 2
+        ];
+
+        $listings = $repository->list($filters);
+        $this->assertInstanceOf(Paginator::class, $listings);
+        $this->assertCount(5, $listings->items());
+    }
+
+    public function test_listing_list_filter_bathroom_count_min(): void
+    {
+        Listing::factory(5)->create([
+            'bathroomCount' => 2,
+        ]);
+
+        Listing::factory(2)->create([
+            'bathroomCount' => 3,
+        ]);
+
+        $repository = new ListingRepository();
+        $filters = [
+            'bathroomCount' => ['min' => 3]
+        ];
+
+        $listings = $repository->list($filters);
+        $this->assertInstanceOf(Paginator::class, $listings);
+        $this->assertCount(2, $listings->items());
+    }
+
+    public function test_listing_list_filter_bathroom_count_max(): void
+    {
+        Listing::factory(5)->create([
+            'bathroomCount' => 2,
+        ]);
+
+        Listing::factory(2)->create([
+            'bathroomCount' => 3,
+        ]);
+
+        $repository = new ListingRepository();
+        $filters = [
+            'bathroomCount' => ['max' => 2]
+        ];
+
+        $listings = $repository->list($filters);
+        $this->assertInstanceOf(Paginator::class, $listings);
+        $this->assertCount(5, $listings->items());
+    }
+
+    public function test_listing_list_filter_bathroom_count_min_max(): void
+    {
+        Listing::factory(5)->create([
+            'bathroomCount' => 2,
+        ]);
+
+        Listing::factory(2)->create([
+            'bathroomCount' => 3,
+        ]);
+
+        $repository = new ListingRepository();
+        $filters = [
+            'bathroomCount' => ['min' => 1, 'max' => 2]
         ];
 
         $listings = $repository->list($filters);
@@ -169,6 +290,26 @@ class ListingRepositoryTest extends TestCase
         $this->assertCount(5, $listings->items());
     }
 
+    public function test_listing_list_filter_ownership_case_insensitive(): void
+    {
+        Listing::factory(5)->create([
+            'ownership' => 'SHM',
+        ]);
+
+        Listing::factory(2)->create([
+            'ownership' => 'HGB',
+        ]);
+
+        $repository = new ListingRepository();
+        $filters = [
+            'ownership' => 'shm'
+        ];
+
+        $listings = $repository->list($filters);
+        $this->assertInstanceOf(Paginator::class, $listings);
+        $this->assertCount(5, $listings->items());
+    }
+
     public function test_listing_list_filter_car_count(): void
     {
         Listing::factory(5)->create([
@@ -187,6 +328,66 @@ class ListingRepositoryTest extends TestCase
         $listings = $repository->list($filters);
         $this->assertInstanceOf(Paginator::class, $listings);
         $this->assertCount(2, $listings->items());
+    }
+
+    public function test_listing_list_filter_car_count_min(): void
+    {
+        Listing::factory(5)->create([
+            'carCount' => 2,
+        ]);
+
+        Listing::factory(2)->create([
+            'carCount' => 1,
+        ]);
+
+        $repository = new ListingRepository();
+        $filters = [
+            'carCount' => ['min' => 1]
+        ];
+
+        $listings = $repository->list($filters);
+        $this->assertInstanceOf(Paginator::class, $listings);
+        $this->assertCount(7, $listings->items());
+    }
+
+    public function test_listing_list_filter_car_count_max(): void
+    {
+        Listing::factory(5)->create([
+            'carCount' => 2,
+        ]);
+
+        Listing::factory(2)->create([
+            'carCount' => 1,
+        ]);
+
+        $repository = new ListingRepository();
+        $filters = [
+            'carCount' => ['max' => 1]
+        ];
+
+        $listings = $repository->list($filters);
+        $this->assertInstanceOf(Paginator::class, $listings);
+        $this->assertCount(2, $listings->items());
+    }
+
+    public function test_listing_list_filter_car_count_min_max(): void
+    {
+        Listing::factory(5)->create([
+            'carCount' => 2,
+        ]);
+
+        Listing::factory(2)->create([
+            'carCount' => 1,
+        ]);
+
+        $repository = new ListingRepository();
+        $filters = [
+            'carCount' => ['min' => 2, 'max' => 5]
+        ];
+
+        $listings = $repository->list($filters);
+        $this->assertInstanceOf(Paginator::class, $listings);
+        $this->assertCount(5, $listings->items());
     }
 
     public function test_listing_list_filter_electric_power(): void

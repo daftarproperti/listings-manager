@@ -65,9 +65,45 @@
                         }
                     },
                     {
+                        "name": "bedroomCount[min]",
+                        "in": "query",
+                        "description": "Minimum Bedroom count",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "bedroomCount[max]",
+                        "in": "query",
+                        "description": "Maximum Bedroom count",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
                         "name": "bathroomCount",
                         "in": "query",
                         "description": "Bathroom count",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "bathroomCount[min]",
+                        "in": "query",
+                        "description": "Minimum Bathroom count",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "bathroomCount[max]",
+                        "in": "query",
+                        "description": "Maximum Bathroom count",
                         "required": false,
                         "schema": {
                             "type": "integer"
@@ -128,6 +164,24 @@
                         "name": "carCount",
                         "in": "query",
                         "description": "Car count",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "carCount[min]",
+                        "in": "query",
+                        "description": "Minimum Car count",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "carCount[max]",
+                        "in": "query",
+                        "description": "Maximum Car count",
                         "required": false,
                         "schema": {
                             "type": "integer"
@@ -202,7 +256,7 @@
                     "content": {
                         "multipart/form-data": {
                             "schema": {
-                                "$ref": "#/components/schemas/PropertyRequest"
+                                "$ref": "#/components/schemas/ListingRequest"
                             }
                         }
                     }
@@ -290,7 +344,7 @@
                     "content": {
                         "multipart/form-data": {
                             "schema": {
-                                "$ref": "#/components/schemas/PropertyRequest"
+                                "$ref": "#/components/schemas/ListingRequest"
                             }
                         }
                     }
