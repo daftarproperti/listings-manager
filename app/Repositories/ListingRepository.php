@@ -21,6 +21,13 @@ class ListingRepository
             $query->where('user.userId', $filters['userId']);
         });
 
+        $query->when(isset($filters['q']), function ($query) use ($filters) {
+            $query->where(function ($q) use ($filters) {
+                $q->where('title', 'like', '%' . $filters['q'] . '%')
+                    ->orWhere('description', 'like', '%' . $filters['q'] . '%');
+            });
+        });
+
         $query->when(isset($filters['price']), function ($query) use ($filters) {
             if (isset($filters['price']['min'])) {
                 $query->where('price', '>=', (int) $filters['price']['min']);

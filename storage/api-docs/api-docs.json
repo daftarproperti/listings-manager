@@ -15,6 +15,15 @@
                 "operationId": "listings.index",
                 "parameters": [
                     {
+                        "name": "q",
+                        "in": "query",
+                        "description": "Search listing by keyword",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
                         "name": "collection",
                         "in": "query",
                         "description": "If set to true, it will only return user's collection",

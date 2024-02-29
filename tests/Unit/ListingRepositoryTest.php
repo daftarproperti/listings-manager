@@ -459,4 +459,50 @@ class ListingRepositoryTest extends TestCase
         $this->assertInstanceOf(Paginator::class, $listings);
         $this->assertEquals(36, $listings->items()[0]->buildingSize);
     }
+
+    public function test_listing_get_by_keyword(): void
+    {
+        Listing::factory()->create([
+            'title' => 'Rumah Apik',
+            'description' => 'Rumah Luas dan sangat bagus'
+        ]);
+
+        Listing::factory()->create([
+            'title' => 'Rumah Bagus',
+            'description' => 'Rumah yang sangat apik dan bagus'
+        ]);
+
+        $filters = [
+            'q' => 'apik'
+        ];
+
+        $repository = new ListingRepository();
+        $listings = $repository->list($filters);
+
+        $this->assertInstanceOf(Paginator::class, $listings);
+        $this->assertCount(2, $listings->items());
+    }
+
+    public function test_listing_get_by_keyword_not_found(): void
+    {
+        Listing::factory()->create([
+            'title' => 'Rumah Apik',
+            'description' => 'Rumah Luas dan sangat bagus'
+        ]);
+
+        Listing::factory()->create([
+            'title' => 'Rumah Bagus',
+            'description' => 'Rumah yang sangat apik dan bagus'
+        ]);
+
+        $filters = [
+            'q' => 'dekat'
+        ];
+
+        $repository = new ListingRepository();
+        $listings = $repository->list($filters);
+
+        $this->assertInstanceOf(Paginator::class, $listings);
+        $this->assertCount(0, $listings->items());
+    }
 }

@@ -12,6 +12,13 @@ paths:
       operationId: listings.index
       parameters:
         -
+          name: q
+          in: query
+          description: 'Search listing by keyword'
+          required: false
+          schema:
+            type: string
+        -
           name: collection
           in: query
           description: "If set to true, it will only return user's collection"
@@ -51,9 +58,37 @@ paths:
           schema:
             type: integer
         -
+          name: 'bedroomCount[min]'
+          in: query
+          description: 'Minimum Bedroom count'
+          required: false
+          schema:
+            type: integer
+        -
+          name: 'bedroomCount[max]'
+          in: query
+          description: 'Maximum Bedroom count'
+          required: false
+          schema:
+            type: integer
+        -
           name: bathroomCount
           in: query
           description: 'Bathroom count'
+          required: false
+          schema:
+            type: integer
+        -
+          name: 'bathroomCount[min]'
+          in: query
+          description: 'Minimum Bathroom count'
+          required: false
+          schema:
+            type: integer
+        -
+          name: 'bathroomCount[max]'
+          in: query
+          description: 'Maximum Bathroom count'
           required: false
           schema:
             type: integer
@@ -101,6 +136,20 @@ paths:
           name: carCount
           in: query
           description: 'Car count'
+          required: false
+          schema:
+            type: integer
+        -
+          name: 'carCount[min]'
+          in: query
+          description: 'Minimum Car count'
+          required: false
+          schema:
+            type: integer
+        -
+          name: 'carCount[max]'
+          in: query
+          description: 'Maximum Car count'
           required: false
           schema:
             type: integer
@@ -154,7 +203,7 @@ paths:
         content:
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/PropertyRequest'
+              $ref: '#/components/schemas/ListingRequest'
       responses:
         200:
           description: success
@@ -211,7 +260,7 @@ paths:
         content:
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/PropertyRequest'
+              $ref: '#/components/schemas/ListingRequest'
       responses:
         200:
           description: success

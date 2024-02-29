@@ -27,6 +27,15 @@ class ListingsController extends Controller
      *     operationId="listings.index",
      *     @OA\Parameter(
      *        in="query",
+     *        name="q",
+     *        description="Search listing by keyword",
+     *        required=false,
+     *        @OA\Schema(
+     *            type="string"
+     *        )
+     *     ),
+     *     @OA\Parameter(
+     *        in="query",
      *        name="collection",
      *        description="If set to true, it will only return user's collection",
      *        required=false,
@@ -237,6 +246,7 @@ class ListingsController extends Controller
     public function index(Request $request, ListingRepository $repository): JsonResource
     {
         $filters = $request->only([
+            'q',
             'collection',
             'price',
             'type',
