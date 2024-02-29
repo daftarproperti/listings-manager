@@ -16,12 +16,12 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::group(['prefix' => 'admin'], function () {
-    Route::group(['middleware' => ['auth:admin', 'no-cache']], function () {
+    Route::group(['middleware' => ['auth:admin']], function () {
         Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
         Route::post('/logout', [GoogleLoginController::class, 'handleLogout'])->name('logout');
     });
 
-    Route::group(['middleware' => ['guest:admin', 'no-cache']], function () {
+    Route::group(['middleware' => ['guest:admin']], function () {
         Route::get('/', [DashboardController::class, 'home'])->name('home');
         Route::get('/login/google', [GoogleLoginController::class, 'redirectToGoogle'])->name('auth.google');
         Route::get('/login/google/callback', [GoogleLoginController::class, 'handleGoogleCallback']);

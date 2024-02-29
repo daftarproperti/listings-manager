@@ -70,6 +70,5 @@ class Kernel extends HttpKernel
         'telegram-app' => \App\Http\Middleware\TelegramApp::class,
         'property-user' => \App\Http\Middleware\PropertyUser::class,
         'listing-user' => \App\Http\Middleware\ListingUser::class,
-        'no-cache' => \App\Http\Middleware\PreventBackHistory::class,
     ];
 }
