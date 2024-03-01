@@ -47,7 +47,9 @@ return [
         'bucket_name' => env('GOOGLE_BUCKET_NAME'),
         'client_id' => env('GOOGLE_CLIENT_ID'),
         'client_secret' => env('GOOGLE_CLIENT_SECRET'),
-        'redirect' => env('GOOGLE_REDIRECT_URI'),
+        // Socialite can resolve the relative URL to absolute:
+        // https://github.com/laravel/socialite/blob/v5.12.1/src/SocialiteManager.php#L219
+        'redirect' => '/admin/login/google/callback',
     ]
 
 ];
