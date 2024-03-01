@@ -6,23 +6,24 @@ use App\Http\Controllers\Controller;
 use App\Models\Admin;
 use App\Providers\RouteServiceProvider;
 use Exception;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Laravel\Socialite\Facades\Socialite;
+use Symfony\Component\HttpFoundation\Response;
 
 class GoogleLoginController extends Controller
 {
-    public function redirectToGoogle(): RedirectResponse
+    public function redirectToGoogle(): Response
     {
         return Socialite::driver('google')->redirect();
     }
 
-    public function handleGoogleCallback(): RedirectResponse
+    public function handleGoogleCallback(): Response
     {
         try {
+            /** @var Admin $user */
             $user = Socialite::driver('google')->user();
 
             $existingUser = Admin::where('google_id', $user->id)->first();
@@ -36,7 +37,7 @@ class GoogleLoginController extends Controller
                     'name' => $user->name,
                     'email' => $user->email,
                     'google_id' => $user->id,
-                    'password' => bcrypt(request(Str::random()))
+                    'password' => bcrypt(Str::random())
                 ]);
 
                 // Log in the new user.
@@ -49,7 +50,7 @@ class GoogleLoginController extends Controller
         return redirect()->intended(RouteServiceProvider::HOME);
     }
 
-    public function handleLogout(Request $request): RedirectResponse
+    public function handleLogout(Request $request): Response
     {
         Auth::guard('admin')->logout();
 

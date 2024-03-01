@@ -14,13 +14,10 @@ parameters:
     databaseMigrationsPath:
         - database/migrations
 
-    excludePaths:
-        - tests/*
-        # Fatal errors due to socialite and key missing.
-        - app/Http/Controllers/Admin/GoogleLoginController.php
-        - app/Models/Admin.php
-
 #    ignoreErrors:
 #        - '#PHPDoc tag @var#'
+#
+#    excludePaths:
+#        - ./*/*/FileToBeExcluded.php
 #
 #    checkMissingIterableValueType: false
