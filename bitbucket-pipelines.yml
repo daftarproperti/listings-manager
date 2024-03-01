@@ -34,6 +34,8 @@ pipelines:
             - sed -i 's|\<\(TELEGRAM_BACKDOOR_KEY:\).*|\1 '"$DEV_TELEGRAM_BACKDOOR_KEY"'|' app.yaml
             - sed -i 's|\<\(TELEGRAM_BOT_TOKEN:\).*|\1 '"$DEV_TELEGRAM_BOT_TOKEN"'|' app.yaml
             - sed -i 's|\<\(TELEGRAM_WEBHOOK_SECRET:\).*|\1 '"$DEV_TELEGRAM_WEBHOOK_SECRET"'|' app.yaml
+            - sed -i 's|\<\(GOOGLE_CLIENT_ID:\).*|\1 '"$GOOGLE_CLIENT_ID"'|' app.yaml
+            - sed -i 's|\<\(GOOGLE_CLIENT_SECRET:\).*|\1 '"$GOOGLE_CLIENT_SECRET"'|' app.yaml
             - pipe: atlassian/google-app-engine-deploy:1.5.0
               variables:
                 KEY_FILE: $KEY_FILE
