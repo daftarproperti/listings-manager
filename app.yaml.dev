@@ -18,6 +18,10 @@ runtime_config:
 build_env_variables:
   GOOGLE_COMPOSER_VERSION: 2.5.8
 
+network:
+  # Join internal VPC for access to other GCP resources, e.g. internal database server.
+  name: projects/daftar-properti-dev/global/networks/default
+
 # Contains the configurations for dev environment, except that the secret ones
 # (keys/passwords) need to be replaced.
 env_variables:
@@ -29,14 +33,14 @@ env_variables:
   CACHE_DRIVER: file
   SESSION_DRIVER: file
   MONGODB_SRV: "mongodb+srv://usernam:password@host/"
-  MONGODB_COLLECTION: "mls"
+  MONGODB_COLLECTION: "daftarproperti-dev"
   TELEGRAM_WEBHOOK_SECRET: "secret"
   TELEGRAM_BOT_TOKEN: "123:abc"
   GOOGLE_PROJECT_ID: "daftar-properti-dev"
   GOOGLE_QUEUE_NAME: "dp-queue"
   GOOGLE_QUEUE_LOCATION: "asia-southeast2"
   CHATGPT_KEY: "secret"
-  GOOGLE_BUCKET_NAME: "mls-staging"
+  GOOGLE_BUCKET_NAME: "daftarproperti-dev-bucket"
   GOOGLE_CLIENT_ID: "secret"
   GOOGLE_CLIENT_SECRET: "secret"
   LOG_CHANNEL: "gcp"
