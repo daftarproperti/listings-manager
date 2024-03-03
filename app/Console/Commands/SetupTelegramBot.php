@@ -13,7 +13,7 @@ class SetupTelegramBot extends Command
      *
      * @var string
      */
-    protected $signature = 'app:setup-telegram-bot {base-url}';
+    protected $signature = 'app:setup-telegram-bot {base-url} {ui-url}';
 
     /**
      * The console command description.
@@ -23,30 +23,73 @@ class SetupTelegramBot extends Command
     protected $description = 'Sets up a telegram bot for use with Daftar Properti';
 
     /**
-     * Execute the console command.
+     * @param array<mixed> $params
      */
-    public function handle(): int
+    private function callTelegramApi(string $apiMethod, array $params): int
     {
-        $webhookUrl = sprintf('%s%s', rtrim($this->argument('base-url'), '/'), route('telegram-webhook', [
-            'secret_token' => config('services.telegram.webhook_access_secret'),
-        ], false));
-
-        $this->line('Setting webhook URL to ' . $webhookUrl);
+        $this->line("calling $apiMethod with params = " . print_r($params, TRUE));
         $response = Http::asForm()->post(
-            sprintf('https://api.telegram.org/bot%s/setWebhook', Assert::string(config('services.telegram.bot_token'))),
-            ['url' => $webhookUrl],
+            sprintf(
+                'https://api.telegram.org/bot%s/%s',
+                Assert::string(config('services.telegram.bot_token')),
+                $apiMethod
+            ),
+            $params,
         );
 
         if ($response->status() != 200) {
-            $this->error("Error setting webhook url");
+            $this->error("Error calling $apiMethod");
             $this->line($response->body());
             return 1;
         }
 
-        $this->info("Successfully set webhook URL");
+        $this->info("Successfully called $apiMethod");
         $this->line("response = " . $response->body());
+        $this->line("");
+        return 0;
+    }
 
-        // TODO: Also set up the UI button.
+    /**
+     * Execute the console command.
+     */
+    public function handle(): int
+    {
+        // API reference: https://core.telegram.org/bots/api
+
+        $webhookUrl = sprintf('%s%s', rtrim($this->argument('base-url'), '/'), route('telegram-webhook', [
+            'secret_token' => config('services.telegram.webhook_access_secret'),
+        ], false));
+        if ($errorCode = $this->callTelegramApi(
+            'setWebhook',
+            ['url' => $webhookUrl],
+        )) {
+            return $errorCode;
+        }
+
+        if ($errorCode = $this->callTelegramApi(
+            'setChatMenuButton',
+            [
+                'menu_button' => json_encode([
+                    'type' => 'web_app',
+                    'text' => 'Kelola Listing',
+                    'web_app' => [
+                        'url' => $this->argument('ui-url'),
+                    ],
+                ])
+            ],
+        )) {
+            return $errorCode;
+        }
+
+        if ($errorCode = $this->callTelegramApi(
+            'setMyDescription',
+            [
+                'description' => 'Daftar Properti membantu anda mengelola dan share listing anda.',
+            ],
+        )) {
+            return $errorCode;
+        }
+
         return 0;
     }
 }

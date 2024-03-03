@@ -33,8 +33,8 @@ Daftar Properti uses Telegram Bot to receive new listings. Here is a guide how t
   safely and securely.
 * Use the bot token in your env var called `TELEGRAM_BOT_TOKEN`. The system uses this token to verify user
   authentication, send reply messages, etc.
-* You can use the helper script to further set up your bot: `php artisan app:setup-telegram-bot {base-url}`, with
-  `base-url` being your publicly accessible address of the backend.
+* You can use the helper script to further set up your bot: `php artisan app:setup-telegram-bot {base-url} {ui-url}`,
+  with `base-url` being your publicly accessible address of the backend and `ui-url` is the front-end.
 * Your bot is ready to use for development. Chat with it by searching for its bot id and you should be able to forward
   listings to the bot. If your setup is correct, the webhook handler will handle incoming messages and reply.
 
