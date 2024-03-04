@@ -2,11 +2,17 @@
 
 namespace App\Helpers;
 
-/** TELEGRAM DOCS: https://core.telegram.org/bots/webapps#validating-data-received-via-the-mini-app */
+/**
+ * TELEGRAM DOCS:
+ * webApp => https://core.telegram.org/bots/webapps#validating-data-received-via-the-mini-app
+ * login widget => https://core.telegram.org/widgets/login (checking authorization section)
+ * */
 class TelegramInitDataValidator
 {
-    private static function generateHash(string $botToken, string $data): string {
-        $secretKey = hash_hmac('sha256', $botToken, 'WebAppData', true);
+    private static function generateHash(string $botToken, string $data, bool $isWebApp = true): string {
+
+        $secretKey = $isWebApp ? hash_hmac('sha256', $botToken, 'WebAppData', true) : hash('sha256', $botToken, true);
+
         $hash = hash_hmac('sha256', $data, $secretKey);
         return $hash;
     }
@@ -21,9 +27,9 @@ class TelegramInitDataValidator
      */
     public static function isSafe(string $botToken, string $initData): bool
     {
-        [$checksum, $sortedInitData] = self::convertInitData($initData);
+        [$checksum, $sortedInitData, $isWebApp] = self::convertInitData($initData);
 
-        $hash = self::generateHash($botToken, $sortedInitData);
+        $hash = self::generateHash($botToken, $sortedInitData, Assert::boolean($isWebApp));
 
         return $hash === $checksum;
     }
@@ -33,7 +39,7 @@ class TelegramInitDataValidator
      *
      * @param string $initData init data from Telegram (`Telegram.WebApp.initData`)
      *
-     * @return string[] return hash and sorted init data
+     * @return array{string, string, bool} return hash and sorted init data
      */
     private static function convertInitData(string $initData): array
     {
@@ -47,10 +53,13 @@ class TelegramInitDataValidator
                 $data = null;
             }
         }
+
         $initDataArray = array_filter($initDataArray);
         sort($initDataArray);
 
-        return [$hash, implode("\n", $initDataArray)];
+        $isWebApp = strpos($initData, 'user=') ? true : false;
+
+        return [$hash, implode("\n", $initDataArray), $isWebApp];
     }
 
     /**
