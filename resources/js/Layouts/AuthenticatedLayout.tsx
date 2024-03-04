@@ -69,7 +69,6 @@ export default function Authenticated({
                                             as="button"
                                             method="post"
                                             href={route("logout")}
-                                            onClick={() => location.reload()}
                                         >
                                             Log Out
                                         </Dropdown.Link>
@@ -153,7 +152,6 @@ export default function Authenticated({
                                 as="button"
                                 method="post"
                                 href={route("logout")}
-                                onClick={() => location.reload()}
                             >
                                 Log Out
                             </ResponsiveNavLink>
