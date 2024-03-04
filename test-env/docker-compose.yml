@@ -6,6 +6,8 @@ services:
     build:
       context: ..
       dockerfile: test-env/Dockerfile-app
+    volumes:
+      - composer-cache:/root/.composer/cache
     networks:
       - test_network
       - global_network
@@ -28,4 +30,8 @@ networks:
   test_network:
     internal: true
   global_network:
+    external: true
+
+volumes:
+  composer-cache:
     external: true
