@@ -11,4 +11,12 @@ export default defineConfig({
         }),
         react(),
     ],
+    server: {
+        // For development behind reverse proxy, set these VITE_HMR_* environment variables
+        hmr: {
+            host: process.env.VITE_HMR_HOST || 'localhost',
+            clientPort: process.env.VITE_HMR_CLIENT_PORT ? parseInt(process.env.VITE_HMR_CLIENT_PORT, 10) : 5173,
+            protocol: process.env.VITE_HMR_PROTOCOL || 'ws',
+        },
+    },
 });
