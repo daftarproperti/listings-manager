@@ -769,7 +769,7 @@ components:
           example: \x00\x00\x00\x04\x00\x00\x00\x04
         isPublicProfile:
           type: boolean
-          example: true
+          example: 'true'
       type: object
     Listing:
       properties:
@@ -920,6 +920,9 @@ components:
         id:
           type: integer
           example: '123'
+        publicId:
+          type: string
+          example: id-123
         name:
           type: string
           example: 'John Doe'

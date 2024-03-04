@@ -16,6 +16,7 @@ class TelegramUserProfileResource extends JsonResource
 
     /**
      * @OA\Property(property="id",type="integer",example="123")
+     * @OA\Property(property="publicId",type="string",example="id-123")
      * @OA\Property(property="name",type="string",example="John Doe")
      * @OA\Property(property="phoneNumber",type="string",example="0811111")
      * @OA\Property(property="city",type="string",example="New York")
@@ -33,6 +34,7 @@ class TelegramUserProfileResource extends JsonResource
         $profile = $user->profile ? (object) $user->profile : null;
         return [
             'id' => $user->user_id,
+            'publicId' => $user->_id,
             'name' => $profile?->name ?? trim($user->first_name.' '.$user->last_name),
             'city' => $profile?->city ?? null,
             'description' => $profile?->description ?? null,

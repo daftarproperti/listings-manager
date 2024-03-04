@@ -1089,7 +1089,7 @@
                     },
                     "isPublicProfile": {
                         "type": "boolean",
-                        "example": true
+                        "example": "true"
                     }
                 },
                 "type": "object"
@@ -1317,6 +1317,10 @@
                     "id": {
                         "type": "integer",
                         "example": "123"
+                    },
+                    "publicId": {
+                        "type": "string",
+                        "example": "id-123"
                     },
                     "name": {
                         "type": "string",

@@ -33,6 +33,7 @@ class TelegramUserProfileResourceTest extends TestCase
 
 
         $response = (new TelegramUserProfileResource($telegramUser))->resolve();
+        $profile['profile']['publicId'] = $response['publicId'];
 
         $this->assertEquals($profile['profile'], $response);
     }
