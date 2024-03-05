@@ -26,7 +26,7 @@ network:
 # (keys/passwords) need to be replaced.
 env_variables:
   APP_DEBUG: true
-  APP_ENV: production
+  APP_ENV: development
   APP_KEY: "appkey"
   APP_NAME: "Daftar Properti Dev"
   LOG_LEVEL: debug

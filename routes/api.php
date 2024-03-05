@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\Api\ListingsController;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\DevController;
 use App\Http\Controllers\Api\PhotoController;
 use App\Http\Controllers\Api\PropertiesController;
 use App\Http\Controllers\Api\TelegramUserController;
@@ -17,6 +19,12 @@ use App\Http\Controllers\Api\WebhookController;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
+
+if (App::environment('development')) {
+    Route::prefix('_dev')->group(function () {
+        Route::post('/queue', [DevController::class, 'queue']);
+    });
+}
 
 Route::prefix('webhook')->group(function () {
     Route::post('{secret_token}/telegram', [WebhookController::class, 'receiveTelegramMessage'])
