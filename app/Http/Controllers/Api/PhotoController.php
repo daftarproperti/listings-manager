@@ -40,7 +40,7 @@ class PhotoController extends Controller
                 Assert::string(file_get_contents($image->getRealPath())),
                 sprintf('%s_%s', $fileId, $fileName)
             );
-            $imageUrl = route('telegram-photo', [$fileId, $fileName]);
+            $imageUrl = route('telegram-photo', [$fileId, $fileName], false);
         } else {
             $imageUrl = Assert::string($image);
         }

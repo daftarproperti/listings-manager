@@ -436,7 +436,7 @@ class ListingsController extends Controller
         return response()->json(['message' => 'Listing deleted successfully'], 200);
     }
 
-    
+
     /**
      * @param array<string, mixed> $data
      * @param Listing $listing
@@ -501,7 +501,7 @@ class ListingsController extends Controller
                     Assert::string(file_get_contents($image->getRealPath())),
                     sprintf('%s_%s', $fileId, $fileName)
                 );
-                $uploadedImages[] = route('telegram-photo', [$fileId, $fileName]);
+                $uploadedImages[] = route('telegram-photo', [$fileId, $fileName], false);
             } else {
                 $uploadedImages[] = Assert::string($image);
             }
