@@ -5,13 +5,48 @@ namespace App\Http\Controllers\Api;
 use App\Helpers\Assert;
 use App\Helpers\TelegramPhoto;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ImageUploadRequest;
 use App\Http\Services\GoogleStorageService;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class PhotoController extends Controller
 {
+    /**
+     * @OA\Get(
+     *     path="/api/photo/{fileId}/{fileName}",
+     *     tags={"Image"},
+     *     summary="Show image",
+     *     operationId="image.show",
+     *     @OA\Parameter(
+     *         name="fileId",
+     *         in="path",
+     *         required=true,
+     *         description="File Id",
+     *         @OA\Schema(
+     *             type="integer"
+     *         ),
+     *     ),
+     *     @OA\Parameter(
+     *         name="fileName",
+     *         in="path",
+     *         required=true,
+     *         description="Filename",
+     *         @OA\Schema(
+     *             type="string"
+     *         ),
+     *     ),
+     *     @OA\Response(
+     *          response="200",
+     *          description="OK",
+     *          @OA\MediaType(
+     *              mediaType="image/*",
+     *              @OA\Schema(type="string",format="binary")
+     *          )
+     *      )
+     * )
+     */
+
     public function telegramPhoto(string $fileId, string $fileUniqueId): \Illuminate\Http\Response|StreamedResponse
     {
         $photoUrl = TelegramPhoto::getPhotoUrl($fileId, $fileUniqueId);
@@ -22,32 +57,58 @@ class PhotoController extends Controller
         }, 200, ['Content-type' => 'image/jpeg']) : Response::make(null, 404);
     }
 
-    public function uploadImage(Request $request): \Illuminate\Http\Response|StreamedResponse
+    /**
+     * @OA\Post(
+     *     path="/api/tele-app/upload/image",
+     *     tags={"Image"},
+     *     summary="Upload Image",
+     *     operationId="image.upload",
+     *     @OA\RequestBody(
+     *          @OA\MediaType(
+     *              mediaType="multipart/form-data",
+     *              @OA\Schema(type="object", ref="#/components/schemas/ImageUploadRequest")
+     *          ),
+     *         required=true,
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="success",
+     *         @OA\JsonContent(
+     *              @OA\Property(
+     *                  property="fileId",
+     *                  type="integer",
+     *                  example=123
+     *              ),
+     *              @OA\Property(
+     *                  property="fileName",
+     *                  type="string",
+     *                  example="image.jpg"
+     *              )
+     *         ),
+     *     )
+     * )
+     */
+
+    public function uploadImage(
+        ImageUploadRequest $request,
+        GoogleStorageService $googleStorageService): \Illuminate\Http\JsonResponse
     {
-        // Validate the incoming request data
-        $request->validate([
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Adjust maximum file size as needed
+        $validated = $request->validated();
+
+        /** @var \Illuminate\Http\UploadedFile $image */
+        $image = $validated['image'];
+
+        $fileName = sprintf('%s.%s', md5($image->getClientOriginalName()) , $image->getClientOriginalExtension());
+        $fileId = time();
+
+        $googleStorageService->uploadFile(
+            Assert::string(file_get_contents($image->getRealPath())),
+            sprintf('%s_%s', $fileId, $fileName)
+        );
+
+        return response()->json([
+            'fileId' => $fileId,
+            'fileName' => $fileName
         ]);
-
-        // Retrieve the uploaded image
-        $image = $request->file('image');
-
-        $googleStorageService = app()->make(GoogleStorageService::class);
-        if (is_object($image) && is_a($image, \Illuminate\Http\UploadedFile::class)) {
-            $fileName = sprintf('%s.%s', md5($image->getClientOriginalName()) , $image->getClientOriginalExtension());
-            $fileId = time();
-            $googleStorageService->uploadFile(
-                Assert::string(file_get_contents($image->getRealPath())),
-                sprintf('%s_%s', $fileId, $fileName)
-            );
-            $imageUrl = route('telegram-photo', [$fileId, $fileName], false);
-        } else {
-            $imageUrl = Assert::string($image);
-        }
-
-        // Return a response indicating success, or do something else with the uploaded images
-        return $imageUrl ? Response::stream(function() use($imageUrl) {
-            print $imageUrl;
-        }, 200, ['image_url' => $imageUrl]) : Response::make(null, 404);
     }
 }

@@ -45,7 +45,8 @@ Route::group(['prefix' => 'tele-app', 'middleware' => ['telegram-app']], functio
         Route::get('/profile', [TelegramUserController::class, 'profile']);
         Route::post('/profile', [TelegramUserController::class, 'updateProfile']);
     });
+
+    Route::post('upload/image', [PhotoController::class, 'uploadImage']);
 });
 
 Route::get('photo/{fileId}/{fileUniqueId}', [PhotoController::class, 'telegramPhoto'])->name('telegram-photo');
-Route::post('upload/image', [PhotoController::class, 'uploadImage'])->middleware('listing-user');

@@ -424,6 +424,89 @@
                 }
             }
         },
+        "/api/photo/{fileId}/{fileName}": {
+            "get": {
+                "tags": [
+                    "Image"
+                ],
+                "summary": "Show image",
+                "operationId": "image.show",
+                "parameters": [
+                    {
+                        "name": "fileId",
+                        "in": "path",
+                        "description": "File Id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "fileName",
+                        "in": "path",
+                        "description": "Filename",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "image/*": {
+                                "schema": {
+                                    "type": "string",
+                                    "format": "binary"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/tele-app/upload/image": {
+            "post": {
+                "tags": [
+                    "Image"
+                ],
+                "summary": "Upload Image",
+                "operationId": "image.upload",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ImageUploadRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "fileId": {
+                                            "type": "integer",
+                                            "example": 123
+                                        },
+                                        "fileName": {
+                                            "type": "string",
+                                            "example": "image.jpg"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/tele-app/properties": {
             "get": {
                 "tags": [
@@ -834,6 +917,15 @@
     },
     "components": {
         "schemas": {
+            "ImageUploadRequest": {
+                "properties": {
+                    "image": {
+                        "type": "string",
+                        "format": "binary"
+                    }
+                },
+                "type": "object"
+            },
             "ListingRequest": {
                 "properties": {
                     "title": {
