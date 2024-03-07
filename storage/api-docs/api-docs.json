@@ -517,12 +517,12 @@
                 "operationId": "index",
                 "parameters": [
                     {
-                        "name": "collection",
+                        "name": "q",
                         "in": "query",
-                        "description": "If set to true, it will only return user's collection",
+                        "description": "Search property by keyword",
                         "required": false,
                         "schema": {
-                            "type": "boolean"
+                            "type": "string"
                         }
                     },
                     {
@@ -567,9 +567,45 @@
                         }
                     },
                     {
+                        "name": "bedroomCount[min]",
+                        "in": "query",
+                        "description": "Minimum Bedroom count",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "bedroomCount[max]",
+                        "in": "query",
+                        "description": "Maximum Bedroom count",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
                         "name": "bathroomCount",
                         "in": "query",
                         "description": "Bathroom count",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "bathroomCount[min]",
+                        "in": "query",
+                        "description": "Minimum Bathroom count",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "bathroomCount[max]",
+                        "in": "query",
+                        "description": "Maximum Bathroom count",
                         "required": false,
                         "schema": {
                             "type": "integer"
@@ -636,6 +672,24 @@
                         }
                     },
                     {
+                        "name": "carCount[min]",
+                        "in": "query",
+                        "description": "Minimum Car count",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "carCount[max]",
+                        "in": "query",
+                        "description": "Maximum Car count",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
                         "name": "electricPower",
                         "in": "query",
                         "description": "Electric Power",
@@ -692,35 +746,6 @@
                         }
                     }
                 }
-            },
-            "post": {
-                "tags": [
-                    "Properties"
-                ],
-                "summary": "Create property",
-                "operationId": "create",
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "multipart/form-data": {
-                            "schema": {
-                                "$ref": "#/components/schemas/PropertyRequest"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "success",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Property"
-                                }
-                            }
-                        }
-                    }
-                }
             }
         },
         "/api/tele-app/properties/{id}": {
@@ -761,98 +786,6 @@
                                         "error": {
                                             "type": "string",
                                             "example": "Property not found"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                }
-            },
-            "post": {
-                "tags": [
-                    "Properties"
-                ],
-                "summary": "Update property",
-                "operationId": "update",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "description": "Property Id",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "multipart/form-data": {
-                            "schema": {
-                                "$ref": "#/components/schemas/PropertyRequest"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "success",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Property"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Property not found",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "error": {
-                                            "type": "string",
-                                            "example": "Property not found"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                }
-            },
-            "delete": {
-                "tags": [
-                    "Properties"
-                ],
-                "summary": "Delete property",
-                "operationId": "delete",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "description": "Property Id",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "success",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Property deleted successfully"
                                         }
                                     },
                                     "type": "object"
@@ -927,119 +860,6 @@
                 "type": "object"
             },
             "ListingRequest": {
-                "properties": {
-                    "title": {
-                        "type": "string",
-                        "example": "Rumah dijual di daerah pasteur"
-                    },
-                    "address": {
-                        "type": "string",
-                        "example": "Jl. Pendidikan No. 1"
-                    },
-                    "description": {
-                        "type": "string",
-                        "example": "Rumah bagus"
-                    },
-                    "price": {
-                        "type": "integer",
-                        "example": 100000
-                    },
-                    "lotSize": {
-                        "type": "integer",
-                        "example": 1000
-                    },
-                    "buildingSize": {
-                        "type": "integer",
-                        "example": 2000
-                    },
-                    "carCount": {
-                        "type": "integer",
-                        "example": 4
-                    },
-                    "bedroomCount": {
-                        "type": "integer",
-                        "example": 3
-                    },
-                    "bathroomCount": {
-                        "type": "integer",
-                        "example": 2
-                    },
-                    "floorCount": {
-                        "type": "integer",
-                        "example": 2
-                    },
-                    "electricPower": {
-                        "type": "integer",
-                        "example": 2200
-                    },
-                    "facing": {
-                        "type": "string",
-                        "example": "Utara"
-                    },
-                    "ownership": {
-                        "type": "string",
-                        "example": "SHM"
-                    },
-                    "city": {
-                        "type": "string",
-                        "example": "Bandung"
-                    },
-                    "pictureUrls": {
-                        "type": "array",
-                        "items": {
-                            "oneOf": [
-                                {
-                                    "type": "string",
-                                    "format": "binary",
-                                    "example": "\\x00\\x00\\x00\\x04\\x00\\x00\\x00\\x04"
-                                },
-                                {
-                                    "type": "string",
-                                    "format": "url",
-                                    "example": "https://example.com/image.jpg"
-                                }
-                            ]
-                        }
-                    },
-                    "coordinate": {
-                        "properties": {
-                            "latitude": {
-                                "type": "integer"
-                            },
-                            "longitude": {
-                                "type": "integer"
-                            }
-                        },
-                        "type": "object"
-                    },
-                    "contacts": {
-                        "properties": {
-                            "name": {
-                                "type": "string"
-                            },
-                            "profilePictureURL": {
-                                "type": "string"
-                            },
-                            "phoneNumber": {
-                                "type": "string"
-                            },
-                            "sourceURL": {
-                                "type": "string"
-                            },
-                            "provider": {
-                                "type": "string"
-                            }
-                        },
-                        "type": "object"
-                    },
-                    "isPrivate": {
-                        "type": "boolean",
-                        "example": false
-                    }
-                },
-                "type": "object"
-            },
-            "PropertyRequest": {
                 "properties": {
                     "title": {
                         "type": "string",

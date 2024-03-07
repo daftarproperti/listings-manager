@@ -23,32 +23,6 @@ class PropertyRepositoryTest extends TestCase
         $this->assertInstanceOf(Paginator::class, $properties);
     }
 
-    public function test_property_list_filter_collection(): void
-    {
-        $totalItemsByUser = 10;
-        Property::factory($totalItemsByUser)->create([
-            'user' => [
-                'userId' => 1
-            ]
-        ]);
-
-        Property::factory()->create([
-            'user' => [
-                'userId' => 5
-            ]
-        ]);
-
-        $repository = new PropertyRepository();
-        $filters = [
-            'collection' => true,
-            'userId' => 1
-        ];
-
-        $properties = $repository->list($filters);
-        $this->assertInstanceOf(Paginator::class, $properties);
-        $this->assertCount($totalItemsByUser, $properties->items());
-    }
-
     public function test_property_list_filter_price(): void
     {
         Property::factory(5)->create([
@@ -89,6 +63,46 @@ class PropertyRepositoryTest extends TestCase
         $this->assertCount(5, $properties->items());
     }
 
+    public function test_property_list_filter_bedroom_count_min(): void
+    {
+        Property::factory(5)->create([
+            'bedroomCount' => 2,
+        ]);
+
+        Property::factory(2)->create([
+            'bedroomCount' => 3,
+        ]);
+
+        $repository = new PropertyRepository();
+        $filters = [
+            'bedroomCount' => ['min' => 3]
+        ];
+
+        $properties = $repository->list($filters);
+        $this->assertInstanceOf(Paginator::class, $properties);
+        $this->assertCount(2, $properties->items());
+    }
+
+    public function test_property_list_filter_bedroom_count_max(): void
+    {
+        Property::factory(5)->create([
+            'bedroomCount' => 2,
+        ]);
+
+        Property::factory(2)->create([
+            'bedroomCount' => 3,
+        ]);
+
+        $repository = new PropertyRepository();
+        $filters = [
+            'bedroomCount' => ['max' => 3]
+        ];
+
+        $properties = $repository->list($filters);
+        $this->assertInstanceOf(Paginator::class, $properties);
+        $this->assertCount(7, $properties->items());
+    }
+
     public function test_property_list_filter_bathroom_count(): void
     {
         Property::factory(5)->create([
@@ -102,6 +116,46 @@ class PropertyRepositoryTest extends TestCase
         $repository = new PropertyRepository();
         $filters = [
             'bathroomCount' => 2
+        ];
+
+        $properties = $repository->list($filters);
+        $this->assertInstanceOf(Paginator::class, $properties);
+        $this->assertCount(5, $properties->items());
+    }
+
+    public function test_property_list_filter_bathroom_count_min(): void
+    {
+        Property::factory(5)->create([
+            'bathroomCount' => 2,
+        ]);
+
+        Property::factory(2)->create([
+            'bathroomCount' => 3,
+        ]);
+
+        $repository = new PropertyRepository();
+        $filters = [
+            'bathroomCount' => ['min' => 3]
+        ];
+
+        $properties = $repository->list($filters);
+        $this->assertInstanceOf(Paginator::class, $properties);
+        $this->assertCount(2, $properties->items());
+    }
+
+    public function test_property_list_filter_bathroom_count_max(): void
+    {
+        Property::factory(5)->create([
+            'bathroomCount' => 2,
+        ]);
+
+        Property::factory(2)->create([
+            'bathroomCount' => 3,
+        ]);
+
+        $repository = new PropertyRepository();
+        $filters = [
+            'bathroomCount' => ['max' => 2]
         ];
 
         $properties = $repository->list($filters);
@@ -189,6 +243,46 @@ class PropertyRepositoryTest extends TestCase
         $this->assertCount(2, $properties->items());
     }
 
+    public function test_property_list_filter_car_count_min(): void
+    {
+        Property::factory(5)->create([
+            'carCount' => 2,
+        ]);
+
+        Property::factory(2)->create([
+            'carCount' => 1,
+        ]);
+
+        $repository = new PropertyRepository();
+        $filters = [
+            'carCount' => ['min' => 1]
+        ];
+
+        $properties = $repository->list($filters);
+        $this->assertInstanceOf(Paginator::class, $properties);
+        $this->assertCount(7, $properties->items());
+    }
+
+    public function test_property_list_filter_car_count_max(): void
+    {
+        Property::factory(5)->create([
+            'carCount' => 2,
+        ]);
+
+        Property::factory(2)->create([
+            'carCount' => 1,
+        ]);
+
+        $repository = new PropertyRepository();
+        $filters = [
+            'carCount' => ['max' => 1]
+        ];
+
+        $properties = $repository->list($filters);
+        $this->assertInstanceOf(Paginator::class, $properties);
+        $this->assertCount(2, $properties->items());
+    }
+
     public function test_property_list_filter_electric_power(): void
     {
         Property::factory(5)->create([
@@ -257,5 +351,51 @@ class PropertyRepositoryTest extends TestCase
         $properties = $repository->list($filters);
         $this->assertInstanceOf(Paginator::class, $properties);
         $this->assertEquals(36, $properties->items()[0]->buildingSize);
+    }
+
+    public function test_property_get_by_keyword(): void
+    {
+        Property::factory()->create([
+            'title' => 'Rumah Apik',
+            'description' => 'Rumah Luas dan sangat bagus'
+        ]);
+
+        Property::factory()->create([
+            'title' => 'Rumah Bagus',
+            'description' => 'Rumah yang sangat apik dan bagus'
+        ]);
+
+        $filters = [
+            'q' => 'apik'
+        ];
+
+        $repository = new PropertyRepository();
+        $properties = $repository->list($filters);
+
+        $this->assertInstanceOf(Paginator::class, $properties);
+        $this->assertCount(2, $properties->items());
+    }
+
+    public function test_property_get_by_keyword_not_found(): void
+    {
+        Property::factory()->create([
+            'title' => 'Rumah Apik',
+            'description' => 'Rumah Luas dan sangat bagus'
+        ]);
+
+        Property::factory()->create([
+            'title' => 'Rumah Bagus',
+            'description' => 'Rumah yang sangat apik dan bagus'
+        ]);
+
+        $filters = [
+            'q' => 'dekat'
+        ];
+
+        $repository = new PropertyRepository();
+        $properties = $repository->list($filters);
+
+        $this->assertInstanceOf(Paginator::class, $properties);
+        $this->assertCount(0, $properties->items());
     }
 }

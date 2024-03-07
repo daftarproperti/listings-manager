@@ -27,4 +27,16 @@ class Assert
         assert(is_bool($value));
         return (bool)$value;
     }
+
+    /**
+     * Asserts that a given value is a int.
+     *
+     * @param mixed $value The value to check.
+     * @return int The int value, if the assertion passed.
+     */
+    public static function int($value): int
+    {
+        assert(is_int($value));
+        return $value;
+    }
 }
