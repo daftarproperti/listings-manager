@@ -78,7 +78,7 @@ return [
             'location' => env('GOOGLE_QUEUE_LOCATION'),
             'queue' => env('GOOGLE_QUEUE_NAME'),
             'app_engine' => TRUE,
-            'app_engine_service' => 'default',
+            'app_engine_service' => env('GOOGLE_APP_ENGINE_SERVICE', 'default'),
         ],
     ],
 
