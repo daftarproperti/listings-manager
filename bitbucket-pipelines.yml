@@ -28,6 +28,7 @@ pipelines:
             # Populate app.yaml from the template of dev environment.
             # Variables are taken from Bitbucket's Repository Variables.
             - cp app.yaml.dev app.yaml
+            - cp additional-supervisord.conf.template additional-supervisord.conf # for queue worker
             - sed -i 's|\<\(APP_KEY:\).*|\1 '"$DEV_APP_KEY"'|' app.yaml
             - sed -i 's|\<\(CHATGPT_KEY:\).*|\1 '"$DEV_OPENAI_KEY"'|' app.yaml
             - sed -i 's|\<\(MONGODB_SRV:\).*|\1 '"$DEV_MONGODB_SRV"'|' app.yaml

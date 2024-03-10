@@ -26,6 +26,7 @@ trap "rm -rf $TEMP_DIR" EXIT
 git archive HEAD | tar -x -C $TEMP_DIR
 cp app.yaml $TEMP_DIR/
 
+cp additional-supervisord.conf.template $TEMP_DIR/additional-supervisord.conf
 # Bring output of `npm run build`. This has to be built first locally because App Engine's buildpack builder image
 # does not contain nodejs.
 npm install && npm run build
@@ -42,7 +43,7 @@ pack build daftarproperti --builder gcr.io/gae-runtimes/buildpacks/google-gae-22
 # Back to original dir.
 popd
 
-GEN_COMPOSE_FILE=test-utils/gae/docker-compose.yml.generated
+GEN_COMPOSE_FILE=test-utils/gae/docker-compose.generated.yml
 
 cp test-utils/gae/docker-compose.yml.template $GEN_COMPOSE_FILE
 

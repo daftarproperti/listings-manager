@@ -45,4 +45,4 @@ env_variables:
   GOOGLE_CLIENT_SECRET: "secret"
   LOG_CHANNEL: "gcp"
   DB_CONNECTION: "mongodb"
-  QUEUE_CONNECTION: "cloudtasks"
+  QUEUE_CONNECTION: "database"
