@@ -43,7 +43,7 @@ class TelegramApp
         return $next($request);
     }
 
-    private function telegramUserAuth(string $initData) : ?TelegramUser
+    private function telegramUserAuth(string $initData): ?TelegramUser
     {
         parse_str(rawurldecode($initData), $initDataArray);
 
@@ -55,10 +55,10 @@ class TelegramApp
             $user = json_decode($initDataArray['user'], true);
         } else {
             /**
-            * if auth is from telegram login widget there are no `user` field in initData
-            * so we need to parse it from `id`, `first_name`, `last_name`, `username`
-            * https://core.telegram.org/widgets/login
-            **/
+             * if auth is from telegram login widget there are no `user` field in initData
+             * so we need to parse it from `id`, `first_name`, `last_name`, `username`
+             * https://core.telegram.org/widgets/login
+             **/
             $user = Arr::only($initDataArray, ['id', 'first_name', 'last_name', 'username']);
         }
 
@@ -66,9 +66,9 @@ class TelegramApp
             return null;
         }
 
-        $telegramUser = TelegramUser::where('user_id', $user['id'])
+        $telegramUser = TelegramUser::where('user_id', (int)$user['id'])
             ->firstOrCreate([
-                'user_id' => $user['id'],
+                'user_id' => (int)$user['id'],
                 'first_name' => $user['first_name'],
                 'last_name' => Arr::get($user, 'last_name'),
                 'username' => Arr::get($user, 'username'),
