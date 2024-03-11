@@ -1,25 +1,17 @@
 <?php
 
-namespace App\Http\Controllers\Web;
+namespace App\Http\Controllers\Web\Public;
 
 use App\Http\Controllers\Controller;
-use App\Models\Listing;
 use App\Models\TelegramUser;
 use App\Models\Resources\ListingCollection;
 use App\Repositories\ListingRepository;
 use Inertia\Inertia;
 use Inertia\Response;
 
-class PublicController extends Controller
+class AgentsController extends Controller
 {
-    public function publicListingPage(Listing $listing): Response
-    {
-        return Inertia::render('Public/Listing', [
-            'listing' => $listing,
-        ]);
-    }
-
-    public function publicAgentPage(TelegramUser $telegramUser): Response
+    public function detail(TelegramUser $telegramUser): Response
     {
         $userProfile = $telegramUser->profile;
         if(!$userProfile || !isset($userProfile->isPublicProfile) || !$userProfile->isPublicProfile) {

@@ -2,7 +2,8 @@
 
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\GoogleLoginController;
-use App\Http\Controllers\Web\PublicController;
+use App\Http\Controllers\Web\Public\AgentsController;
+use App\Http\Controllers\Web\Public\ListingsController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -32,6 +33,6 @@ Route::group(['prefix' => 'admin'], function () {
 // Implicitly bind ID with corresponding model
 // Ref: https://laravel.com/docs/10.x/routing#implicit-binding
 Route::group(['prefix' => 'public'], function () {
-    Route::get('/agent/{telegramUser}', [PublicController::class, 'publicAgentPage'])->name('agentpwp');
-    Route::get('/listing/{listing}', [PublicController::class, 'publicListingPage'])->name('listingpwp');
+    Route::get('/agents/{telegramUser}', [AgentsController::class, 'detail']);
+    Route::get('/listings/{listing}', [ListingsController::class, 'detail']);
 });
