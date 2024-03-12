@@ -31,7 +31,7 @@ env_variables:
   APP_NAME: "Daftar Properti Dev"
   LOG_LEVEL: debug
   CACHE_DRIVER: file
-  SESSION_DRIVER: file
+  SESSION_DRIVER: cookie
   MONGODB_SRV: "mongodb+srv://usernam:password@host/"
   MONGODB_COLLECTION: "daftarproperti-dev"
   TELEGRAM_WEBHOOK_SECRET: "secret"
