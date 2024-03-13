@@ -42,9 +42,15 @@ const TableHeaderItem = ({
             className={`border-y border-blue-gray-100 bg-stone-50 px-6 py-4 ${className}`}
             {...props}
         >
-            <p className="font-normal leading-none text-neutral-500">
-                {children}
-            </p>
+            {typeof children === 'string'
+              ? (
+                <p className="font-normal leading-none text-neutral-500">
+                    {children}
+                </p>
+                )
+              : (
+                  children
+                )}
         </th>
   )
 }
@@ -68,7 +74,15 @@ const TableBodyItem = ({
 }: TdHTMLAttributes<HTMLTableDataCellElement>): JSX.Element => {
   return (
         <td className={`p-5 border-b ${className}`} {...props}>
-            <p className="truncate text-neutral-600 font-normal">{children}</p>
+            {typeof children === 'string'
+              ? (
+                <p className="truncate text-neutral-600 font-normal">
+                    {children}
+                </p>
+                )
+              : (
+                  children
+                )}
         </td>
   )
 }

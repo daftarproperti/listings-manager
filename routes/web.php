@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\GoogleLoginController;
+use App\Http\Controllers\Admin\MembersController;
 use App\Http\Controllers\Web\Public\AgentsController;
 use App\Http\Controllers\Web\Public\ListingsController;
 use Illuminate\Support\Facades\Route;
@@ -19,6 +20,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(['prefix' => 'admin'], function () {
     Route::group(['middleware' => ['auth:admin']], function () {
+        Route::get('/members', [MembersController::class, 'index'])->name('members');
         Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
         Route::post('/logout', [GoogleLoginController::class, 'handleLogout'])->name('logout');
     });
