@@ -55,28 +55,29 @@ class WebhookController extends Controller
             $template = storage_path('HousePropertyGptTemplate.txt');
             $templateString = file_get_contents($template);
 
-            $mainPrompt = sprintf(
+            $baseMessage = sprintf(
                 '%s%s',
                 $update->message->text ?? '',
                 !empty($pictureUrls) ? "\n Picture Urls:\n" . implode("\n", $pictureUrls) . "\n" : ''
             );
 
-            $listingUser = new ListingUser();
-            $listingUser->name = trim(sprintf(
-                '%s %s',
-                $update->message->from->first_name,
-                $update->message->from->last_name ?? ''
-            ));
-            $listingUser->userName = $update->message->from->username ?? null;
-            $listingUser->userId = $update->message->from->id;
-            $listingUser->source = 'telegram';
+            $promptMessage = '
+                Please provide property information from the following message:' . "\n" .
+                $baseMessage . "\n\n" .
+                'with the following format:' . "\n\n" .
+                $templateString. "\n\n" .
+                'Your parser should be robust enough to handle variations in formatting and wording commonly found in such messages.'. "\n\n" .
+                'Messages can contain more than one property informations.' . "\n\n" .
+                'For multiple properties use numbers or ----- or === as separator in messages.' . "\n\n" .
+                'Each properties has own title and description.' . "\n\n" .
+                'Give me the json only.
+            ';
 
             $chatId = isset($update->message->chat) ? $update->message->chat->id : null;
 
             ParseListingJob::dispatch(
-                'Please give me json only also trim the value' . "\n" .
-                    $mainPrompt . "\n\n" . 'with following format:' . "\n\n" . $templateString,
-                $listingUser,
+                $promptMessage,
+                $this->populateListingUser($update),
                 $chatId
             );
 
@@ -88,5 +89,20 @@ class WebhookController extends Controller
         }
 
         return response()->json(['success' => true], 200);
+    }
+
+    private function populateListingUser(Update $update): ListingUser
+    {
+        $listingUser = new ListingUser();
+        $listingUser->name = trim(sprintf(
+            '%s %s',
+            $update->message->from->first_name,
+            $update->message->from->last_name ?? ''
+        ));
+        $listingUser->userName = $update->message->from->username ?? null;
+        $listingUser->userId = $update->message->from->id;
+        $listingUser->source = 'telegram';
+
+        return $listingUser;
     }
 }

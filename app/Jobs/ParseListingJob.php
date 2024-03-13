@@ -35,20 +35,24 @@ class ParseListingJob implements ShouldQueue
      */
     public function handle(ChatGptService $chatGptService): void
     {
-        Log::debug("Handling parse listing, message =\n" . $this->message);
+        try {
+            Log::debug("Handling parse listing, message =\n" . $this->message);
 
-        $answer = $chatGptService->seekAnswer($this->message);
+            $answer = $chatGptService->seekAnswer($this->message);
 
-        //avoid insert empty informations
-        /** @var array<string> $extractedData */
-        $extractedData = json_decode($answer, true);
+            $extractedData = (array) json_decode($answer, true);
 
-        if ($this->chatId && (!$extractedData['title'] || !$extractedData['description'])) {
-            TelegramInteractionHelper::sendMessage($this->chatId, 'Mohon maaf terjadi kesalahan pemrosesan informasi. Silahkan coba kembali.');
-            return;
+            foreach ($extractedData as $data) {
+                $chatGptService->saveAnswer((array) $data, $this->user ?? null);
+            }
+
+        } catch (\Throwable $th) {
+            if (!empty($this->chatId)) {
+                TelegramInteractionHelper::sendMessage($this->chatId, 'Mohon maaf terjadi kesalahan pemrosesan informasi. Silahkan coba kembali.');
+            }
+
+            Log::error($th->getMessage(), $th->getTrace());
         }
-
-        $chatGptService->saveAnswer($extractedData, $this->user ?? null);
 
         if (!empty($this->chatId)) {
             TelegramInteractionHelper::sendMessage($this->chatId, 'Informasi telah selesai kami proses.');

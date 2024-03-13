@@ -1,41 +1,43 @@
-{
-    "title": "[Title or main topic]",
-    "address": "[Address: can be predicted from description]",
-    "description": "[Main description : keep the new line]",
-    "price": "[
-        In Indonesian numerical notation, \"M\" indeed represents \"Milyar,\" which is equivalent to \"billion\" in English.
-        Sometimes the value is in decimal format.
-        The input pattern is "{number} {notation}"
-        Examples:
-        - 5 Milyar or 5 Miliar or 5M is 5000000000
-        - 1.7 M or 1,7 M is 1700000000
-        - 1.27 M or 1,27 M is 1270000000
-        - 2 Triliun or 2T is 2000000000000
-        - 2.3 Triliun or 2.3T is 2300000000000
-        - 2 Juta or 2JT is 2000000
-        Please pay attention to the price format especialy: 1.7 M or 1,7 M is not 1.7 but 1700000000
-        give the number only in output with zero notation
-    ]",
-    "lotSize": "[Lot size: Number]",
-    "buildingSize": "[Building size: Number]",
-    "carCount": "[Number of parking spaces]",
-    "bedroomCount": "[Number of bedrooms]",
-    "bathroomCount": "[Number of bathrooms]",
-    "floorCount": "[Number of floors]",
-    "electricPower" : "[Number of electric power]",
-    "facing": "[Facing direction: nullable; utara, selatan, barat, timur]",
-    "ownership": "[Ownership type: SHM|HGB|GIRIK]",
-    "city": "[City: city in Indonesia, can be predicted from description, just put city only]",
-    "pictureUrls": "[Array of image-type URLs]",
-    "contact": {
-        "name": "[Contact name: nullable; usually placed at the bottom of the message]",
-        "phoneNumber": "[Creator phone number: nullable; usually placed at the bottom of the message]",
-        "profilePictureURL": "[Contact profile picture URL: nullable]",
-        "sourceURL": "[Source URL: nullable; usually placed at the bottom of the message]",
-        "provider": "[Message creator: nullable; usually placed at the bottom of the message]"
-    },
-    "coordinate": {
-        "latitude": "[Latitude: get from city attribute; nullable]",
-        "longitude": "[Longitude: get from city attribute; nullable]"
+[
+    {
+        "title": "[Title or main topic]",
+        "address": "[Address]",
+        "description": "[Main description : keep the new line]",
+        "price": "[
+            In Indonesian numerical notation, \"M\" indeed represents \"Milyar,\" which is equivalent to \"billion\" in English.
+            Sometimes the value is in decimal format.
+            The input pattern is "{number} {notation}"
+            Examples:
+            - 5 Milyar or 5 Miliar or 5M is 5000000000
+            - 1.7 M or 1,7 M is 1700000000
+            - 1.27 M or 1,27 M is 1270000000
+            - 2 Triliun or 2T is 2000000000000
+            - 2.3 Triliun or 2.3T is 2300000000000
+            - 2 Juta or 2JT is 2000000
+            Please pay attention to the price format especialy: 1.7 M or 1,7 M is not 1.7 but 1700000000
+            give the number only in output with zero notation
+        ]",
+        "lotSize": "[Lot size: Number]",
+        "buildingSize": "[Building size: Number]",
+        "carCount": "[Number of parking spaces]",
+        "bedroomCount": "[Number of bedrooms]",
+        "bathroomCount": "[Number of bathrooms]",
+        "floorCount": "[Number of floors]",
+        "electricPower" : "[Number of electric power]",
+        "facing": "[Facing direction: nullable; utara, selatan, barat, timur]",
+        "ownership": "[Ownership type: SHM|HGB|GIRIK]",
+        "city": "[City: city in Indonesia, can be predicted from description, just put city only]",
+        "pictureUrls": "[Array of image-type URLs]",
+        "contact": {
+            "name": "[Contact name: nullable; usually placed at the bottom of the message]",
+            "phoneNumber": "[Creator phone number: nullable; usually placed at the bottom of the message]",
+            "profilePictureURL": "[Contact profile picture URL: nullable]",
+            "sourceURL": "[Source URL: nullable; usually placed at the bottom of the message]",
+            "provider": "[Message creator: nullable; usually placed at the bottom of the message]"
+        },
+        "coordinate": {
+            "latitude": "[Latitude: get from city attribute; nullable]",
+            "longitude": "[Longitude: get from city attribute; nullable]"
+        }
     }
-}
+]
