@@ -1,27 +1,33 @@
-## MLS Indonesia (TODO: brand)
+## Daftar Properti
 
-This is the backend system of MLS Indonesia:
+This is the backend system of Daftar Properti:
+
 * Telegram webhook
 * Web API
+* Public web pages
 
 ### Development
 
 Read [Laravel 10.x](https://laravel.com/docs/10.x).
 
 One-time set up:
+
 * Install composer for your OS
 * Run `composer install`
 * Set up local `.env` file (copy and edit from .env.example)
 * Run `php artisan key:generate`
 
 Running development server:
+
 * Run `php artisan serve`
 * development server listens at http://localhost:8000
 
 Running static analyzer:
+
 * Run `vendor/bin/phpstan analyse`
 
 Running tests:
+
 * Prepare test environment (see test-utils/)
 * Run `php artisan test`
 

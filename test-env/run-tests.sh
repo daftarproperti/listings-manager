@@ -1,5 +1,5 @@
 #!/bin/bash
-# Entry point of mls-sys feature tests.
+# Entry point of daftarproperti feature tests.
 
 composer install
 

@@ -5,7 +5,7 @@ return [
     'documentations' => [
         'default' => [
             'api' => [
-                'title' => 'MLS Swagger UI',
+                'title' => 'Daftar Properti Swagger UI',
             ],
 
             'routes' => [

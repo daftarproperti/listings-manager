@@ -1,4 +1,4 @@
-# Container for mls-sys feature tests.
+# Container for daftarproperti feature tests.
 
 FROM php:8.2.15-cli-bullseye
 
@@ -22,5 +22,5 @@ RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
 # Install Node.js and npm
 RUN apt-get update && apt-get install -y nodejs
 
-WORKDIR /usr/src/mls-sys
+WORKDIR /usr/src/daftarproperti
 COPY ./ ./
