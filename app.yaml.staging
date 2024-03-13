@@ -1,0 +1,38 @@
+service: default
+runtime: php
+env: flex
+
+# For staging, force single instance so it's easier to debug.
+manual_scaling:
+  instances: 1
+
+# based on https://cloud.google.com/appengine/docs/standard/lifecycle/support-schedule#php
+runtime_config:
+  operating_system: "ubuntu22"
+  runtime_version: "8.2"
+  document_root: public
+
+build_env_variables:
+  GOOGLE_COMPOSER_VERSION: 2.5.8
+
+# Contains the configurations for staging environment, except that the secret ones
+# (keys/passwords) need to be replaced.
+env_variables:
+  APP_DEBUG: false
+  APP_ENV: staging
+  APP_KEY: "appkey"
+  APP_NAME: "Daftar Properti Staging"
+  LOG_LEVEL: debug
+  CACHE_DRIVER: file
+  SESSION_DRIVER: cookie
+  MONGODB_SRV: "mongodb+srv://usernam:password@host/"
+  MONGODB_COLLECTION: "daftarproperti"
+  TELEGRAM_WEBHOOK_SECRET: "secret"
+  TELEGRAM_BOT_TOKEN: "123:abc"
+  CHATGPT_KEY: "secret"
+  GOOGLE_BUCKET_NAME: "daftarproperti-staging-image-bucket"
+  GOOGLE_CLIENT_ID: "secret"
+  GOOGLE_CLIENT_SECRET: "secret"
+  LOG_CHANNEL: "gcp"
+  DB_CONNECTION: "mongodb"
+  QUEUE_CONNECTION: "database"
