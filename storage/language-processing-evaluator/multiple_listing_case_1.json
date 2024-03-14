@@ -1,0 +1,86 @@
+[
+    {
+        "title": "Ruko 4 Lantai di Raya Kusuma bangsa Sby",
+        "address": "Raya Kusuma Bangsa",
+        "description": "Ruko 4 Lantai di Raya Kusuma bangsa Sby\n• Bentuk L. SHM.\n• LT: 80 m² (Lebar depan 4 m)\n• LB: 320 m² \n• 4400 W. PDAM\n• Hadap Timur\n• KM ada di tiap lantai + 2 unit AC.\n• Harga: 4 M nego",
+        "price": 4000000000,
+        "lotSize": 80,
+        "buildingSize": 320,
+        "carCount": 0,
+        "bedroomCount": 0,
+        "bathroomCount": 0,
+        "floorCount": 4,
+        "electricPower" : 4400,
+        "facing": "timur",
+        "ownership": "SHM",
+        "city": "Surabaya",
+        "pictureUrls": [],
+        "contact": {
+            "name": "Yohanes Gunalan ",
+            "phoneNumber": "085100313721",
+            "profilePictureURL": "",
+            "sourceURL": "",
+            "provider": "Xavier Marks"
+        },
+        "coordinate": {
+            "latitude": "",
+            "longitude": ""
+        }
+    },
+    {
+        "title": "RUKO di kompleks Central Business Park, Semolowaru MERR - Surabaya ",
+        "address": "Kompleks Central Business Park, Semolowaru",
+        "description": "RUKO di kompleks Central Business Park, Semolowaru MERR - Surabaya \n• 3 Lantai. HGB.  \n• LT: 5 x 19 (95 m²) / LB: 283 m²\n•  Ada 3 ruangan dan 3 kamar mandi\n• PDAM. PLN: 23.000 W \n• Harga: 6,5 M nego",
+        "price": 6500000000,
+        "lotSize": 95,
+        "buildingSize": 283,
+        "carCount": 0,
+        "bedroomCount": 3,
+        "bathroomCount": 3,
+        "floorCount": 3,
+        "electricPower" : 23000,
+        "facing": "utara",
+        "ownership": "HGB",
+        "city": "Surabaya",
+        "pictureUrls": [],
+        "contact": {
+            "name": "Yohanes Gunalan ",
+            "phoneNumber": "085100313721",
+            "profilePictureURL": "",
+            "sourceURL": "",
+            "provider": "Xavier Marks"
+        },
+        "coordinate": {
+            "latitude": "",
+            "longitude": ""
+        }
+    },
+    {
+        "title": "Ruko di nol jalan Praban, pusat kota Surabaya",
+        "address": "Jalan Praban, Surabaya",
+        "description": "Ruko di nol jalan Praban, pusat kota Surabaya\n• 4 Lantai. SHM  \n• LT: 5 x 17,5 (87 m²) / LB: 348 m²\n• PDAM. PLN: 5500 W\n• Hadap Selatan. 1 KM\n• Harga: 5 M nego",
+        "price": 5000000000,
+        "lotSize": 87,
+        "buildingSize": 348,
+        "carCount": 0,
+        "bedroomCount": 0,
+        "bathroomCount": 0,
+        "floorCount": 4,
+        "electricPower" : 5500,
+        "facing": "selatan",
+        "ownership": "SHM",
+        "city": "",
+        "pictureUrls": [],
+        "contact": {
+            "name": "Yohanes Gunalan ",
+            "phoneNumber": "085100313721",
+            "profilePictureURL": "",
+            "sourceURL": "",
+            "provider": "Xavier Marks"
+        },
+        "coordinate": {
+            "latitude": "",
+            "longitude": ""
+        }
+    }
+]

@@ -1,0 +1,28 @@
+[{
+    "title": "DIJUAL CEPAT\nTaman Puspa Raya\nCitraLand Surabaya Barat",
+    "address": "Taman Puspa Raya, CitraLand, Surabaya Barat",
+    "description": "⛔DIJUAL CEPAT\nTaman Puspa Raya\nCitraLand Surabaya Barat\n\nLuas tanah 128 meter (dimensi 8x16)\nLuas bangunan 200 meter (2 lantai)\nKamar tidur 3+1\nKamar mandi 2+1\nHadap selatan\nListrik: 2200 Watt\nSHM\n\nbaru renovasi\nfull bangunan\nbonus kitchen set dan water heater\ninclude canopi dan carport\nlokasi strategis dekat pasar modern\n\nHARGA 2.650 M \n\nAgent Property \nBeatrix Marina \nXavier Marks CitraLand Boulevard\n081252623518",
+    "price": 2650000000,
+    "lotSize": 128,
+    "buildingSize": 200,
+    "carCount": 0,
+    "bedroomCount": 4,
+    "bathroomCount": 3,
+    "floorCount": 2,
+    "electricPower" : 2200,
+    "facing": "selatan",
+    "ownership": "SHM",
+    "city": "Citraland",
+    "pictureUrls": [],
+    "contact": {
+        "name": "Beatrix Marina",
+        "phoneNumber": "081252623518",
+        "profilePictureURL": "",
+        "sourceURL": "",
+        "provider": ""
+    },
+    "coordinate": {
+        "latitude": "",
+        "longitude": ""
+    }
+}]

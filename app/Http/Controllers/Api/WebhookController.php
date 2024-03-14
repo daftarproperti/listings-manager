@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\DTO\Telegram\Update;
+use App\Helpers\Extractor;
 use App\Helpers\TelegramInteractionHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Services\ReceiveMessageService;
@@ -52,26 +53,13 @@ class WebhookController extends Controller
                 $pictureUrls = $receiveMessageService->pictureUrls($update->message->photo);
             }
 
-            $template = storage_path('HousePropertyGptTemplate.txt');
-            $templateString = file_get_contents($template);
-
             $baseMessage = sprintf(
                 '%s%s',
                 $update->message->text ?? '',
                 !empty($pictureUrls) ? "\n Picture Urls:\n" . implode("\n", $pictureUrls) . "\n" : ''
             );
 
-            $promptMessage = '
-                Please provide property information from the following message:' . "\n" .
-                $baseMessage . "\n\n" .
-                'with the following format:' . "\n\n" .
-                $templateString. "\n\n" .
-                'Your parser should be robust enough to handle variations in formatting and wording commonly found in such messages.'. "\n\n" .
-                'Messages can contain more than one property informations.' . "\n\n" .
-                'For multiple properties use numbers or ----- or === as separator in messages.' . "\n\n" .
-                'Each properties has own title and description.' . "\n\n" .
-                'Give me the json only.
-            ';
+            $promptMessage = Extractor::generatePrompt($baseMessage);
 
             $chatId = isset($update->message->chat) ? $update->message->chat->id : null;
 
