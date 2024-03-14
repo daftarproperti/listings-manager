@@ -2,9 +2,12 @@
 
 namespace App\Models;
 
+use App\Helpers\Assert;
+use App\Helpers\TelegramPhoto;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use MongoDB\Laravel\Eloquent\Model;
 use MongoDB\Laravel\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 /**
  * @property string $id
@@ -73,5 +76,38 @@ class Listing extends Model
             default:
                 return null;
         }
+    }
+
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Casts\Attribute<array<string>, array<string>>
+    */
+    protected function pictureUrls(): Attribute
+    {
+        return Attribute::make(
+            get: function ($value) {
+                if (is_array($value)) {
+                    return TelegramPhoto::reformatPictureUrlsIntoGcsUrls($value);
+                } else {
+                    return [];
+                }
+            }
+        );
+    }
+
+    /**
+     * put fileName only into DB
+     * @param array<string> $value
+     * @return void
+     */
+    public function setPictureUrlsAttribute(array $value) : void
+    {
+        //to handle if someone still using old convention
+        $pictureUrls = [];
+        foreach ($value as $url) {
+            $pictureUrls[] = TelegramPhoto::getFileNameFromUrl($url);
+        }
+
+        $this->attributes['pictureUrls'] = $pictureUrls;
     }
 }

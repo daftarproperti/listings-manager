@@ -2,10 +2,11 @@
 
 namespace App\Models;
 
+use App\Helpers\TelegramPhoto;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use MongoDB\Laravel\Eloquent\Model;
 use MongoDB\Laravel\Eloquent\SoftDeletes;
-use Symfony\Component\Serializer\Serializer;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 /**
  * @property string $id
@@ -74,5 +75,21 @@ class Property extends Model
             default:
                 return null;
         }
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Casts\Attribute<array<string>, array<string>>
+    */
+    protected function pictureUrls(): Attribute
+    {
+        return Attribute::make(
+            get: function ($value) {
+                if (is_array($value)) {
+                    return TelegramPhoto::reformatPictureUrlsIntoGcsUrls($value);
+                } else {
+                    return [];
+                }
+            }
+        );
     }
 }
