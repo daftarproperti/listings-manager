@@ -24,7 +24,7 @@ definitions:
 
 pipelines:
   branches:
-    main:
+    dev:
       - step: *build-step
       - step:
           name: Deploy to GAE dev environment
