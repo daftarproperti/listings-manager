@@ -36,7 +36,7 @@ class ChatGptService
         if (!$response->successful()) {
             $errorCode = $response->status();
             $errorMessage = $response->body();
-            return $errorMessage . ' (' . $errorCode . ')';
+            throw new \ErrorException($response->body());
         }
 
         /** @var array<array<array<array<string>>>> $responseData */

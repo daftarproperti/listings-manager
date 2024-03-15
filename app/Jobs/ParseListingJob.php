@@ -40,6 +40,8 @@ class ParseListingJob implements ShouldQueue
 
             $answer = $chatGptService->seekAnswer($this->message);
 
+            Log::debug("Answer from LLM = " . $answer);
+
             $extractedData = (array) json_decode($answer, true);
 
             foreach ($extractedData as $data) {
@@ -51,7 +53,9 @@ class ParseListingJob implements ShouldQueue
                 TelegramInteractionHelper::sendMessage($this->chatId, 'Mohon maaf terjadi kesalahan pemrosesan informasi. Silahkan coba kembali.');
             }
 
-            Log::error($th->getMessage(), $th->getTrace());
+            Log::error("Error caught when trying to talk to LLM:");
+            Log::error($th);
+            return;
         }
 
         if (!empty($this->chatId)) {
