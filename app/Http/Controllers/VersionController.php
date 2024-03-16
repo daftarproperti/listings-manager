@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class VersionController extends Controller
 {
-    public function index()
+    public function index(): Response
     {
         return response()->json([
             'version' => config('app.version'),
