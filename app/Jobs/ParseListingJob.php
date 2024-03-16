@@ -10,6 +10,7 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
 use App\Helpers\TelegramInteractionHelper;
 use App\Http\Services\ChatGptService;
+use App\Models\Listing;
 use App\Models\ListingUser;
 
 class ParseListingJob implements ShouldQueue
@@ -44,10 +45,15 @@ class ParseListingJob implements ShouldQueue
 
             $extractedData = (array) json_decode($answer, true);
 
-            foreach ($extractedData as $data) {
-                $chatGptService->saveAnswer((array) $data, $this->user ?? null);
+            // Sometimes LLM returns a single object instead of array of objects, in that case wrap it in an array
+            // because we want to process the answer as array of multiple listings below.
+            if (!is_array($extractedData)) {
+                $extractedData = [$extractedData];
             }
 
+            foreach ($extractedData as $data) {
+                $this->saveAnswer((array) $data, $this->user ?? null);
+            }
         } catch (\Throwable $th) {
             if (!empty($this->chatId)) {
                 TelegramInteractionHelper::sendMessage($this->chatId, 'Mohon maaf terjadi kesalahan pemrosesan informasi. Silahkan coba kembali.');
@@ -61,5 +67,30 @@ class ParseListingJob implements ShouldQueue
         if (!empty($this->chatId)) {
             TelegramInteractionHelper::sendMessage($this->chatId, 'Informasi telah selesai kami proses.');
         }
+    }
+
+    /**
+     * @param array<mixed> $data
+     */
+    public function saveAnswer(array $data, ListingUser $user = null): ?Listing
+    {
+        $listing = new Listing();
+
+        foreach ($data as $key => $value) {
+            if (is_string($value)) {
+                $listing->$key = $value;
+            }
+        }
+
+        if ($user) {
+            $listing->user = $user;
+        }
+
+        //set default to public view
+        $listing->isPrivate = false;
+
+        $listing->save();
+
+        return $listing;
     }
 }

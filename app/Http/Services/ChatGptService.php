@@ -3,8 +3,6 @@
 namespace App\Http\Services;
 
 use App\Helpers\Assert;
-use App\Models\Listing;
-use App\Models\ListingUser;
 use Illuminate\Support\Facades\Http;
 
 class ChatGptService
@@ -34,56 +32,11 @@ class ChatGptService
             ]);
 
         if (!$response->successful()) {
-            $errorCode = $response->status();
-            $errorMessage = $response->body();
             throw new \ErrorException($response->body());
         }
 
         /** @var array<array<array<array<string>>>> $responseData */
         $responseData = $response->json();
         return $responseData['choices'][0]['message']['content'];
-    }
-
-    /**
-     * @param array<mixed> $data
-     */
-    public function saveAnswer(array $data, ListingUser $user = null): ?Listing
-    {
-        $listing = new Listing();
-
-        foreach ($data as $key => $value) {
-            if (is_string($value)) {
-                $listing->$key = $this->formatValue($key, $value);
-            } else {
-                $listing->$key = $value;
-            }
-        }
-
-        if ($user) {
-            $listing->user = $user;
-        }
-
-        //set default to public view
-        $listing->isPrivate = false;
-
-        $listing->save();
-
-        return $listing;
-    }
-
-    private function formatValue(string $key, string $value): int|float|string
-    {
-        $integerFields = ['lotSize', 'buildingSize', 'carCount', 'bedroomCount', 'bathroomCount', 'floorCount', 'electricPower'];
-        $floatFields = ['price'];
-
-        if (in_array($key, $integerFields)) {
-            return (int) $value;
-        }
-
-        if (in_array($key, $floatFields)) {
-            return (float) $value;
-        }
-
-        return $value;
     }
 }

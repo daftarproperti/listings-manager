@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Helpers\Assert;
 use App\Helpers\TelegramPhoto;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use MongoDB\Laravel\Eloquent\Model;
@@ -14,14 +13,14 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
  * @property string $title
  * @property string $address
  * @property string $description
- * @property string $price
- * @property string $lotSize
- * @property string $buildingSize
- * @property string $carCount
- * @property string $bedroomCount
- * @property string $bathroomCount
- * @property string $floorCount
- * @property string $electricPower
+ * @property float $price
+ * @property int $lotSize
+ * @property int $buildingSize
+ * @property int $carCount
+ * @property int $bedroomCount
+ * @property int $bathroomCount
+ * @property int $floorCount
+ * @property int $electricPower
  * @property string $facing
  * @property string $ownership
  * @property string $city
@@ -44,6 +43,14 @@ class Listing extends Model
 
     protected $casts = [
         'user' => ListingUser::class,
+        'buildingSize' => 'int',
+        'bedroomCount' => 'int',
+        'bathroomCount' => 'int',
+        'lotSize' => 'int',
+        'carCount' => 'int',
+        'floorCount' => 'int',
+        'electricPower' => 'int',
+        'price' => 'float',
     ];
 
     public function getUserCanEditAttribute(): bool
@@ -97,17 +104,28 @@ class Listing extends Model
 
     /**
      * put fileName only into DB
-     * @param array<string> $value
      * @return void
      */
-    public function setPictureUrlsAttribute(array $value) : void
+    public function setPictureUrlsAttribute(mixed $value) : void
     {
         //to handle if someone still using old convention
         $pictureUrls = [];
-        foreach ($value as $url) {
-            $pictureUrls[] = TelegramPhoto::getFileNameFromUrl($url);
+
+        if (is_array($value)) {
+            foreach ($value as $url) {
+                $pictureUrls[] = TelegramPhoto::getFileNameFromUrl($url);
+            }
         }
 
         $this->attributes['pictureUrls'] = $pictureUrls;
+    }
+
+    // Cast every attribute to the right type before going into DB.
+    public function setAttribute($key, $value)
+    {
+        if ($this->hasCast($key)) {
+            $value = $this->castAttribute($key, $value);
+        }
+        return parent::setAttribute($key, $value);
     }
 }
