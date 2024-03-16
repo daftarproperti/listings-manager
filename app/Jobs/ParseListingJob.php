@@ -77,9 +77,7 @@ class ParseListingJob implements ShouldQueue
         $listing = new Listing();
 
         foreach ($data as $key => $value) {
-            if (is_string($value)) {
-                $listing->$key = $value;
-            }
+            $listing->$key = $value;
         }
 
         if ($user) {
