@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\GoogleLoginController;
 use App\Http\Controllers\Admin\MembersController;
+use App\Http\Controllers\VersionController;
 use App\Http\Controllers\Web\Public\AgentsController;
 use App\Http\Controllers\Web\Public\ListingsController;
 use Illuminate\Support\Facades\Route;
@@ -31,6 +32,8 @@ Route::group(['prefix' => 'admin'], function () {
         Route::get('/login/google/callback', [GoogleLoginController::class, 'handleGoogleCallback']);
     });
 });
+
+Route::get('/version', [VersionController::class, 'index']);
 
 // Implicitly bind ID with corresponding model
 // Ref: https://laravel.com/docs/10.x/routing#implicit-binding
