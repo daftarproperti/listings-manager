@@ -4,14 +4,17 @@ namespace App\Http\Controllers\Web\Public;
 
 use App\Http\Controllers\Controller;
 use App\Models\Listing;
-use Inertia\Inertia;
-use Inertia\Response;
+use App\Models\TelegramUser;
+use Illuminate\Contracts\View\View;
 
 class ListingsController extends Controller
 {
-    public function detail(Listing $listing): Response
+    public function detail(Listing $listing): View
     {
-        return Inertia::render('Public/Listing', [
+        $user = TelegramUser::where('user_id', $listing->user->userId ?? '')->first();
+
+        return view('Public/Listing', [
+            'agent' => $user,
             'listing' => $listing,
         ]);
     }

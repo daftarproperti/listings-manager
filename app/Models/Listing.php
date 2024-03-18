@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Helpers\NumFormatter;
 use App\Helpers\TelegramPhoto;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use MongoDB\Laravel\Eloquent\Model;
@@ -13,6 +14,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
  * @property string $title
  * @property string $address
  * @property string $description
+ * @property string $formatted_price
  * @property float $price
  * @property int $lotSize
  * @property int $buildingSize
@@ -53,6 +55,11 @@ class Listing extends Model
         'price' => 'float',
     ];
 
+    public function getFormattedPriceAttribute(): string
+    {
+        return NumFormatter::numberFormatShort($this->price);
+    }
+
     public function getUserCanEditAttribute(): bool
     {
         $currentUserId = app(TelegramUser::class)->user_id ?? null;
@@ -75,7 +82,7 @@ class Listing extends Model
             return null;
         }
 
-        switch($userSource) {
+        switch ($userSource) {
             case 'telegram':
                 $teleUser = TelegramUser::where('user_id', $user->userId)->first();
                 $profile = $teleUser->profile ?? null;
@@ -88,7 +95,7 @@ class Listing extends Model
 
     /**
      * @return \Illuminate\Database\Eloquent\Casts\Attribute<array<string>, array<string>>
-    */
+     */
     protected function pictureUrls(): Attribute
     {
         return Attribute::make(
@@ -106,7 +113,7 @@ class Listing extends Model
      * put fileName only into DB
      * @return void
      */
-    public function setPictureUrlsAttribute(mixed $value) : void
+    public function setPictureUrlsAttribute(mixed $value): void
     {
         //to handle if someone still using old convention
         $pictureUrls = [];

@@ -6,12 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Models\TelegramUser;
 use App\Models\Resources\ListingCollection;
 use App\Repositories\ListingRepository;
-use Inertia\Inertia;
-use Inertia\Response;
+use Illuminate\Contracts\View\View;
 
 class AgentsController extends Controller
 {
-    public function detail(TelegramUser $telegramUser): Response
+    public function detail(TelegramUser $telegramUser): View
     {
         $userProfile = $telegramUser->profile;
         if(!$userProfile || !isset($userProfile->isPublicProfile) || !$userProfile->isPublicProfile) {
@@ -27,7 +26,7 @@ class AgentsController extends Controller
         $listingCollections = new ListingCollection($listingRepo->list($filter));
         $listings = $listingCollections->collection;
 
-        return Inertia::render('Public/Agent', [
+        return view('Public/Agent', [
             'agent' => $telegramUser,
             'listings' => $listings,
         ]);
