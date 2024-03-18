@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Models\Listing;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Support\Str;
+use MongoDB\BSON\Regex;
 
 class ListingRepository
 {
@@ -23,8 +24,11 @@ class ListingRepository
 
         $query->when(isset($filters['q']), function ($query) use ($filters) {
             $query->where(function ($q) use ($filters) {
-                $q->where('title', 'like', '%' . $filters['q'] . '%')
-                    ->orWhere('description', 'like', '%' . $filters['q'] . '%');
+                $q->where('title', 'ilike', '%' . $filters['q'] . '%')
+                    ->orWhere(function ($q) use ($filters) {
+                        // Explicitly define regexp and options to filter text with newline
+                        $q->where('description', 'regexp', new Regex('^.*' . $filters['q'] . '.*', 'is'));
+                    });
             });
         });
 
