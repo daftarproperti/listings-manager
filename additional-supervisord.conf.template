@@ -3,6 +3,8 @@
 
 [program:laravel-queue]
 command=php artisan queue:work --tries=3 --daemon
+process_name=%(program_name)s_%(process_num)02d
+numprocs=5
 autostart=true
 autorestart=true
 stdout_logfile = /dev/stdout
