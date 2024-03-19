@@ -61,11 +61,7 @@ class TelegramPhoto
         $gcsUrls = [];
         foreach ($pictureUrls as $url) {
                 $fileName = TelegramPhoto::getFileNameFromUrl($url); // need this to handle old data
-                $gcsUrls[] = sprintf(
-                    'https://storage.googleapis.com/%s/%s',
-                    Assert::string(config('services.google.bucket_name')),
-                    Assert::string($fileName)
-                );
+                $gcsUrls[] = TelegramPhoto::getGcsUrlFromFileName($fileName);
         }
         return $gcsUrls;
     }
@@ -87,5 +83,19 @@ class TelegramPhoto
         }
 
         return end($path);
+    }
+
+    /**
+     * Get the GCS URL from the provided file name.
+     * @param string $fileName
+     * @return string
+     */
+    public static function getGcsUrlFromFileName(string $fileName): string
+    {
+        return sprintf(
+            'https://storage.googleapis.com/%s/%s',
+            Assert::string(config('services.google.bucket_name')),
+            Assert::string($fileName)
+        );
     }
 }
