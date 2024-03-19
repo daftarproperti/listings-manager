@@ -20,7 +20,7 @@ build_env_variables:
 
 network:
   # Join internal VPC for access to other GCP resources, e.g. internal database server.
-  name: projects/daftar-properti-dev/global/networks/default
+  name: projects/daftar-properti-dev-2/global/networks/default
 
 # Contains the configurations for dev environment, except that the secret ones
 # (keys/passwords) need to be replaced.
@@ -34,10 +34,10 @@ env_variables:
   CACHE_DRIVER: file
   SESSION_DRIVER: cookie
   MONGODB_SRV: "mongodb+srv://usernam:password@host/"
-  MONGODB_DATABASE: "daftarproperti-dev"
+  MONGODB_DATABASE: "daftarproperti-dev-2"
   TELEGRAM_WEBHOOK_SECRET: "secret"
   TELEGRAM_BOT_TOKEN: "123:abc"
-  GOOGLE_PROJECT_ID: "daftar-properti-dev"
+  GOOGLE_PROJECT_ID: "daftar-properti-dev-2"
   GOOGLE_QUEUE_NAME: "dp-noretry"
   GOOGLE_QUEUE_LOCATION: "asia-southeast2"
   CHATGPT_KEY: "secret"

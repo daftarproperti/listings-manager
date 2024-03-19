@@ -43,7 +43,7 @@ pipelines:
             - pipe: atlassian/google-app-engine-deploy:1.5.0
               variables:
                 KEY_FILE: $KEY_FILE
-                PROJECT: daftar-properti-dev
+                PROJECT: daftar-properti-dev-2
                 STOP_PREVIOUS_VERSION: "true"
 
     staging:
