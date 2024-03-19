@@ -13,7 +13,7 @@ class LanguageProcessingEvaluator extends Command
      *
      * @var string
      */
-    protected $signature = 'app:language-processing-evaluator';
+    protected $signature = 'app:language-processing-evaluator {case?}';
 
     /**
      * The console command description.
@@ -30,16 +30,25 @@ class LanguageProcessingEvaluator extends Command
         $totalAccuracy = 0;
 
         $dataFiles = $this->getMessageFiles('language-processing-evaluator');
+
+        $case = $this->argument('case');
+        if ($case) {
+            $dataFiles = [
+                storage_path('language-processing-evaluator') . "/$case.txt"
+            ];
+        }
+
         foreach ($dataFiles as $dataFile) {
+            $this->line("Evaluating $dataFile");
             $rawMessage = file_get_contents($dataFile);
             if (!$rawMessage) {
-                echo "Can not read raw messages. Aborting . . .";
+                $this->error("Can not read raw messages. Aborting...");
                 return;
             }
 
             $listings = Extractor::extractListingFromMessage($rawMessage);
             if ($listings === null) {
-                echo "Error extracting listings from raw message. Skipping . . .";
+                $this->error("Error extracting listings from raw message. Skipping...");
                 continue;
             }
 
@@ -48,13 +57,13 @@ class LanguageProcessingEvaluator extends Command
 
             $jsonData = file_get_contents($jsonDataFile);
             if ($jsonData === false) {
-                echo "Error reading JSON file: " . $jsonDataFile . ". Aborting . . .";
+                $this->error("Error reading JSON file: $jsonDataFile. Aborting...");
                 return;
             }
 
             $expectedListings = json_decode($jsonData, true);
             if ($expectedListings === null) {
-                echo "Error decoding JSON from file: " . $jsonDataFile . ". Aborting . . .";
+                $this->error("Error decoding JSON from file: $jsonDataFile. Aborting...");
                 return;
             }
 
@@ -69,11 +78,11 @@ class LanguageProcessingEvaluator extends Command
 
             $fileParts = explode('/', $dataFile);
             $fileName = end($fileParts);
-            echo "Accuracy for " . $fileName . " is " . $accuracy . "%\n\n";
+            $this->info("Accuracy for $fileName is $accuracy%.\n");
         }
 
         $avgAccuracy = $totalAccuracy / count($dataFiles);
-        echo "Avg accuracy is " . $avgAccuracy . "%\n";
+        $this->info("Avg accuracy is $avgAccuracy.\n");
     }
 
     /**
@@ -90,7 +99,7 @@ class LanguageProcessingEvaluator extends Command
             'price', 'lotSize', 'buildingSize', 'carCount', 'bedroomCount',
             'bathroomCount', 'floorCount', 'electricPower'
         ];
-    
+
         $iterationAccuracy = 0;
 
         // Iterate through smallest number of objects to avoid out of index
@@ -110,11 +119,11 @@ class LanguageProcessingEvaluator extends Command
                 $accuracy = $this->calculateFieldAccuracy($field, $listing, $expectedListing);
                 $totalAccuracy += $accuracy;
 
-                echo "Accuracy for field <$field> is $accuracy%\n";
+                $this->line("Accuracy for field <$field> is $accuracy%.");
             }
             $iterationAccuracy += $totalAccuracy / count($fields);
         }
-        
+
         return $iterationAccuracy / count($expectedListings);
     }
 
@@ -166,9 +175,9 @@ class LanguageProcessingEvaluator extends Command
 
             return 0;
         }
-        
+
         $numberAccuracy = (1 - abs($guessedNumber - $correctNumber) / $correctNumber) * 100;
-        
+
         // Handle if accuracy exceed -100 or 100
         // This means that correct and guessed number are too far apart and hence is equal 0 percent accuracy
         if (abs($numberAccuracy) > 100) {
