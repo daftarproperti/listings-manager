@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use MongoDB\Laravel\Eloquent\Model;
 use MongoDB\Laravel\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Collection;
 
 /**
  * @property string $id
@@ -44,6 +45,7 @@ class Property extends Model
     protected $casts = [
         'user' => PropertyUser::class,
     ];
+
 
     public function getUserCanEditAttribute(): bool
     {
@@ -88,6 +90,22 @@ class Property extends Model
                     return TelegramPhoto::reformatPictureUrlsIntoGcsUrls($value);
                 } else {
                     return [];
+                }
+            }
+        );
+    }
+
+     /**
+     * @return \Illuminate\Database\Eloquent\Casts\Attribute<array<string>, array<string>>
+    */
+    protected function listings(): Attribute
+    {
+        return Attribute::make(
+            get: function ($value) {
+                if (is_array($value)) {
+                    return Listing::find($value);
+                } else {
+                    return new Collection();
                 }
             }
         );

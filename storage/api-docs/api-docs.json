@@ -1181,45 +1181,11 @@
                         },
                         "type": "object"
                     },
-                    "contacts": {
-                        "properties": {
-                            "name": {
-                                "type": "string"
-                            },
-                            "profilePictureURL": {
-                                "type": "string"
-                            },
-                            "phoneNumber": {
-                                "type": "string"
-                            },
-                            "sourceURL": {
-                                "type": "string"
-                            },
-                            "provider": {
-                                "type": "string"
-                            }
-                        },
-                        "type": "object"
-                    },
-                    "user": {
-                        "properties": {
-                            "name": {
-                                "type": "string"
-                            },
-                            "profilePictureURL": {
-                                "type": "string"
-                            },
-                            "phoneNumber": {
-                                "type": "string"
-                            }
-                        },
-                        "type": "object"
-                    },
-                    "userCanEdit": {
-                        "type": "boolean"
-                    },
-                    "isPrivate": {
-                        "type": "boolean"
+                    "listings": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Listing"
+                        }
                     }
                 },
                 "type": "object"

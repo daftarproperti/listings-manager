@@ -34,20 +34,7 @@ class PropertyResource extends JsonResource
      *      @OA\Property(property="latitude",type="integer"),
      *      @OA\Property(property="longitude",type="integer")
      * )
-     * @OA\Property(property="contacts",type="object",
-     *      @OA\Property(property="name",type="string"),
-     *      @OA\Property(property="profilePictureURL",type="string"),
-     *      @OA\Property(property="phoneNumber",type="string"),
-     *      @OA\Property(property="sourceURL",type="string"),
-     *      @OA\Property(property="provider",type="string")
-     * )
-     * @OA\Property(property="user",type="object",
-     *      @OA\Property(property="name",type="string"),
-     *      @OA\Property(property="profilePictureURL",type="string"),
-     *      @OA\Property(property="phoneNumber",type="string"),
-     * )
-     * @OA\Property(property="userCanEdit",type="boolean")
-     * @OA\Property(property="isPrivate",type="boolean")
+     * @OA\Property(property="listings",type="array",@OA\Items(ref="#/components/schemas/Listing"))
      * @return array<mixed>
      */
     public function toArray($request)
@@ -76,20 +63,7 @@ class PropertyResource extends JsonResource
                 'latitude' => $prop->latitude,
                 'longitude' => $prop->longitude,
             ],
-            'contacts' => [
-                'name' => $prop->contacts ? ($prop->contacts['name'] ?? null) :  null,
-                'phoneNumber' => $prop->contacts ? ($prop->contacts['phoneNumber'] ?? null) : null,
-                'profilePictureURL' => $prop->contacts ? ($prop->contacts['profilePictureURL'] ?? null) : null,
-                'sourceURL' =>  $prop->contacts ? ($prop->contacts['sourceURL'] ?? null) : null,
-                'provider' =>  $prop->contacts ? ($prop->contacts['provider'] ?? null) : null,
-            ],
-            'user' => [
-                'name' => $prop->user_profile ? $prop->user_profile->name : null,
-                'phoneNumber' => $prop->user_profile ? $prop->user_profile->phoneNumber : null,
-                'profilePictureURL' => $prop->user_profile ? $prop->user_profile->picture : null
-            ],
-            'userCanEdit' => $prop->user_can_edit,
-            'isPrivate' => $prop->isPrivate ?? false
+            'listings' => ListingResource::collection($prop->listings),
         ];
     }
 }
