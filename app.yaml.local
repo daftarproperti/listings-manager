@@ -25,7 +25,7 @@ env_variables:
   SESSION_DRIVER: "file"
   MONGODB_SRV: "mongodb://admin:testpassword@host.docker.internal/?authSource=admin"
   MONGODB_SSL: "false"
-  MONGODB_COLLECTION: "daftarproperti"
+  MONGODB_DATABASE: "daftarproperti"
   TELEGRAM_WEBHOOK_SECRET: "secret"
   TELEGRAM_BOT_TOKEN: "123:abc"
   GOOGLE_PROJECT_ID: "daftar-properti-local"

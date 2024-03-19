@@ -27,7 +27,7 @@ env_variables:
   CACHE_DRIVER: file
   SESSION_DRIVER: cookie
   MONGODB_SRV: "mongodb+srv://usernam:password@host/"
-  MONGODB_COLLECTION: "daftarproperti"
+  MONGODB_DATABASE: "daftarproperti"
   TELEGRAM_WEBHOOK_SECRET: "secret"
   TELEGRAM_BOT_TOKEN: "123:abc"
   CHATGPT_KEY: "secret"

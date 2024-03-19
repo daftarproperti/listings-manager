@@ -99,7 +99,7 @@ return [
             'options'  => [
                 'ssl' => env('MONGODB_SSL', true),
             ],
-            'database' => env('MONGODB_COLLECTION', 'daftarproperti'),
+            'database' => env('MONGODB_DATABASE', 'daftarproperti'),
         ]
 
     ],
