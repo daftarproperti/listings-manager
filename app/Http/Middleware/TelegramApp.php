@@ -69,6 +69,7 @@ class TelegramApp
         $telegramUser = TelegramUser::where('user_id', (int)$user['id'])
             ->firstOrCreate([
                 'user_id' => (int)$user['id'],
+            ], [
                 'first_name' => $user['first_name'],
                 'last_name' => Arr::get($user, 'last_name'),
                 'username' => Arr::get($user, 'username'),
