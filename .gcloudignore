@@ -13,6 +13,8 @@
 /storage/*.key
 /storage/gpc-auth.json
 /storage/pail
+# large data, not needed for deployment
+/storage/language-processing-evaluator
 /vendor
 .env
 .env.backup

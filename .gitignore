@@ -4,7 +4,8 @@
 /public/build
 /public/hot
 /public/storage
-/public/app # tele-app deployment location
+# tele-app deployment location
+/public/app
 /storage/*.key
 /storage/gpc-auth.json
 /storage/pail
