@@ -127,12 +127,28 @@ class Listing extends Model
         $this->attributes['pictureUrls'] = $pictureUrls;
     }
 
+    /**
+     * force set city if listing city configuration is filled
+     * @param string $value
+     * @return void
+    */
+
+    public function setCityAttribute($value)
+    {
+        $listingCity = config('services.default_listing_city');
+
+        if (!empty($listingCity)) {
+            $this->attributes['city'] = $listingCity;
+        }
+    }
+
     // Cast every attribute to the right type before going into DB.
     public function setAttribute($key, $value)
     {
         if ($this->hasCast($key)) {
             $value = $this->castAttribute($key, $value);
         }
+
         return parent::setAttribute($key, $value);
     }
 }

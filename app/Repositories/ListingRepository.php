@@ -120,6 +120,10 @@ class ListingRepository
             $query->where('electricPower', (int) $filters['electricPower']);
         });
 
+        $query->when(isset($filters['city']), function ($query) use ($filters) {
+            $query->where('city', $filters['city']);
+        });
+
         $query->when(isset($filters['sort']), function ($query) use ($filters) {
             $order = isset($filters['order']) &&
                 in_array(strtolower($filters['order']), ['asc', 'desc']) ? strtolower($filters['order']) : 'asc';

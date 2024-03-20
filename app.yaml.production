@@ -37,3 +37,4 @@ env_variables:
   LOG_CHANNEL: "gcp"
   DB_CONNECTION: "mongodb"
   QUEUE_CONNECTION: "database"
+  DEFAULT_LISTING_CITY:"Surabaya"

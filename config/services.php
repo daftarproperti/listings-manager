@@ -50,6 +50,7 @@ return [
         // Socialite can resolve the relative URL to absolute:
         // https://github.com/laravel/socialite/blob/v5.12.1/src/SocialiteManager.php#L219
         'redirect' => '/admin/login/google/callback',
-    ]
+    ],
 
+    'default_listing_city' => env('DEFAULT_LISTING_CITY', ''),
 ];

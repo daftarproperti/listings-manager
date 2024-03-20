@@ -268,7 +268,8 @@ class ListingsController extends Controller
         }
 
         if (boolval($filters['collection'])) {
-            $currentUserId = app(TelegramUser::class)->user_id ?? null;
+            $telegramUser = app(TelegramUser::class);
+            $currentUserId = $telegramUser->user_id ?? null;
             $filters['userId'] = $currentUserId;
         }
 

@@ -33,3 +33,4 @@ env_variables:
   GOOGLE_QUEUE_LOCATION: "asia-southeast2"
   CHATGPT_KEY: "secret"
   GOOGLE_BUCKET_NAME: "xxx"
+  DEFAULT_LISTING_CITY:"Surabaya"
