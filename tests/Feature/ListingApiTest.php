@@ -34,15 +34,14 @@ class ListingApiTest extends TestCase
         );
     }
 
-    private function addListing(string $title, int $userId): Listing
+    private function addListing(string $title, int $userId, array $fields = []): Listing
     {
-        $listingUser = new ListingUser();
-        $listingUser->userId = $userId;
-        $listing = new Listing();
-        $listing->title = $title;
-        $listing->user = $listingUser;
-        $listing->save();
-        return $listing;
+        return Listing::factory()->create([
+            'user' => [
+                'userId' => $userId,
+            ],
+            'title' => $title,
+        ] + $fields);
     }
 
     protected function setUp(): void
@@ -82,6 +81,46 @@ class ListingApiTest extends TestCase
                 ],
                 [
                     "title" => "Dijual Rumah",
+                ],
+            ],
+        ]);
+    }
+
+    public function test_can_list_listings_with_filter_q(): void
+    {
+        $this->addListing("Dijual Rumah", $this->fakeUserId);
+        $this->addListing("Dijual Gedung", $this->fakeUserId);
+
+        $response = $this->withHeaders([
+            'x-init-data' => http_build_query($this->generate_telegram_init_data()),
+        ])->get('/api/tele-app/listings?q=rumah');
+
+        $response->assertStatus(200);
+
+        $response->assertJson([
+            "listings" => [
+                [
+                    "title" => "Dijual Rumah",
+                ],
+            ],
+        ]);
+    }
+
+    public function test_can_list_listings_with_filter_price(): void
+    {
+        $this->addListing("Dijual Rumah 1M", $this->fakeUserId, ['price' => 1000000000]);
+        $this->addListing("Dijual Gedung 2M", $this->fakeUserId, ['price' => 2000000000]);
+
+        $response = $this->withHeaders([
+            'x-init-data' => http_build_query($this->generate_telegram_init_data()),
+        ])->get('/api/tele-app/listings?price[min]=1500000000');
+
+        $response->assertStatus(200);
+
+        $response->assertJson([
+            "listings" => [
+                [
+                    "title" => "Dijual Gedung 2M",
                 ],
             ],
         ]);
@@ -164,5 +203,4 @@ class ListingApiTest extends TestCase
 
         $response->assertStatus(422);
     }
-
 }

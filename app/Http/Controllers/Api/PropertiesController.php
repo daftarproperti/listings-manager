@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\DTO\FilterSet;
 use App\Http\Controllers\Controller;
 use App\Models\Property;
 use App\Models\Resources\PropertyCollection;
@@ -232,7 +233,7 @@ class PropertiesController extends Controller
 
     public function index(Request $request, PropertyRepository $repository): JsonResource
     {
-        $filters = $request->only([
+        $filterSet = FilterSet::from($request->only([
             'q',
             'price',
             'type',
@@ -246,14 +247,14 @@ class PropertiesController extends Controller
             'electricPower',
             'sort',
             'order'
-        ]);
+        ]));
 
-        if (!isset($filters['order']) && !isset($filters['sort'])) {
-            $filters['sort'] = 'created_at';
-            $filters['order'] = 'desc';
+        if (!isset($filterSet->order) && !isset($filterSet->sort)) {
+            $filterSet->sort = 'created_at';
+            $filterSet->order = 'desc';
         }
 
-        return new PropertyCollection($repository->list($filters));
+        return new PropertyCollection($repository->list($filterSet));
     }
 
     /**

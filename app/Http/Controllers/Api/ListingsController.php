@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\DTO\FilterSet;
 use App\Helpers\Assert;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ListingRequest;
@@ -245,7 +246,7 @@ class ListingsController extends Controller
 
     public function index(Request $request, ListingRepository $repository): JsonResource
     {
-        $filters = $request->only([
+        $filterSet = FilterSet::from($request->only([
             'q',
             'collection',
             'price',
@@ -253,32 +254,31 @@ class ListingsController extends Controller
             'bedroomCount',
             'bathroomCount',
             'lotSize',
-            'lotSize',
             'buildingSize',
             'ownership',
             'carCount',
             'electricPower',
             'sort',
             'order'
-        ]);
+        ]));
 
         //if collection not present in filters, default set to true
-        if (!isset($filters['collection'])) {
-            $filters['collection'] = true;
+        if (!isset($filterSet->collection)) {
+            $filterSet->collection = true;
         }
 
-        if (boolval($filters['collection'])) {
+        if (boolval($filterSet->collection)) {
             $telegramUser = app(TelegramUser::class);
             $currentUserId = $telegramUser->user_id ?? null;
-            $filters['userId'] = $currentUserId;
+            $filterSet->userId = $currentUserId;
         }
 
-        if (!isset($filters['order']) && !isset($filters['sort'])) {
-            $filters['sort'] = 'created_at';
-            $filters['order'] = 'desc';
+        if (!isset($filterSet->order) && !isset($filterSet->sort)) {
+            $filterSet->sort = 'created_at';
+            $filterSet->order = 'desc';
         }
 
-        return new ListingCollection($repository->list($filters));
+        return new ListingCollection($repository->list($filterSet));
     }
 
     /**

@@ -2,6 +2,7 @@
 
 namespace Tests\Unit;
 
+use App\DTO\FilterSet;
 use App\Models\Property;
 use App\Repositories\PropertyRepository;
 use Illuminate\Contracts\Pagination\Paginator;
@@ -34,11 +35,11 @@ class PropertyRepositoryTest extends TestCase
         ]);
 
         $repository = new PropertyRepository();
-        $filters = [
+        $filterSet = FilterSet::from([
             'price' => ['min' => 500000, 'max' => 1000000]
-        ];
+        ]);
 
-        $properties = $repository->list($filters);
+        $properties = $repository->list($filterSet);
         $this->assertInstanceOf(Paginator::class, $properties);
         $this->assertCount(7, $properties->items());
     }
@@ -54,11 +55,10 @@ class PropertyRepositoryTest extends TestCase
         ]);
 
         $repository = new PropertyRepository();
-        $filters = [
-            'bedroomCount' => 2
-        ];
+        $filterSet = new FilterSet();
+        $filterSet->bedroomCount = 2;
 
-        $properties = $repository->list($filters);
+        $properties = $repository->list($filterSet);
         $this->assertInstanceOf(Paginator::class, $properties);
         $this->assertCount(5, $properties->items());
     }
@@ -74,11 +74,11 @@ class PropertyRepositoryTest extends TestCase
         ]);
 
         $repository = new PropertyRepository();
-        $filters = [
+        $filterSet = FilterSet::from([
             'bedroomCount' => ['min' => 3]
-        ];
+        ]);
 
-        $properties = $repository->list($filters);
+        $properties = $repository->list($filterSet);
         $this->assertInstanceOf(Paginator::class, $properties);
         $this->assertCount(2, $properties->items());
     }
@@ -94,11 +94,11 @@ class PropertyRepositoryTest extends TestCase
         ]);
 
         $repository = new PropertyRepository();
-        $filters = [
+        $filterSet = FilterSet::from([
             'bedroomCount' => ['max' => 3]
-        ];
+        ]);
 
-        $properties = $repository->list($filters);
+        $properties = $repository->list($filterSet);
         $this->assertInstanceOf(Paginator::class, $properties);
         $this->assertCount(7, $properties->items());
     }
@@ -114,11 +114,10 @@ class PropertyRepositoryTest extends TestCase
         ]);
 
         $repository = new PropertyRepository();
-        $filters = [
-            'bathroomCount' => 2
-        ];
+        $filterSet = new FilterSet();
+        $filterSet->bathroomCount = 2;
 
-        $properties = $repository->list($filters);
+        $properties = $repository->list($filterSet);
         $this->assertInstanceOf(Paginator::class, $properties);
         $this->assertCount(5, $properties->items());
     }
@@ -134,11 +133,11 @@ class PropertyRepositoryTest extends TestCase
         ]);
 
         $repository = new PropertyRepository();
-        $filters = [
+        $filterSet = FilterSet::from([
             'bathroomCount' => ['min' => 3]
-        ];
+        ]);
 
-        $properties = $repository->list($filters);
+        $properties = $repository->list($filterSet);
         $this->assertInstanceOf(Paginator::class, $properties);
         $this->assertCount(2, $properties->items());
     }
@@ -154,11 +153,11 @@ class PropertyRepositoryTest extends TestCase
         ]);
 
         $repository = new PropertyRepository();
-        $filters = [
+        $filterSet = FilterSet::from([
             'bathroomCount' => ['max' => 2]
-        ];
+        ]);
 
-        $properties = $repository->list($filters);
+        $properties = $repository->list($filterSet);
         $this->assertInstanceOf(Paginator::class, $properties);
         $this->assertCount(5, $properties->items());
     }
@@ -174,11 +173,11 @@ class PropertyRepositoryTest extends TestCase
         ]);
 
         $repository = new PropertyRepository();
-        $filters = [
+        $filterSet = FilterSet::from([
             'lotSize' => ['min' => 170, 'max' => 200]
-        ];
+        ]);
 
-        $properties = $repository->list($filters);
+        $properties = $repository->list($filterSet);
         $this->assertInstanceOf(Paginator::class, $properties);
         $this->assertCount(5, $properties->items());
     }
@@ -194,11 +193,11 @@ class PropertyRepositoryTest extends TestCase
         ]);
 
         $repository = new PropertyRepository();
-        $filters = [
+        $filterSet = FilterSet::from([
             'buildingSize' => ['min' => 10, 'max' => 90]
-        ];
+        ]);
 
-        $properties = $repository->list($filters);
+        $properties = $repository->list($filterSet);
         $this->assertInstanceOf(Paginator::class, $properties);
         $this->assertCount(2, $properties->items());
     }
@@ -214,11 +213,11 @@ class PropertyRepositoryTest extends TestCase
         ]);
 
         $repository = new PropertyRepository();
-        $filters = [
+        $filterSet = FilterSet::from([
             'ownership' => 'SHM'
-        ];
+        ]);
 
-        $properties = $repository->list($filters);
+        $properties = $repository->list($filterSet);
         $this->assertInstanceOf(Paginator::class, $properties);
         $this->assertCount(5, $properties->items());
     }
@@ -234,11 +233,10 @@ class PropertyRepositoryTest extends TestCase
         ]);
 
         $repository = new PropertyRepository();
-        $filters = [
-            'carCount' => 1
-        ];
+        $filterSet = new FilterSet();
+        $filterSet->carCount = 1;
 
-        $properties = $repository->list($filters);
+        $properties = $repository->list($filterSet);
         $this->assertInstanceOf(Paginator::class, $properties);
         $this->assertCount(2, $properties->items());
     }
@@ -254,11 +252,11 @@ class PropertyRepositoryTest extends TestCase
         ]);
 
         $repository = new PropertyRepository();
-        $filters = [
+        $filterSet = FilterSet::from([
             'carCount' => ['min' => 1]
-        ];
+        ]);
 
-        $properties = $repository->list($filters);
+        $properties = $repository->list($filterSet);
         $this->assertInstanceOf(Paginator::class, $properties);
         $this->assertCount(7, $properties->items());
     }
@@ -274,11 +272,11 @@ class PropertyRepositoryTest extends TestCase
         ]);
 
         $repository = new PropertyRepository();
-        $filters = [
+        $filterSet = FilterSet::from([
             'carCount' => ['max' => 1]
-        ];
+        ]);
 
-        $properties = $repository->list($filters);
+        $properties = $repository->list($filterSet);
         $this->assertInstanceOf(Paginator::class, $properties);
         $this->assertCount(2, $properties->items());
     }
@@ -294,11 +292,11 @@ class PropertyRepositoryTest extends TestCase
         ]);
 
         $repository = new PropertyRepository();
-        $filters = [
+        $filterSet = FilterSet::from([
             'electricPower' => 5500
-        ];
+        ]);
 
-        $properties = $repository->list($filters);
+        $properties = $repository->list($filterSet);
         $this->assertInstanceOf(Paginator::class, $properties);
         $this->assertCount(5, $properties->items());
     }
@@ -318,12 +316,12 @@ class PropertyRepositoryTest extends TestCase
         ]);
 
         $repository = new PropertyRepository();
-        $filters = [
+        $filterSet = FilterSet::from([
             'sort' => 'buildingSize',
             'order' => 'desc'
-        ];
+        ]);
 
-        $properties = $repository->list($filters);
+        $properties = $repository->list($filterSet);
         $this->assertInstanceOf(Paginator::class, $properties);
         $this->assertEquals(150, $properties->items()[0]->buildingSize);
     }
@@ -343,12 +341,12 @@ class PropertyRepositoryTest extends TestCase
         ]);
 
         $repository = new PropertyRepository();
-        $filters = [
+        $filterSet = FilterSet::from([
             'sort' => 'buildingSize',
             'order' => 'asc'
-        ];
+        ]);
 
-        $properties = $repository->list($filters);
+        $properties = $repository->list($filterSet);
         $this->assertInstanceOf(Paginator::class, $properties);
         $this->assertEquals(36, $properties->items()[0]->buildingSize);
     }
@@ -365,12 +363,12 @@ class PropertyRepositoryTest extends TestCase
             'description' => 'Rumah yang sangat apik dan bagus'
         ]);
 
-        $filters = [
+        $filterSet = FilterSet::from([
             'q' => 'apik'
-        ];
+        ]);
 
         $repository = new PropertyRepository();
-        $properties = $repository->list($filters);
+        $properties = $repository->list($filterSet);
 
         $this->assertInstanceOf(Paginator::class, $properties);
         $this->assertCount(2, $properties->items());
@@ -388,12 +386,12 @@ class PropertyRepositoryTest extends TestCase
             'description' => 'Rumah yang sangat apik dan bagus'
         ]);
 
-        $filters = [
+        $filterSet = FilterSet::from([
             'q' => 'dekat'
-        ];
+        ]);
 
         $repository = new PropertyRepository();
-        $properties = $repository->list($filters);
+        $properties = $repository->list($filterSet);
 
         $this->assertInstanceOf(Paginator::class, $properties);
         $this->assertCount(0, $properties->items());

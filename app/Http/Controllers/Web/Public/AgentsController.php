@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Web\Public;
 
+use App\DTO\FilterSet;
 use App\Http\Controllers\Controller;
 use App\Models\TelegramUser;
 use App\Models\Resources\ListingCollection;
@@ -17,15 +18,15 @@ class AgentsController extends Controller
             abort(404, 'User not found');
         }
 
-        $filter = [
+        $filterSet = FilterSet::from([
             'collection' => true,
             'userId' => $telegramUser->user_id,
             'sort' => 'created_at',
             'order' => 'desc',
-        ];
+        ]);
 
         $listingRepo = new ListingRepository();
-        $listingCollections = new ListingCollection($listingRepo->list($filter));
+        $listingCollections = new ListingCollection($listingRepo->list($filterSet));
         $listings = $listingCollections->collection;
 
         return view('Public/Agent', [

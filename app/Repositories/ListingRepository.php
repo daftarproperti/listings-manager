@@ -2,6 +2,8 @@
 
 namespace App\Repositories;
 
+use App\DTO\FilterMinMax;
+use App\DTO\FilterSet;
 use App\Helpers\Assert;
 use App\Models\Listing;
 use Illuminate\Contracts\Pagination\Paginator;
@@ -11,123 +13,122 @@ use MongoDB\BSON\Regex;
 class ListingRepository
 {
     /**
-     * @param array<mixed> $filters
-     *
      * @return Paginator<Listing>
      */
-    public function list(array $filters = [], int $itemsPerPage = 20): Paginator
+    public function list(FilterSet $filterSet = new FilterSet(), int $itemsPerPage = 20): Paginator
     {
         $query = Listing::query();
 
-        $query->when(isset($filters['collection']) && isset($filters['userId']) , function ($query) use ($filters) {
-            $query->where('user.userId', $filters['userId']);
+        $query->when(isset($filterSet->collection) && isset($filterSet->userId) , function ($query) use ($filterSet) {
+            $query->where('user.userId', $filterSet->userId);
         });
 
-        $query->when(isset($filters['q']), function ($query) use ($filters) {
-            $query->where(function ($q) use ($filters) {
-                $q->where('title', 'ilike', '%' . $filters['q'] . '%')
-                    ->orWhere(function ($q) use ($filters) {
+        $query->when(isset($filterSet->q), function ($query) use ($filterSet) {
+            $query->where(function ($q) use ($filterSet) {
+                $q->where('title', 'ilike', '%' . $filterSet->q . '%')
+                    ->orWhere(function ($q) use ($filterSet) {
                         // Explicitly define regexp and options to filter text with newline
-                        $q->where('description', 'regexp', new Regex('^.*' . $filters['q'] . '.*', 'is'));
+                        $q->where('description', 'regexp', new Regex('^.*' . $filterSet->q . '.*', 'is'));
                     });
             });
         });
 
-        $query->when(isset($filters['price']), function ($query) use ($filters) {
-            if (isset($filters['price']['min'])) {
-                $query->where('price', '>=', (int) $filters['price']['min']);
+        $query->when(isset($filterSet->price), function ($query) use ($filterSet) {
+            if (isset($filterSet->price->min)) {
+                $query->where('price', '>=', (int) $filterSet->price->min);
             }
-            if (isset($filters['price']['max'])) {
-                $query->where('price', '<=', (int) $filters['price']['max']);
+            if (isset($filterSet->price->max)) {
+                $query->where('price', '<=', (int) $filterSet->price->max);
             }
         });
 
-        $query->when(isset($filters['type']), function ($query) use ($filters) {
-            $query->where('type', $filters['type']);
+        $query->when(isset($filterSet->type), function ($query) use ($filterSet) {
+            $query->where('type', $filterSet->type);
         });
 
-        $query->when(isset($filters['bedroomCount']), function ($query) use ($filters) {
+        $query->when(isset($filterSet->bedroomCount), function ($query) use ($filterSet) {
 
-            $query->when(is_array($filters['bedroomCount']), function ($q) use ($filters) {
+            $query->when($filterSet->bedroomCount instanceof FilterMinMax, function ($q) use ($filterSet) {
 
-                if (isset($filters['bedroomCount']['min'])) {
-                    $q->where('bedroomCount', '>=', (int) $filters['bedroomCount']['min']);
+                if (isset($filterSet->bedroomCount->min)) {
+                    $q->where('bedroomCount', '>=', $filterSet->bedroomCount->min);
                 }
-                if (isset($filters['bedroomCount']['max'])) {
-                    $q->where('bedroomCount', '<=', (int) $filters['bedroomCount']['max']);
+                if (isset($filterSet->bedroomCount->max)) {
+                    $q->where('bedroomCount', '<=', $filterSet->bedroomCount->max);
                 }
 
-            }, function($q) use ($filters) {
-                $q->where('bedroomCount', (int) $filters['bedroomCount']);
+            }, function($q) use ($filterSet) {
+                $q->where('bedroomCount', Assert::int($filterSet->bedroomCount));
             });
 
         });
 
-        $query->when(isset($filters['bathroomCount']), function ($query) use ($filters) {
+        $query->when(isset($filterSet->bathroomCount), function ($query) use ($filterSet) {
 
-            $query->when(is_array($filters['bathroomCount']), function ($q) use ($filters) {
+            $query->when($filterSet->bathroomCount instanceof FilterMinMax, function ($q) use ($filterSet) {
 
-                if (isset($filters['bathroomCount']['min'])) {
-                    $q->where('bathroomCount', '>=', (int) $filters['bathroomCount']['min']);
+                if (isset($filterSet->bathroomCount->min)) {
+                    $q->where('bathroomCount', '>=', $filterSet->bathroomCount->min);
                 }
-                if (isset($filters['bathroomCount']['max'])) {
-                    $q->where('bathroomCount', '<=', (int) $filters['bathroomCount']['max']);
+                if (isset($filterSet->bathroomCount->max)) {
+                    $q->where('bathroomCount', '<=', $filterSet->bathroomCount->max);
                 }
 
-            }, function($q) use ($filters) {
-                $q->where('bathroomCount', (int) $filters['bathroomCount']);
+            }, function($q) use ($filterSet) {
+                $q->where('bathroomCount', Assert::int($filterSet->bathroomCount));
             });
 
         });
 
-        $query->when(isset($filters['lotSize']), function ($query) use ($filters) {
-            if (isset($filters['lotSize']['min'])) {
-                $query->where('lotSize', '>=', (int) $filters['lotSize']['min']);
+        $query->when(isset($filterSet->lotSize), function ($query) use ($filterSet) {
+            if (isset($filterSet->lotSize->min)) {
+                $query->where('lotSize', '>=', (int) $filterSet->lotSize->min);
             }
-            if (isset($filters['lotSize']['max'])) {
-                $query->where('lotSize', '<=', (int) $filters['lotSize']['max']);
-            }
-        });
-
-        $query->when(isset($filters['buildingSize']), function ($query) use ($filters) {
-            if (isset($filters['buildingSize']['min'])) {
-                $query->where('buildingSize', '>=', (int) $filters['buildingSize']['min']);
-            }
-            if (isset($filters['buildingSize']['max'])) {
-                $query->where('buildingSize', '<=', (int) $filters['buildingSize']['max']);
+            if (isset($filterSet->lotSize->max)) {
+                $query->where('lotSize', '<=', (int) $filterSet->lotSize->max);
             }
         });
 
-        $query->when(isset($filters['ownership']), function ($query) use ($filters) {
-            $query->where('ownership', 'like', $filters['ownership']);
+        $query->when(isset($filterSet->buildingSize), function ($query) use ($filterSet) {
+            if (isset($filterSet->buildingSize->min)) {
+                $query->where('buildingSize', '>=', (int) $filterSet->buildingSize->min);
+            }
+            if (isset($filterSet->buildingSize->max)) {
+                $query->where('buildingSize', '<=', (int) $filterSet->buildingSize->max);
+            }
         });
 
-        $query->when(isset($filters['carCount']), function ($query) use ($filters) {
-            $query->when(is_array($filters['carCount']), function ($q) use ($filters) {
+        $query->when(isset($filterSet->ownership), function ($query) use ($filterSet) {
+            $query->where('ownership', 'like', $filterSet->ownership);
+        });
 
-                if (isset($filters['carCount']['min'])) {
-                    $q->where('carCount', '>=', (int) $filters['carCount']['min']);
+        $query->when(isset($filterSet->carCount), function ($query) use ($filterSet) {
+            $query->when($filterSet->carCount instanceof FilterMinMax, function ($q) use ($filterSet) {
+
+                if (isset($filterSet->carCount->min)) {
+                    $q->where('carCount', '>=', $filterSet->carCount->min);
                 }
-                if (isset($filters['carCount']['max'])) {
-                    $q->where('carCount', '<=', (int) $filters['carCount']['max']);
+                if (isset($filterSet->carCount->max)) {
+                    $q->where('carCount', '<=', $filterSet->carCount->max);
                 }
 
-            }, function($q) use ($filters) {
-                $q->where('carCount', (int) $filters['carCount']);
+            }, function($q) use ($filterSet) {
+                $q->where('carCount', Assert::int($filterSet->carCount));
             });
         });
 
-        $query->when(isset($filters['electricPower']), function ($query) use ($filters) {
-            $query->where('electricPower', (int) $filters['electricPower']);
+        $query->when(isset($filterSet->electricPower), function ($query) use ($filterSet) {
+            $query->where('electricPower', (int) $filterSet->electricPower);
         });
 
-        $query->when(isset($filters['city']), function ($query) use ($filters) {
-            $query->where('city', $filters['city']);
+        $query->when(isset($filterSet->city), function ($query) use ($filterSet) {
+            $query->where('city', $filterSet->city);
         });
 
-        $query->when(isset($filters['sort']), function ($query) use ($filters) {
-            $order = isset($filters['order']) ? Str::lower(Assert::string($filters['order'])) : 'asc';
-            $sort = !in_array($filters['sort'], ['created_at', 'updated_at']) ? Str::camel($filters['sort']) : $filters['sort'];
+        $query->when(isset($filterSet->sort), function ($query) use ($filterSet) {
+            assert(is_string($filterSet->sort));
+            $order = isset($filterSet->order) ? Str::lower(Assert::string($filterSet->order)) : 'asc';
+            $sort = !in_array($filterSet->sort, ['created_at', 'updated_at']) ? Str::camel($filterSet->sort) : $filterSet->sort;
 
             $query->orderBy($sort, $order);
         });
