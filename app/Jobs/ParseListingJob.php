@@ -8,6 +8,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
+use App\Helpers\Extractor;
 use App\Helpers\TelegramInteractionHelper;
 use App\Http\Services\ChatGptService;
 use App\Models\Listing;
@@ -34,22 +35,12 @@ class ParseListingJob implements ShouldQueue
     /**
      * Execute the job.
      */
-    public function handle(ChatGptService $chatGptService): void
+    public function handle(Extractor $extractor): void
     {
         try {
             Log::debug("Handling parse listing, message =\n" . $this->message);
 
-            $answer = $chatGptService->seekAnswer($this->message);
-
-            Log::debug("Answer from LLM = " . $answer);
-
-            $extractedData = (array) json_decode($answer, true);
-
-            // Sometimes LLM returns a single object instead of array of objects, in that case wrap it in an array
-            // because we want to process the answer as array of multiple listings below.
-            if (!is_array($extractedData)) {
-                $extractedData = [$extractedData];
-            }
+            $extractedData = $extractor->extractListingFromMessage($this->message);
 
             foreach ($extractedData as $data) {
                 $this->saveAnswer((array) $data, $this->user ?? null);
@@ -59,7 +50,7 @@ class ParseListingJob implements ShouldQueue
                 TelegramInteractionHelper::sendMessage($this->chatId, 'Mohon maaf terjadi kesalahan pemrosesan informasi. Silahkan coba kembali.');
             }
 
-            Log::error("Error caught when trying to talk to LLM:");
+            Log::error("Error caught when trying to extract listing data:");
             Log::error($th);
             return;
         }

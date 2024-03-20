@@ -27,6 +27,7 @@ class LanguageProcessingEvaluator extends Command
      */
     public function handle(): void
     {
+        $extractor = new Extractor();
         $totalAccuracy = 0;
 
         $dataFiles = $this->getMessageFiles('language-processing-evaluator');
@@ -46,8 +47,8 @@ class LanguageProcessingEvaluator extends Command
                 return;
             }
 
-            $listings = Extractor::extractListingFromMessage($rawMessage);
-            if ($listings === null) {
+            $listings = $extractor->extractListingFromMessage($rawMessage);
+            if (empty($listings)) {
                 $this->error("Error extracting listings from raw message. Skipping...");
                 continue;
             }
@@ -67,7 +68,6 @@ class LanguageProcessingEvaluator extends Command
                 return;
             }
 
-            $listings = is_array($listings) ? $listings : [];
             $expectedListings = is_array($expectedListings) ? $expectedListings : [];
             if ($listings == [] || $expectedListings == []) {
                 continue;

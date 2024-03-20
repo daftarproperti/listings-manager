@@ -59,12 +59,10 @@ class WebhookController extends Controller
                 !empty($pictureUrls) ? "\n Picture Urls:\n" . implode("\n", $pictureUrls) . "\n" : ''
             );
 
-            $promptMessage = Extractor::generatePrompt($baseMessage);
-
             $chatId = isset($update->message->chat) ? $update->message->chat->id : null;
 
             ParseListingJob::dispatch(
-                $promptMessage,
+                $baseMessage,
                 $this->populateListingUser($update),
                 $chatId
             );

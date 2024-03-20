@@ -3,13 +3,14 @@
 namespace App\Helpers;
 
 use App\Http\Services\ChatGptService;
+use Illuminate\Support\Facades\Log;
 
 class Extractor
 {
     /**
      * @param string $message
      */
-    public static function generatePrompt($message): string
+    public function generatePrompt($message): string
     {
         $template = storage_path('HousePropertyGptTemplate.txt');
         $templateString = file_get_contents($template);
@@ -29,13 +30,24 @@ class Extractor
 
     /**
      * @param string $message
+     * @return array<int,string>
      */
-    public static function extractListingFromMessage($message): mixed
+    public function extractListingFromMessage($message): array
     {
         $chatGptService = app(ChatGptService::class);
 
-        $answer = $chatGptService->seekAnswer(Extractor::generatePrompt($message));
+        $answer = $chatGptService->seekAnswerWithRetry(Extractor::generatePrompt($message));
 
-        return json_decode($answer, true);
+        Log::debug("Answer from LLM = " . $answer);
+
+        $extractedData = json_decode($answer, true);
+
+        // Sometimes LLM returns a single object instead of array of objects, in that case wrap it in an array
+        // because we want to process the answer as array of multiple listings below.
+        if (!is_array($extractedData)) {
+            $extractedData = [$extractedData];
+        }
+
+        return $extractedData;
     }
 }
