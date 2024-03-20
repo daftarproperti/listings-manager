@@ -25,6 +25,9 @@ trap "rm -rf $TEMP_DIR" EXIT
 # Use fresh checkout to ignore local file modifications
 git archive HEAD | tar -x -C $TEMP_DIR
 cp app.yaml $TEMP_DIR/
+if [ -d public/app ]; then
+    cp -a public/app $TEMP_DIR/public/
+fi
 
 cp additional-supervisord.conf.template $TEMP_DIR/additional-supervisord.conf
 # Bring output of `npm run build`. This has to be built first locally because App Engine's buildpack builder image
