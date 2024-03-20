@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Helpers\Assert;
 use App\Models\Listing;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Support\Str;
@@ -125,9 +126,8 @@ class ListingRepository
         });
 
         $query->when(isset($filters['sort']), function ($query) use ($filters) {
-            $order = isset($filters['order']) &&
-                in_array(strtolower($filters['order']), ['asc', 'desc']) ? strtolower($filters['order']) : 'asc';
-            $sort = Str::camel($filters['sort']);
+            $order = isset($filters['order']) ? Str::lower(Assert::string($filters['order'])) : 'asc';
+            $sort = !in_array($filters['sort'], ['created_at', 'updated_at']) ? Str::camel($filters['sort']) : $filters['sort'];
 
             $query->orderBy($sort, $order);
         });

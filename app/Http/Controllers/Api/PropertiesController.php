@@ -248,6 +248,11 @@ class PropertiesController extends Controller
             'order'
         ]);
 
+        if (!isset($filters['order']) && !isset($filters['sort'])) {
+            $filters['sort'] = 'created_at';
+            $filters['order'] = 'desc';
+        }
+
         return new PropertyCollection($repository->list($filters));
     }
 

@@ -118,9 +118,8 @@ class PropertyRepository
         });
 
         $query->when(isset($filters['sort']), function ($query) use ($filters) {
-            $order = isset($filters['order']) &&
-                in_array(strtolower(Assert::string($filters['order'])), ['asc', 'desc']) ? strtolower(Assert::string($filters['order'])) : 'asc';
-            $sort = Str::camel($filters['sort']);
+            $order = isset($filters['order']) ? Str::lower(Assert::string($filters['order'])) : 'asc';
+            $sort = !in_array($filters['sort'], ['created_at', 'updated_at']) ? Str::camel($filters['sort']) : $filters['sort'];
 
             $query->orderBy($sort, $order);
         });

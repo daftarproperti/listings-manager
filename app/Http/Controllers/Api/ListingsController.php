@@ -273,6 +273,11 @@ class ListingsController extends Controller
             $filters['userId'] = $currentUserId;
         }
 
+        if (!isset($filters['order']) && !isset($filters['sort'])) {
+            $filters['sort'] = 'created_at';
+            $filters['order'] = 'desc';
+        }
+
         return new ListingCollection($repository->list($filters));
     }
 

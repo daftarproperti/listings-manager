@@ -19,7 +19,9 @@ class AgentsController extends Controller
 
         $filter = [
             'collection' => true,
-            'userId' => $telegramUser->user_id
+            'userId' => $telegramUser->user_id,
+            'sort' => 'created_at',
+            'order' => 'desc',
         ];
 
         $listingRepo = new ListingRepository();

@@ -78,10 +78,10 @@ class ListingApiTest extends TestCase
         $response->assertJson([
             "listings" => [
                 [
-                    "title" => "Dijual Rumah",
+                    "title" => "Dijual Gedung",
                 ],
                 [
-                    "title" => "Dijual Gedung",
+                    "title" => "Dijual Rumah",
                 ],
             ],
         ]);
