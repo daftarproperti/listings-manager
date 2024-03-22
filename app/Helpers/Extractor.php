@@ -7,6 +7,12 @@ use Illuminate\Support\Facades\Log;
 
 class Extractor
 {
+    private ChatGptService $chatGptService;
+
+    public function __construct(ChatGptService $chatGptService) {
+        $this->chatGptService = $chatGptService;
+    }
+
     /**
      * @param string $message
      */
@@ -34,9 +40,7 @@ class Extractor
      */
     public function extractListingFromMessage($message): array
     {
-        $chatGptService = app(ChatGptService::class);
-
-        $answer = $chatGptService->seekAnswerWithRetry(Extractor::generatePrompt($message));
+        $answer = $this->chatGptService->seekAnswerWithRetry(Extractor::generatePrompt($message));
 
         Log::debug("Answer from LLM = " . $answer);
 

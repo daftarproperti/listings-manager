@@ -25,9 +25,8 @@ class LanguageProcessingEvaluator extends Command
     /**
      * Execute the console command.
      */
-    public function handle(): void
+    public function handle(Extractor $extractor): void
     {
-        $extractor = new Extractor();
         $totalAccuracy = 0;
 
         $dataFiles = $this->getMessageFiles('language-processing-evaluator');

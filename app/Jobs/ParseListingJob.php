@@ -35,8 +35,10 @@ class ParseListingJob implements ShouldQueue
     /**
      * Execute the job.
      */
-    public function handle(Extractor $extractor): void
+    public function handle(ChatGptService $chatGptService): void
     {
+        $extractor = new Extractor($chatGptService);
+
         try {
             Log::debug("Handling parse listing, message =\n" . $this->message);
 
