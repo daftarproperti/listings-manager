@@ -29,7 +29,7 @@ class AgentsController extends Controller
         $listingCollections = new ListingCollection($listingRepo->list($filterSet));
         $listings = $listingCollections->collection;
 
-        return view('Public/Agent', [
+        return view('public/agent', [
             'agent' => $telegramUser,
             'listings' => $listings,
         ]);

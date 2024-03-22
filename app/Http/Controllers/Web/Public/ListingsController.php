@@ -13,7 +13,7 @@ class ListingsController extends Controller
     {
         $user = TelegramUser::where('user_id', $listing->user->userId ?? '')->first();
 
-        return view('Public/Listing', [
+        return view('public/listing', [
             'agent' => $user,
             'listing' => $listing,
         ]);

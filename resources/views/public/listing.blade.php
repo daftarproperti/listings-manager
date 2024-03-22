@@ -22,7 +22,7 @@
                             <path fillRule="evenodd" clipRule="evenodd" d="M0 0V314.481H116.697C117.109 314.481 117.521 314.479 117.931 314.477V239.005H91.7245V314.481H31.4491H0L0.000941753 225.685L104.828 125.792L209.654 225.685V289.887C228.235 277.766 242.88 261.652 253.588 241.542C266.23 217.997 272.55 189.845 272.55 157.087C272.55 124.431 266.23 96.3814 253.588 72.9387C240.948 49.3936 222.964 31.3764 199.633 18.8873C176.407 6.29575 148.71 0 116.543 0H0Z" fill="#0C5AE9" />
                         </svg>
                     </div>
-                    <h1 class="text-xl text-slate-800">Properti</h1>
+                    <h1 class="text-xl text-slate-800">Daftar Properti</h1>
                 </div>
                 @include('partials.copyButton')
             </div>
@@ -111,7 +111,7 @@
                     </div>
                 </div>
                 <div class="pt-3 pb-7 px-4 md:px-6 text-sm md:text-base text-slate-800">
-                    {!! str_replace(['\r\n', '\n'], '<br />', e($listing->description)) !!}
+                    {!! str_replace(["\r\n", "\n"], '<br />', e($listing->description)) !!}
                 </div>
             </div>
         </div>
@@ -119,10 +119,14 @@
             <div class="max-w-5xl mx-auto flex items-center justify-between py-3 px-4 md:px-6">
                 <div class="flex gap-2">
                     <img class="h-12 w-12 rounded-full object-cover" src="{{ $listing->user_profile->picture }}" alt="{{ $listing->user_profile->name }}" onerror="this.src='/images/account.png'" />
-                    <a href="/public/agents/{{ $agent->id }}" target="_blank">
+                    <div>
                         <p class="text-base text-slate-800">{{ $listing->user_profile->name }}</p>
-                        <p class="text-base text-slate-500">Agen {{ $listing->user_profile->company }}</p>
-                    </a>
+                        @if($listing->user_profile->company)
+                        <p class="text-base text-slate-500">{{ $listing->user_profile->company }}</p>
+                        @else
+                        <p class="text-base text-slate-500">Independen</p>
+                        @endif
+                    </div>
                 </div>
                 <a href="tel:{{ $agent->profile->phoneNumber }}" class="justify-center self-center whitespace-nowrap rounded-lg bg-ribbon-500 px-6 py-3 text-center text-base text-slate-50">
                     Hubungi
