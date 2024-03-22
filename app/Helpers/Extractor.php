@@ -44,7 +44,12 @@ class Extractor
 
         Log::debug("Answer from LLM = " . $answer);
 
-        $extractedData = json_decode($answer, true);
+        $extractedData = json_decode(
+            $answer,
+            // 'false' means don't translate JSON object to associative array, because below we want to check whether
+            // we get an object or an array of objects.
+            false,
+        );
 
         // Sometimes LLM returns a single object instead of array of objects, in that case wrap it in an array
         // because we want to process the answer as array of multiple listings below.

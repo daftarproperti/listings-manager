@@ -282,4 +282,59 @@ EOT);
             'bedroomCount' => 3,
         ]);
     }
+
+    // LLM gives a single object instead of array
+    public function test_single_object_needs_wrap(): void
+    {
+        $job = new ParseListingJob('some message', $this->fakeUser);
+        /** @var ChatGptService $chatGptService*/
+        $chatGptService = $this->mock(ChatGptService::class, function (MockInterface $mock) {
+            $mock->shouldReceive('seekAnswerWithRetry')->withAnyArgs()->andReturn(<<<'EOT'
+{
+"title": "Rumah Terawat di DARMO PERMAI",
+"address": "",
+"description": "Rumah sangat bagus.",
+"price": "1250000000",
+"lotSize": "117",
+"buildingSize": "90",
+"carCount": "1",
+"bedroomCount": "2",
+"bathroomCount": "1",
+"floorCount": "1.5",
+"electricPower": "2200",
+"facing": "Timur",
+"ownership": "SHM",
+"city": "",
+"pictureUrls": "",
+"contact": {
+  "name": "Brigitta Wong",
+  "phoneNumber": "08113093772",
+  "profilePictureURL": "",
+  "sourceURL": "",
+  "provider": ""
+},
+"coordinate": {
+  "latitude": "",
+  "longitude": ""
+}
+}
+EOT);
+        });
+
+        $job->handle($chatGptService);
+
+        $this->assertDatabaseCount('listings', 1);
+        $this->assertDatabaseHas('listings', [
+            'title' => 'Rumah Terawat di DARMO PERMAI',
+            'description' => 'Rumah sangat bagus.',
+            'price' => 1250000000,
+            'lotSize' => 117,
+            'buildingSize' => 90,
+            'bathroomCount' => 1,
+            'bedroomCount' => 2,
+            'carCount' => 1,
+            'floorCount' => 1,
+            'electricPower' => 2200,
+        ]);
+    }
 }
