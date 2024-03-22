@@ -68,7 +68,11 @@ class WebhookController extends Controller
             );
 
             if ($chatId) {
-                TelegramInteractionHelper::sendMessage($chatId, 'Terimakasih atas informasi yang diberikan.' . "\n" . 'Informasi sedang kami proses.');
+                TelegramInteractionHelper::sendMessage(
+                    $chatId,
+                    'Terima kasih atas Listing yang anda bagikan.' . "\n\n" .
+                        'Informasi sedang kami proses dan masukkan ke database...'
+                );
             }
         } else {
             Log::info('is not property informations: ' . print_r($update, TRUE));

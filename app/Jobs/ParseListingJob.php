@@ -56,7 +56,16 @@ class ParseListingJob implements ShouldQueue
         }
 
         if (!empty($this->chatId)) {
-            TelegramInteractionHelper::sendMessage($this->chatId, 'Informasi telah selesai kami proses.');
+            $titles = implode("\n", array_map(function($listing) {
+                return isset($listing['title']) ? '* <b>' . $listing['title'] . '</b>' : '';
+            }, $extractedData));
+            TelegramInteractionHelper::sendMessage(
+                $this->chatId,
+                'Listing telah terproses dan masuk ke database, ' .
+                'sehingga dapat ditemukan di jaringan Daftar Properti:' . "\n" .
+                $titles . "\n\n" .
+                'Klik tombol "Kelola Listing" di bawah untuk meng-edit atau menambahkan foto sehingga lebih menarik bagi pencari.',
+            );
         }
     }
 

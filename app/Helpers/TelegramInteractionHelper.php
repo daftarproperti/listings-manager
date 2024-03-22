@@ -8,9 +8,11 @@ class TelegramInteractionHelper
 {
     public static function sendMessage(int $chatId, string $message): mixed
     {
+        // Use html to format text: https://core.telegram.org/bots/api#formatting-options
         $params = [
             'chat_id' => $chatId,
             'text' => $message,
+            'parse_mode' => 'html',
         ];
 
         $url = sprintf(
