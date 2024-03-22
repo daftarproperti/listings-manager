@@ -850,6 +850,91 @@
     },
     "components": {
         "schemas": {
+            "FilterMinMax": {
+                "description": "Filter Min Max DTO",
+                "properties": {
+                    "min": {
+                        "description": "Minimum value",
+                        "type": "integer",
+                        "nullable": true
+                    },
+                    "max": {
+                        "description": "Maximum value",
+                        "type": "integer",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "FilterSet": {
+                "description": "Filter Set DTO",
+                "properties": {
+                    "userId": {
+                        "description": "User ID",
+                        "type": "integer",
+                        "nullable": true
+                    },
+                    "q": {
+                        "description": "Query",
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "collection": {
+                        "description": "Collection",
+                        "type": "boolean",
+                        "nullable": true
+                    },
+                    "price": {
+                        "$ref": "#/components/schemas/FilterMinMax"
+                    },
+                    "type": {
+                        "description": "Type",
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "bedroomCount": {
+                        "$ref": "#/components/schemas/FilterMinMax"
+                    },
+                    "bathroomCount": {
+                        "$ref": "#/components/schemas/FilterMinMax"
+                    },
+                    "lotSize": {
+                        "$ref": "#/components/schemas/FilterMinMax"
+                    },
+                    "buildingSize": {
+                        "$ref": "#/components/schemas/FilterMinMax"
+                    },
+                    "ownership": {
+                        "description": "Ownership",
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "carCount": {
+                        "$ref": "#/components/schemas/FilterMinMax"
+                    },
+                    "electricPower": {
+                        "description": "Electric Power",
+                        "type": "integer",
+                        "nullable": true
+                    },
+                    "sort": {
+                        "description": "Sort",
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "order": {
+                        "description": "Order",
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "city": {
+                        "description": "City",
+                        "type": "string",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
             "ImageUploadRequest": {
                 "properties": {
                     "image": {
@@ -1010,6 +1095,10 @@
                 "properties": {
                     "id": {
                         "type": "string"
+                    },
+                    "publicId": {
+                        "type": "string",
+                        "example": "id-123"
                     },
                     "title": {
                         "type": "string"

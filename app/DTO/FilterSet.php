@@ -4,13 +4,27 @@ namespace App\DTO;
 
 use Spatie\LaravelData\Dto;
 
-class FilterMinMax extends Dto {
-    public ?int $min;
-    public ?int $max;
-}
-
 /**
- * Filter definition for listings and properties.
+ * @OA\Schema(
+ *     schema="FilterSet",
+ *     type="object",
+ *     description="Filter Set DTO",
+ *     @OA\Property(property="userId", type="integer", nullable=true, description="User ID"),
+ *     @OA\Property(property="q", type="string", nullable=true, description="Query"),
+ *     @OA\Property(property="collection", type="boolean", nullable=true, description="Collection"),
+ *     @OA\Property(property="price", ref="#/components/schemas/FilterMinMax"),
+ *     @OA\Property(property="type", type="string", nullable=true, description="Type"),
+ *     @OA\Property(property="bedroomCount", ref="#/components/schemas/FilterMinMax"),
+ *     @OA\Property(property="bathroomCount", ref="#/components/schemas/FilterMinMax"),
+ *     @OA\Property(property="lotSize", ref="#/components/schemas/FilterMinMax"),
+ *     @OA\Property(property="buildingSize", ref="#/components/schemas/FilterMinMax"),
+ *     @OA\Property(property="ownership", type="string", nullable=true, description="Ownership"),
+ *     @OA\Property(property="carCount", ref="#/components/schemas/FilterMinMax"),
+ *     @OA\Property(property="electricPower", type="integer", nullable=true, description="Electric Power"),
+ *     @OA\Property(property="sort", type="string", nullable=true, description="Sort"),
+ *     @OA\Property(property="order", type="string", nullable=true, description="Order"),
+ *     @OA\Property(property="city", type="string", nullable=true, description="City"),
+ * )
  */
 class FilterSet extends Dto
 {
