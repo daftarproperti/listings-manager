@@ -1,3 +1,5 @@
+[![Coverage](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fartifacts.jlrm.net%2Fpublic%2Fcoverage.json&query=coverage&label=Coverage)](https://artifacts.jlrm.net/coverage)
+
 ## Daftar Properti
 
 This is the backend system of Daftar Properti:
