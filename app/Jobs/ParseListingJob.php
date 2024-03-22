@@ -59,7 +59,7 @@ class ParseListingJob implements ShouldQueue
 
         if (!empty($this->chatId)) {
             $titles = implode("\n", array_map(function($listing) {
-                return isset($listing['title']) ? '* <b>' . $listing['title'] . '</b>' : '';
+                return isset($listing->title) ? '* <b>' . $listing->title . '</b>' : '';
             }, $extractedData));
             TelegramInteractionHelper::sendMessage(
                 $this->chatId,

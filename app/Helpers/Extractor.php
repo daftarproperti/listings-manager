@@ -36,7 +36,7 @@ class Extractor
 
     /**
      * @param string $message
-     * @return array<array<mixed>>
+     * @return array<object>
      */
     public function extractListingFromMessage($message): array
     {

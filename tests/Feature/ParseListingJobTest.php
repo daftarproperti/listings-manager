@@ -6,12 +6,16 @@ use App\Http\Services\ChatGptService;
 use App\Jobs\ParseListingJob;
 use App\Models\Listing;
 use App\Models\ListingUser;
+use Illuminate\Http\Client\Request;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Http;
 use Mockery\MockInterface;
 use Tests\TestCase;
 
 class ParseListingJobTest extends TestCase
 {
     private ListingUser $fakeUser;
+    private int $fakeChatId = 1;
 
     public function setUp(): void
     {
@@ -25,6 +29,13 @@ class ParseListingJobTest extends TestCase
         ]);
 
         Listing::truncate();
+
+        Config::set('services.telegram.bot_token', 'FakeToken');
+
+        // Fake API responses from telegram.
+        Http::fake([
+            'api.telegram.org/*' => Http::response(['ok' => true, 'result' => true], 200)
+        ]);
     }
 
     // LLM gives pictureUrls wrongly as string
@@ -286,7 +297,7 @@ EOT);
     // LLM gives a single object instead of array
     public function test_single_object_needs_wrap(): void
     {
-        $job = new ParseListingJob('some message', $this->fakeUser);
+        $job = new ParseListingJob('some message', $this->fakeUser, $this->fakeChatId);
         /** @var ChatGptService $chatGptService*/
         $chatGptService = $this->mock(ChatGptService::class, function (MockInterface $mock) {
             $mock->shouldReceive('seekAnswerWithRetry')->withAnyArgs()->andReturn(<<<'EOT'
@@ -336,5 +347,22 @@ EOT);
             'floorCount' => 1,
             'electricPower' => 2200,
         ]);
+
+        $recordedRequests = Http::recorded(function (Request $request) {
+            return str_starts_with($request->url(), 'https://api.telegram.org');
+        });
+
+        $this->assertCount(1, $recordedRequests);
+        $request = $recordedRequests[0][0];
+        $this->assertEquals('/botFakeToken/sendMessage', parse_url($request->url(), PHP_URL_PATH));
+        parse_str(parse_url($request->url(), PHP_URL_QUERY), $params);
+        $this->assertEquals($this->fakeChatId, $params['chat_id']);
+        $this->assertEquals('html', $params['parse_mode']);
+        $this->assertEquals(<<<EOD
+Listing telah terproses dan masuk ke database, sehingga dapat ditemukan di jaringan Daftar Properti:
+* <b>Rumah Terawat di DARMO PERMAI</b>
+
+Klik tombol "Kelola Listing" di bawah untuk meng-edit atau menambahkan foto sehingga lebih menarik bagi pencari.
+EOD, $params['text']);
     }
 }
