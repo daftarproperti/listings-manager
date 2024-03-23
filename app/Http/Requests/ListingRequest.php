@@ -62,7 +62,7 @@ class ListingRequest extends BaseApiRequest
     {
         return [
             'title' => 'required|string',
-            'address' => 'required|string',
+            'address' => 'nullable|string',
             'description' => 'required|string',
             'price' => 'required|numeric',
             'lotSize' => 'required|numeric',
