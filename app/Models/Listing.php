@@ -137,9 +137,11 @@ class Listing extends Model
     {
         $listingCity = config('services.default_listing_city');
 
-        if (!empty($listingCity)) {
-            $this->attributes['city'] = $listingCity;
+        if (empty($value) && !empty($listingCity)) {
+            $value = $listingCity;
         }
+
+        $this->attributes['city'] = $value;
     }
 
     // Cast every attribute to the right type before going into DB.

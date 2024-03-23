@@ -206,6 +206,19 @@ class ListingApiTest extends TestCase
         ]);
 
         $response->assertStatus(200);
+
+        $updatedListing = Listing::find($listing->id);
+        // Assert that the listing properties have been updated
+        $this->assertEquals('Lagi Dijual', $updatedListing->title);
+        $this->assertEquals('Jl. itu', $updatedListing->address);
+        $this->assertEquals('Dijual rumah bagus', $updatedListing->description);
+        $this->assertEquals('1000000000', $updatedListing->price);
+        $this->assertEquals('230', $updatedListing->lotSize);
+        $this->assertEquals('200', $updatedListing->buildingSize);
+        $this->assertEquals('Jakarta', $updatedListing->city);
+        $this->assertEquals('3', $updatedListing->bedroomCount);
+        $this->assertEquals('2', $updatedListing->bathroomCount);
+        $this->assertEquals(false, $updatedListing->isPrivate);
     }
 
     public function test_can_create_Listing(): void
