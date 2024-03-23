@@ -29,7 +29,7 @@ class TelegramUserProfile extends BaseAttributeCaster
             }
 
             $this->name = $data['name'] ?? null;
-            $this->phoneNumber = $data['phone_number'] ?? null;
+            $this->phoneNumber = $data['phoneNumber'] ?? null;
             $this->city = $data['city'] ?? null;
             $this->description = $data['description'] ?? null;
             $this->company = $data['company'] ?? null;

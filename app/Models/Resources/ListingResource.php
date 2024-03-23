@@ -86,7 +86,10 @@ class ListingResource extends JsonResource
             'user' => [
                 'name' => $prop->user_profile ? $prop->user_profile->name : null,
                 'phoneNumber' => $prop->user_profile ? $prop->user_profile->phoneNumber : null,
-                'profilePictureURL' => $prop->user_profile ? $prop->user_profile->picture : null
+                'city' => $prop->user_profile ? $prop->user_profile->city : null,
+                'profilePictureURL' => $prop->user_profile ? $prop->user_profile->picture : null,
+                'company' => $prop->user_profile ? $prop->user_profile->company : null,
+                'description' => $prop->user_profile ? $prop->user_profile->description : null,
             ],
             'userCanEdit' => $prop->user_can_edit,
             'isPrivate' => $prop->isPrivate ?? false
