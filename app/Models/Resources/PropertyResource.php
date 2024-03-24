@@ -15,6 +15,7 @@ class PropertyResource extends JsonResource
     public static $wrap = null;
     /**
      * @OA\Property(property="id",type="string")
+     * @OA\Property(property="sourceText",type="string")
      * @OA\Property(property="title",type="string")
      * @OA\Property(property="address",type="string")
      * @OA\Property(property="description",type="string")
@@ -44,6 +45,7 @@ class PropertyResource extends JsonResource
 
         return [
             'id' => $prop->id,
+            'sourceText' => $prop->sourceText,
             'title' => $prop->title,
             'address' => $prop->address,
             'description' => $prop->description,

@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Collection;
 
 /**
  * @property string $id
+ * @property string $sourceText
  * @property string $title
  * @property string $address
  * @property string $description

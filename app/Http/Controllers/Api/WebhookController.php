@@ -53,16 +53,11 @@ class WebhookController extends Controller
                 $pictureUrls = $receiveMessageService->pictureUrls($update->message->photo);
             }
 
-            $baseMessage = sprintf(
-                '%s%s',
-                $update->message->text ?? '',
-                !empty($pictureUrls) ? "\n Picture Urls:\n" . implode("\n", $pictureUrls) . "\n" : ''
-            );
-
             $chatId = isset($update->message->chat) ? $update->message->chat->id : null;
 
             ParseListingJob::dispatch(
-                $baseMessage,
+                $update->message->text,
+                $pictureUrls,
                 $this->populateListingUser($update),
                 $chatId
             );

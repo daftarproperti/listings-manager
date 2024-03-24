@@ -784,9 +784,8 @@ components:
       properties:
         id:
           type: string
-        publicId:
+        sourceText:
           type: string
-          example: id-123
         title:
           type: string
         address:
@@ -858,6 +857,8 @@ components:
     Property:
       properties:
         id:
+          type: string
+        sourceText:
           type: string
         title:
           type: string

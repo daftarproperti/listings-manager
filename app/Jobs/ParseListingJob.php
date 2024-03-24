@@ -18,16 +18,21 @@ class ParseListingJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    private string $message;
+    private string $sourceText;
+    /** @var array<string> $pictureUrls */
+    private array $pictureUrls;
     private ListingUser $user;
     private ?int $chatId;
 
     /**
      * Create a new job instance.
+     *
+     * @param array<string> $pictureUrls
      */
-    public function __construct(string $message, ListingUser $user, int $chatId = null)
+    public function __construct(string $sourceText, array $pictureUrls, ListingUser $user, int $chatId = null)
     {
-        $this->message = $message;
+        $this->sourceText = $sourceText;
+        $this->pictureUrls = $pictureUrls;
         $this->user = $user;
         $this->chatId = $chatId;
     }
@@ -40,12 +45,12 @@ class ParseListingJob implements ShouldQueue
         $extractor = new Extractor($chatGptService);
 
         try {
-            Log::debug("Handling parse listing, message =\n" . $this->message);
+            Log::debug("Handling parse listing, source text =\n" . $this->sourceText);
 
-            $extractedData = $extractor->extractListingFromMessage($this->message);
+            $extractedData = $extractor->extractListingFromMessage($this->sourceText);
 
             foreach ($extractedData as $data) {
-                $this->saveAnswer((array) $data, $this->user ?? null);
+                $this->saveAnswer((array) $data, $this->sourceText, $this->pictureUrls, $this->user ?? null);
             }
         } catch (\Throwable $th) {
             if (!empty($this->chatId)) {
@@ -73,8 +78,9 @@ class ParseListingJob implements ShouldQueue
 
     /**
      * @param array<mixed> $data
+     * @param array<string> $pictureUrls
      */
-    public function saveAnswer(array $data, ListingUser $user = null): ?Listing
+    public function saveAnswer(array $data, string $sourceText, array $pictureUrls, ListingUser $user = null): ?Listing
     {
         $listing = new Listing();
 
@@ -85,6 +91,9 @@ class ParseListingJob implements ShouldQueue
         if ($user) {
             $listing->user = $user;
         }
+
+        $listing->sourceText = $sourceText;
+        $listing->pictureUrls = $pictureUrls;
 
         //set default to public view
         $listing->isPrivate = false;

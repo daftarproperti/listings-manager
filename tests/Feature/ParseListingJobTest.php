@@ -38,10 +38,9 @@ class ParseListingJobTest extends TestCase
         ]);
     }
 
-    // LLM gives pictureUrls wrongly as string
-    public function test_picture_urls_wrong_type(): void
+    public function test_with_picture_urls(): void
     {
-        $job = new ParseListingJob('some message', $this->fakeUser);
+        $job = new ParseListingJob('some message', ['http://picture1.jpg', 'http://picture2.jpg'], $this->fakeUser);
         /** @var ChatGptService $chatGptService*/
         $chatGptService = $this->mock(ChatGptService::class, function (MockInterface $mock) {
             $mock->shouldReceive('seekAnswerWithRetry')->withAnyArgs()->andReturn(<<<'EOT'
@@ -92,13 +91,14 @@ EOT);
             'carCount' => 1,
             'floorCount' => 1,
             'electricPower' => 2200,
+            'pictureUrls' => ['picture1.jpg', 'picture2.jpg'],
         ]);
     }
 
     // Multiple listings in a message
     public function test_multiple_listings(): void
     {
-        $job = new ParseListingJob('some message', $this->fakeUser);
+        $job = new ParseListingJob('some message', [], $this->fakeUser);
         /** @var ChatGptService $chatGptService*/
         $chatGptService = $this->mock(ChatGptService::class, function (MockInterface $mock) {
             $mock->shouldReceive('seekAnswerWithRetry')->withAnyArgs()->andReturn(<<<'EOT'
@@ -297,7 +297,7 @@ EOT);
     // LLM gives a single object instead of array
     public function test_single_object_needs_wrap(): void
     {
-        $job = new ParseListingJob('some message', $this->fakeUser, $this->fakeChatId);
+        $job = new ParseListingJob('some message', [], $this->fakeUser, $this->fakeChatId);
         /** @var ChatGptService $chatGptService*/
         $chatGptService = $this->mock(ChatGptService::class, function (MockInterface $mock) {
             $mock->shouldReceive('seekAnswerWithRetry')->withAnyArgs()->andReturn(<<<'EOT'

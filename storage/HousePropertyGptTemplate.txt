@@ -27,7 +27,6 @@
         "facing": "[Facing direction: nullable; utara, selatan, barat, timur]",
         "ownership": "[Ownership type: SHM|HGB|GIRIK]",
         "city": "[City: city in Indonesia, can be predicted from description, just put city only]",
-        "pictureUrls": "[Array of image-type URLs]",
         "contact": {
             "name": "[Contact name: nullable; usually placed at the bottom of the message]",
             "phoneNumber": "[Creator phone number: nullable; usually placed at the bottom of the message]",
