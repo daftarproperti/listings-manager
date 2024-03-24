@@ -24,8 +24,8 @@ use Illuminate\Database\Eloquent\Collection;
  * @property string $bathroomCount
  * @property string $floorCount
  * @property string $electricPower
- * @property string $facing
- * @property string $ownership
+ * @property FacingDirection $facing
+ * @property PropertyOwnership $ownership
  * @property string $city
  * @property array<string> $pictureUrls
  * @property double $latitude
@@ -45,7 +45,18 @@ class Property extends Model
     protected $collection = 'properties';
 
     protected $casts = [
+        'propertyType' => PropertyType::class,
         'user' => PropertyUser::class,
+        'ownership' => PropertyOwnership::class,
+        'facing' => FacingDirection::class,
+        'buildingSize' => 'int',
+        'bedroomCount' => 'int',
+        'bathroomCount' => 'int',
+        'lotSize' => 'int',
+        'carCount' => 'int',
+        'floorCount' => 'int',
+        'electricPower' => 'int',
+        'price' => 'float',
     ];
 
 
@@ -111,5 +122,24 @@ class Property extends Model
                 }
             }
         );
+    }
+
+    /**
+     * Overrides Illuminate\Database\Eloquent\Concerns\HasAttributes::getEnumCaseFromValue;
+     *
+     * To always sanitize the enum value when getting it out from DB.
+     *
+     * @param  string  $enumClass
+     * @param  string|int  $value
+     * @return \UnitEnum|\BackedEnum
+     */
+    protected function getEnumCaseFromValue($enumClass, $value)
+    {
+        $sanitized = $value;
+        if (method_exists($enumClass, 'sanitize')) {
+            $sanitized = $enumClass::sanitize($value);
+        }
+
+        return parent::getEnumCaseFromValue($enumClass, $sanitized);
     }
 }

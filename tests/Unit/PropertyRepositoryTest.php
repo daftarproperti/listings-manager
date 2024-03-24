@@ -205,16 +205,16 @@ class PropertyRepositoryTest extends TestCase
     public function test_property_list_filter_ownership(): void
     {
         Property::factory(5)->create([
-            'ownership' => 'SHM',
+            'ownership' => 'shm',
         ]);
 
         Property::factory(2)->create([
-            'ownership' => 'HGB',
+            'ownership' => 'hgb',
         ]);
 
         $repository = new PropertyRepository();
         $filterSet = FilterSet::from([
-            'ownership' => 'SHM'
+            'ownership' => 'shm'
         ]);
 
         $properties = $repository->list($filterSet);

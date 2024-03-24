@@ -164,14 +164,35 @@ class Listing extends Model
     // Sanitize input before going in to DB or out from DB.
     public static function sanitizeField(string $key, mixed $value): mixed
     {
+        // TODO: Rather then repeating similar cases below, this can be generalized to $enumClass::sanitize()
         switch ($key) {
             case "propertyType":
-            case "ownership":
                 return $value ? strtolower(Assert::castToString($value)) : "unknown";
+            case "ownership":
+                return PropertyOwnership::sanitize(Assert::castToString($value));
             case "facing":
                 return FacingDirection::sanitize(Assert::castToString($value));
             default:
                 return $value;
         }
+    }
+
+    /**
+     * Overrides Illuminate\Database\Eloquent\Concerns\HasAttributes::getEnumCaseFromValue;
+     *
+     * To always sanitize the enum value when getting it out from DB.
+     *
+     * @param  string  $enumClass
+     * @param  string|int  $value
+     * @return \UnitEnum|\BackedEnum
+     */
+    protected function getEnumCaseFromValue($enumClass, $value)
+    {
+        $sanitized = $value;
+        if (method_exists($enumClass, 'sanitize')) {
+            $sanitized = $enumClass::sanitize($value);
+        }
+
+        return parent::getEnumCaseFromValue($enumClass, $sanitized);
     }
 }
