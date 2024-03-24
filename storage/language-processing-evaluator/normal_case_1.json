@@ -11,7 +11,7 @@
     "floorCount": 0,
     "electricPower" : 5500,
     "facing": "utara",
-    "ownership": "SHM",
+    "ownership": "shm",
     "city": "",
     "pictureUrls": [],
     "contact": {

@@ -8,7 +8,6 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
-use App\Helpers\Assert;
 use App\Helpers\Extractor;
 use App\Helpers\TelegramInteractionHelper;
 use App\Http\Services\ChatGptService;
@@ -77,17 +76,6 @@ class ParseListingJob implements ShouldQueue
         }
     }
 
-    // Sanitize the fields that we get from LLM since LLM is not 100% correct.
-    private function sanitizeField(string $key, mixed $value): mixed {
-        switch ($key) {
-        case "propertyType":
-            // In case LLM doesn't understand that enum has to be lower case.
-            return strtolower(Assert::castToString($value));
-        default:
-            return $value;
-        }
-    }
-
     /**
      * @param array<mixed> $data
      * @param array<string> $pictureUrls
@@ -97,7 +85,7 @@ class ParseListingJob implements ShouldQueue
         $listing = new Listing();
 
         foreach ($data as $key => $value) {
-            $listing->$key = $this->sanitizeField($key, $value);
+            $listing->$key = Listing::sanitizeField($key, $value);
         }
 
         if ($user) {

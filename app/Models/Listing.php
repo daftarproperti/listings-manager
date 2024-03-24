@@ -2,13 +2,13 @@
 
 namespace App\Models;
 
+use App\Helpers\Assert;
 use App\Helpers\NumFormatter;
 use App\Helpers\TelegramPhoto;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use MongoDB\Laravel\Eloquent\Model;
 use MongoDB\Laravel\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Support\Facades\Log;
 
 /**
  * @property string $id
@@ -27,7 +27,7 @@ use Illuminate\Support\Facades\Log;
  * @property int $floorCount
  * @property int $electricPower
  * @property string $facing
- * @property string $ownership
+ * @property PropertyOwnership $ownership
  * @property string $city
  * @property array<string> $pictureUrls
  * @property double $latitude
@@ -49,6 +49,7 @@ class Listing extends Model
     protected $casts = [
         'propertyType' => PropertyType::class,
         'user' => ListingUser::class,
+        'ownership' => PropertyOwnership::class,
         'buildingSize' => 'int',
         'bedroomCount' => 'int',
         'bathroomCount' => 'int',
@@ -135,7 +136,7 @@ class Listing extends Model
      * force set city if listing city configuration is filled
      * @param string $value
      * @return void
-    */
+     */
 
     public function setCityAttribute($value)
     {
@@ -156,5 +157,17 @@ class Listing extends Model
         }
 
         return parent::setAttribute($key, $value);
+    }
+
+    // Sanitize input before going in to DB or out from DB.
+    public static function sanitizeField(string $key, mixed $value): mixed
+    {
+        switch ($key) {
+            case "propertyType":
+            case "ownership":
+                return $value ? strtolower(Assert::castToString($value)) : "unknown";
+            default:
+                return $value;
+        }
     }
 }

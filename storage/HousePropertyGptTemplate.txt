@@ -33,7 +33,13 @@
         "floorCount": "[Number of floors]",
         "electricPower" : "[Number of electric power]",
         "facing": "[Facing direction: nullable; utara, selatan, barat, timur]",
-        "ownership": "[Ownership type: SHM|HGB|GIRIK]",
+        // The "ownership" field below is an enum, so please choose only from the exact strings below:
+        // for Sertifikat Hak Milik (SHM), use enum "shm"
+        // for Hak Guna Bangunan (HGB), use enum "hgb"
+        // for Strata, use enum "strata"
+        // for Girik, use enum "girik"
+        // If there is no suitable choice, use "unknown"
+        "ownership": "[shm|hgb|strata|girik|unknown]",
         "city": "[City: city in Indonesia, can be predicted from description, just put city only]",
         "contact": {
             "name": "[Contact name: nullable; usually placed at the bottom of the message]",

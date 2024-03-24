@@ -12,7 +12,7 @@
         "floorCount": 4,
         "electricPower" : 4400,
         "facing": "timur",
-        "ownership": "SHM",
+        "ownership": "shm",
         "city": "Surabaya",
         "pictureUrls": [],
         "contact": {
@@ -40,7 +40,7 @@
         "floorCount": 3,
         "electricPower" : 23000,
         "facing": "utara",
-        "ownership": "HGB",
+        "ownership": "hgb",
         "city": "Surabaya",
         "pictureUrls": [],
         "contact": {
@@ -68,7 +68,7 @@
         "floorCount": 4,
         "electricPower" : 5500,
         "facing": "selatan",
-        "ownership": "SHM",
+        "ownership": "shm",
         "city": "",
         "pictureUrls": [],
         "contact": {

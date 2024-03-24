@@ -272,16 +272,16 @@ class ListingRepositoryTest extends TestCase
     public function test_listing_list_filter_ownership(): void
     {
         Listing::factory(5)->create([
-            'ownership' => 'SHM',
+            'ownership' => 'shm',
         ]);
 
         Listing::factory(2)->create([
-            'ownership' => 'HGB',
+            'ownership' => 'hgb',
         ]);
 
         $repository = new ListingRepository();
         $filterSet = FilterSet::from([
-            'ownership' => 'SHM'
+            'ownership' => 'shm'
         ]);
 
         $listings = $repository->list($filterSet);
@@ -292,16 +292,16 @@ class ListingRepositoryTest extends TestCase
     public function test_listing_list_filter_ownership_case_insensitive(): void
     {
         Listing::factory(5)->create([
-            'ownership' => 'SHM',
+            'ownership' => 'shm',
         ]);
 
         Listing::factory(2)->create([
-            'ownership' => 'HGB',
+            'ownership' => 'hgb',
         ]);
 
         $repository = new ListingRepository();
         $filterSet = FilterSet::from([
-            'ownership' => 'shm'
+            'ownership' => 'SHM'
         ]);
 
         $listings = $repository->list($filterSet);

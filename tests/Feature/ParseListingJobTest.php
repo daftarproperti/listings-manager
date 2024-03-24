@@ -84,7 +84,7 @@ EOT);
         $this->assertDatabaseCount('listings', 1);
         $this->assertDatabaseHas('listings', [
             'title' => 'Rumah Terawat di DARMO PERMAI',
-            'propertyType' => 'house',
+            'propertyType' => 'house', // num should be sanitized to lower case
             'description' => 'The source text.',
             'price' => 1250000000,
             'lotSize' => 117,
@@ -94,6 +94,7 @@ EOT);
             'carCount' => 1,
             'floorCount' => 1,
             'electricPower' => 2200,
+            'ownership' => 'shm', // enum should be sanitized to lower case
             'pictureUrls' => ['picture1.jpg', 'picture2.jpg'],
         ]);
 
@@ -110,6 +111,7 @@ EOT);
             'carCount' => 1,
             'floorCount' => 1,
             'electricPower' => 2200,
+            'ownership' => 'shm',
             'pictureUrls' => ['picture1.jpg', 'picture2.jpg'],
         ]);
     }

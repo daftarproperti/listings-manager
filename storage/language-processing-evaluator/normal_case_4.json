@@ -11,7 +11,7 @@
     "floorCount": 2,
     "electricPower" : 0,
     "facing": "selatan",
-    "ownership": "",
+    "ownership": "unknown",
     "city": "Surabaya",
     "pictureUrls": [],
     "contact": {

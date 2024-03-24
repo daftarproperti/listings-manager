@@ -11,7 +11,7 @@
     "floorCount": 2,
     "electricPower" : 2200,
     "facing": "selatan",
-    "ownership": "SHM",
+    "ownership": "shm",
     "city": "Citraland",
     "pictureUrls": [],
     "contact": {

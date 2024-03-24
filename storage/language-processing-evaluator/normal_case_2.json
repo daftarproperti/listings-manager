@@ -11,7 +11,7 @@
     "floorCount": 1,
     "electricPower" : 2200,
     "facing": "timur-selatan",
-    "ownership": "SHM",
+    "ownership": "shm",
     "city": "",
     "pictureUrls": [],
     "contact": {
