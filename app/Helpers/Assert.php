@@ -17,6 +17,23 @@ class Assert
     }
 
     /**
+     * Safely cast to string. If parameter is not castable to string, this doesn't throw error but still render it
+     * safely as a string "not stringable".
+     */
+    public static function castToString(mixed $value): string
+    {
+        if (is_scalar($value) || is_null($value)) {
+            return (string) $value;
+        }
+
+        if (is_object($value) && method_exists($value, '__toString')) {
+            return (string) $value;
+        }
+
+        return "not stringable";
+    }
+
+    /**
      * Asserts that a given value is a boolean.
      *
      * @param mixed $value The value to check.

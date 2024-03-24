@@ -21,17 +21,28 @@ class Extractor
         $template = storage_path('HousePropertyGptTemplate.txt');
         $templateString = file_get_contents($template);
 
-        return '
-            Please provide property information from the following message:' . "\n" .
-            $message . "\n\n" .
-            'with the following format:' . "\n\n" .
-            $templateString. "\n\n" .
-            'Your parser should be robust enough to handle variations in formatting and wording commonly found in such messages.'. "\n\n" .
-            'Messages can contain more than one property informations.' . "\n\n" .
-            'For multiple properties use numbers or ----- or === as separator in messages.' . "\n\n" .
-            'Each properties has own title and description.' . "\n\n" .
-            'Give me the json only.
-        ';
+        return <<<EOD
+I am going to give you a real estate advertisement text in Indonesia (also in Bahasa Indonesia).
+I will need to extract the unstructured information into structured fields, which I will tell you the detail below.
+
+--- BEGIN REAL ESTATE ADVERTISEMENT TEXT IN INDONESIAN ---
+$message
+--- END REAL ESTATE ADVERTISEMENT TEXT ---
+
+Here are the fields that you need to extract:
+--- BEGIN FIELDS IN JSON ---
+$templateString
+--- END FIELDS ---
+
+Your extraction should be robust enough to handle variations in formatting and wording commonly found in such messages,
+because the ad text is written using natural language in Bahasa Indonesia.
+
+Note that the text can contain more than one property ads. For example, it may be numbered, separated by line-like
+text, or just by newlines. Use your natural language judgement.
+
+The output that I want is JSON array, with each element being a JSON object following the template fields I gave you
+above. I will directly feed your output into a program, so please reply directly in JSON without any message for human.
+EOD;
     }
 
     /**

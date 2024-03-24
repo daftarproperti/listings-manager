@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Helpers\Assert;
 use App\Helpers\Extractor;
 use Illuminate\Console\Command;
 use Illuminate\Support\Arr;
@@ -91,7 +92,7 @@ class LanguageProcessingEvaluator extends Command
     private function calculateAccuracy($listings, $expectedListings): float
     {
         $fields = [
-            'title', 'address', 'description', 'facing', 'ownership', 'city',
+            'title', 'propertyType', 'address', 'description', 'facing', 'ownership', 'city',
             'contact.name', 'contact.phoneNumber', 'contact.profilePictureURL',
             'contact.sourceURL', 'contact.provider',
             'coordinate.latitude', 'coordinate.longitude',
@@ -110,10 +111,17 @@ class LanguageProcessingEvaluator extends Command
                 $listing = (array) Arr::get($listings, $idx, []);
                 $expectedListing = (array) Arr::get($expectedListings, $idx, []);
 
-                $accuracy = $this->calculateFieldAccuracy($field, $listing, $expectedListing);
+                $guessedValue = Arr::get($listing, $field, '');
+                $correctValue = Arr::get($expectedListing, $field, '');
+
+                $accuracy = $this->calculateFieldAccuracy($field, $guessedValue, $correctValue);
                 $totalAccuracy += $accuracy;
 
                 $this->line("Accuracy for field <$field> is $accuracy%.");
+                if ($accuracy < 50) {
+                    $this->error("Extracted: " . Assert::castToString($guessedValue));
+                    $this->error("Expected: " . Assert::castToString($correctValue));
+                }
             }
             $iterationAccuracy += $totalAccuracy / count($fields);
         }
@@ -121,16 +129,8 @@ class LanguageProcessingEvaluator extends Command
         return $iterationAccuracy / count($expectedListings);
     }
 
-    /**
-     * @param string $field
-     * @param array<int,mixed> $listing
-     * @param array<int,mixed> $expectedListing
-     */
-    private function calculateFieldAccuracy($field, $listing, $expectedListing): float
+    private function calculateFieldAccuracy(string $field, mixed $guessedValue, mixed $correctValue): float
     {
-        $guessedValue = Arr::get($listing, $field, '');
-        $correctValue = Arr::get($expectedListing, $field, '');
-
         if (is_string($guessedValue) && is_string($correctValue)) {
             return $this->calculateStringAcc($guessedValue, $correctValue);
         }

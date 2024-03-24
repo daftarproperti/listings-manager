@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Http\Services\ChatGptService;
 use App\Jobs\ParseListingJob;
+use App\Models\Property;
 use App\Models\Listing;
 use App\Models\ListingUser;
 use Illuminate\Http\Client\Request;
@@ -29,6 +30,7 @@ class ParseListingJobTest extends TestCase
         ]);
 
         Listing::truncate();
+        Property::truncate();
 
         Config::set('services.telegram.bot_token', 'FakeToken');
 
@@ -47,6 +49,7 @@ class ParseListingJobTest extends TestCase
 [
   {
     "title": "Rumah Terawat di DARMO PERMAI",
+    "propertyType": "House",
     "address": "",
     "description": "Rumah sangat bagus.",
     "price": "1250000000",
@@ -82,6 +85,23 @@ EOT);
         $this->assertDatabaseCount('listings', 1);
         $this->assertDatabaseHas('listings', [
             'title' => 'Rumah Terawat di DARMO PERMAI',
+            'propertyType' => 'house',
+            'description' => 'Rumah sangat bagus.',
+            'price' => 1250000000,
+            'lotSize' => 117,
+            'buildingSize' => 90,
+            'bathroomCount' => 1,
+            'bedroomCount' => 2,
+            'carCount' => 1,
+            'floorCount' => 1,
+            'electricPower' => 2200,
+            'pictureUrls' => ['picture1.jpg', 'picture2.jpg'],
+        ]);
+
+        $this->assertDatabaseCount('properties', 1);
+        $this->assertDatabaseHas('properties', [
+            'title' => 'Rumah Terawat di DARMO PERMAI',
+            'propertyType' => 'house',
             'description' => 'Rumah sangat bagus.',
             'price' => 1250000000,
             'lotSize' => 117,
@@ -105,6 +125,7 @@ EOT);
 [
     {
         "title": "Dijual Rumah Hitung Tanah Mulyosari Utara",
+        "propertyType": "HOUSE",
         "address": "Mulyosari Utara",
         "description": "LT 11×15\nLB 1.5 Lantai\nRow jln 2mbl",
         "price": "1400000000",
@@ -133,6 +154,7 @@ EOT);
     },
     {
         "title": "Rumah Siap Huni, Baru Greesss",
+        "propertyType": "HOUSE",
         "address": "Regency One Babatan",
         "description": "Rumah 2lt uk 5x10\nKt 3 km 2\nBaru gress",
         "price": "1150000000",
@@ -161,6 +183,7 @@ EOT);
     },
     {
         "title": "HANYA 1 MENIT KE RAYA KENJERAN",
+        "propertyType": "HOUSE",
         "address": "Lebak Jaya",
         "description": "LT 73 (6x12) / LB 103\nKT 4 / KM 3\nPLN 3500 W\nTANDON BAWAH + POMPA AIR\nCarport 2 mobil\nROW jalan 2,5 mobil",
         "price": "1570000000",
@@ -189,6 +212,7 @@ EOT);
     },
     {
         "title": "MOJOARUM",
+        "propertyType": "HOUSE",
         "address": "MOJOARUM",
         "description": "LT 240 (12×20)/LB 180 (1,5 Lantai)\nPondasi rumah ready utk 2 lantai\nKT 3 + 1/KM 2 + 1\nListrik 3500 Watt\n🔥Bonus Tandon Atas dan Bawah\n🔥Bonus Pemanas Air Solahart",
         "price": "2600000000",
@@ -217,6 +241,7 @@ EOT);
     },
     {
         "title": "RUMAH MODERN BARU GRESS",
+        "propertyType": "HOUSE",
         "address": "MOJOKLANGGRU PUSAT KOTA",
         "description": "LT 115 m² (5,25x22) / LB 200 m²\nKT 3+1/KM 3+1 (semua KM dlm)\nROW jalan 3 mobil\nCarport 2 mobil",
         "price": "2750000000",
@@ -245,6 +270,7 @@ EOT);
     },
     {
         "title": "MURAH NEMEN INI",
+        "propertyType": "HOUSE",
         "address": "Babatan Pantai",
         "description": "LT 240 (12x20) // LB ±300\nKT 4+1 / KM 3+1\nSemi Furnished Kitchen Set & Interior\nGarasi 1 mobil, carport 1 mobil",
         "price": "2700000000",
@@ -281,6 +307,7 @@ EOT);
 
         $this->assertDatabaseHas('listings', [
             'title' => 'MURAH NEMEN INI',
+            'propertyType' => 'house',
             'address' => 'Babatan Pantai',
             'bathroomCount' => 3,
             'bedroomCount' => 4,
@@ -288,6 +315,7 @@ EOT);
 
         $this->assertDatabaseHas('listings', [
             'title' => 'RUMAH MODERN BARU GRESS',
+            'propertyType' => 'house',
             'address' => 'MOJOKLANGGRU PUSAT KOTA',
             'bathroomCount' => 3,
             'bedroomCount' => 3,

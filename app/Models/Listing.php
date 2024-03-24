@@ -8,11 +8,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use MongoDB\Laravel\Eloquent\Model;
 use MongoDB\Laravel\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Support\Facades\Log;
 
 /**
  * @property string $id
  * @property string $sourceText
  * @property string $title
+ * @property PropertyType $propertyType
  * @property string $address
  * @property string $description
  * @property string $formatted_price
@@ -45,6 +47,7 @@ class Listing extends Model
     protected $collection = 'listings';
 
     protected $casts = [
+        'propertyType' => PropertyType::class,
         'user' => ListingUser::class,
         'buildingSize' => 'int',
         'bedroomCount' => 'int',

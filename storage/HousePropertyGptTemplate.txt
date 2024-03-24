@@ -1,6 +1,15 @@
 [
     {
         "title": "[Title or main topic]",
+        // The "propertyType" field below is an enum, so please choose only from the exact strings below:
+        // for rumah, use enum "house"
+        // for apartemen, use enum "apartment"
+        // for gudang, use enum "warehouse"
+        // for ruko, use enum "shophouse"
+        // for tanah, use enum "land"
+        // for villa, use enum "villa"
+        // If there is no suitable choice, use "unknown"
+        "propertyType": "[The type of the property]",
         "address": "[Address]",
         "description": "[Main description : keep the new line]",
         "price": "[
