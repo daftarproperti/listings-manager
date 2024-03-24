@@ -10,7 +10,7 @@
     "bathroomCount": 3,
     "floorCount": 1,
     "electricPower" : 2200,
-    "facing": "timur-selatan",
+    "facing": "southeast",
     "ownership": "shm",
     "city": "",
     "pictureUrls": [],

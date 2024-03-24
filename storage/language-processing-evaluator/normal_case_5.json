@@ -10,7 +10,7 @@
     "bathroomCount": 3,
     "floorCount": 2,
     "electricPower" : 2200,
-    "facing": "selatan",
+    "facing": "south",
     "ownership": "shm",
     "city": "Citraland",
     "pictureUrls": [],

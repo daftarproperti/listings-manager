@@ -10,7 +10,7 @@
     "bathroomCount": 4,
     "floorCount": 0,
     "electricPower" : 5500,
-    "facing": "utara",
+    "facing": "north",
     "ownership": "shm",
     "city": "",
     "pictureUrls": [],

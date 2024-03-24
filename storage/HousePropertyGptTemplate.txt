@@ -32,7 +32,17 @@
         "bathroomCount": "[Number of bathrooms]",
         "floorCount": "[Number of floors]",
         "electricPower" : "[Number of electric power]",
-        "facing": "[Facing direction: nullable; utara, selatan, barat, timur]",
+        // The "facing" field below is an enum, so please choose only from the exact strings below:
+        // for Utara, use enum "north"
+        // for Timur, use enum "east"
+        // for Selatan, use enum "south"
+        // for Barat, use enum "west"
+        // for Utara-Timur/Timur-Utara/Timur Laut, use enum "northeast"
+        // for Selatan-Timur/Timur-Selatan/Tenggara, use enum "southeast"
+        // for Selatan-Barat/Barat-Selatan/Barat Daya, use enum "southwest"
+        // for Utara-Barat/Barat-Utara/Barat Laut, use enum "northwest"
+        // If there is no suitable choice, use "unknown"
+        "facing": "[north|east|south|west|northeast|southeast|southwest|northwest]",
         // The "ownership" field below is an enum, so please choose only from the exact strings below:
         // for Sertifikat Hak Milik (SHM), use enum "shm"
         // for Hak Guna Bangunan (HGB), use enum "hgb"

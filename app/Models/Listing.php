@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Helpers\Assert;
 use App\Helpers\NumFormatter;
 use App\Helpers\TelegramPhoto;
+use App\Models\FacingDirection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use MongoDB\Laravel\Eloquent\Model;
 use MongoDB\Laravel\Eloquent\SoftDeletes;
@@ -26,7 +27,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
  * @property int $bathroomCount
  * @property int $floorCount
  * @property int $electricPower
- * @property string $facing
+ * @property FacingDirection $facing
  * @property PropertyOwnership $ownership
  * @property string $city
  * @property array<string> $pictureUrls
@@ -50,6 +51,7 @@ class Listing extends Model
         'propertyType' => PropertyType::class,
         'user' => ListingUser::class,
         'ownership' => PropertyOwnership::class,
+        'facing' => FacingDirection::class,
         'buildingSize' => 'int',
         'bedroomCount' => 'int',
         'bathroomCount' => 'int',
@@ -166,6 +168,8 @@ class Listing extends Model
             case "propertyType":
             case "ownership":
                 return $value ? strtolower(Assert::castToString($value)) : "unknown";
+            case "facing":
+                return FacingDirection::sanitize(Assert::castToString($value));
             default:
                 return $value;
         }

@@ -10,7 +10,7 @@
     "bathroomCount": 2,
     "floorCount": 2,
     "electricPower" : 0,
-    "facing": "selatan",
+    "facing": "south",
     "ownership": "unknown",
     "city": "Surabaya",
     "pictureUrls": [],

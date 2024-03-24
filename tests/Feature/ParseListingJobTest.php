@@ -59,7 +59,7 @@ class ParseListingJobTest extends TestCase
     "bathroomCount": "1",
     "floorCount": "1.5",
     "electricPower": "2200",
-    "facing": "Timur",
+    "facing": "East",
     "ownership": "SHM",
     "city": "",
     "pictureUrls": "",
@@ -306,6 +306,7 @@ EOT);
             'address' => 'Babatan Pantai',
             'bathroomCount' => 3,
             'bedroomCount' => 4,
+            'facing' => 'north', // Convert to our canonical FacingDirection enum from the LLM-given 'Utara'
         ]);
 
         $this->assertDatabaseHas('listings', [
@@ -314,6 +315,7 @@ EOT);
             'address' => 'MOJOKLANGGRU PUSAT KOTA',
             'bathroomCount' => 3,
             'bedroomCount' => 3,
+            'facing' => 'east', // Convert to our canonical FacingDirection enum from the LLM-given 'Timur'
         ]);
     }
 

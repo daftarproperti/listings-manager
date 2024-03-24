@@ -10,7 +10,7 @@
     "bathroomCount": 6,
     "floorCount": 2,
     "electricPower" : 4500,
-    "facing": "timur",
+    "facing": "east",
     "ownership": "shm",
     "city": "Wiyung",
     "pictureUrls": [],
