@@ -107,14 +107,9 @@ class LanguageProcessingEvaluator extends Command
             $totalAccuracy = 0;
 
             foreach ($fields as $field) {
-                $listing = Arr::get($listings, $idx, []);
-                $expectedListing = Arr::get($expectedListings, $idx, []);
+                $listing = (array) Arr::get($listings, $idx, []);
+                $expectedListing = (array) Arr::get($expectedListings, $idx, []);
 
-                $listing = is_array($listing) ? $listing : [];
-                $expectedListing = is_array($expectedListing) ? $expectedListing : [];
-                if ($listing == [] || $expectedListing == []) {
-                    continue;
-                }
                 $accuracy = $this->calculateFieldAccuracy($field, $listing, $expectedListing);
                 $totalAccuracy += $accuracy;
 
