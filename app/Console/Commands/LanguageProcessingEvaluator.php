@@ -92,7 +92,7 @@ class LanguageProcessingEvaluator extends Command
     private function calculateAccuracy($listings, $expectedListings): float
     {
         $fields = [
-            'title', 'propertyType', 'address', 'description', 'facing', 'ownership', 'city',
+            'title', 'propertyType', 'address', 'facing', 'ownership', 'city',
             'contact.name', 'contact.phoneNumber', 'contact.profilePictureURL',
             'contact.sourceURL', 'contact.provider',
             'coordinate.latitude', 'coordinate.longitude',

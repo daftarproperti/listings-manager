@@ -42,7 +42,7 @@ class ParseListingJobTest extends TestCase
 
     public function test_with_picture_urls(): void
     {
-        $job = new ParseListingJob('some message', ['http://picture1.jpg', 'http://picture2.jpg'], $this->fakeUser);
+        $job = new ParseListingJob('The source text.', ['http://picture1.jpg', 'http://picture2.jpg'], $this->fakeUser);
         /** @var ChatGptService $chatGptService*/
         $chatGptService = $this->mock(ChatGptService::class, function (MockInterface $mock) {
             $mock->shouldReceive('seekAnswerWithRetry')->withAnyArgs()->andReturn(<<<'EOT'
@@ -51,7 +51,6 @@ class ParseListingJobTest extends TestCase
     "title": "Rumah Terawat di DARMO PERMAI",
     "propertyType": "House",
     "address": "",
-    "description": "Rumah sangat bagus.",
     "price": "1250000000",
     "lotSize": "117",
     "buildingSize": "90",
@@ -86,7 +85,7 @@ EOT);
         $this->assertDatabaseHas('listings', [
             'title' => 'Rumah Terawat di DARMO PERMAI',
             'propertyType' => 'house',
-            'description' => 'Rumah sangat bagus.',
+            'description' => 'The source text.',
             'price' => 1250000000,
             'lotSize' => 117,
             'buildingSize' => 90,
@@ -102,7 +101,7 @@ EOT);
         $this->assertDatabaseHas('properties', [
             'title' => 'Rumah Terawat di DARMO PERMAI',
             'propertyType' => 'house',
-            'description' => 'Rumah sangat bagus.',
+            'description' => 'The source text.',
             'price' => 1250000000,
             'lotSize' => 117,
             'buildingSize' => 90,
@@ -118,7 +117,7 @@ EOT);
     // Multiple listings in a message
     public function test_multiple_listings(): void
     {
-        $job = new ParseListingJob('some message', [], $this->fakeUser);
+        $job = new ParseListingJob('The source text.', [], $this->fakeUser);
         /** @var ChatGptService $chatGptService*/
         $chatGptService = $this->mock(ChatGptService::class, function (MockInterface $mock) {
             $mock->shouldReceive('seekAnswerWithRetry')->withAnyArgs()->andReturn(<<<'EOT'
@@ -127,7 +126,6 @@ EOT);
         "title": "Dijual Rumah Hitung Tanah Mulyosari Utara",
         "propertyType": "HOUSE",
         "address": "Mulyosari Utara",
-        "description": "LT 11×15\nLB 1.5 Lantai\nRow jln 2mbl",
         "price": "1400000000",
         "lotSize": "11",
         "buildingSize": "1.5",
@@ -156,7 +154,6 @@ EOT);
         "title": "Rumah Siap Huni, Baru Greesss",
         "propertyType": "HOUSE",
         "address": "Regency One Babatan",
-        "description": "Rumah 2lt uk 5x10\nKt 3 km 2\nBaru gress",
         "price": "1150000000",
         "lotSize": 50,
         "buildingSize": null,
@@ -185,7 +182,6 @@ EOT);
         "title": "HANYA 1 MENIT KE RAYA KENJERAN",
         "propertyType": "HOUSE",
         "address": "Lebak Jaya",
-        "description": "LT 73 (6x12) / LB 103\nKT 4 / KM 3\nPLN 3500 W\nTANDON BAWAH + POMPA AIR\nCarport 2 mobil\nROW jalan 2,5 mobil",
         "price": "1570000000",
         "lotSize": 73,
         "buildingSize": 103,
@@ -214,7 +210,6 @@ EOT);
         "title": "MOJOARUM",
         "propertyType": "HOUSE",
         "address": "MOJOARUM",
-        "description": "LT 240 (12×20)/LB 180 (1,5 Lantai)\nPondasi rumah ready utk 2 lantai\nKT 3 + 1/KM 2 + 1\nListrik 3500 Watt\n🔥Bonus Tandon Atas dan Bawah\n🔥Bonus Pemanas Air Solahart",
         "price": "2600000000",
         "lotSize": 240,
         "buildingSize": 180,
@@ -243,7 +238,6 @@ EOT);
         "title": "RUMAH MODERN BARU GRESS",
         "propertyType": "HOUSE",
         "address": "MOJOKLANGGRU PUSAT KOTA",
-        "description": "LT 115 m² (5,25x22) / LB 200 m²\nKT 3+1/KM 3+1 (semua KM dlm)\nROW jalan 3 mobil\nCarport 2 mobil",
         "price": "2750000000",
         "lotSize": 115,
         "buildingSize": 200,
@@ -272,7 +266,6 @@ EOT);
         "title": "MURAH NEMEN INI",
         "propertyType": "HOUSE",
         "address": "Babatan Pantai",
-        "description": "LT 240 (12x20) // LB ±300\nKT 4+1 / KM 3+1\nSemi Furnished Kitchen Set & Interior\nGarasi 1 mobil, carport 1 mobil",
         "price": "2700000000",
         "lotSize": 240,
         "buildingSize": 300,
@@ -325,14 +318,13 @@ EOT);
     // LLM gives a single object instead of array
     public function test_single_object_needs_wrap(): void
     {
-        $job = new ParseListingJob('some message', [], $this->fakeUser, $this->fakeChatId);
+        $job = new ParseListingJob('The source text.', [], $this->fakeUser, $this->fakeChatId);
         /** @var ChatGptService $chatGptService*/
         $chatGptService = $this->mock(ChatGptService::class, function (MockInterface $mock) {
             $mock->shouldReceive('seekAnswerWithRetry')->withAnyArgs()->andReturn(<<<'EOT'
 {
 "title": "Rumah Terawat di DARMO PERMAI",
 "address": "",
-"description": "Rumah sangat bagus.",
 "price": "1250000000",
 "lotSize": "117",
 "buildingSize": "90",
@@ -365,7 +357,7 @@ EOT);
         $this->assertDatabaseCount('listings', 1);
         $this->assertDatabaseHas('listings', [
             'title' => 'Rumah Terawat di DARMO PERMAI',
-            'description' => 'Rumah sangat bagus.',
+            'description' => 'The source text.',
             'price' => 1250000000,
             'lotSize' => 117,
             'buildingSize' => 90,
