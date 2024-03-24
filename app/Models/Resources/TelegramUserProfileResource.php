@@ -2,6 +2,7 @@
 
 namespace App\Models\Resources;
 
+use App\Helpers\TelegramPhoto;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
@@ -39,7 +40,7 @@ class TelegramUserProfileResource extends JsonResource
             'city' => $profile?->city ?? null,
             'description' => $profile?->description ?? null,
             'company' => $profile?->company ?? null,
-            'picture' => $profile?->picture ?? null,
+            'picture' => $profile?->picture ? TelegramPhoto::getGcsUrlFromFileName($profile->picture) : null,
             'phoneNumber' => $profile?->phoneNumber ?? null,
             'isPublicProfile' => $profile?->isPublicProfile ?? null,
         ];

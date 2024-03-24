@@ -64,7 +64,7 @@ class TelegramUserController extends Controller
 
         $validatedRequest = $request->validated();
 
-        $pictureUrl = null;
+        $pictureFileName = null;
         if (isset($validatedRequest['picture'])) {
             $pictureRequest = $validatedRequest['picture'];
 
@@ -73,12 +73,15 @@ class TelegramUserController extends Controller
 
                 $fileName = sprintf('%s.%s', md5($pictureRequest->getClientOriginalName()) , $pictureRequest->getClientOriginalExtension());
                 $fileId = time();
+                $fullFileName = sprintf('%s_%s', $fileId, $fileName);
                 $googleStorageService->uploadFile(
                     Assert::string(file_get_contents($pictureRequest->getRealPath())),
-                    sprintf('%s_%s', $fileId, $fileName)
+                    $fullFileName
                 );
 
-                $pictureUrl = route('telegram-photo', [$fileId, $fileName]);
+                $pictureFileName = $fullFileName;
+            } else if (is_string($pictureRequest)) {
+                $pictureFileName = $pictureRequest;
             }
         }
 
@@ -91,7 +94,7 @@ class TelegramUserController extends Controller
         $profile->city = isset($validatedRequest['city']) ? Assert::string($validatedRequest['city']) : $currentProfile?->city;
         $profile->description = isset($validatedRequest['description']) ? Assert::string($validatedRequest['description']) : $currentProfile?->description;
         $profile->company = isset($validatedRequest['company']) ? Assert::string($validatedRequest['company']) : $currentProfile?->company;
-        $profile->picture = $pictureUrl ?? $currentProfile?->picture ?? null;
+        $profile->picture = $pictureFileName ?? $currentProfile?->picture ?? null;
         $profile->isPublicProfile = isset($validatedRequest['isPublicProfile']) ? Assert::boolean($validatedRequest['isPublicProfile']) : $currentProfile?->isPublicProfile ?? false;
 
         $currentUser->profile = $profile;
