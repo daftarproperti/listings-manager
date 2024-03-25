@@ -41,7 +41,7 @@ env_variables:
   GOOGLE_QUEUE_NAME: "dp-noretry"
   GOOGLE_QUEUE_LOCATION: "asia-southeast2"
   CHATGPT_KEY: "secret"
-  GOOGLE_BUCKET_NAME: "daftarproperti-dev-bucket"
+  GOOGLE_BUCKET_NAME: "daftarproperti-development-image-bucket"
   GOOGLE_CLIENT_ID: "secret"
   GOOGLE_CLIENT_SECRET: "secret"
   LOG_CHANNEL: "gcp"
