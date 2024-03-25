@@ -1,8 +1,9 @@
 # Used for laravel queue worker. So copy this to additional-supervisord.conf when deploying to app engine.
 # Reference: https://cloud.google.com/appengine/docs/flexible/php/runtime#configure_supervisord
 
+# The queue name in --queue can be replaced by deployment script.
 [program:laravel-queue]
-command=php artisan queue:work --tries=3 --daemon
+command=php artisan queue:work --tries=3 --daemon --queue=default
 process_name=%(program_name)s_%(process_num)02d
 numprocs=5
 autostart=true

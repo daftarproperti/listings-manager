@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\DTO\Telegram\Update;
 use App\Helpers\Extractor;
+use App\Helpers\Queue;
 use App\Helpers\TelegramInteractionHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Services\ReceiveMessageService;
@@ -60,7 +61,7 @@ class WebhookController extends Controller
                 $pictureUrls,
                 $this->populateListingUser($update),
                 $chatId
-            );
+            )->onQueue(Queue::getQueueName('generic'));
 
             if ($chatId) {
                 TelegramInteractionHelper::sendMessage(
