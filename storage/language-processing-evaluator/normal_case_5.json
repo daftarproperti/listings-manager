@@ -1,25 +1,27 @@
 [{
     "title": "DIJUAL CEPAT\nTaman Puspa Raya\nCitraLand Surabaya Barat",
     "propertyType": "house",
-    "address": "Taman Puspa Raya, CitraLand, Surabaya Barat",
+    "address": "",
     "price": 2650000000,
     "lotSize": 128,
     "buildingSize": 200,
     "carCount": 0,
-    "bedroomCount": 4,
-    "bathroomCount": 3,
+    "bedroomCount": 3,
+    "additionalBedroomCount": 1,
+    "bathroomCount": 2,
+    "additionalBathroomCount": 1,
     "floorCount": 2,
     "electricPower" : 2200,
     "facing": "south",
     "ownership": "shm",
-    "city": "Citraland",
+    "city": "Surabaya",
     "pictureUrls": [],
     "contact": {
         "name": "Beatrix Marina",
         "phoneNumber": "081252623518",
         "profilePictureURL": "",
         "sourceURL": "",
-        "provider": ""
+        "provider": "Xavier Marks"
     },
     "coordinate": {
         "latitude": "",

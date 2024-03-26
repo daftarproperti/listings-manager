@@ -1,25 +1,27 @@
 [{
     "title": "Rumah WISATA BUKIT MAS 2",
     "propertyType": "house",
-    "address": "Bukit Mas 2, Wiyung, Surabaya Barat",
+    "address": "",
     "price": 6800000000,
     "lotSize": 336,
     "buildingSize": 295,
     "carCount": 2,
-    "bedroomCount": 6,
-    "bathroomCount": 6,
+    "bedroomCount": 5,
+    "additionalBedroomCount": 1,
+    "bathroomCount": 5,
+    "additionalBathroomCount": 1,
     "floorCount": 2,
     "electricPower" : 4500,
     "facing": "east",
     "ownership": "shm",
-    "city": "Wiyung",
+    "city": "Surabaya",
     "pictureUrls": [],
     "contact": {
-        "name": "Rizqi BRIGHTON Citraland",
+        "name": "Rizqi",
         "phoneNumber": "+6281231457178",
         "profilePictureURL": "",
         "sourceURL": "",
-        "provider": ""
+        "provider": "Brighton"
     },
     "coordinate": {
         "latitude": "",

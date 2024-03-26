@@ -1,25 +1,27 @@
 [{
     "title": "Dijual Rumah Sutorejo Utara Minimalis Siap Huni",
     "propertyType": "house",
-    "address": "Sutorejo Utara",
+    "address": "Jl. Sutorejo Utara VI",
     "price": 3050000000,
     "lotSize": 156,
     "buildingSize": 256,
     "carCount": 2,
-    "bedroomCount": 5,
-    "bathroomCount": 4,
+    "bedroomCount": 4,
+    "additionalBedroomCount": 1,
+    "bathroomCount": 3,
+    "additionalBathroomCount": 1,
     "floorCount": 0,
     "electricPower" : 5500,
     "facing": "north",
     "ownership": "shm",
-    "city": "",
+    "city": "Surabaya",
     "pictureUrls": [],
     "contact": {
         "name": "Caesar Go",
         "phoneNumber": "081233233535",
         "profilePictureURL": "",
-        "sourceURL": "",
-        "provider": "XM Darmo"
+        "sourceURL": "wa.me/6281233233535",
+        "provider": "Xavier Marks"
     },
     "coordinate": {
         "latitude": "",

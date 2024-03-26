@@ -38,7 +38,8 @@ Your extraction should be robust enough to handle variations in formatting and w
 because the ad text is written using natural language in Bahasa Indonesia.
 
 Note that the text can contain more than one property ads. For example, it may be numbered, separated by line-like
-text, or just by newlines. Use your natural language judgement.
+text, or just by newlines. As for the contacts it will be the same across property ads.
+Use your natural language judgement.
 
 The output that I want is JSON array, with each element being a JSON object following the template fields I gave you
 above. I will directly feed your output into a program, so please reply directly in JSON without any message for human.

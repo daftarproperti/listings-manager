@@ -1,25 +1,27 @@
 [{
     "title": "DIJUAL Rumah Taman International",
     "propertyType": "house",
-    "address": "Citraland",
+    "address": "",
     "price": 10000000000,
     "lotSize": 570,
     "buildingSize": 200,
     "carCount": 0,
-    "bedroomCount": 5,
+    "bedroomCount": 4,
+    "additionalBedroomCount": 1,
     "bathroomCount": 3,
+    "additionalBathroomCount": 0,
     "floorCount": 1,
-    "electricPower" : 2200,
+    "electricPower" : 0,
     "facing": "southeast",
     "ownership": "shm",
     "city": "",
     "pictureUrls": [],
     "contact": {
-        "name": "HANA XM Royal Residence Point",
+        "name": "Hana",
         "phoneNumber": "082142780083",
         "profilePictureURL": "",
         "sourceURL": "",
-        "provider": ""
+        "provider": "Xavier Marks"
     },
     "coordinate": {
         "latitude": "",

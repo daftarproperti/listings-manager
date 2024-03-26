@@ -97,7 +97,8 @@ class LanguageProcessingEvaluator extends Command
             'contact.sourceURL', 'contact.provider',
             'coordinate.latitude', 'coordinate.longitude',
             'price', 'lotSize', 'buildingSize', 'carCount', 'bedroomCount',
-            'bathroomCount', 'floorCount', 'electricPower'
+            'additionalBedroomCount', 'bathroomCount', "additionalBathroomCount", 
+            'floorCount', 'electricPower'
         ];
 
         $iterationAccuracy = 0;
@@ -109,9 +110,20 @@ class LanguageProcessingEvaluator extends Command
 
             foreach ($fields as $field) {
                 $listing = (array) Arr::get($listings, $idx, []);
+                $listingJson = json_encode($listing);
+                if ($listingJson === false) {
+                    $this->error("Can not parse listing json. Skipping . . .");
+                    continue;
+                }
+
+                $listingArray = json_decode($listingJson, true);
+                if (!is_array($listingArray)) {
+                    $this->error("listing is not a valid json array. Skipping . . .");
+                    continue;
+                }
                 $expectedListing = (array) Arr::get($expectedListings, $idx, []);
 
-                $guessedValue = Arr::get($listing, $field, '');
+                $guessedValue = Arr::get($listingArray, $field, '');
                 $correctValue = Arr::get($expectedListing, $field, '');
 
                 $accuracy = $this->calculateFieldAccuracy($field, $guessedValue, $correctValue);
@@ -131,6 +143,18 @@ class LanguageProcessingEvaluator extends Command
 
     private function calculateFieldAccuracy(string $field, mixed $guessedValue, mixed $correctValue): float
     {
+        // Handle the case where the correct value is nothing and the guessed is nothing
+        $guessedValueString = Assert::castToString($guessedValue);
+        $correctValueString = Assert::castToString($correctValue); 
+        if (empty($correctValueString)) {
+            if (empty($guessedValueString) || $guessedValueString == "unknown") {
+                return 100;
+            }
+            else {
+                return 0;
+            }
+        }
+
         if (is_string($guessedValue) && is_string($correctValue)) {
             return $this->calculateStringAcc($guessedValue, $correctValue);
         }

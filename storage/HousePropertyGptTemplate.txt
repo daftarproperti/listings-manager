@@ -10,7 +10,16 @@
         // for villa, use enum "villa"
         // If there is no suitable choice, use "unknown"
         "propertyType": "[The type of the property]",
-        "address": "[Address]",
+        "address": "[Address; Only extract Address when it has specific street number on it
+            In Indonesian, address often represented in streets
+            The input pattern is "{Jl/Jalan/Jln} {street name} {street number | RT | RW}"
+            Examples:
+            - Jln. Agung Barat 5 no. 8
+            - Jl. Sulaiman no. 11 RT 10 RW 15
+            - Jalan Wicaksono no. 12 RT 10, Surabaya
+            If no street name with exact number presents or only street name exist, use "unknown"
+            If there is Indonesia preposition (Dekat, Di) in front of the street name, do not extract address at all and use "unknown"
+        ]",
         "price": "[
             In Indonesian numerical notation, \"M\" indeed represents \"Milyar,\" which is equivalent to \"billion\" in English.
             Sometimes the value is in decimal format.
@@ -22,14 +31,29 @@
             - 2 Triliun or 2T is 2000000000000
             - 2.3 Triliun or 2.3T is 2300000000000
             - 2 Juta or 2JT is 2000000
+            - 40.3 Juta or 40.3JT is 40300000
             Please pay attention to the price format especialy: 1.7 M or 1,7 M is not 1.7 but 1700000000
             give the number only in output with zero notation
         ]",
         "lotSize": "[Lot size: Number]",
         "buildingSize": "[Building size: Number]",
-        "carCount": "[Number of parking spaces]",
-        "bedroomCount": "[Number of bedrooms]",
-        "bathroomCount": "[Number of bathrooms]",
+        "carCount": "[Number of parking spaces, Set this to 0 if no number provided]",
+        "bedroomCount": "[Number of bedrooms; Can be abbreviated as KT]",
+        "additionalBedroomCount": "[Number of additional bedrooms; 
+            If there is a plus sign "+" in number of bedrooms, put the digit after the sign into this field
+            Set this to 0 if there is no "+" sign in the number of bedrooms
+            Examples:
+            - 3+1 Kamar Tidur equals 3 bedroomCount and 1 additionalBedroomCount
+            - 2+2 KT equals 2 bedroomCount and 2 additionalBedroomCount
+        ]",
+        "bathroomCount": "[Number of bathrooms; Can be abbreviated as KM]",
+        "additionalBathroomCount": "[Number of additional bathrooms; 
+            If there is a plus sign "+" in number of bathrooms, put the digit after the sign into this field
+            Set this to 0 if there is no "+" sign in the number of bathrooms
+            Examples:
+            - 3+1 Kamar Mandi equals 3 bathroomCount and 1 additionalBathroomCount
+            - 2+2 KM equals 2 bathroomCount and 2 additionalBathroomCount
+        ]",
         "floorCount": "[Number of floors]",
         "electricPower" : "[Number of electric power]",
         // The "facing" field below is an enum, so please choose only from the exact strings below:
@@ -52,11 +76,15 @@
         "ownership": "[shm|hgb|strata|girik|unknown]",
         "city": "[City: city in Indonesia, can be predicted from description, just put city only]",
         "contact": {
-            "name": "[Contact name: nullable; usually placed at the bottom of the message]",
-            "phoneNumber": "[Creator phone number: nullable; usually placed at the bottom of the message]",
+            "name": "[Contact name: nullable; Only extract the name without institution or organization; usually placed at the bottom of the message]",
+            "phoneNumber": "[Creator phone number: nullable; usually starts with 08 or +62 and placed at the bottom of the message]",
             "profilePictureURL": "[Contact profile picture URL: nullable]",
             "sourceURL": "[Source URL: nullable; usually placed at the bottom of the message]",
-            "provider": "[Message creator: nullable; usually placed at the bottom of the message]"
+            "provider": "[Message creator: nullable; 
+                May be one of the following: Xavier Marks (XM), Brighton, 99co, Rumah123, OLX, Pinhome, Raywhite, Era Indonesia; 
+                Pay attention to the case; usually placed at the bottom of the message;
+                In the case of abbreviated (XM), use non-abbreviated one (Xavier Marks)
+            ]"
         },
         "coordinate": {
             "latitude": "[Latitude: get from city attribute; nullable]",
