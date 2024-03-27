@@ -74,7 +74,7 @@
         // for Girik, use enum "girik"
         // If there is no suitable choice, use "unknown"
         "ownership": "[shm|hgb|strata|girik|unknown]",
-        "city": "[City: city in Indonesia, can be predicted from description, just put city only]",
+        "city": null, // Just leave this null because usually the listing does not contain accurate city information.
         "contact": {
             "name": "[Contact name: nullable; Only extract the name without institution or organization; usually placed at the bottom of the message]",
             "phoneNumber": "[Creator phone number: nullable; usually starts with 08 or +62 and placed at the bottom of the message]",
