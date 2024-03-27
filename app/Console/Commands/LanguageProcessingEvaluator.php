@@ -109,7 +109,7 @@ class LanguageProcessingEvaluator extends Command
 
             foreach ($fields as $field) {
                 $listing = (array) Arr::get($listings, $idx, []);
-                $listingArray = json_decode(json_encode($listing), true);
+                $listingArray = (array) json_decode(Assert::string(json_encode($listing)), true);
                 $expectedListing = (array) Arr::get($expectedListings, $idx, []);
 
                 $guessedValue = Arr::get($listingArray, $field, '');
