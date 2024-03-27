@@ -20,13 +20,7 @@
         "contact": {
             "name": "Yohanes Gunalan",
             "phoneNumber": "085100313721",
-            "profilePictureURL": "",
-            "sourceURL": "https://goo.gl/BSQwC1",
-            "provider": "Xavier Marks"
-        },
-        "coordinate": {
-            "latitude": "",
-            "longitude": ""
+            "company": "Xavier Marks"
         }
     },
     {
@@ -50,13 +44,7 @@
         "contact": {
             "name": "Yohanes Gunalan",
             "phoneNumber": "085100313721",
-            "profilePictureURL": "",
-            "sourceURL": "https://goo.gl/BSQwC1",
-            "provider": "Xavier Marks"
-        },
-        "coordinate": {
-            "latitude": "",
-            "longitude": ""
+            "company": "Xavier Marks"
         }
     },
     {
@@ -80,13 +68,7 @@
         "contact": {
             "name": "Yohanes Gunalan",
             "phoneNumber": "085100313721",
-            "profilePictureURL": "",
-            "sourceURL": "https://goo.gl/BSQwC1",
-            "provider": "Xavier Marks"
-        },
-        "coordinate": {
-            "latitude": "",
-            "longitude": ""
+            "company": "Xavier Marks"
         }
     }
 ]

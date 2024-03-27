@@ -82,7 +82,7 @@ class LanguageProcessingEvaluator extends Command
         }
 
         $avgAccuracy = $totalAccuracy / count($dataFiles);
-        $this->info("Avg accuracy is $avgAccuracy.\n");
+        $this->info("Avg accuracy is $avgAccuracy%.\n");
     }
 
     /**
@@ -94,8 +94,7 @@ class LanguageProcessingEvaluator extends Command
         $fields = [
             'title', 'propertyType', 'address', 'facing', 'ownership', 'city',
             'contact.name', 'contact.phoneNumber', 'contact.profilePictureURL',
-            'contact.sourceURL', 'contact.provider',
-            'coordinate.latitude', 'coordinate.longitude',
+            'contact.company',
             'price', 'lotSize', 'buildingSize', 'carCount', 'bedroomCount',
             'additionalBedroomCount', 'bathroomCount', "additionalBathroomCount", 
             'floorCount', 'electricPower'
@@ -110,17 +109,7 @@ class LanguageProcessingEvaluator extends Command
 
             foreach ($fields as $field) {
                 $listing = (array) Arr::get($listings, $idx, []);
-                $listingJson = json_encode($listing);
-                if ($listingJson === false) {
-                    $this->error("Can not parse listing json. Skipping . . .");
-                    continue;
-                }
-
-                $listingArray = json_decode($listingJson, true);
-                if (!is_array($listingArray)) {
-                    $this->error("listing is not a valid json array. Skipping . . .");
-                    continue;
-                }
+                $listingArray = json_decode(json_encode($listing), true);
                 $expectedListing = (array) Arr::get($expectedListings, $idx, []);
 
                 $guessedValue = Arr::get($listingArray, $field, '');
@@ -130,7 +119,7 @@ class LanguageProcessingEvaluator extends Command
                 $totalAccuracy += $accuracy;
 
                 $this->line("Accuracy for field <$field> is $accuracy%.");
-                if ($accuracy < 50) {
+                if ($accuracy < 80) {
                     $this->error("Extracted: " . Assert::castToString($guessedValue));
                     $this->error("Expected: " . Assert::castToString($correctValue));
                 }

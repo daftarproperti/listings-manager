@@ -1,5 +1,5 @@
 [{
-    "title": "DIJUAL Rumah Taman International",
+    "title": "Rumah Taman International, Citraland",
     "propertyType": "house",
     "address": "",
     "price": 10000000000,
@@ -19,12 +19,6 @@
     "contact": {
         "name": "Hana",
         "phoneNumber": "082142780083",
-        "profilePictureURL": "",
-        "sourceURL": "",
-        "provider": "Xavier Marks"
-    },
-    "coordinate": {
-        "latitude": "",
-        "longitude": ""
+        "company": "XM Royal Residence Point"
     }
 }]

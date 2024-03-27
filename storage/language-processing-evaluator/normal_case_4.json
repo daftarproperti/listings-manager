@@ -1,5 +1,5 @@
 [{
-    "title": "Royal Residen Cluster : Hare Wood, Surabaya",
+    "title": "Royal Residen Cluster - Hare Wood, Surabaya",
     "propertyType": "house",
     "address": "",
     "price": 49500000,
@@ -19,12 +19,6 @@
     "contact": {
         "name": "Ivan",
         "phoneNumber": "085730000747",
-        "profilePictureURL": "",
-        "sourceURL": "",
-        "provider": ""
-    },
-    "coordinate": {
-        "latitude": "",
-        "longitude": ""
+        "company": ""
     }
 }]

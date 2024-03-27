@@ -1,7 +1,7 @@
 [{
-    "title": "DIJUAL CEPAT\nTaman Puspa Raya\nCitraLand Surabaya Barat",
+    "title": "DIJUAL CEPAT Taman Puspa Raya CitraLand Surabaya Barat",
     "propertyType": "house",
-    "address": "",
+    "address": null,
     "price": 2650000000,
     "lotSize": 128,
     "buildingSize": 200,
@@ -19,12 +19,6 @@
     "contact": {
         "name": "Beatrix Marina",
         "phoneNumber": "081252623518",
-        "profilePictureURL": "",
-        "sourceURL": "",
-        "provider": "Xavier Marks"
-    },
-    "coordinate": {
-        "latitude": "",
-        "longitude": ""
+        "company": "Xavier Marks CitraLand Boulevard"
     }
 }]
