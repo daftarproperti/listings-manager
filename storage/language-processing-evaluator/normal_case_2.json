@@ -1,6 +1,7 @@
 [{
     "title": "Rumah Taman International, Citraland",
     "propertyType": "house",
+    "listingType": "sale",
     "address": "",
     "price": 10000000000,
     "lotSize": 570,

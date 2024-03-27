@@ -2,6 +2,7 @@
     {
         "title": "Ruko 4 Lantai di Raya Kusuma bangsa Sby",
         "propertyType": "shophouse",
+        "listingType": "sale",
         "address": "",
         "price": 4000000000,
         "lotSize": 80,
@@ -15,7 +16,7 @@
         "electricPower" : 4400,
         "facing": "east",
         "ownership": "shm",
-        "city": "Surabaya",
+        "city": "",
         "pictureUrls": [],
         "contact": {
             "name": "Yohanes Gunalan",
@@ -26,6 +27,7 @@
     {
         "title": "RUKO di kompleks Central Business Park, Semolowaru MERR - Surabaya ",
         "propertyType": "shophouse",
+        "listingType": "sale",
         "address": "",
         "price": 6500000000,
         "lotSize": 95,
@@ -39,7 +41,7 @@
         "electricPower" : 23000,
         "facing": "",
         "ownership": "hgb",
-        "city": "Surabaya",
+        "city": "",
         "pictureUrls": [],
         "contact": {
             "name": "Yohanes Gunalan",
@@ -50,6 +52,7 @@
     {
         "title": "Ruko di nol jalan Praban, pusat kota Surabaya",
         "propertyType": "shophouse",
+        "listingType": "sale",
         "address": "",
         "price": 5000000000,
         "lotSize": 87,
@@ -63,7 +66,7 @@
         "electricPower" : 5500,
         "facing": "south",
         "ownership": "shm",
-        "city": "Surabaya",
+        "city": "",
         "pictureUrls": [],
         "contact": {
             "name": "Yohanes Gunalan",

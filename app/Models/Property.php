@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Collection;
  * @property string $sourceText
  * @property string $title
  * @property PropertyType $propertyType
+ * @property ListingType $listingType
  * @property string $address
  * @property string $description
  * @property string $price
@@ -46,6 +47,7 @@ class Property extends Model
 
     protected $casts = [
         'propertyType' => PropertyType::class,
+        'listingType' => ListingType::class,
         'user' => PropertyUser::class,
         'ownership' => PropertyOwnership::class,
         'facing' => FacingDirection::class,

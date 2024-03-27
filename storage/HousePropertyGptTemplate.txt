@@ -13,6 +13,12 @@
         // for villa, use enum "villa"
         // If there is no suitable choice, use "unknown"
         "propertyType": "[The type of the property]",
+
+        // "listingType" field is an enum which may contain either of these values:
+        // "sale": If the ad is for property for sale (dijual)
+        // "rent": If the ad is for property for rent (disewa/disewakan/dikontrak/dikontrakkan)
+        "listingType": "[The type of the listing/ad]",
+
         "address": "[Address; Only extract Address if the ad contains exact address, not approximate address.
             In Indonesian, exact address often represented in street name + street number + house number.
             The input pattern is "{Jl/Jalan/Jln} {street name} {street number} {house number} [RT number RW number] [City]"

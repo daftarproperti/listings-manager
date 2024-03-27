@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
  * @property string $sourceText
  * @property string $title
  * @property PropertyType $propertyType
+ * @property ListingType $listingType
  * @property string $address
  * @property string $description
  * @property string $formatted_price
@@ -49,6 +50,7 @@ class Listing extends Model
 
     protected $casts = [
         'propertyType' => PropertyType::class,
+        'listingType' => ListingType::class,
         'user' => ListingUser::class,
         'ownership' => PropertyOwnership::class,
         'facing' => FacingDirection::class,
@@ -167,6 +169,7 @@ class Listing extends Model
         // TODO: Rather then repeating similar cases below, this can be generalized to $enumClass::sanitize()
         switch ($key) {
             case "propertyType":
+            case "listingType":
                 return $value ? strtolower(Assert::castToString($value)) : "unknown";
             case "ownership":
                 return PropertyOwnership::sanitize(Assert::castToString($value));

@@ -50,6 +50,7 @@ class ParseListingJobTest extends TestCase
   {
     "title": "Rumah Terawat di DARMO PERMAI",
     "propertyType": "House",
+    "listingType": "Sale",
     "address": "",
     "price": "1250000000",
     "lotSize": "117",
@@ -84,7 +85,8 @@ EOT);
         $this->assertDatabaseCount('listings', 1);
         $this->assertDatabaseHas('listings', [
             'title' => 'Rumah Terawat di DARMO PERMAI',
-            'propertyType' => 'house', // num should be sanitized to lower case
+            'propertyType' => 'house', // enum should be sanitized to lower case
+            'listingType' => 'sale', // enum sanitized to lower case
             'description' => 'The source text.',
             'price' => 1250000000,
             'lotSize' => 117,
@@ -102,6 +104,7 @@ EOT);
         $this->assertDatabaseHas('properties', [
             'title' => 'Rumah Terawat di DARMO PERMAI',
             'propertyType' => 'house',
+            'listingType' => 'sale',
             'description' => 'The source text.',
             'price' => 1250000000,
             'lotSize' => 117,
