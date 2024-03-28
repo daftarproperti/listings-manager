@@ -17,6 +17,8 @@ class ListingResource extends JsonResource
      * @OA\Property(property="id",type="string")
      * @OA\Property(property="sourceText",type="string")
      * @OA\Property(property="title",type="string")
+     * @OA\Property(property="propertyType",ref="#/components/schemas/PropertyType")
+     * @OA\Property(property="listingType",ref="#/components/schemas/ListingType")
      * @OA\Property(property="address",type="string")
      * @OA\Property(property="description",type="string")
      * @OA\Property(property="price",type="integer")
@@ -60,6 +62,8 @@ class ListingResource extends JsonResource
             'id' => $prop->id,
             'sourceText' => $prop->sourceText,
             'title' => $prop->title,
+            'propertyType' => $prop->propertyType,
+            'listingType' => $prop->listingType,
             'address' => $prop->address,
             'description' => $prop->description,
             'price' => $prop->price ? (int) $prop->price : null,

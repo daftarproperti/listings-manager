@@ -65,8 +65,14 @@ class ListingApiTest extends TestCase
 
     public function test_can_list_listings(): void
     {
-        $this->addListing("Dijual Rumah", $this->fakeUserId);
-        $this->addListing("Dijual Gedung", $this->fakeUserId);
+        $this->addListing("Dijual Rumah", $this->fakeUserId, [
+            'propertyType' => 'house',
+            'listingType' => 'rent',
+        ]);
+        $this->addListing("Dijual Gedung", $this->fakeUserId, [
+            'propertyType' => 'warehouse',
+            'listingType' => 'sale',
+        ]);
 
         $response = $this->withHeaders([
             'x-init-data' => http_build_query($this->generate_telegram_init_data()),
@@ -79,9 +85,13 @@ class ListingApiTest extends TestCase
             "listings" => [
                 [
                     "title" => "Dijual Gedung",
+                    "propertyType" => "warehouse",
+                    "listingType" => "sale",
                 ],
                 [
                     "title" => "Dijual Rumah",
+                    "propertyType" => "house",
+                    "listingType" => "rent",
                 ],
             ],
         ]);

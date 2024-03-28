@@ -34,15 +34,15 @@ class PropertyApiTest extends TestCase
         );
     }
 
-    private function addProperty(string $title, int $userId): Property
+    private function addProperty(string $title, int $userId, array $fields = []): Property
     {
-        $propertyUser = new PropertyUser();
-        $propertyUser->userId = $userId;
-        $property = new Property();
-        $property->title = $title;
-        $property->user = $propertyUser;
-        $property->save();
-        return $property;
+        return Property::factory()->create([
+            'user' => [
+                'userId' => $userId,
+                'source' => 'telegram',
+            ],
+            'title' => $title,
+        ] + $fields);
     }
 
     protected function setUp(): void
@@ -65,8 +65,14 @@ class PropertyApiTest extends TestCase
 
     public function test_can_list_properties(): void
     {
-        $this->addProperty("Dijual Rumah", $this->fakeUserId);
-        $this->addProperty("Dijual Gedung", $this->fakeUserId);
+        $this->addProperty("Dijual Rumah", $this->fakeUserId, [
+            'propertyType' => 'house',
+            'listingType' => 'rent',
+        ]);
+        $this->addProperty("Dijual Gedung", $this->fakeUserId, [
+            'propertyType' => 'warehouse',
+            'listingType' => 'sale',
+        ]);
 
         $response = $this->withHeaders([
             'x-init-data' => http_build_query($this->generate_telegram_init_data()),
@@ -79,9 +85,13 @@ class PropertyApiTest extends TestCase
             "properties" => [
                 [
                     "title" => "Dijual Gedung",
+                    "propertyType" => "warehouse",
+                    "listingType" => "sale",
                 ],
                 [
                     "title" => "Dijual Rumah",
+                    "propertyType" => "house",
+                    "listingType" => "rent",
                 ],
             ],
         ]);

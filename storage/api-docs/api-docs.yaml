@@ -767,6 +767,14 @@ components:
           type: boolean
           example: 'true'
       type: object
+    ListingType:
+      description: 'Listing type'
+      type: string
+      enum:
+        - unknown
+        - sale
+        - rent
+      example: house
     PropertyOwnership:
       description: 'Property ownership/certificate'
       type: string
@@ -797,6 +805,10 @@ components:
           type: string
         title:
           type: string
+        propertyType:
+          $ref: '#/components/schemas/PropertyType'
+        listingType:
+          $ref: '#/components/schemas/ListingType'
         address:
           type: string
         description:
@@ -871,6 +883,10 @@ components:
           type: string
         title:
           type: string
+        propertyType:
+          $ref: '#/components/schemas/PropertyType'
+        listingType:
+          $ref: '#/components/schemas/ListingType'
         address:
           type: string
         description:
