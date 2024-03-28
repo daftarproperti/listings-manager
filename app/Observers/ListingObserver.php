@@ -48,6 +48,27 @@ class ListingObserver
     }
 
     /**
+     * Handle the Listing "creating" event.
+     * @param Listing $listing
+     * @return bool
+     */
+
+    public function creating(Listing $listing): bool
+    {
+        $attributes = $listing->getAttributes();
+        $minimumFill = 75;
+
+        $filled = count(array_filter($attributes)) / count($attributes) * 100;
+
+        if ($filled < $minimumFill) {
+            Log::warning("Not creating Listing due to empty detected: " . print_r($listing->attributesToArray(), true));
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
      * @param Listing $listing
      * @param Property $property
      * @return void
