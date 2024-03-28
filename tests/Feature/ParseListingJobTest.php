@@ -45,7 +45,12 @@ class ParseListingJobTest extends TestCase
         $job = new ParseListingJob('The source text.', ['http://picture1.jpg', 'http://picture2.jpg'], $this->fakeUser);
         /** @var ChatGptService $chatGptService*/
         $chatGptService = $this->mock(ChatGptService::class, function (MockInterface $mock) {
-            $mock->shouldReceive('seekAnswerWithRetry')->withAnyArgs()->andReturn(<<<'EOT'
+            $mock->shouldReceive('seekAnswer')->withArgs(function ($msg) {
+                return str_contains($msg, 'I need your help to transform this text into separate listing texts for each listing');
+            })->andReturn('SINGLE_LISTING');
+            $mock->shouldReceive('seekAnswerWithRetry')->withArgs(function ($msg) {
+                return str_contains($msg, 'I will need to extract the unstructured information into structured fields');
+            })->andReturn(<<<'EOT'
 [
   {
     "title": "Rumah Terawat di DARMO PERMAI",
@@ -125,7 +130,25 @@ EOT);
         $job = new ParseListingJob('The source text.', [], $this->fakeUser);
         /** @var ChatGptService $chatGptService*/
         $chatGptService = $this->mock(ChatGptService::class, function (MockInterface $mock) {
-            $mock->shouldReceive('seekAnswerWithRetry')->withAnyArgs()->andReturn(<<<'EOT'
+            $mock->shouldReceive('seekAnswer')->withArgs(function ($msg) {
+                return str_contains($msg, 'I need your help to transform this text into separate listing texts for each listing');
+            })->andReturn(<<<'EOT'
+{
+    "header": "The header",
+    "footer": "The footer",
+    "listings": [
+        "Listing 1 content.",
+        "Listing 2 content.",
+        "Listing 3 content.",
+        "Listing 4 content.",
+        "Listing 5 content.",
+        "Listing 6 content."
+    ]
+}
+EOT);
+            $mock->shouldReceive('seekAnswerWithRetry')->withArgs(function ($msg) {
+                return str_contains($msg, 'Listing 1 content');
+            })->andReturn(<<<'EOT'
 [
     {
         "title": "Dijual Rumah Hitung Tanah Mulyosari Utara",
@@ -154,7 +177,14 @@ EOT);
             "latitude": null,
             "longitude": null
         }
-    },
+    }
+]
+EOT);
+
+            $mock->shouldReceive('seekAnswerWithRetry')->withArgs(function ($msg) {
+                return str_contains($msg, 'Listing 2 content');
+            })->andReturn(<<<'EOT'
+[
     {
         "title": "Rumah Siap Huni, Baru Greesss",
         "propertyType": "HOUSE",
@@ -182,7 +212,14 @@ EOT);
             "latitude": null,
             "longitude": null
         }
-    },
+    }
+]
+EOT);
+
+            $mock->shouldReceive('seekAnswerWithRetry')->withArgs(function ($msg) {
+                return str_contains($msg, 'Listing 3 content');
+            })->andReturn(<<<'EOT'
+[
     {
         "title": "HANYA 1 MENIT KE RAYA KENJERAN",
         "propertyType": "HOUSE",
@@ -210,7 +247,14 @@ EOT);
             "latitude": null,
             "longitude": null
         }
-    },
+    }
+]
+EOT);
+
+            $mock->shouldReceive('seekAnswerWithRetry')->withArgs(function ($msg) {
+                return str_contains($msg, 'Listing 4 content');
+            })->andReturn(<<<'EOT'
+[
     {
         "title": "MOJOARUM",
         "propertyType": "HOUSE",
@@ -238,7 +282,14 @@ EOT);
             "latitude": null,
             "longitude": null
         }
-    },
+    }
+]
+EOT);
+
+            $mock->shouldReceive('seekAnswerWithRetry')->withArgs(function ($msg) {
+                return str_contains($msg, 'Listing 5 content');
+            })->andReturn(<<<'EOT'
+[
     {
         "title": "RUMAH MODERN BARU GRESS",
         "propertyType": "HOUSE",
@@ -266,7 +317,14 @@ EOT);
             "latitude": null,
             "longitude": null
         }
-    },
+    }
+]
+EOT);
+
+            $mock->shouldReceive('seekAnswerWithRetry')->withArgs(function ($msg) {
+                return str_contains($msg, 'Listing 6 content');
+            })->andReturn(<<<'EOT'
+[
     {
         "title": "MURAH NEMEN INI",
         "propertyType": "HOUSE",
@@ -307,6 +365,8 @@ EOT);
             'title' => 'MURAH NEMEN INI',
             'propertyType' => 'house',
             'address' => 'Babatan Pantai',
+            // The description should be from the split message
+            'description' => "The header\n\nListing 6 content.\n\nThe footer",
             'bathroomCount' => 3,
             'bedroomCount' => 4,
             'facing' => 'north', // Convert to our canonical FacingDirection enum from the LLM-given 'Utara'
@@ -316,6 +376,8 @@ EOT);
             'title' => 'RUMAH MODERN BARU GRESS',
             'propertyType' => 'house',
             'address' => 'MOJOKLANGGRU PUSAT KOTA',
+            // The description should be from the split message
+            'description' => "The header\n\nListing 5 content.\n\nThe footer",
             'bathroomCount' => 3,
             'bedroomCount' => 3,
             'facing' => 'east', // Convert to our canonical FacingDirection enum from the LLM-given 'Timur'
@@ -328,7 +390,12 @@ EOT);
         $job = new ParseListingJob('The source text.', [], $this->fakeUser, $this->fakeChatId);
         /** @var ChatGptService $chatGptService*/
         $chatGptService = $this->mock(ChatGptService::class, function (MockInterface $mock) {
-            $mock->shouldReceive('seekAnswerWithRetry')->withAnyArgs()->andReturn(<<<'EOT'
+            $mock->shouldReceive('seekAnswer')->withArgs(function ($msg) {
+                return str_contains($msg, 'I need your help to transform this text into separate listing texts for each listing');
+            })->andReturn('SINGLE_LISTING');
+            $mock->shouldReceive('seekAnswerWithRetry')->withArgs(function ($msg) {
+                return str_contains($msg, 'I will need to extract the unstructured information into structured fields');
+            })->andReturn(<<<'EOT'
 {
 "title": "Rumah Terawat di DARMO PERMAI",
 "address": "",

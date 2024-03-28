@@ -2,6 +2,7 @@
     {
         // For "title" field, use your judgement for a suitable short one-line summary for this listing that can identify this listing easily.
         // Avoid generic words like "Dijual", "Murah", etc, because these words often appear in many listings and cannot easily identify the listing.
+        // If the text contains multiple listings, there is a global title and a title for the specific listing. In this case choose the specific title (if exists) rather than the global.
         "title": "[Title or main topic]",
 
         // The "propertyType" field below is an enum, so please choose only from the exact strings below:
@@ -32,8 +33,11 @@
             - Jl. Wiyung Surabaya Barat (not exact because there is no house number)
             - Jalan Sulaiman VI (not exact because there is no house number, only street number)
 
+            Note a common mistake is that "nol jalan" is a specific term in Indonesian listing text, this does not indicate the number of the street or house.
+
             If no street name with exact house number is present or only street name exist, it's safer to assume that the ad does not contain an address so leave this field empty string.
             If there is a hint that the address is approximate (containing "Dekat", "Sekitar") in front of the street name, assume that this is not exact address and leave this field empty string.
+            If you find an exact address, please extract as verbatim copy and don't summarize or rephrase because the accuracy is important.
         ]",
         "price": "[
             In Indonesian numerical notation, \"M\" indeed represents \"Milyar,\" which is equivalent to \"billion\" in English.

@@ -92,7 +92,6 @@ class ParseListingJob implements ShouldQueue
             $listing->user = $user;
         }
 
-        $listing->description = $sourceText;
         $listing->sourceText = $sourceText;
         $listing->pictureUrls = $pictureUrls;
 
