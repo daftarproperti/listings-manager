@@ -63,4 +63,18 @@ class ListingObserverTest extends TestCase
 
         $this->assertEquals($property->title, 'Rumah Bagus');
     }
+
+    public function test_delete_listing_also_delete_property(): void
+    {
+        $listing = Listing::factory()->create([
+            'title' => 'Rumah Apik',
+            'description' => 'Rumah Luas dan sangat bagus'
+        ]);
+
+        $listing->delete();
+
+        $property = Property::where('listings', $listing->id)->first();
+
+        $this->assertNull($property);
+    }
 }

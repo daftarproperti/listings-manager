@@ -69,6 +69,19 @@ class ListingObserver
     }
 
     /**
+     * Handle the Listing "deleted" event.
+     * @param Listing $listing
+     * @return void
+     */
+    public function deleted(Listing $listing): void
+    {
+        $property = Property::where('listings', $listing->id)->first();
+        if ($property) {
+            $property->delete();
+        }
+    }
+
+    /**
      * @param Listing $listing
      * @param Property $property
      * @return void
