@@ -2,6 +2,15 @@
 
 namespace App\Models;
 
+/**
+ * @OA\Schema(
+ *     schema="PropertyType",
+ *     type="string",
+ *     description="Property type",
+ *     enum={"unknown", "house", "apartment", "warehouse", "shophouse", "land", "villa"},
+ *     example="house"
+ * )
+ */
 enum PropertyType: string
 {
     case Unknown = 'unknown'; // Unknown

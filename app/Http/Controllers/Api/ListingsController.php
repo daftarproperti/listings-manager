@@ -64,13 +64,10 @@ class ListingsController extends Controller
      *     ),
      *     @OA\Parameter(
      *        in="query",
-     *        name="type",
+     *        name="propertyType",
      *        description="Property type",
      *        required=false,
-     *        @OA\Schema(
-     *            type="string",
-     *            enum={"house", "apartment", "land"}
-     *        )
+     *        @OA\Schema(ref="#/components/schemas/PropertyType")
      *     ),
      *     @OA\Parameter(
      *        in="query",
@@ -167,10 +164,7 @@ class ListingsController extends Controller
      *        name="ownership",
      *        description="Ownership",
      *        required=false,
-     *        @OA\Schema(
-     *            type="string",
-     *            enum={"shm", "hgb", "girik", "lainnya"}
-     *        )
+     *        @OA\Schema(ref="#/components/schemas/PropertyOwnership")
      *     ),
      *     @OA\Parameter(
      *        in="query",
@@ -250,7 +244,7 @@ class ListingsController extends Controller
             'q',
             'collection',
             'price',
-            'type',
+            'propertyType',
             'bedroomCount',
             'bathroomCount',
             'lotSize',

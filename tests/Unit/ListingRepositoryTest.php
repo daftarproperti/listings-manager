@@ -89,6 +89,25 @@ class ListingRepositoryTest extends TestCase
         $this->assertCount(5, $listings->items());
     }
 
+    public function test_listing_list_filter_property_type(): void
+    {
+        Listing::factory(5)->create([
+            'propertyType' => 'land',
+        ]);
+
+        Listing::factory(2)->create([
+            'bedroomCount' => 'house',
+        ]);
+
+        $repository = new ListingRepository();
+        $filterSet = new FilterSet();
+        $filterSet->propertyType = 'land';
+
+        $listings = $repository->list($filterSet);
+        $this->assertInstanceOf(Paginator::class, $listings);
+        $this->assertCount(5, $listings->items());
+    }
+
     public function test_listing_list_filter_bedroom_count_min(): void
     {
         Listing::factory(5)->create([

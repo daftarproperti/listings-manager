@@ -51,13 +51,10 @@ class PropertiesController extends Controller
      *     ),
      *     @OA\Parameter(
      *        in="query",
-     *        name="type",
+     *        name="propertyType",
      *        description="Property type",
      *        required=false,
-     *        @OA\Schema(
-     *            type="string",
-     *            enum={"house", "apartment", "land"}
-     *        )
+     *        @OA\Schema(ref="#/components/schemas/PropertyType")
      *     ),
      *     @OA\Parameter(
      *        in="query",
@@ -236,7 +233,7 @@ class PropertiesController extends Controller
         $filterSet = FilterSet::from($request->only([
             'q',
             'price',
-            'type',
+            'propertyType',
             'bedroomCount',
             'bathroomCount',
             'lotSize',

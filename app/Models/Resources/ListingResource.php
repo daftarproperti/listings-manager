@@ -28,7 +28,7 @@ class ListingResource extends JsonResource
      * @OA\Property(property="floorCount",type="integer")
      * @OA\Property(property="electricPower",type="integer")
      * @OA\Property(property="facing",type="string")
-     * @OA\Property(property="ownership",type="string")
+     * @OA\Property(property="ownership",ref="#/components/schemas/PropertyOwnership")
      * @OA\Property(property="city",type="string")
      * @OA\Property(property="pictureUrls",type="array",@OA\Items(type="string", format="uri", example="https://example.com/image.jpg"))
      * @OA\Property(property="coordinate",type="object",

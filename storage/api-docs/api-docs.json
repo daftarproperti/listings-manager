@@ -51,17 +51,12 @@
                         }
                     },
                     {
-                        "name": "type",
+                        "name": "propertyType",
                         "in": "query",
                         "description": "Property type",
                         "required": false,
                         "schema": {
-                            "type": "string",
-                            "enum": [
-                                "house",
-                                "apartment",
-                                "land"
-                            ]
+                            "$ref": "#/components/schemas/PropertyType"
                         }
                     },
                     {
@@ -160,13 +155,7 @@
                         "description": "Ownership",
                         "required": false,
                         "schema": {
-                            "type": "string",
-                            "enum": [
-                                "shm",
-                                "hgb",
-                                "girik",
-                                "lainnya"
-                            ]
+                            "$ref": "#/components/schemas/PropertyOwnership"
                         }
                     },
                     {
@@ -544,17 +533,12 @@
                         }
                     },
                     {
-                        "name": "type",
+                        "name": "propertyType",
                         "in": "query",
                         "description": "Property type",
                         "required": false,
                         "schema": {
-                            "type": "string",
-                            "enum": [
-                                "house",
-                                "apartment",
-                                "land"
-                            ]
+                            "$ref": "#/components/schemas/PropertyType"
                         }
                     },
                     {
@@ -887,8 +871,8 @@
                     "price": {
                         "$ref": "#/components/schemas/FilterMinMax"
                     },
-                    "type": {
-                        "description": "Type",
+                    "propertyType": {
+                        "description": "Property Type",
                         "type": "string",
                         "nullable": true
                     },
@@ -1091,6 +1075,32 @@
                 },
                 "type": "object"
             },
+            "PropertyOwnership": {
+                "description": "Property ownership/certificate",
+                "type": "string",
+                "enum": [
+                    "unknown",
+                    "shm",
+                    "hgb",
+                    "strata",
+                    "girik"
+                ],
+                "example": "shm"
+            },
+            "PropertyType": {
+                "description": "Property type",
+                "type": "string",
+                "enum": [
+                    "unknown",
+                    "house",
+                    "apartment",
+                    "warehouse",
+                    "shophouse",
+                    "land",
+                    "villa"
+                ],
+                "example": "house"
+            },
             "Listing": {
                 "properties": {
                     "id": {
@@ -1136,7 +1146,7 @@
                         "type": "string"
                     },
                     "ownership": {
-                        "type": "string"
+                        "$ref": "#/components/schemas/PropertyOwnership"
                     },
                     "city": {
                         "type": "string"

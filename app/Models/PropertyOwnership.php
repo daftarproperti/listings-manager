@@ -2,6 +2,15 @@
 
 namespace App\Models;
 
+/**
+ * @OA\Schema(
+ *     schema="PropertyOwnership",
+ *     type="string",
+ *     description="Property ownership/certificate",
+ *     enum={"unknown", "shm", "hgb", "strata", "girik"},
+ *     example="shm"
+ * )
+ */
 enum PropertyOwnership: string
 {
     case Unknown = 'unknown';

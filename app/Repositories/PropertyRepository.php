@@ -40,8 +40,8 @@ class PropertyRepository
             }
         });
 
-        $query->when(isset($filterSet->type), function ($query) use ($filterSet) {
-            $query->where('type', $filterSet->type);
+        $query->when(isset($filterSet->propertyType), function ($query) use ($filterSet) {
+            $query->where('propertyType', $filterSet->propertyType);
         });
 
         $query->when(isset($filterSet->bedroomCount), function ($query) use ($filterSet) {

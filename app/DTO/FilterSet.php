@@ -13,7 +13,7 @@ use Spatie\LaravelData\Dto;
  *     @OA\Property(property="q", type="string", nullable=true, description="Query"),
  *     @OA\Property(property="collection", type="boolean", nullable=true, description="Collection"),
  *     @OA\Property(property="price", ref="#/components/schemas/FilterMinMax"),
- *     @OA\Property(property="type", type="string", nullable=true, description="Type"),
+ *     @OA\Property(property="propertyType", type="string", nullable=true, description="Property Type"),
  *     @OA\Property(property="bedroomCount", ref="#/components/schemas/FilterMinMax"),
  *     @OA\Property(property="bathroomCount", ref="#/components/schemas/FilterMinMax"),
  *     @OA\Property(property="lotSize", ref="#/components/schemas/FilterMinMax"),
@@ -32,7 +32,7 @@ class FilterSet extends Dto
     public ?string $q;
     public ?bool $collection;
     public int|FilterMinMax|null $price;
-    public ?string $type;
+    public ?string $propertyType;
     public int|FilterMinMax|null $bedroomCount;
     public int|FilterMinMax|null $bathroomCount;
     public int|FilterMinMax|null $lotSize;
