@@ -39,13 +39,6 @@ class ListingRequest extends BaseApiRequest
      *      @OA\Property(property="latitude",type="integer"),
      *      @OA\Property(property="longitude",type="integer")
      * )
-     * @OA\Property(property="contacts",type="object",
-     *      @OA\Property(property="name",type="string"),
-     *      @OA\Property(property="profilePictureURL",type="string"),
-     *      @OA\Property(property="phoneNumber",type="string"),
-     *      @OA\Property(property="sourceURL",type="string"),
-     *      @OA\Property(property="provider",type="string")
-     * )
      * @OA\Property(property="isPrivate",type="boolean", example=false)
      */
 
@@ -76,10 +69,6 @@ class ListingRequest extends BaseApiRequest
             'facing' => 'nullable|string',
             'ownership' => 'nullable|string',
             'pictureUrls' => 'nullable|array|max:10',
-            'contacts.name' => 'nullable|string',
-            'contacts.profilePictureURL' => 'nullable|string',
-            'contacts.sourceURL' => 'nullable|string',
-            'contacts.provider' => 'nullable|string',
             'coordinate.latitude' => 'nullable|string',
             'coordinate.longitude' => 'nullable|string',
             'isPrivate' => 'required|boolean',

@@ -31,7 +31,6 @@ use Illuminate\Database\Eloquent\Collection;
  * @property array<string> $pictureUrls
  * @property double $latitude
  * @property double $longitude
- * @property array<string, string> $contacts
  * @property bool $user_can_edit
  * @property bool $isPrivate
  * @property TelegramUserProfile $user_profile

@@ -34,7 +34,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
  * @property array<string> $pictureUrls
  * @property double $latitude
  * @property double $longitude
- * @property array<string, string> $contacts
+ * @property array<string, string> $contact
  * @property bool $user_can_edit
  * @property bool $isPrivate
  * @property TelegramUserProfile $user_profile

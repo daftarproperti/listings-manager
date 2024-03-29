@@ -37,12 +37,10 @@ class ListingResource extends JsonResource
      *      @OA\Property(property="latitude",type="integer"),
      *      @OA\Property(property="longitude",type="integer")
      * )
-     * @OA\Property(property="contacts",type="object",
+     * @OA\Property(property="contact",type="object",
      *      @OA\Property(property="name",type="string"),
-     *      @OA\Property(property="profilePictureURL",type="string"),
      *      @OA\Property(property="phoneNumber",type="string"),
-     *      @OA\Property(property="sourceURL",type="string"),
-     *      @OA\Property(property="provider",type="string")
+     *      @OA\Property(property="company",type="string")
      * )
      * @OA\Property(property="user",type="object",
      *      @OA\Property(property="name",type="string"),
@@ -82,12 +80,10 @@ class ListingResource extends JsonResource
                 'latitude' => $prop->latitude,
                 'longitude' => $prop->longitude,
             ],
-            'contacts' => [
-                'name' => $prop->contacts ? ($prop->contacts['name'] ?? null) :  null,
-                'phoneNumber' => $prop->contacts ? ($prop->contacts['phoneNumber'] ?? null) : null,
-                'profilePictureURL' => $prop->contacts ? ($prop->contacts['profilePictureURL'] ?? null) : null,
-                'sourceURL' =>  $prop->contacts ? ($prop->contacts['sourceURL'] ?? null) : null,
-                'provider' =>  $prop->contacts ? ($prop->contacts['provider'] ?? null) : null,
+            'contact' => [
+                'name' => $prop->contact ? ($prop->contact['name'] ?? null) :  null,
+                'phoneNumber' => $prop->contact ? ($prop->contact['phoneNumber'] ?? null) : null,
+                'company' =>  $prop->contact ? ($prop->contact['company'] ?? null) : null,
             ],
             'user' => [
                 'name' => $prop->user_profile ? $prop->user_profile->name : null,

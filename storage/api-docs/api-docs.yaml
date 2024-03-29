@@ -725,19 +725,6 @@ components:
             longitude:
               type: integer
           type: object
-        contacts:
-          properties:
-            name:
-              type: string
-            profilePictureURL:
-              type: string
-            phoneNumber:
-              type: string
-            sourceURL:
-              type: string
-            provider:
-              type: string
-          type: object
         isPrivate:
           type: boolean
           example: false
@@ -848,17 +835,13 @@ components:
             longitude:
               type: integer
           type: object
-        contacts:
+        contact:
           properties:
             name:
               type: string
-            profilePictureURL:
-              type: string
             phoneNumber:
               type: string
-            sourceURL:
-              type: string
-            provider:
+            company:
               type: string
           type: object
         user:
