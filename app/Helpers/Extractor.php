@@ -59,7 +59,8 @@ Here are 2 important rules to remember:
 1. If the text contains multiple listings, reply with array of texts, each is a single listing copied verbatim from the
    source text that contains multiple listings. Also reply with the global header and the global footer from the text.
    This reply should be formatted in JSON and I will detail the format below.
-2. If the text contains only one listing, do not reply with json but a special response string "SINGLE_LISTING".
+2. If the text contains only one real estate property being advertised, do not reply with json but a special response
+   string "SINGLE_LISTING".
 
 Usually a text containing multiple listings are formatted like this (not a strict format, so use generic natural
 language judgement too):
@@ -90,8 +91,8 @@ If the text contains multiple listings, here is the json format for your return:
     ]
 }
 
-If the text contains just one listing, this is a special case that I want to handle, so reply with text "SINGLE_LISTING"
-and do not return json.
+If the text contains just one property being advertised, this is a special case that I want to handle, so reply with
+text "SINGLE_LISTING" and do not return json.
 
 I will feed your response directly into a program, so make sure to return a proper JSON or "SINGLE_LISTING" without
 any additional text.
