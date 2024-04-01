@@ -207,10 +207,7 @@ class ListingsController extends Controller
      *        name="sort",
      *        description="Sort By",
      *        required=false,
-     *        @OA\Schema(
-     *            type="string",
-     *            enum={"price", "bedroomCount", "lotSize"}
-     *        )
+     *        @OA\Schema(ref="#/components/schemas/ListingSort")
      *     ),
      *     @OA\Parameter(
      *        in="query",

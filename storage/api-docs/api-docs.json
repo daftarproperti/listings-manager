@@ -200,12 +200,7 @@
                         "description": "Sort By",
                         "required": false,
                         "schema": {
-                            "type": "string",
-                            "enum": [
-                                "price",
-                                "bedroomCount",
-                                "lotSize"
-                            ]
+                            "$ref": "#/components/schemas/ListingSort"
                         }
                     },
                     {
@@ -637,13 +632,7 @@
                         "description": "Ownership",
                         "required": false,
                         "schema": {
-                            "type": "string",
-                            "enum": [
-                                "shm",
-                                "hgb",
-                                "girik",
-                                "lainnya"
-                            ]
+                            "$ref": "#/components/schemas/PropertyOwnership"
                         }
                     },
                     {
@@ -688,12 +677,7 @@
                         "description": "Sort By",
                         "required": false,
                         "schema": {
-                            "type": "string",
-                            "enum": [
-                                "price",
-                                "bedroomCount",
-                                "lotSize"
-                            ]
+                            "$ref": "#/components/schemas/ListingSort"
                         }
                     },
                     {
@@ -1090,6 +1074,18 @@
                     "villa"
                 ],
                 "example": "house"
+            },
+            "ListingSort": {
+                "description": "Sort Listing By",
+                "type": "string",
+                "enum": [
+                    "price",
+                    "bedroomCount",
+                    "bathroomCount",
+                    "lotSize",
+                    "buildingSize"
+                ],
+                "example": "price"
             },
             "Listing": {
                 "properties": {

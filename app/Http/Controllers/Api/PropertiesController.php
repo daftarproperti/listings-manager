@@ -151,10 +151,7 @@ class PropertiesController extends Controller
      *        name="ownership",
      *        description="Ownership",
      *        required=false,
-     *        @OA\Schema(
-     *            type="string",
-     *            enum={"shm", "hgb", "girik", "lainnya"}
-     *        )
+     *        @OA\Schema(ref="#/components/schemas/PropertyOwnership")
      *     ),
      *     @OA\Parameter(
      *        in="query",
@@ -197,10 +194,7 @@ class PropertiesController extends Controller
      *        name="sort",
      *        description="Sort By",
      *        required=false,
-     *        @OA\Schema(
-     *            type="string",
-     *            enum={"price", "bedroomCount", "lotSize"}
-     *        )
+     *        @OA\Schema(ref="#/components/schemas/ListingSort")
      *     ),
      *     @OA\Parameter(
      *        in="query",
