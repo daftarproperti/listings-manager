@@ -13,6 +13,7 @@ use App\Helpers\TelegramInteractionHelper;
 use App\Http\Services\ChatGptService;
 use App\Models\Listing;
 use App\Models\ListingUser;
+use App\Models\RawMessage;
 
 class ParseListingJob implements ShouldQueue
 {
@@ -23,18 +24,25 @@ class ParseListingJob implements ShouldQueue
     private array $pictureUrls;
     private ListingUser $user;
     private ?int $chatId;
+    private ?RawMessage $rawMessage;
 
     /**
      * Create a new job instance.
      *
      * @param array<string> $pictureUrls
      */
-    public function __construct(string $sourceText, array $pictureUrls, ListingUser $user, int $chatId = null)
-    {
+    public function __construct(
+        string $sourceText,
+        array $pictureUrls,
+        ListingUser $user,
+        int $chatId = null,
+        RawMessage $rawMessage = null
+    ) {
         $this->sourceText = $sourceText;
         $this->pictureUrls = $pictureUrls;
         $this->user = $user;
         $this->chatId = $chatId;
+        $this->rawMessage = $rawMessage;
     }
 
     /**
@@ -43,6 +51,9 @@ class ParseListingJob implements ShouldQueue
     public function handle(ChatGptService $chatGptService): void
     {
         $extractor = new Extractor($chatGptService);
+
+        $rawMessage = $this->rawMessage;
+        $isPrivateChat = $rawMessage && $rawMessage->message->chat->type == 'private';
 
         try {
             Log::debug("Handling parse listing, source text =\n" . $this->sourceText);
@@ -53,7 +64,7 @@ class ParseListingJob implements ShouldQueue
                 $this->saveAnswer((array) $data, $this->sourceText, $this->pictureUrls, $this->user ?? null);
             }
         } catch (\Throwable $th) {
-            if (!empty($this->chatId)) {
+            if (!empty($this->chatId) && $isPrivateChat) {
                 TelegramInteractionHelper::sendMessage($this->chatId, 'Mohon maaf terjadi kesalahan pemrosesan informasi. Silahkan coba kembali.');
             }
 
@@ -62,7 +73,7 @@ class ParseListingJob implements ShouldQueue
             return;
         }
 
-        if (!empty($this->chatId)) {
+        if (!empty($this->chatId) && $isPrivateChat) {
             $titles = implode("\n", array_map(function($listing) {
                 return isset($listing->title) ? '* <b>' . $listing->title . '</b>' : '';
             }, $extractedData));

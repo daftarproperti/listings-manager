@@ -7,6 +7,7 @@ use App\Jobs\ParseListingJob;
 use App\Models\Property;
 use App\Models\Listing;
 use App\Models\ListingUser;
+use App\Models\RawMessage;
 use Illuminate\Http\Client\Request;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Http;
@@ -387,7 +388,16 @@ EOT);
     // LLM gives a single object instead of array
     public function test_single_object_needs_wrap(): void
     {
-        $job = new ParseListingJob('The source text.', [], $this->fakeUser, $this->fakeChatId);
+        $job = new ParseListingJob(
+            'The source text.',
+            [],
+            $this->fakeUser,
+            $this->fakeChatId,
+            RawMessage::factory([
+                'message' => ['chat' => ['type' => 'private']]
+            ])->make()
+        );
+
         /** @var ChatGptService $chatGptService*/
         $chatGptService = $this->mock(ChatGptService::class, function (MockInterface $mock) {
             $mock->shouldReceive('seekAnswer')->withArgs(function ($msg) {

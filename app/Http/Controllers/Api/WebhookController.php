@@ -47,7 +47,7 @@ class WebhookController extends Controller
             );
 
         if ($isPropertyInformationMessage) {
-            $message = $receiveMessageService->saveRawMessage($update);
+            $rawMessage = $receiveMessageService->saveRawMessage($update);
 
             $pictureUrls = [];
             if (!empty($update->message->photo)) {
@@ -60,10 +60,13 @@ class WebhookController extends Controller
                 $update->message->text,
                 $pictureUrls,
                 $this->populateListingUser($update),
-                $chatId
+                $chatId,
+                $rawMessage
             )->onQueue(Queue::getQueueName('generic'));
 
-            if ($chatId) {
+            $isPrivateChat = isset($update->message->chat) && $update->message->chat->type == 'private';
+
+            if ($chatId && $isPrivateChat) {
                 TelegramInteractionHelper::sendMessage(
                     $chatId,
                     'Terima kasih atas Listing yang anda bagikan.' . "\n\n" .
