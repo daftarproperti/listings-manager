@@ -23,7 +23,7 @@ env_variables:
   APP_KEY: "appkey"
   APP_NAME: "Daftar Properti"
   DP_VERSION: "0"
-  LOG_LEVEL: info
+  LOG_LEVEL: debug
   CACHE_DRIVER: file
   SESSION_DRIVER: cookie
   MONGODB_SRV: "mongodb+srv://usernam:password@host/"
