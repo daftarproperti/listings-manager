@@ -10,6 +10,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Services\ReceiveMessageService;
 use App\Jobs\ParseListingJob;
 use App\Models\ListingUser;
+use App\Models\TelegramUser;
 use App\Models\RawMessage;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -55,11 +56,21 @@ class WebhookController extends Controller
             }
 
             $chatId = isset($update->message->chat) ? $update->message->chat->id : null;
+            $listingUser = $this->populateListingUser($update);
+
+            $emptyProfile = false;
+            $telegramUser = TelegramUser::where('user_id', $listingUser->userId)->first();
+            if ($telegramUser) {
+                $userProfile = $telegramUser->profile;
+                if (!$userProfile || !property_exists($telegramUser, 'profile')) {
+                    $emptyProfile = true;
+                }
+            }
 
             ParseListingJob::dispatch(
                 $update->message->text,
                 $pictureUrls,
-                $this->populateListingUser($update),
+                $listingUser,
                 $chatId,
                 $rawMessage
             )->onQueue(Queue::getQueueName('generic'));
@@ -67,10 +78,14 @@ class WebhookController extends Controller
             $isPrivateChat = isset($update->message->chat) && $update->message->chat->type == 'private';
 
             if ($chatId && $isPrivateChat) {
+                $message = 'Terima kasih atas Listing yang anda bagikan.' . "\n\n" . 'Informasi sedang kami proses dan masukkan ke database...';
+                if ($emptyProfile) {
+                    $message = $message . "\n\n" . 'Agar listing lebih dapat ditemukan pencari, silahkan lengkapi data diri anda melalui Kelola Listing -> Akun';
+                }
+                
                 TelegramInteractionHelper::sendMessage(
                     $chatId,
-                    'Terima kasih atas Listing yang anda bagikan.' . "\n\n" .
-                        'Informasi sedang kami proses dan masukkan ke database...'
+                    $message
                 );
             }
         } else {
