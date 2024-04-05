@@ -66,7 +66,7 @@ Usually a text containing multiple listings are formatted like this (not a stric
 language judgement too):
 
 ------ BEGIN SAMPLE FORMAT -----
-<header> (usually tagline like "Dijual rumah di Jakarta")
+<header> (optional, usually tagline like "Dijual rumah di Jakarta")
 
 <listing 1>
 
@@ -76,7 +76,7 @@ language judgement too):
 
 (each of the listings above may be numbered or separated by empty lines, use your natural language judgement)
 
-<footer> (usually contains contact information)
+<footer> (optional, usually contains contact information)
 ------ END SAMPLE FORMAT -----
 
 If the text contains multiple listings, here is the json format for your return:
@@ -110,7 +110,10 @@ EOD;
      */
     private function splitMessages(string $message): array
     {
-        $answer = $this->chatGptService->seekAnswer(Extractor::generatePromptToSplit($message));
+        // Force model to GPT-4 for splitting messages since GPT 3.5 is not very good at handling long text and
+        // understanding the separation of multiple listings.
+        // But once split, GPT-3.5 performs well enough for extraction.
+        $answer = $this->chatGptService->seekAnswer(Extractor::generatePromptToSplit($message), 'gpt-4');
 
         Log::debug("answer from split = " . $answer);
 

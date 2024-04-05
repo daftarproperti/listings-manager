@@ -44,14 +44,14 @@ class ChatGptService
         throw new \ErrorException('Failed to get response after '.$retryAttempts.' attempts.');
     }
 
-    public function seekAnswer(string $question): string
+    public function seekAnswer(string $question, string $model = null): string
     {
         $response = Http::withHeaders([
             'Authorization' => 'Bearer ' . $this->apiKey,
             'Content-Type' => 'application/json',
         ])
             ->post($this->apiUrl, [
-                'model' => $this->modelVersion,
+                'model' => $model ?? $this->modelVersion,
                 'messages' => [
                     ['role' => 'user', 'content' => $question],
                 ]
