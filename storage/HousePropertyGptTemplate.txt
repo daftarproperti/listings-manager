@@ -95,7 +95,7 @@
         // for Selatan-Barat/Barat-Selatan/Barat Daya, use enum "southwest"
         // for Utara-Barat/Barat-Utara/Barat Laut, use enum "northwest"
         // If there is no suitable choice, use "unknown"
-        "facing": "[north|east|south|west|northeast|southeast|southwest|northwest]",
+        "facing": "[unknown|north|east|south|west|northeast|southeast|southwest|northwest]",
 
         // The "ownership" field below is an enum, so please choose only from the exact strings below:
         // for Sertifikat Hak Milik (SHM), use enum "shm"
