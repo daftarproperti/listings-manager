@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\MembersController;
 use App\Http\Controllers\VersionController;
 use App\Http\Controllers\Web\Public\AgentsController;
 use App\Http\Controllers\Web\Public\ListingsController;
+use App\Http\Controllers\Web\Public\HomeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -41,3 +42,5 @@ Route::group(['prefix' => 'public'], function () {
     Route::get('/agents/{telegramUser}', [AgentsController::class, 'detail']);
     Route::get('/listings/{listing}', [ListingsController::class, 'detail']);
 });
+
+Route::get('/', [HomeController::class, 'index']);

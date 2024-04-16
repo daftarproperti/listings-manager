@@ -16,6 +16,9 @@ export default {
         extend: {
             fontFamily: {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
+                newsreader: ['Newsreader', 'serif'],
+                newsreader: ['Newsreader', 'serif'],
+                inter: ['Inter', 'serif'],
             },
         },
         colors: {
