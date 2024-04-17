@@ -47,3 +47,4 @@ env_variables:
   LOG_CHANNEL: "gcp"
   DB_CONNECTION: "mongodb"
   QUEUE_CONNECTION: "database"
+  ANALYTICS_PROPERTY_ID:

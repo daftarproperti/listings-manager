@@ -38,3 +38,4 @@ env_variables:
   DB_CONNECTION: "mongodb"
   QUEUE_CONNECTION: "database"
   DEFAULT_LISTING_CITY: "Surabaya"
+  ANALYTICS_PROPERTY_ID:

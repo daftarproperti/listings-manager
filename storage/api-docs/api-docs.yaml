@@ -813,6 +813,8 @@ components:
           type: integer
         electricPower:
           type: integer
+        viewCount:
+          type: integer
         facing:
           type: string
         ownership:

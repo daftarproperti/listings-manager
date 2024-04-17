@@ -6,10 +6,19 @@ use App\Helpers\Assert;
 use App\Helpers\NumFormatter;
 use App\Helpers\TelegramPhoto;
 use App\Models\FacingDirection;
+use Carbon\Carbon;
+use Exception;
+use Google\Analytics\Data\V1alpha\Filter\StringFilter\MatchType;
+use Google\Analytics\Data\V1beta\Filter;
+use Google\Analytics\Data\V1beta\Filter\StringFilter;
+use Google\Analytics\Data\V1beta\FilterExpression;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use MongoDB\Laravel\Eloquent\Model;
 use MongoDB\Laravel\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Support\Facades\Log;
+use Spatie\Analytics\Facades\Analytics;
+use Spatie\Analytics\Period;
 
 /**
  * @property string $id
@@ -28,6 +37,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
  * @property int $bathroomCount
  * @property int $floorCount
  * @property int $electricPower
+ * @property int $viewCount
  * @property FacingDirection $facing
  * @property PropertyOwnership $ownership
  * @property string $city
@@ -63,6 +73,45 @@ class Listing extends Model
         'electricPower' => 'int',
         'price' => 'float',
     ];
+
+    public function getViewCountAttribute(): int
+    {
+        if (!env('PHASE1')) {
+            return 0;
+        }
+
+        try {
+            $startDate = Carbon::createFromDate(2024, 1, 1);
+            $endDate = Carbon::now();
+            $periode = Period::create($startDate, $endDate);
+
+            $metrics = ['eventCount'];
+            $dimension = ['customEvent:listing_id'];
+            $dimensionFilter = new FilterExpression([
+                'filter' => new Filter([
+                    'field_name' => 'customEvent:listing_id',
+                    'string_filter' => new StringFilter([
+                        'match_type' => MatchType::EXACT,
+                        'value' => $this->id,
+                    ]),
+                ]),
+            ]);
+
+            $analyticsData = Analytics::get($periode, $metrics, $dimension, 10, [], 0, $dimensionFilter)->first();
+
+            if (is_array($analyticsData)) {
+                return (int) $analyticsData['eventCount'];
+            } else {
+                return 0;
+            }
+        } catch (Exception $e) {
+            // Logging the error here. The failure can occur for a couple of reasons:
+            // 1. The 'property_id' doesn't exist or is invalid.
+            // 2. Missing or incorrect Google Analytics service account credentials.
+            Log::error($e);
+            return 0;
+        }
+    }
 
     public function getFormattedPriceAttribute(): string
     {

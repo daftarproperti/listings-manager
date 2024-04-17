@@ -35,3 +35,4 @@ env_variables:
   GOOGLE_BUCKET_NAME: "daftarproperti-local"
   LOG_CHANNEL: "single"
   QUEUE_CONNECTION: "sync"
+  ANALYTICS_PROPERTY_ID:

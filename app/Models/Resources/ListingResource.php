@@ -29,6 +29,7 @@ class ListingResource extends JsonResource
      * @OA\Property(property="bathroomCount",type="integer")
      * @OA\Property(property="floorCount",type="integer")
      * @OA\Property(property="electricPower",type="integer")
+     * @OA\Property(property="viewCount",type="integer")
      * @OA\Property(property="facing",type="string")
      * @OA\Property(property="ownership",ref="#/components/schemas/PropertyOwnership")
      * @OA\Property(property="city",type="string")
@@ -72,6 +73,7 @@ class ListingResource extends JsonResource
             'bathroomCount' => $prop->bathroomCount ? (int) $prop->bathroomCount : null,
             'floorCount' => $prop->floorCount ? (int) $prop->floorCount : null,
             'electricPower' => $prop->electricPower ? (int) $prop->electricPower : null,
+            'viewCount' => $prop->viewCount,
             'facing' => $prop->facing,
             'ownership' => $prop->ownership,
             'city' => $prop->city,

@@ -16,6 +16,7 @@
         "laravel/socialite": "^5.12",
         "laravel/tinker": "^2.8",
         "mongodb/laravel-mongodb": "^4.0",
+        "spatie/laravel-analytics": "^5.3",
         "spatie/laravel-data": "^4.1",
         "stackkit/laravel-google-cloud-tasks-queue": "^3.7",
         "tightenco/ziggy": "^1.0"

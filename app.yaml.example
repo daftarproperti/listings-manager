@@ -34,3 +34,4 @@ env_variables:
   CHATGPT_KEY: "secret"
   GOOGLE_BUCKET_NAME: "xxx"
   DEFAULT_LISTING_CITY:"Surabaya"
+  ANALYTICS_PROPERTY_ID:
