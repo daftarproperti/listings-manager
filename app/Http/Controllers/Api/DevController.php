@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Helpers\Assert;
+use App\Helpers\Queue;
 use App\Http\Controllers\Controller;
 use App\Jobs\DevQueueJob;
 use Illuminate\Http\JsonResponse;
@@ -18,7 +19,8 @@ class DevController extends Controller
     public function queue(Request $request): JsonResponse
     {
         $start = hrtime(TRUE);
-        DevQueueJob::dispatch(Assert::string($request->input('name', 'Default')));
+        DevQueueJob::dispatch(Assert::string($request->input('name', 'Default')))
+            ->onQueue(Queue::getQueueName('generic'));
         $end = hrtime(TRUE);
         $durationMs = ($end - $start) / 1000000;
 

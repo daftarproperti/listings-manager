@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\GoogleLoginController;
 use App\Http\Controllers\Admin\MembersController;
 use App\Http\Controllers\Admin\TelegramController;
+use App\Http\Controllers\QueueSizeController;
 use App\Http\Controllers\VersionController;
 use App\Http\Controllers\Web\Public\AgentsController;
 use App\Http\Controllers\Web\Public\ListingsController;
@@ -22,6 +23,11 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+// Inspect queue size.
+// Useful to confirm whether it's okay to stop the current version.
+// (Versions with non-empty queue should not be stopped yet even if they stop receiving traffic).
+Route::get('/_qs', [QueueSizeController::class, 'index']);
 
 Route::group(['prefix' => 'admin'], function () {
     Route::group(['middleware' => ['auth:admin']], function () {
