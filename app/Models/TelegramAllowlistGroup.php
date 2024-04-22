@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
  * @property integer $chatId
+ * @property string $groupName
  * @property boolean $allowed
  * @property string $sampleMessage
 */

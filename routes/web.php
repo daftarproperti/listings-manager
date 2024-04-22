@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\GoogleLoginController;
 use App\Http\Controllers\Admin\MembersController;
+use App\Http\Controllers\Admin\TelegramController;
 use App\Http\Controllers\VersionController;
 use App\Http\Controllers\Web\Public\AgentsController;
 use App\Http\Controllers\Web\Public\ListingsController;
@@ -27,6 +28,12 @@ Route::group(['prefix' => 'admin'], function () {
         Route::get('/members', [MembersController::class, 'index'])->name('members');
         Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
         Route::post('/logout', [GoogleLoginController::class, 'handleLogout'])->name('logout');
+
+        Route::group(['prefix' => 'telegram', 'as' => 'telegram.'], function () {
+            Route::get('/allowlists', [TelegramController::class, 'allowlistIndex'])->name('allowlists');
+            Route::get('/allowlists/{allowlist}', [TelegramController::class, 'allowlistDetail'])->name('allowlists.detail');
+            Route::post('/allowlists/{allowlist}', [TelegramController::class, 'allowlistUpdate'])->name('allowlists.update');
+        });
     });
 
     Route::group(['middleware' => ['guest:admin']], function () {

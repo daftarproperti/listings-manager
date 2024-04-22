@@ -45,6 +45,14 @@ export default function Authenticated ({
                                     Members
                                 </NavLink>
                             </div>
+                            <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                                <NavLink
+                                    href={route('telegram.allowlists')}
+                                    active={route().current('telegram.allowlists')}
+                                >
+                                    Telegram Group Allowlists
+                                </NavLink>
+                            </div>
                         </div>
 
                         <div className="hidden sm:flex sm:items-center sm:ms-6">
