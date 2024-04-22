@@ -2,6 +2,21 @@
 <html lang="en">
 
 <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id={{ env('ANALYTICS_MEASUREMENT_ID') }}"></script>
+    <script>
+        if ("{{ env('ANALYTICS_MEASUREMENT_ID') }}") {
+            window.dataLayer = window.dataLayer || [];
+
+            function gtag() {
+                dataLayer.push(arguments);
+            }
+            gtag('js', new Date());
+
+            gtag('config', "{{ env('ANALYTICS_MEASUREMENT_ID') }}");
+        }
+    </script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -135,6 +150,16 @@
         </nav>
     </div>
 
+    <script>
+        /**
+         * The following event is sent when the page loads.
+         */
+        if ("{{ env('PHASE1') }}") {
+            gtag("event", "listing_view", {
+                "listing_id": "{{ $listing->id }}",
+            });
+        }
+    </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
 </body>
 
