@@ -2,10 +2,13 @@
 
 namespace App\Http\Services;
 
+use App\Helpers\Assert;
 use App\DTO\Telegram\PhotoSize;
 use App\DTO\Telegram\Update;
 use App\Helpers\HousePropertyKeywords;
+use App\Http\Services\ClassificationService;
 use App\Models\RawMessage;
+use Illuminate\Support\Facades\Log;
 
 class ReceiveMessageService
 {
@@ -28,17 +31,12 @@ class ReceiveMessageService
 
     public function isPropertyInformationMessage(string $message, float $threshold = 25): bool
     {
-        $keyWords = HousePropertyKeywords::Keywords();
-        $message = strtolower($message);
-
-        $containKeyword = [];
-        foreach ($keyWords as $keyWord) {
-            if (strpos($message, $keyWord) !== false) {
-                $containKeyword[] = $keyWord;
-            }
+        $classificationEnabled = Assert::boolean(config('services.msg_classification.enabled'));
+        if ($classificationEnabled) {
+            return $this->determineFromClassificationAPI($message);
         }
 
-        return (count($containKeyword) / count($keyWords) * 100) >= $threshold;
+        return $this->determineFromKeywords($message, $threshold);
     }
 
     /**
@@ -58,5 +56,37 @@ class ReceiveMessageService
         }
 
         return $pictureUrls;
+    }
+
+    private function determineFromClassificationAPI(string $message): bool
+    {
+        $classificationService = new ClassificationService();
+        try {
+            $result = $classificationService->classify($message);
+            if ($result == "LISTING" || $result == "BUYER_REQUEST") {
+                return true;
+            }
+
+            return false;
+        } catch (\Exception $e) {
+            Log::error("Error caught when trying to classify message:");
+        }
+
+        return false;
+    }
+
+    private function determineFromKeywords(string $message, float $threshold = 25): bool
+    {
+        $keyWords = HousePropertyKeywords::Keywords();
+        $message = strtolower($message);
+
+        $containKeyword = [];
+        foreach ($keyWords as $keyWord) {
+            if (strpos($message, $keyWord) !== false) {
+                $containKeyword[] = $keyWord;
+            }
+        }
+
+        return (count($containKeyword) / count($keyWords) * 100) >= $threshold;
     }
 }

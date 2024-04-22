@@ -42,6 +42,11 @@ return [
         'model_version' => env('CHATGPT_MODEL_VERSION', 'gpt-3.5-turbo'),
     ],
 
+    'msg_classification' => [
+        'enabled' => env('MSG_CLASSIFICATION_ENABLED', false),
+        'endpoint' => env('MSG_CLASSIFICATION_ENDPOINT'),
+    ],
+
     'google' => [
         'project_id' => env('GOOGLE_PROJECT_ID'),
         'bucket_name' => env('GOOGLE_BUCKET_NAME'),
