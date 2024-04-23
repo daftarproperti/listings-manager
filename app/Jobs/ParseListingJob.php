@@ -19,10 +19,10 @@ class ParseListingJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    private string $sourceText;
+    private ?string $sourceText;
     /** @var array<string> $pictureUrls */
     private array $pictureUrls;
-    private ListingUser $user;
+    private ?ListingUser $user;
     private ?int $chatId;
     private ?RawMessage $rawMessage;
 
@@ -32,9 +32,9 @@ class ParseListingJob implements ShouldQueue
      * @param array<string> $pictureUrls
      */
     public function __construct(
-        string $sourceText,
+        ?string $sourceText,
         array $pictureUrls,
-        ListingUser $user,
+        ?ListingUser $user,
         int $chatId = null,
         RawMessage $rawMessage = null
     ) {
@@ -57,6 +57,10 @@ class ParseListingJob implements ShouldQueue
 
         try {
             Log::debug("Handling parse listing, source text =\n" . $this->sourceText);
+
+            if (!$this->sourceText) {
+                throw new \Exception('Empty source text');
+            }
 
             $extractedData = $extractor->extractListingFromMessage($this->sourceText);
 

@@ -48,7 +48,7 @@ class Message extends Data
     public User $from;
     public Chat $chat;
     public int $date;
-    public string $text;
+    public ?string $text;
     public string $caption;
     /** @var array<PhotoSize> $photo */
     public array $photo;
@@ -61,5 +61,5 @@ class Message extends Data
 class Update extends BaseAttributeCaster
 {
     public int $update_id;
-    public Message $message;
+    public ?Message $message;
 }

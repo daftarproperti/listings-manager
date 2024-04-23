@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\DTO\Telegram\Message;
 use App\DTO\Telegram\Update;
 use App\Helpers\Extractor;
 use App\Helpers\Queue;
@@ -30,6 +31,11 @@ class WebhookController extends Controller
 
         $update = Update::from($params);
 
+        // stop process if message not exists
+        if (is_null($update->message)) {
+            return response()->json(['error' => 'no message to process'], 200);
+        }
+
         //to avoid same message processing
         $dataExists = RawMessage::where('update_id', $update->update_id)->exists();
         if ($dataExists) {
@@ -56,7 +62,7 @@ class WebhookController extends Controller
             }
 
             $chatId = isset($update->message->chat) ? $update->message->chat->id : null;
-            $listingUser = $this->populateListingUser($update);
+            $listingUser = $this->populateListingUser($update->message);
 
             $emptyProfile = false;
             $telegramUser = TelegramUser::where('user_id', $listingUser->userId)->first();
@@ -82,7 +88,7 @@ class WebhookController extends Controller
                 if ($emptyProfile) {
                     $message = $message . "\n\n" . 'Agar listing lebih dapat ditemukan pencari, silahkan lengkapi data diri anda melalui Kelola Listing -> Akun';
                 }
-                
+
                 TelegramInteractionHelper::sendMessage(
                     $chatId,
                     $message
@@ -95,16 +101,16 @@ class WebhookController extends Controller
         return response()->json(['success' => true], 200);
     }
 
-    private function populateListingUser(Update $update): ListingUser
+    private function populateListingUser(Message $message): ListingUser
     {
         $listingUser = new ListingUser();
         $listingUser->name = trim(sprintf(
             '%s %s',
-            $update->message->from->first_name,
-            $update->message->from->last_name ?? ''
+            $message->from->first_name ?? '',
+            $message->from->last_name ?? ''
         ));
-        $listingUser->userName = $update->message->from->username ?? null;
-        $listingUser->userId = $update->message->from->id;
+        $listingUser->userName = $message->from->username ?? null;
+        $listingUser->userId = $message->from->id ?? 0;
         $listingUser->source = 'telegram';
 
         return $listingUser;

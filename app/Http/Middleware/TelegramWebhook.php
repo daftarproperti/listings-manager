@@ -29,11 +29,13 @@ class TelegramWebhook
 
         $requestDataMessage = Update::from($request->only('message'));
 
-        $chatType = $requestDataMessage->message->chat->type;
+        $requestMessage = $requestDataMessage->message ?? null;
+        $chat = $requestMessage->chat ?? null;
+        $chatType = $chat->type ?? ChatType::PRIVATE->value;
 
-        if ($chatType === ChatType::GROUP->value) {
-            return $this->isAllowedGroup($requestDataMessage->message) ?
-                $next($request) : response()->json(['error' => 'Unauthorized'], 403);
+        if ($chatType === ChatType::GROUP->value && $requestMessage) {
+            return $this->isAllowedGroup($requestMessage) ?
+                $next($request) : response()->json(['error' => 'Group not allowed.'], 200);
         }
 
 
