@@ -126,7 +126,7 @@
                     </div>
                 </div>
                 <div class="pt-3 pb-7 px-4 md:px-6 text-sm md:text-base text-slate-800">
-                    {!! str_replace(["\r\n", "\n"], '<br />', e($listing->description)) !!}
+                    {!! str_replace(["\\r\\n", "\\r", "\\n"], '<br />', e($listing->description)) !!}
                 </div>
             </div>
         </div>
