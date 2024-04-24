@@ -249,6 +249,7 @@ class ListingsController extends Controller
             'ownership',
             'carCount',
             'electricPower',
+            'city',
             'sort',
             'order'
         ]));

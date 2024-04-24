@@ -44,6 +44,10 @@ class PropertyRepository
             $query->where('propertyType', $filterSet->propertyType);
         });
 
+        $query->when(isset($filterSet->city), function ($query) use ($filterSet) {
+            $query->where('city', $filterSet->city);
+        });
+
         $query->when(isset($filterSet->bedroomCount), function ($query) use ($filterSet) {
 
             $query->when($filterSet->bedroomCount instanceof FilterMinMax, function ($q) use ($filterSet) {

@@ -236,6 +236,7 @@ class PropertiesController extends Controller
             'ownership',
             'carCount',
             'electricPower',
+            'city',
             'sort',
             'order'
         ]));
