@@ -4,6 +4,8 @@ namespace Tests\Unit;
 
 use App\DTO\FilterSet;
 use App\Models\Listing;
+use App\Models\PropertyOwnership;
+use App\Models\PropertyType;
 use App\Repositories\ListingRepository;
 use Illuminate\Contracts\Pagination\Paginator;
 use Tests\TestCase;
@@ -96,12 +98,12 @@ class ListingRepositoryTest extends TestCase
         ]);
 
         Listing::factory(2)->create([
-            'bedroomCount' => 'house',
+            'propertyType' => 'house',
         ]);
 
         $repository = new ListingRepository();
         $filterSet = new FilterSet();
-        $filterSet->propertyType = 'land';
+        $filterSet->propertyType = PropertyType::Land;
 
         $listings = $repository->list($filterSet);
         $this->assertInstanceOf(Paginator::class, $listings);
@@ -300,7 +302,7 @@ class ListingRepositoryTest extends TestCase
 
         $repository = new ListingRepository();
         $filterSet = FilterSet::from([
-            'ownership' => 'shm'
+            'ownership' => PropertyOwnership::SHM
         ]);
 
         $listings = $repository->list($filterSet);
@@ -320,7 +322,7 @@ class ListingRepositoryTest extends TestCase
 
         $repository = new ListingRepository();
         $filterSet = FilterSet::from([
-            'ownership' => 'SHM'
+            'ownership' => PropertyOwnership::SHM
         ]);
 
         $listings = $repository->list($filterSet);

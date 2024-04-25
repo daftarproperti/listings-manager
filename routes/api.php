@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\DevController;
 use App\Http\Controllers\Api\PhotoController;
 use App\Http\Controllers\Api\PropertiesController;
+use App\Http\Controllers\Api\SavedSearchController;
 use App\Http\Controllers\Api\TelegramUserController;
 use App\Http\Controllers\Api\WebhookController;
 
@@ -44,6 +45,14 @@ Route::group(['prefix' => 'tele-app', 'middleware' => ['telegram-app']], functio
         Route::get('/{listing}', [ListingsController::class, 'show']);
         Route::post('/{listing}', [ListingsController::class, 'update'])->middleware('listing-user');
         Route::delete('/{listing}', [ListingsController::class, 'delete'])->middleware('listing-user');
+    });
+
+    Route::prefix('saved-searches')->group(function () {
+        Route::get('/', [SavedSearchController::class, 'index']);
+        Route::post('/', [SavedSearchController::class, 'create']);
+        Route::get('/{savedSearch}', [SavedSearchController::class, 'show']);
+        Route::post('/{savedSearch}', [SavedSearchController::class, 'update']);
+        Route::delete('/{savedSearch}', [SavedSearchController::class, 'delete']);
     });
 
     Route::prefix('users')->group(function () {

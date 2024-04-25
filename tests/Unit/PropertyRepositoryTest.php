@@ -4,6 +4,7 @@ namespace Tests\Unit;
 
 use App\DTO\FilterSet;
 use App\Models\Property;
+use App\Models\PropertyOwnership;
 use App\Repositories\PropertyRepository;
 use Illuminate\Contracts\Pagination\Paginator;
 use Tests\TestCase;
@@ -214,7 +215,7 @@ class PropertyRepositoryTest extends TestCase
 
         $repository = new PropertyRepository();
         $filterSet = FilterSet::from([
-            'ownership' => 'shm'
+            'ownership' => PropertyOwnership::SHM
         ]);
 
         $properties = $repository->list($filterSet);

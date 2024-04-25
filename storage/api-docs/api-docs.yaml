@@ -545,6 +545,152 @@ paths:
                     type: string
                     example: 'Property not found'
                 type: object
+  /api/tele-app/saved-searches:
+    get:
+      tags:
+        - 'Saved Searches'
+      summary: 'Get saved search items'
+      description: 'Returns saved search items'
+      operationId: saved_searches.index
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                properties:
+                  saved_searches:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/SavedSearch'
+                type: object
+    post:
+      tags:
+        - 'Saved Searches'
+      summary: 'Create saved search'
+      operationId: saved_searches.create
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/SavedSearchRequest'
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                properties:
+                  message:
+                    type: string
+                    example: 'Saved search created successfully'
+                type: object
+  '/api/tele-app/saved-searches/{id}':
+    get:
+      tags:
+        - 'Saved Searches'
+      summary: 'Get saved search by id'
+      operationId: saved_searches.show
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'Saved Search Id'
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SavedSearch'
+        404:
+          description: 'Saved search not found'
+          content:
+            application/json:
+              schema:
+                properties:
+                  error:
+                    type: string
+                    example: 'Saved search not found'
+                type: object
+    post:
+      tags:
+        - 'Saved Searches'
+      summary: 'Update saved searches'
+      operationId: saved_searches.update
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'Saved Searches Id'
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/SavedSearchRequest'
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                properties:
+                  message:
+                    type: string
+                    example: 'Saved search updated successfully'
+                type: object
+        404:
+          description: 'Saved search not found'
+          content:
+            application/json:
+              schema:
+                properties:
+                  error:
+                    type: string
+                    example: 'Saved search not found'
+                type: object
+    delete:
+      tags:
+        - 'Saved Searches'
+      summary: 'Delete saved searches'
+      operationId: saved_searches.delete
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'Saved Searches Id'
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                properties:
+                  message:
+                    type: string
+                    example: 'Saved search deleted successfully'
+                type: object
+        404:
+          description: 'Saved search not found'
+          content:
+            application/json:
+              schema:
+                properties:
+                  error:
+                    type: string
+                    example: 'Saved search not found'
+                type: object
   /api/tele-app/users/profile:
     get:
       tags:
@@ -609,9 +755,9 @@ components:
         price:
           $ref: '#/components/schemas/FilterMinMax'
         propertyType:
-          description: 'Property Type'
-          type: string
-          nullable: true
+          $ref: '#/components/schemas/PropertyType'
+        listingType:
+          $ref: '#/components/schemas/ListingType'
         bedroomCount:
           $ref: '#/components/schemas/FilterMinMax'
         bathroomCount:
@@ -620,12 +766,16 @@ components:
           $ref: '#/components/schemas/FilterMinMax'
         buildingSize:
           $ref: '#/components/schemas/FilterMinMax'
+        facing:
+          $ref: '#/components/schemas/FacingDirection'
         ownership:
-          description: Ownership
-          type: string
-          nullable: true
+          $ref: '#/components/schemas/PropertyOwnership'
         carCount:
           $ref: '#/components/schemas/FilterMinMax'
+        floorCount:
+          description: 'Floor Count'
+          type: integer
+          nullable: true
         electricPower:
           description: 'Electric Power'
           type: integer
@@ -716,6 +866,14 @@ components:
           type: boolean
           example: false
       type: object
+    SavedSearchRequest:
+      properties:
+        title:
+          type: string
+          example: 'Pak Eko'
+        filterSet:
+          $ref: '#/components/schemas/FilterSet'
+      type: object
     TelegramUserProfileRequest:
       properties:
         name:
@@ -741,6 +899,20 @@ components:
           type: boolean
           example: 'true'
       type: object
+    FacingDirection:
+      description: 'Facing Direction'
+      type: string
+      enum:
+        - unknown
+        - north
+        - east
+        - south
+        - west
+        - northeast
+        - southeast
+        - southwest
+        - northwest
+      example: east
     ListingSort:
       description: 'Sort Listing By'
       type: string
@@ -918,6 +1090,17 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Listing'
+      type: object
+    SavedSearch:
+      properties:
+        id:
+          type: string
+        userId:
+          type: integer
+        title:
+          type: string
+        filterSet:
+          $ref: '#/components/schemas/FilterSet'
       type: object
     TelegramAllowlistGroup:
       properties:

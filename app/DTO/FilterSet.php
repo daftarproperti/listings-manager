@@ -2,6 +2,10 @@
 
 namespace App\DTO;
 
+use App\Models\FacingDirection;
+use App\Models\ListingType;
+use App\Models\PropertyOwnership;
+use App\Models\PropertyType;
 use Spatie\LaravelData\Dto;
 
 /**
@@ -13,13 +17,16 @@ use Spatie\LaravelData\Dto;
  *     @OA\Property(property="q", type="string", nullable=true, description="Query"),
  *     @OA\Property(property="collection", type="boolean", nullable=true, description="Collection"),
  *     @OA\Property(property="price", ref="#/components/schemas/FilterMinMax"),
- *     @OA\Property(property="propertyType", type="string", nullable=true, description="Property Type"),
+ *     @OA\Property(property="propertyType", ref="#/components/schemas/PropertyType"),
+ *     @OA\Property(property="listingType", ref="#/components/schemas/ListingType"),
  *     @OA\Property(property="bedroomCount", ref="#/components/schemas/FilterMinMax"),
  *     @OA\Property(property="bathroomCount", ref="#/components/schemas/FilterMinMax"),
  *     @OA\Property(property="lotSize", ref="#/components/schemas/FilterMinMax"),
  *     @OA\Property(property="buildingSize", ref="#/components/schemas/FilterMinMax"),
- *     @OA\Property(property="ownership", type="string", nullable=true, description="Ownership"),
+ *     @OA\Property(property="facing", ref="#/components/schemas/FacingDirection"),
+ *     @OA\Property(property="ownership", ref="#/components/schemas/PropertyOwnership"),
  *     @OA\Property(property="carCount", ref="#/components/schemas/FilterMinMax"),
+ *     @OA\Property(property="floorCount", type="integer", nullable=true, description="Floor Count"),
  *     @OA\Property(property="electricPower", type="integer", nullable=true, description="Electric Power"),
  *     @OA\Property(property="sort", type="string", nullable=true, description="Sort"),
  *     @OA\Property(property="order", type="string", nullable=true, description="Order"),
@@ -32,13 +39,16 @@ class FilterSet extends Dto
     public ?string $q;
     public ?bool $collection;
     public int|FilterMinMax|null $price;
-    public ?string $propertyType;
+    public ?PropertyType $propertyType;
+    public ?ListingType $listingType;
     public int|FilterMinMax|null $bedroomCount;
     public int|FilterMinMax|null $bathroomCount;
     public int|FilterMinMax|null $lotSize;
     public int|FilterMinMax|null $buildingSize;
-    public ?string $ownership;
+    public ?FacingDirection $facing;
+    public ?PropertyOwnership $ownership;
     public int|FilterMinMax|null $carCount;
+    public ?int $floorCount;
     public ?int $electricPower;
     public ?string $sort;
     public ?string $order;

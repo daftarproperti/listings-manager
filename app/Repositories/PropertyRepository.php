@@ -103,7 +103,7 @@ class PropertyRepository
         });
 
         $query->when(isset($filterSet->ownership), function ($query) use ($filterSet) {
-            $query->where('ownership', 'like', $filterSet->ownership);
+            $query->where('ownership', $filterSet->ownership);
         });
 
         $query->when(isset($filterSet->carCount), function ($query) use ($filterSet) {
