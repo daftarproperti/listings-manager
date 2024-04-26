@@ -37,6 +37,7 @@ class PropertyResource extends JsonResource
      *      @OA\Property(property="latitude",type="integer"),
      *      @OA\Property(property="longitude",type="integer")
      * )
+     * @OA\Property(property="updatedAt", type="string", format="date-time")
      * @OA\Property(property="listings",type="array",@OA\Items(ref="#/components/schemas/Listing"))
      * @return array<mixed>
      */
@@ -69,6 +70,7 @@ class PropertyResource extends JsonResource
                 'latitude' => $prop->latitude,
                 'longitude' => $prop->longitude,
             ],
+            'updatedAt' => $prop->updated_at ? $prop->updated_at->isoFormat('D MMMM YYYY') : null,
             'listings' => ListingResource::collection($prop->listings),
         ];
     }

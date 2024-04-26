@@ -741,6 +741,16 @@ components:
           type: boolean
           example: 'true'
       type: object
+    ListingSort:
+      description: 'Sort Listing By'
+      type: string
+      enum:
+        - price
+        - bedroomCount
+        - bathroomCount
+        - lotSize
+        - buildingSize
+      example: price
     ListingType:
       description: 'Listing type'
       type: string
@@ -771,16 +781,6 @@ components:
         - land
         - villa
       example: house
-    ListingSort:
-      description: 'Sort Listing By'
-      type: string
-      enum:
-        - price
-        - bedroomCount
-        - bathroomCount
-        - lotSize
-        - buildingSize
-      example: price
     Listing:
       properties:
         id:
@@ -856,6 +856,9 @@ components:
           type: boolean
         isPrivate:
           type: boolean
+        updatedAt:
+          type: string
+          format: date-time
       type: object
     Property:
       properties:
@@ -908,10 +911,28 @@ components:
             longitude:
               type: integer
           type: object
+        updatedAt:
+          type: string
+          format: date-time
         listings:
           type: array
           items:
             $ref: '#/components/schemas/Listing'
+      type: object
+    TelegramAllowlistGroup:
+      properties:
+        id:
+          type: string
+        chatId:
+          type: integer
+        groupName:
+          type: string
+        sampleMessage:
+          type: string
+        allowed:
+          type: boolean
+        createdAt:
+          type: string
       type: object
     TelegramUserProfile:
       properties:

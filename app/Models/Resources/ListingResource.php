@@ -50,6 +50,7 @@ class ListingResource extends JsonResource
      * )
      * @OA\Property(property="userCanEdit",type="boolean")
      * @OA\Property(property="isPrivate",type="boolean")
+     * @OA\Property(property="updatedAt", type="string", format="date-time")
      * @return array<mixed>
      */
     public function toArray($request)
@@ -96,7 +97,8 @@ class ListingResource extends JsonResource
                 'description' => $prop->user_profile ? $prop->user_profile->description : null,
             ],
             'userCanEdit' => $prop->user_can_edit,
-            'isPrivate' => $prop->isPrivate ?? false
+            'isPrivate' => $prop->isPrivate ?? false,
+            'updatedAt' => $prop->updated_at ? $prop->updated_at->isoFormat('D MMMM YYYY') : null,
         ];
     }
 }
