@@ -3,19 +3,19 @@
 
 <head>
     <!-- Google tag (gtag.js) -->
+    @if(env('ANALYTICS_MEASUREMENT_ID') && env('PHASE1'))
     <script async src="https://www.googletagmanager.com/gtag/js?id={{ env('ANALYTICS_MEASUREMENT_ID') }}"></script>
     <script>
-        if ("{{ env('ANALYTICS_MEASUREMENT_ID') }}") {
-            window.dataLayer = window.dataLayer || [];
+        window.dataLayer = window.dataLayer || [];
 
-            function gtag() {
-                dataLayer.push(arguments);
-            }
-            gtag('js', new Date());
-
-            gtag('config', "{{ env('ANALYTICS_MEASUREMENT_ID') }}");
+        function gtag() {
+            dataLayer.push(arguments);
         }
+        gtag('js', new Date());
+
+        gtag('config', "{{ env('ANALYTICS_MEASUREMENT_ID') }}");
     </script>
+    @endif
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -150,16 +150,16 @@
         </nav>
     </div>
 
+    @if(env('ANALYTICS_MEASUREMENT_ID') && env('PHASE1'))
     <script>
         /**
          * The following event is sent when the page loads.
          */
-        if ("{{ env('PHASE1') }}") {
-            gtag("event", "listing_view", {
-                "listing_id": "{{ $listing->id }}",
-            });
-        }
+        gtag("event", "listing_view", {
+            "listing_id": "{{ $listing->id }}",
+        });
     </script>
+    @endif
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
 </body>
 
