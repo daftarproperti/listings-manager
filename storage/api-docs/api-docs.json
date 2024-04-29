@@ -1399,6 +1399,9 @@
                     "viewCount": {
                         "type": "integer"
                     },
+                    "matchFilterCount": {
+                        "type": "integer"
+                    },
                     "facing": {
                         "type": "string"
                     },

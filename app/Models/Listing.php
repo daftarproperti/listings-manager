@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use MongoDB\Laravel\Eloquent\Model;
 use MongoDB\Laravel\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use Spatie\Analytics\Facades\Analytics;
 use Spatie\Analytics\Period;
@@ -38,6 +39,7 @@ use Spatie\Analytics\Period;
  * @property int $floorCount
  * @property int $electricPower
  * @property int $viewCount
+ * @property int $matchFilterCount
  * @property FacingDirection $facing
  * @property PropertyOwnership $ownership
  * @property string $city
@@ -52,6 +54,8 @@ use Spatie\Analytics\Period;
  */
 class Listing extends Model
 {
+    const CACHE_LENGTH = 60 * 60 * 24;
+
     use SoftDeletes;
     use HasFactory;
 
@@ -73,6 +77,17 @@ class Listing extends Model
         'electricPower' => 'int',
         'price' => 'float',
     ];
+
+    public function getMatchFilterCountAttribute(): int
+    {
+        if (!env('PHASE1')) {
+            return 0;
+        }
+
+        return Cache::remember("listing-" . $this->id . "-matchFilterCount", self::CACHE_LENGTH, function () {
+            return SavedSearch::countSavedSearchMatches($this->id);
+        });
+    }
 
     public function getViewCountAttribute(): int
     {
