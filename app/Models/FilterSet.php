@@ -1,18 +1,18 @@
 <?php
 
-namespace App\DTO;
+namespace App\Models;
 
+use App\Models\BaseAttributeCaster;
 use App\Models\FacingDirection;
 use App\Models\ListingType;
 use App\Models\PropertyOwnership;
 use App\Models\PropertyType;
-use Spatie\LaravelData\Dto;
 
 /**
  * @OA\Schema(
  *     schema="FilterSet",
  *     type="object",
- *     description="Filter Set DTO",
+ *     description="Filter Set",
  *     @OA\Property(property="userId", type="integer", nullable=true, description="User ID"),
  *     @OA\Property(property="q", type="string", nullable=true, description="Query"),
  *     @OA\Property(property="collection", type="boolean", nullable=true, description="Collection"),
@@ -33,7 +33,7 @@ use Spatie\LaravelData\Dto;
  *     @OA\Property(property="city", type="string", nullable=true, description="City"),
  * )
  */
-class FilterSet extends Dto
+class FilterSet extends BaseAttributeCaster
 {
     public ?int $userId;
     public ?string $q;

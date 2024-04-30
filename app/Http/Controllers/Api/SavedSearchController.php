@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SavedSearchRequest;
+use App\Models\FilterSet;
 use App\Models\Resources\SavedSearchCollection;
 use App\Models\Resources\SavedSearchResource;
 use App\Models\SavedSearch;
@@ -117,11 +118,7 @@ class SavedSearchController extends Controller
     {
         $data = $request->validated();
         $savedSearch = new SavedSearch;
-
-        foreach ($data as $key => $value) {
-            $savedSearch->{$key} = $value;
-        };
-
+        $this->setSavedSearchAttribute($data, $savedSearch);
         $userId = app(TelegramUser::class)->user_id;
         $savedSearch->userId = $userId;
         $savedSearch->save();
@@ -179,9 +176,7 @@ class SavedSearchController extends Controller
     public function update(SavedSearchRequest $request, SavedSearch $savedSearch): JsonResponse
     {
         $data = $request->validated();
-        foreach ($data as $key => $value) {
-            $savedSearch->{$key} = $value;
-        };
+        $this->setSavedSearchAttribute($data, $savedSearch);
         $savedSearch->save();
 
         return response()->json(['message' => 'Saved search updated successfully'], 200);
@@ -231,5 +226,22 @@ class SavedSearchController extends Controller
     {
         $savedSearch->delete();
         return response()->json(['message' => 'Saved search deleted successfully'], 200);
+    }
+
+    /**
+     * @param array<string, mixed> $data
+     * @param SavedSearch $savedSearch
+     */
+
+    private function setSavedSearchAttribute(array $data, SavedSearch $savedSearch): void
+    {
+        foreach ($data as $key => $value) {
+            if (is_array($value) && $key == 'filterSet') {
+                $savedSearch->filterSet = FilterSet::from($value);
+                continue;
+            }
+
+            $savedSearch->{$key} = $value;
+        };
     }
 }

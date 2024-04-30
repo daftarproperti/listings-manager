@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\DTO\FilterSet;
 use App\Exceptions\FilterMismatchException;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Support\Facades\Log;
@@ -20,6 +19,10 @@ class SavedSearch extends Model
     use HasFactory,
         SoftDeletes;
 
+    protected $casts = [
+        'filterSet' => FilterSet::class,
+    ];
+
     protected $fillable = [
         'userId',
         'title',
@@ -28,6 +31,7 @@ class SavedSearch extends Model
 
     public static function countSavedSearchMatches(mixed $listingId): int
     {
+        /** @var null|Listing $listing */
         $listing = Listing::where('_id', $listingId)->first();
         if (!$listing) {
             return 0;
@@ -39,24 +43,23 @@ class SavedSearch extends Model
         foreach ($filters as $filter) {
             try {
                 // Check for exact matches on simple fields
-                self::checkExactMatch($listing->city, $filter->filterSet['city'] ?? null);
-                self::checkExactMatch($listing->floorCount, $filter->filterSet['floorCount'] ?? null);
-                self::checkExactMatch($listing->electricPower, $filter->filterSet['electricPower'] ?? null);
+                self::checkExactMatch($listing->city, $filter->filterSet->city);
+                self::checkExactMatch($listing->floorCount, $filter->filterSet->floorCount);
+                self::checkExactMatch($listing->electricPower, $filter->filterSet->electricPower);
 
                 // Check for range matches on various fields
-                self::checkMinMaxMatch($listing->price, $filter->filterSet['price']['min'] ?? null, $filter->filterSet['price']['max'] ?? null);
-                self::checkMinMaxMatch($listing->bedroomCount, $filter->filterSet['bedroomCount']['min'] ?? null, $filter->filterSet['bedroomCount']['max'] ?? null);
-                self::checkMinMaxMatch($listing->bathroomCount, $filter->filterSet['bathroomCount']['min'] ?? null, $filter->filterSet['bathroomCount']['max'] ?? null);
-                self::checkMinMaxMatch($listing->lotSize, $filter->filterSet['lotSize']['min'] ?? null, $filter->filterSet['lotSize']['max'] ?? null);
-                self::checkMinMaxMatch($listing->buildingSize, $filter->filterSet['buildingSize']['min'] ?? null, $filter->filterSet['buildingSize']['max'] ?? null);
-                self::checkMinMaxMatch($listing->carCount, $filter->filterSet['carCount']['min'] ?? null, $filter->filterSet['carCount']['max'] ?? null);
-
+                self::checkMinMaxMatch($listing->price, $filter->filterSet->price);
+                self::checkMinMaxMatch($listing->bedroomCount, $filter->filterSet->bedroomCount);
+                self::checkMinMaxMatch($listing->bathroomCount, $filter->filterSet->bathroomCount);
+                self::checkMinMaxMatch($listing->lotSize, $filter->filterSet->lotSize);
+                self::checkMinMaxMatch($listing->buildingSize, $filter->filterSet->buildingSize);
+                self::checkMinMaxMatch($listing->carCount, $filter->filterSet->carCount);
 
                 // Check for enum matches
-                self::checkEnumMatch($listing->propertyType, $filter->filterSet['propertyType'] ?? null, PropertyType::class);
-                self::checkEnumMatch($listing->propertyType, $filter->filterSet['propertyType'] ?? null, ListingType::class);
-                self::checkEnumMatch($listing->ownership, $filter->filterSet['ownership'] ?? null, PropertyOwnership::class);
-                self::checkEnumMatch($listing->facing, $filter->filterSet['facing'] ?? null, FacingDirection::class);
+                self::checkEnumMatch($listing->propertyType, $filter->filterSet->propertyType);
+                self::checkEnumMatch($listing->propertyType, $filter->filterSet->propertyType);
+                self::checkEnumMatch($listing->ownership, $filter->filterSet->ownership);
+                self::checkEnumMatch($listing->facing, $filter->filterSet->facing);
             } catch (FilterMismatchException $e) {
                 Log::info($e);
                 // If mismatch, skip to the next filter
@@ -68,24 +71,29 @@ class SavedSearch extends Model
         return $matchingCount;
     }
 
-    private static function checkExactMatch(mixed $listingValue, mixed $filterValue): void
+    private static function checkExactMatch(int|string|null $listingValue, int|string|null $filterValue): void
     {
-        if (!empty($filterValue) && $listingValue !== $filterValue) {
+        if (!is_null($listingValue) && !is_null($filterValue) && $listingValue !== $filterValue) {
             throw new FilterMismatchException("Exact match failed for value: " . $listingValue);
         }
     }
 
-    private static function checkMinMaxMatch(mixed $listingValue, ?int $minValue, ?int $maxValue): void
+    private static function checkMinMaxMatch(int|float|null $listingValue, int|FilterMinMax|null $filterValue): void
     {
-        if ((!is_null($minValue) && $listingValue < $minValue) || (!is_null($maxValue) && $listingValue > $maxValue)) {
-            throw new FilterMismatchException("Value" . $listingValue . " not in range $minValue-$maxValue");
+        if (!is_null($listingValue) && $filterValue instanceof FilterMinMax) {
+            if ((!is_null($filterValue->min) && $listingValue < $filterValue->min) || (!is_null($filterValue->max) && $listingValue > $filterValue->max)) {
+                throw new FilterMismatchException("Value" . $listingValue . " not in range " . $filterValue->min . "-" . $filterValue->max);
+            }
+        }
+        if (!is_null($listingValue) && is_numeric($filterValue) && $listingValue !== $filterValue) {
+            throw new FilterMismatchException("Exact match failed for value: " . $listingValue);
         }
     }
 
-    private static function checkEnumMatch(mixed $listingValue, ?string $filterValue, string $enumClass): void
+    private static function checkEnumMatch(\BackedEnum|null $listingValue, \BackedEnum|null $filterValue): void
     {
-        if (!empty($filterValue) && $listingValue != $enumClass::from($filterValue)) {
-            throw new FilterMismatchException("Enum match failed for value: " . $listingValue);
+        if (!is_null($listingValue) && !is_null($filterValue) && $listingValue != $filterValue) {
+            throw new FilterMismatchException("Enum match failed for value: " . $listingValue->value);
         }
     }
 }

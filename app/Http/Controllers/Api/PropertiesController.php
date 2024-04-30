@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\DTO\FilterSet;
 use App\Http\Controllers\Controller;
+use App\Models\FilterSet;
 use App\Models\Property;
 use App\Models\Resources\PropertyCollection;
 use App\Models\Resources\PropertyResource;

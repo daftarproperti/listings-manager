@@ -2,7 +2,7 @@
 
 namespace Tests\Unit;
 
-use App\DTO\FilterSet;
+use App\Models\FilterSet;
 use App\Models\Listing;
 use App\Models\PropertyOwnership;
 use App\Models\PropertyType;

@@ -2,9 +2,9 @@
 
 namespace App\Repositories;
 
-use App\DTO\FilterMinMax;
-use App\DTO\FilterSet;
 use App\Helpers\Assert;
+use App\Models\FilterMinMax;
+use App\Models\FilterSet;
 use App\Models\Property;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Support\Str;

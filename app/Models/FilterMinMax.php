@@ -1,19 +1,19 @@
 <?php
 
-namespace App\DTO;
+namespace App\Models;
 
-use Spatie\LaravelData\Dto;
+use App\Models\BaseAttributeCaster;
 
 /**
  * @OA\Schema(
  *     schema="FilterMinMax",
  *     type="object",
- *     description="Filter Min Max DTO",
+ *     description="Filter Min Max",
  *     @OA\Property(property="min", type="integer", nullable=true, description="Minimum value"),
  *     @OA\Property(property="max", type="integer", nullable=true, description="Maximum value"),
  * )
  */
-class FilterMinMax extends Dto {
+class FilterMinMax extends BaseAttributeCaster {
     public ?int $min;
     public ?int $max;
 }

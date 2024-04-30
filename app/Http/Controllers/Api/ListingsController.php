@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\DTO\FilterSet;
 use App\Helpers\Assert;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ListingRequest;
 use App\Http\Services\GoogleStorageService;
+use App\Models\FilterSet;
 use App\Models\Listing;
 use App\Models\ListingUser;
 use App\Models\Resources\ListingCollection;

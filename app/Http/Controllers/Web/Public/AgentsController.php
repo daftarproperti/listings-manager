@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Web\Public;
 use Illuminate\Http\Request;
 
 
-use App\DTO\FilterSet;
 use App\Http\Controllers\Controller;
+use App\Models\FilterSet;
 use App\Models\TelegramUser;
 use App\Models\Resources\ListingCollection;
 use App\Repositories\ListingRepository;
