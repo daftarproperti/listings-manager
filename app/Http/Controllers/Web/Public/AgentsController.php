@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Http\Controllers\Web\Public;
+use Illuminate\Http\Request;
+
 
 use App\DTO\FilterSet;
 use App\Http\Controllers\Controller;
@@ -11,7 +13,7 @@ use Illuminate\Contracts\View\View;
 
 class AgentsController extends Controller
 {
-    public function detail(TelegramUser $telegramUser): View
+    public function detail(TelegramUser $telegramUser, Request $request): View
     {
         $userProfile = $telegramUser->profile;
         if(!$userProfile || !isset($userProfile->isPublicProfile) || !$userProfile->isPublicProfile) {
@@ -23,6 +25,16 @@ class AgentsController extends Controller
             'userId' => $telegramUser->user_id,
             'sort' => 'created_at',
             'order' => 'desc',
+            'price' => $request->query('price'),
+            'propertyType' => $request->query('propertyType'),
+            'bedroomCount' => $request->query('bedroomCount'),
+            'bathroomCount' => $request->query('bathroomCount'),
+            'lotSize' => $request->query('lotSize'),
+            'buildingSize' => $request->query('buildingSize'),
+            'ownership' => $request->query('ownership'),
+            'carCount' => $request->query('carCount'),
+            'electricPower' => $request->query('electricPower'),
+            'city' => $request->query('city'),
         ]);
 
         $listingRepo = new ListingRepository();
