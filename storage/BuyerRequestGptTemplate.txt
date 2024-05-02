@@ -1,0 +1,106 @@
+[
+    {
+        "title": "",
+
+        // The "propertyType" field below is an enum, so please choose only from the exact strings below:
+        // for rumah, use enum "house"
+        // for apartemen, use enum "apartment"
+        // for gudang, use enum "warehouse"
+        // for ruko, use enum "shophouse"
+        // for tanah, use enum "land"
+        // for villa, use enum "villa"
+        // If there is no suitable choice, use "unknown"
+        "propertyType": "[The type of the property]",
+
+        // "listingType" field is an enum which may contain either of these values:
+        // "sale": If the ad is for property for sale (dijual)
+        // "rent": If the ad is for property for rent (disewa/disewakan/dikontrak/dikontrakkan)
+        "listingType": "[The type of the listing/ad]",
+
+        "address": "[Address; Only extract Address if the ad contains exact address, not approximate address.
+            In Indonesian, exact address often represented in street name + street number + house number.
+            The input pattern is "{Jl/Jalan/Jln} {street name} {street number} {house number} [RT number RW number] [City]"
+
+            Examples of exact address:
+            - Jln. Agung Barat 5 no. 8
+            - Jl. Sulaiman no. 11 RT 10 RW 15
+            - Jalan Wicaksono no. 12 RT 10, Surabaya
+
+            Examples of non-exact address:
+            - Jl. Wiyung Surabaya Barat (not exact because there is no house number)
+            - Jalan Sulaiman VI (not exact because there is no house number, only street number)
+
+            Note a common mistake is that "nol jalan" is a specific term in Indonesian listing text, this does not indicate the number of the street or house.
+
+            If no street name with exact house number is present or only street name exist, it's safer to assume that the ad does not contain an address so leave this field empty string.
+            If there is a hint that the address is approximate (containing "Dekat", "Sekitar") in front of the street name, assume that this is not exact address and leave this field empty string.
+            If you find an exact address, please extract as verbatim copy and don't summarize or rephrase because the accuracy is important.
+        ]",
+        "price": "[
+            In Indonesian numerical notation, \"M\" indeed represents \"Milyar,\" which is equivalent to \"billion\" in English.
+            Sometimes the value is in decimal format.
+            The input pattern is "{number} {notation}"
+            Examples:
+            - 5 Milyar or 5 Miliar or 5M is 5000000000
+            - 1.7 M or 1,7 M is 1700000000
+            - 1.27 M or 1,27 M is 1270000000
+            - 2 Triliun or 2T is 2000000000000
+            - 2.3 Triliun or 2.3T is 2300000000000
+            - 2 Juta or 2JT is 2000000
+            - 40.3 Juta or 40.3JT is 40300000
+            Please pay attention to the price format especialy: 1.7 M or 1,7 M is not 1.7 but 1700000000
+            Remember that in Indonesian locale, sometimes comma is used for decimal point, e.g. 1,050 Milyar is 1.05 billion and not 1050 billion
+            Please extract this to be the canonical integer number representation, not containing letter suffixes anymore
+        ]",
+        "lotSize": "[Lot size: Number]",
+        "buildingSize": "[Building size: Number]",
+
+        // For "carCount" field, this is the number of cars that can be parked in the property listed.
+        // Usually keywords are like "carport", "garasi", "row mobil".
+        "carCount": "[Number of parking spaces, Set this to 0 if no number provided]",
+
+        // For bedroom and bathroom-related fields below, pay attention to the Indonesian keywords:
+        // bedroom is often mentioned as Kamar, Kamar Tidur, or KT
+        // bathroom is often mentioned as Kamar Mandi or KM
+
+        // Extract the number of bedrooms. Usually this is expressed as Kamar: X+Y
+        // Examples:
+        // - 3+1 Kamar Tidur equals 3 bedroomCount and 1 additionalBedroomCount
+        // - KT 2+2 equals 2 bedroomCount and 2 additionalBedroomCount
+        // - 1 KT --- means 1 bedroomCount and 0 additionalBedroomCount
+        "bedroomCount": "[Number of bedrooms]",
+        "additionalBedroomCount": "[Number of additional bedrooms]",
+        // Extract the number of bathrooms. Usually this is expressed as Kamar Mandi: X+Y
+        // Examples:
+        // - 3+1 Kamar Mandi --- equals 3 bathroomCount and 1 additionalBathroomCount
+        // - KM: 2+2 --- equals 2 bathroomCount and 2 additionalBathroomCount
+        // - 1 KM --- means 1 bathroomCount
+        // - 3 Kamar Mandi --- means 3 bathroomCount and no additionalBathroomCount
+        "bathroomCount": "[Number of bathrooms]",
+        "additionalBathroomCount": "[Number of additional bathrooms]",
+
+        "floorCount": "[Number of floors]",
+        "electricPower" : "[Number of electric power]",
+
+        // The "facing" field below is an enum, so please choose only from the exact strings below:
+        // for Utara, use enum "north"
+        // for Timur, use enum "east"
+        // for Selatan, use enum "south"
+        // for Barat, use enum "west"
+        // for Utara-Timur/Timur-Utara/Timur Laut, use enum "northeast"
+        // for Selatan-Timur/Timur-Selatan/Tenggara, use enum "southeast"
+        // for Selatan-Barat/Barat-Selatan/Barat Daya, use enum "southwest"
+        // for Utara-Barat/Barat-Utara/Barat Laut, use enum "northwest"
+        // If there is no suitable choice, use "unknown"
+        "facing": "[unknown|north|east|south|west|northeast|southeast|southwest|northwest]",
+
+        // The "ownership" field below is an enum, so please choose only from the exact strings below:
+        // for Sertifikat Hak Milik (SHM), use enum "shm"
+        // for Hak Guna Bangunan (HGB), use enum "hgb"
+        // for Strata, use enum "strata"
+        // for Girik, use enum "girik"
+        // If there is no suitable choice, use "unknown"
+        "ownership": "[shm|hgb|strata|girik|unknown]",
+        "city": null, // Just leave this null because usually the listing does not contain accurate city information.
+    }
+]

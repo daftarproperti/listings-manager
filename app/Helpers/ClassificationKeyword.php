@@ -2,14 +2,13 @@
 
 namespace App\Helpers;
 
-class HousePropertyKeywords
+class ClassificationKeyword
 {
     /**
      * @return array<string>
      */
-    public static function Keywords(): array
+    public static function PropertyKeywords(): array
     {
-        //TODO: PUT KEYWORDS ON DATABASE SO WE CAN MANAGE EASILY
         return [
             'rumah',
             'house',
@@ -50,6 +49,23 @@ class HousePropertyKeywords
             'menghadap',
             'hadap',
             'alamat',
+        ];
+    }
+
+    /**
+     * @return array<string>
+     */
+    public static function BuyerRequestKeywords(): array
+    {
+        return [
+            'dicari',
+            'cari',
+            'huni',
+            'permintaan',
+            'buyer',
+            'renter',
+            'request',
+            'budget'
         ];
     }
 }

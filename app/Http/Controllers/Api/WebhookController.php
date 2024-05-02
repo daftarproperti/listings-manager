@@ -2,16 +2,12 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\DTO\Telegram\Message;
 use App\DTO\Telegram\Update;
-use App\Helpers\Extractor;
-use App\Helpers\Queue;
-use App\Helpers\TelegramInteractionHelper;
+use App\Helpers\Assert;
 use App\Http\Controllers\Controller;
+use App\Http\Services\ParseService;
 use App\Http\Services\ReceiveMessageService;
-use App\Jobs\ParseListingJob;
-use App\Models\ListingUser;
-use App\Models\TelegramUser;
+use App\Models\Enums\MessageClassification;
 use App\Models\RawMessage;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -22,6 +18,7 @@ class WebhookController extends Controller
     public function receiveTelegramMessage(
         Request $request,
         ReceiveMessageService $receiveMessageService,
+        ParseService $parseService
     ): JsonResponse {
         $params = $request->validate([
             'update_id' => 'required',
@@ -47,72 +44,24 @@ class WebhookController extends Controller
         $message = !empty($update->message->caption) ? $update->message->caption : ($update->message->text ?? '');
 
         //to do next: use AI to check message is about property informations or not.
-        $isPropertyInformationMessage = $receiveMessageService
-            ->isPropertyInformationMessage(
+        $classification = $receiveMessageService
+            ->classifyMessage(
                 $message,
                 10
             );
 
-        if ($isPropertyInformationMessage) {
-            $rawMessage = $receiveMessageService->saveRawMessage($update);
+        if ($classification == Assert::string(MessageClassification::LISTING->value)) {
 
-            $pictureUrls = [];
-            if (!empty($update->message->photo)) {
-                $pictureUrls = $receiveMessageService->pictureUrls($update->message->photo);
-            }
+            $parseService->parseListing($update);
 
-            $chatId = isset($update->message->chat) ? $update->message->chat->id : null;
-            $listingUser = $this->populateListingUser($update->message);
+        } else if ($classification == Assert::string(MessageClassification::BUYER_REQUEST->value)) {
 
-            $emptyProfile = false;
-            $telegramUser = TelegramUser::where('user_id', $listingUser->userId)->first();
-            if ($telegramUser) {
-                $userProfile = $telegramUser->profile;
-                if (!$userProfile || !property_exists($telegramUser, 'profile')) {
-                    $emptyProfile = true;
-                }
-            }
+            $parseService->parseBuyerRequest($update);
 
-            ParseListingJob::dispatch(
-                $update->message->text,
-                $pictureUrls,
-                $listingUser,
-                $chatId,
-                $rawMessage
-            )->onQueue(Queue::getQueueName('generic'));
-
-            $isPrivateChat = isset($update->message->chat) && $update->message->chat->type == 'private';
-
-            if ($chatId && $isPrivateChat) {
-                $message = 'Terima kasih atas Listing yang anda bagikan.' . "\n\n" . 'Informasi sedang kami proses dan masukkan ke database...';
-                if ($emptyProfile) {
-                    $message = $message . "\n\n" . 'Agar listing lebih dapat ditemukan pencari, silahkan lengkapi data diri anda melalui Kelola Listing -> Akun';
-                }
-
-                TelegramInteractionHelper::sendMessage(
-                    $chatId,
-                    $message
-                );
-            }
         } else {
-            Log::info('is not property informations: ' . print_r($update, TRUE));
+            Log::info('is not property / buyer request informations: ' . print_r($update, TRUE));
         }
 
         return response()->json(['success' => true], 200);
-    }
-
-    private function populateListingUser(Message $message): ListingUser
-    {
-        $listingUser = new ListingUser();
-        $listingUser->name = trim(sprintf(
-            '%s %s',
-            $message->from->first_name ?? '',
-            $message->from->last_name ?? ''
-        ));
-        $listingUser->userName = $message->from->username ?? null;
-        $listingUser->userId = $message->from->id ?? 0;
-        $listingUser->source = 'telegram';
-
-        return $listingUser;
     }
 }

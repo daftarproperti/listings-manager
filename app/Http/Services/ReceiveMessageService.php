@@ -5,8 +5,9 @@ namespace App\Http\Services;
 use App\Helpers\Assert;
 use App\DTO\Telegram\PhotoSize;
 use App\DTO\Telegram\Update;
-use App\Helpers\HousePropertyKeywords;
+use App\Helpers\ClassificationKeyword;
 use App\Http\Services\ClassificationService;
+use App\Models\Enums\MessageClassification;
 use App\Models\RawMessage;
 use Illuminate\Support\Facades\Log;
 
@@ -29,7 +30,7 @@ class ReceiveMessageService
         return null;
     }
 
-    public function isPropertyInformationMessage(string $message, float $threshold = 25): bool
+    public function classifyMessage(string $message, float $threshold = 25): ?string
     {
         $classificationEnabled = Assert::boolean(config('services.msg_classification.enabled'));
         if ($classificationEnabled) {
@@ -58,26 +59,44 @@ class ReceiveMessageService
         return $pictureUrls;
     }
 
-    private function determineFromClassificationAPI(string $message): bool
+    private function determineFromClassificationAPI(string $message): ?string
     {
         $classificationService = new ClassificationService();
+
         try {
             $result = $classificationService->classify($message);
-            if ($result == "LISTING" || $result == "BUYER_REQUEST") {
-                return true;
-            }
-
-            return false;
+            return Assert::string(MessageClassification::from($result));
         } catch (\Exception $e) {
-            Log::error("Error caught when trying to classify message:");
+            Log::error("Error caught when trying to classify message:". $e->getMessage());
         }
 
-        return false;
+        return null;
     }
 
-    private function determineFromKeywords(string $message, float $threshold = 25): bool
+    private function determineFromKeywords(string $message, float $threshold = 25): ?string
     {
-        $keyWords = HousePropertyKeywords::Keywords();
+        $propertyKeywords = ClassificationKeyword::PropertyKeywords();
+        $isProperty = $this->classifiedByKeywords($message, $propertyKeywords, $threshold);
+
+        if ($isProperty) {
+            return Assert::string(MessageClassification::LISTING->value);
+        }
+
+        $buyerRequestKeywords = ClassificationKeyword::BuyerRequestKeywords();
+        $isBuyerRequest = $this->classifiedByKeywords($message, $buyerRequestKeywords, $threshold);
+
+        if ($isBuyerRequest) {
+            return Assert::string(MessageClassification::BUYER_REQUEST->value);
+        }
+
+        return null;
+    }
+
+    /**
+     * @param array<string> $keyWords
+     */
+    private function classifiedByKeywords(string $message, array $keyWords, float $threshold = 25): bool
+    {
         $message = strtolower($message);
 
         $containKeyword = [];
