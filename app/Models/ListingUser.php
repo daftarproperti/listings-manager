@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
-class ListingUser extends BaseAttributeCaster
+use Spatie\LaravelData\Data;
+
+class ListingUser extends Data
 {
     public string $name;
     public ?string $userName;

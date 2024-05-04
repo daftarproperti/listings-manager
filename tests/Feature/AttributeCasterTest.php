@@ -4,15 +4,15 @@ namespace Tests\Feature;
 
 use App\DTO\Telegram\Message;
 use App\DTO\Telegram\Update;
-use App\Models\BaseAttributeCaster;
 use Tests\TestCase;
+use Spatie\LaravelData\Data;
 
-class CastTestBar extends BaseAttributeCaster {
+class CastTestBar extends Data {
     public string $title;
     public bool $check;
 }
 
-class CastTestFoo extends BaseAttributeCaster {
+class CastTestFoo extends Data {
     public int $id;
     public string $name;
     public CastTestBar $bar;

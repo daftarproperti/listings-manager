@@ -2,7 +2,6 @@
 
 namespace App\DTO\Telegram;
 
-use App\Models\BaseAttributeCaster;
 use Spatie\LaravelData\Data;
 
 /**
@@ -58,7 +57,7 @@ class Message extends Data
  * Represents Telegram update to webhook.
  * https://core.telegram.org/bots/api#update
  */
-class Update extends BaseAttributeCaster
+class Update extends Data
 {
     public int $update_id;
     public ?Message $message;

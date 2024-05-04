@@ -4,8 +4,9 @@ namespace App\Models;
 
 use App\Helpers\Assert;
 use App\Helpers\TelegramPhoto;
+use Spatie\LaravelData\Data;
 
-class TelegramUserProfile extends BaseAttributeCaster
+class TelegramUserProfile extends Data
 {
     public ?string $name = null;
     public ?string $phoneNumber = null;

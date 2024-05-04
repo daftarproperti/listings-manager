@@ -47,7 +47,7 @@ class Property extends Model
     protected $casts = [
         'propertyType' => PropertyType::class,
         'listingType' => ListingType::class,
-        'user' => PropertyUser::class,
+        'user' => AttributeCaster::class.':'.PropertyUser::class,
         'ownership' => PropertyOwnership::class,
         'facing' => FacingDirection::class,
         'buildingSize' => 'int',

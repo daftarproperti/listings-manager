@@ -2,11 +2,11 @@
 
 namespace App\Models;
 
-use App\Models\BaseAttributeCaster;
 use App\Models\FacingDirection;
 use App\Models\ListingType;
 use App\Models\PropertyOwnership;
 use App\Models\PropertyType;
+use Spatie\LaravelData\Data;
 
 /**
  * @OA\Schema(
@@ -33,7 +33,7 @@ use App\Models\PropertyType;
  *     @OA\Property(property="city", type="string", nullable=true, description="City"),
  * )
  */
-class FilterSet extends BaseAttributeCaster
+class FilterSet extends Data
 {
     public ?int $userId;
     public ?string $q;

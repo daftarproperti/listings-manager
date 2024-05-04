@@ -20,7 +20,7 @@ class SavedSearch extends Model
         SoftDeletes;
 
     protected $casts = [
-        'filterSet' => FilterSet::class,
+        'filterSet' => AttributeCaster::class.':'.FilterSet::class,
     ];
 
     protected $fillable = [

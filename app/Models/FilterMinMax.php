@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Models\BaseAttributeCaster;
+use Spatie\LaravelData\Data;
 
 /**
  * @OA\Schema(
@@ -13,7 +13,7 @@ use App\Models\BaseAttributeCaster;
  *     @OA\Property(property="max", type="integer", nullable=true, description="Maximum value"),
  * )
  */
-class FilterMinMax extends BaseAttributeCaster {
+class FilterMinMax extends Data {
     public ?int $min;
     public ?int $max;
 }

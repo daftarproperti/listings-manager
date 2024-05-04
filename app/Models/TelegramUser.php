@@ -22,6 +22,6 @@ class TelegramUser extends Model
     protected $fillable = ['user_id', 'first_name', 'last_name', 'username'];
 
     protected $casts = [
-        'profile' => TelegramUserProfile::class,
+        'profile' => AttributeCaster::class.':'.TelegramUserProfile::class,
     ];
 }
