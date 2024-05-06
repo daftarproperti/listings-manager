@@ -13,6 +13,8 @@ export interface Listing {
   ownership: string
   city: string
   pictureUrls: string[]
+  listingType: string
+  propertyType: string
   user?: User
 }
 

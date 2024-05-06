@@ -2,6 +2,9 @@
 namespace App\Http\Requests;
 
 use App\Http\Requests\BaseApiRequest;
+use App\Models\ListingType;
+use App\Models\PropertyType;
+use Illuminate\Validation\Rule;
 
 /**
  * @OA\Schema(
@@ -27,6 +30,8 @@ class ListingRequest extends BaseApiRequest
      * @OA\Property(property="facing",type="string", example="Utara")
      * @OA\Property(property="ownership",type="string", example="SHM")
      * @OA\Property(property="city",type="string", example="Bandung")
+     * @OA\Property(property="listingType",ref="#/components/schemas/ListingType", example="Dijual")
+     * @OA\Property(property="propertyType",ref="#/components/schemas/PropertyType", example="Rumah")
      * @OA\Property(property="pictureUrls",type="array",
      *      @OA\Items(
      *          oneOf={
@@ -49,7 +54,7 @@ class ListingRequest extends BaseApiRequest
     }
 
     /**
-     * @return array<string, string>
+     * @return array<string, array<int, mixed>|string>
      */
     public function rules()
     {
@@ -72,6 +77,8 @@ class ListingRequest extends BaseApiRequest
             'coordinate.latitude' => 'nullable|string',
             'coordinate.longitude' => 'nullable|string',
             'isPrivate' => 'required|boolean',
+            'listingType' => ['nullable', Rule::in(ListingType::cases())],
+            'propertyType' => ['nullable', Rule::in(PropertyType::cases())],
         ];
     }
 }
