@@ -13,7 +13,7 @@ class Assert
     public static function string($value): string
     {
         assert(is_string($value));
-        return $value ? $value : '';
+        return $value;
     }
 
     /**
@@ -22,15 +22,11 @@ class Assert
      */
     public static function castToString(mixed $value): string
     {
-        if (is_scalar($value) || is_null($value)) {
-            return (string) $value;
+        try {
+            return strval($value); // @phpstan-ignore-line we are safely catching the error.
+        } catch (\Error) {
+            return "not stringable";
         }
-
-        if (is_object($value) && method_exists($value, '__toString')) {
-            return (string) $value;
-        }
-
-        return "not stringable";
     }
 
     /**
@@ -42,7 +38,7 @@ class Assert
     public static function boolean($value): bool
     {
         assert(is_bool($value));
-        return (bool)$value;
+        return $value;
     }
 
     /**
