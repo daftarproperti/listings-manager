@@ -2,10 +2,8 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Helpers\Assert;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\TelegramUserProfileRequest;
-use App\Http\Services\GoogleStorageService;
 use App\Models\Resources\TelegramUserProfileResource;
 use App\Models\TelegramUser;
 use App\Models\TelegramUserProfile;
@@ -29,7 +27,6 @@ class TelegramUserController extends Controller
      *     ),
      * )
      */
-
     public function profile(): JsonResource
     {
         $currentUser = app(TelegramUser::class);
@@ -60,44 +57,13 @@ class TelegramUserController extends Controller
      */
     public function updateProfile(TelegramUserProfileRequest $request): JsonResource
     {
+        /** @var TelegramUser $currentUser */
         $currentUser = app(TelegramUser::class);
 
         $validatedRequest = $request->validated();
 
-        $pictureFileName = null;
-        if (isset($validatedRequest['picture'])) {
-            $pictureRequest = $validatedRequest['picture'];
-
-            if (is_object($pictureRequest) && is_a($pictureRequest, \Illuminate\Http\UploadedFile::class)) {
-                $googleStorageService = app()->make(GoogleStorageService::class);
-
-                $fileName = sprintf('%s.%s', md5($pictureRequest->getClientOriginalName()) , $pictureRequest->getClientOriginalExtension());
-                $fileId = time();
-                $fullFileName = sprintf('%s_%s', $fileId, $fileName);
-                $googleStorageService->uploadFile(
-                    Assert::string(file_get_contents($pictureRequest->getRealPath())),
-                    $fullFileName
-                );
-
-                $pictureFileName = $fullFileName;
-            } else if (is_string($pictureRequest)) {
-                $pictureFileName = $pictureRequest;
-            }
-        }
-
-        $currentProfile = $currentUser->profile ? (object) $currentUser->profile : null;
-
-        $profile = new TelegramUserProfile();
-
-        $profile->name = Assert::string($validatedRequest['name']);
-        $profile->phoneNumber = isset($validatedRequest['phoneNumber']) ? Assert::string($validatedRequest['phoneNumber']) : $currentProfile?->phoneNumber;
-        $profile->city = isset($validatedRequest['city']) ? Assert::string($validatedRequest['city']) : $currentProfile?->city;
-        $profile->description = isset($validatedRequest['description']) ? Assert::string($validatedRequest['description']) : $currentProfile?->description;
-        $profile->company = isset($validatedRequest['company']) ? Assert::string($validatedRequest['company']) : $currentProfile?->company;
-        $profile->picture = $pictureFileName ?? $currentProfile?->picture ?? null;
-        $profile->isPublicProfile = isset($validatedRequest['isPublicProfile']) ? Assert::boolean($validatedRequest['isPublicProfile']) : $currentProfile?->isPublicProfile ?? false;
-
-        $currentUser->profile = $profile;
+        $mergedArray = array_merge($currentUser->profile?->toArray() ?? [], $validatedRequest);
+        $currentUser->profile = TelegramUserProfile::from($mergedArray);
         $currentUser->save();
 
         return new TelegramUserProfileResource($currentUser);

@@ -94,7 +94,7 @@ class TelegramPhoto
     {
         return sprintf(
             'https://storage.googleapis.com/%s/%s',
-            Assert::string(config('services.google.bucket_name')),
+            Assert::string(config('services.google.bucket_name') ?? ''),
             Assert::string($fileName)
         );
     }
