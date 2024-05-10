@@ -42,6 +42,7 @@ use Spatie\Analytics\Period;
  * @property int $matchFilterCount
  * @property FacingDirection $facing
  * @property PropertyOwnership $ownership
+ * @property VerifyStatus $verifyStatus
  * @property string $city
  * @property array<string> $pictureUrls
  * @property double $latitude
@@ -68,6 +69,7 @@ class Listing extends Model
         'user' => AttributeCaster::class.':'.ListingUser::class,
         'ownership' => PropertyOwnership::class,
         'facing' => FacingDirection::class,
+        'verifyStatus' => VerifyStatus::class,
         'buildingSize' => 'int',
         'bedroomCount' => 'int',
         'bathroomCount' => 'int',

@@ -6,6 +6,7 @@ use App\Helpers\Assert;
 use App\Models\FilterMinMax;
 use App\Models\FilterSet;
 use App\Models\Property;
+use App\Models\VerifyStatus;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Support\Str;
 use MongoDB\BSON\Regex;
@@ -20,6 +21,10 @@ class PropertyRepository
     public function list(FilterSet $filterSet = new FilterSet(), int $itemsPerPage = 20): Paginator
     {
         $query = Property::query();
+
+        if (env('PHASE2')) {
+            $query->where('verifyStatus', VerifyStatus::APPROVED);
+        }
 
         $query->when(isset($filterSet->q), function ($query) use ($filterSet) {
             $query->where(function ($q) use ($filterSet) {
@@ -59,11 +64,9 @@ class PropertyRepository
                 if (isset($filterSet->bedroomCount->max)) {
                     $q->where('bedroomCount', '<=', (int) $filterSet->bedroomCount->max);
                 }
-
-            }, function($q) use ($filterSet) {
+            }, function ($q) use ($filterSet) {
                 $q->where('bedroomCount', Assert::int($filterSet->bedroomCount));
             });
-
         });
 
         $query->when(isset($filterSet->bathroomCount), function ($query) use ($filterSet) {
@@ -77,11 +80,9 @@ class PropertyRepository
                 if (isset($filterSet->bathroomCount->max)) {
                     $q->where('bathroomCount', '<=', (int) $filterSet->bathroomCount->max);
                 }
-
-            }, function($q) use ($filterSet) {
+            }, function ($q) use ($filterSet) {
                 $q->where('bathroomCount',  Assert::int($filterSet->bathroomCount));
             });
-
         });
 
         $query->when(isset($filterSet->lotSize), function ($query) use ($filterSet) {
@@ -116,8 +117,7 @@ class PropertyRepository
                 if (isset($filterSet->carCount->max)) {
                     $q->where('carCount', '<=', (int) $filterSet->carCount->max);
                 }
-
-            }, function($q) use ($filterSet) {
+            }, function ($q) use ($filterSet) {
                 $q->where('carCount',  Assert::int($filterSet->carCount));
             });
         });

@@ -1409,10 +1409,13 @@
                         "type": "integer"
                     },
                     "facing": {
-                        "type": "string"
+                        "$ref": "#/components/schemas/FacingDirection"
                     },
                     "ownership": {
                         "$ref": "#/components/schemas/PropertyOwnership"
+                    },
+                    "verifyStatus": {
+                        "$ref": "#/components/schemas/VerifyStatus"
                     },
                     "city": {
                         "type": "string"
@@ -1525,10 +1528,13 @@
                         "type": "integer"
                     },
                     "facing": {
-                        "type": "string"
+                        "$ref": "#/components/schemas/FacingDirection"
                     },
                     "ownership": {
-                        "type": "string"
+                        "$ref": "#/components/schemas/PropertyOwnership"
+                    },
+                    "verifyStatus": {
+                        "$ref": "#/components/schemas/VerifyStatus"
                     },
                     "city": {
                         "type": "string"
@@ -1645,6 +1651,16 @@
                     }
                 },
                 "type": "object"
+            },
+            "VerifyStatus": {
+                "description": "Verification status",
+                "type": "string",
+                "enum": [
+                    "on_review",
+                    "approved",
+                    "rejected"
+                ],
+                "example": "approved"
             }
         }
     }

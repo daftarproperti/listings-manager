@@ -31,8 +31,9 @@ class ListingResource extends JsonResource
      * @OA\Property(property="electricPower",type="integer")
      * @OA\Property(property="viewCount",type="integer")
      * @OA\Property(property="matchFilterCount",type="integer")
-     * @OA\Property(property="facing",type="string")
+     * @OA\Property(property="facing",ref="#/components/schemas/FacingDirection")
      * @OA\Property(property="ownership",ref="#/components/schemas/PropertyOwnership")
+     * @OA\Property(property="verifyStatus",ref="#/components/schemas/VerifyStatus")
      * @OA\Property(property="city",type="string")
      * @OA\Property(property="pictureUrls",type="array",@OA\Items(type="string", format="uri", example="https://example.com/image.jpg"))
      * @OA\Property(property="coordinate",type="object",
@@ -79,6 +80,7 @@ class ListingResource extends JsonResource
             'matchFilterCount' => $prop->matchFilterCount,
             'facing' => $prop->facing,
             'ownership' => $prop->ownership,
+            'verifyStatus' => $prop->verifyStatus,
             'city' => $prop->city,
             'pictureUrls' => $prop->pictureUrls,
             'coordinate' => [

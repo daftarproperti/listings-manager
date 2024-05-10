@@ -27,6 +27,7 @@ use Illuminate\Database\Eloquent\Collection;
  * @property string $electricPower
  * @property FacingDirection $facing
  * @property PropertyOwnership $ownership
+ * @property VerifyStatus $verifyStatus
  * @property string $city
  * @property array<string> $pictureUrls
  * @property double $latitude
@@ -50,6 +51,7 @@ class Property extends Model
         'user' => AttributeCaster::class.':'.PropertyUser::class,
         'ownership' => PropertyOwnership::class,
         'facing' => FacingDirection::class,
+        'verifyStatus' => VerifyStatus::class,
         'buildingSize' => 'int',
         'bedroomCount' => 'int',
         'bathroomCount' => 'int',
