@@ -157,9 +157,9 @@ class Listing extends Model
 
         switch ($userSource) {
             case 'telegram':
+                /** @var TelegramUser $teleUser */
                 $teleUser = TelegramUser::where('user_id', $user->userId)->first();
-                $profile = $teleUser->profile ?? null;
-                return $profile ? new TelegramUserProfile((array) $profile) : null;
+                return $teleUser->profile;
             default:
                 return null;
         }

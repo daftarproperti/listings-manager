@@ -2,8 +2,6 @@
 
 namespace App\Models;
 
-use App\Helpers\Assert;
-use App\Helpers\TelegramPhoto;
 use Spatie\LaravelData\Data;
 
 class TelegramUserProfile extends Data
@@ -15,27 +13,4 @@ class TelegramUserProfile extends Data
     public ?string $company = null;
     public ?string $picture = null;
     public ?bool $isPublicProfile = null;
-
-    /**
-     * @param array<mixed> $data
-     **/
-    public function __construct(array $data = [])
-    {
-        if ($data) {
-            $picture = $data['picture'] ?? null;
-
-            if ($picture) {
-                $fileName = TelegramPhoto::getFileNameFromUrl(Assert::string($picture));
-                $picture = TelegramPhoto::getGcsUrlFromFileName(Assert::string($fileName));
-            }
-
-            $this->name = $data['name'] ?? null;
-            $this->phoneNumber = $data['phoneNumber'] ?? null;
-            $this->city = $data['city'] ?? null;
-            $this->description = $data['description'] ?? null;
-            $this->company = $data['company'] ?? null;
-            $this->picture = $picture ? Assert::string($picture) : null;
-            $this->isPublicProfile = $data['isPublicProfile'] ?? null;
-        }
-    }
 }

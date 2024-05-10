@@ -4,7 +4,6 @@ namespace Tests\Feature;
 
 use App\Helpers\TelegramInitDataValidator;
 use App\Models\Listing;
-use App\Models\ListingUser;
 use App\Models\TelegramUser;
 use Illuminate\Support\Facades\Config;
 use Tests\TestCase;
@@ -50,6 +49,7 @@ class ListingApiTest extends TestCase
         parent::setUp();
 
         Config::set('services.telegram.bot_token', $this->fakeBotToken);
+        Config::set('services.google.bucket_name', 'some-bucket');
 
         // Ensure each test case starts with empty database.
         Listing::truncate();
@@ -147,6 +147,7 @@ class ListingApiTest extends TestCase
                 'city' => 'Some City',
                 'description' => 'About the user.',
                 'company' => 'The Company',
+                'picture' => 'some_picture.jpg',
             ],
         ]);
 
@@ -168,6 +169,7 @@ class ListingApiTest extends TestCase
                 'city' => 'Some City',
                 'description' => 'About the user.',
                 'company' => 'The Company',
+                'profilePictureURL' => 'some_picture.jpg',
             ],
         ]);
     }
