@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\GoogleLoginController;
+use App\Http\Controllers\Admin\ListingsController as AdminListingsController;
 use App\Http\Controllers\Admin\MembersController;
 use App\Http\Controllers\Admin\TelegramController;
 use App\Http\Controllers\QueueSizeController;
@@ -39,6 +40,10 @@ Route::group(['prefix' => 'admin'], function () {
             Route::get('/allowlists', [TelegramController::class, 'allowlistIndex'])->name('allowlists');
             Route::get('/allowlists/{allowlist}', [TelegramController::class, 'allowlistDetail'])->name('allowlists.detail');
             Route::post('/allowlists/{allowlist}', [TelegramController::class, 'allowlistUpdate'])->name('allowlists.update');
+        });
+
+        Route::group(['prefix' => 'listings', 'as' => 'listing.'], function () {
+            Route::get('/', [AdminListingsController::class, 'index'])->name('index');
         });
     });
 

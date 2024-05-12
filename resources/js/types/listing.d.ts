@@ -11,6 +11,7 @@ export interface Listing {
   floorCount: number
   facing: string
   ownership: string
+  verifyStatus: string
   city: string
   pictureUrls: string[]
   listingType: string

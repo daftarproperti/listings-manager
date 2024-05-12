@@ -15,13 +15,14 @@ class ListingRepository
     public function list(array $input = [], int $itemsPerPage = 10): LengthAwarePaginator
     {
         $query = Listing::query();
+
         $query->when(isset($input['q']), function ($query) use ($input) {
-            $query->where(function ($q) use ($input) {
-                $q->where('title', 'like', '%' . $input['q'] . '%')
-                    ->orWhere('user.name', 'like', '%' . $input['q'] . '%')
-                    ->orWhere('user.userId', 'like', '%' . $input['q'] . '%')
-                    ->orWhere('user.userName', 'like', '%' . $input['q'] . '%');
-            });
+            $query->where('title', 'like', '%' . $input['q'] . '%')
+                ->orWhere('_id', $input['q']);
+        });
+
+        $query->when(isset($input['verifyStatus']), function ($query) use ($input) {
+            $query->where('verifyStatus', $input['verifyStatus']);
         });
 
         return $query->paginate($itemsPerPage);

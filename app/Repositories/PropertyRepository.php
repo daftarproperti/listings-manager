@@ -3,10 +3,10 @@
 namespace App\Repositories;
 
 use App\Helpers\Assert;
+use App\Models\Enums\VerifyStatus;
 use App\Models\FilterMinMax;
 use App\Models\FilterSet;
 use App\Models\Property;
-use App\Models\VerifyStatus;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Support\Str;
 use MongoDB\BSON\Regex;

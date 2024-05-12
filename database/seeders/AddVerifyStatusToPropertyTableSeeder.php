@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Enums\VerifyStatus;
 use App\Models\Property;
-use App\Models\VerifyStatus;
 use Illuminate\Database\Seeder;
 
 class AddVerifyStatusToPropertyTableSeeder extends Seeder

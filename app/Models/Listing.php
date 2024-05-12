@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Helpers\Assert;
 use App\Helpers\NumFormatter;
 use App\Helpers\TelegramPhoto;
+use App\Models\Enums\VerifyStatus;
 use App\Models\FacingDirection;
 use Carbon\Carbon;
 use Exception;

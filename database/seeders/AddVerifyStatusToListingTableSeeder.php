@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Enums\VerifyStatus;
 use App\Models\Listing;
-use App\Models\VerifyStatus;
 use Illuminate\Database\Seeder;
 
 class AddVerifyStatusToListingTableSeeder extends Seeder
