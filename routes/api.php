@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\ListingsController;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\DevController;
 use App\Http\Controllers\Api\PhotoController;
 use App\Http\Controllers\Api\PropertiesController;
@@ -61,6 +62,11 @@ Route::group(['prefix' => 'tele-app', 'middleware' => ['telegram-app']], functio
     });
 
     Route::post('upload/image', [PhotoController::class, 'uploadImage']);
+});
+
+Route::prefix('auth')->group(function () {
+    Route::post('/send-otp', [AuthController::class, 'sendOTP'])->middleware('throttle-otp-request:phoneNumber');
+    Route::post('/verify-otp', [AuthController::class, 'verifyOTP'])->middleware('throttle-otp-request:token');
 });
 
 Route::get('photo/{fileId}/{fileUniqueId}', [PhotoController::class, 'telegramPhoto'])->name('telegram-photo');

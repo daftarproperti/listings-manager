@@ -5,6 +5,107 @@
         "version": "1.0.0"
     },
     "paths": {
+        "/api/auth/send-otp": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Send OTP",
+                "operationId": "auth.send_otp",
+                "parameters": [
+                    {
+                        "name": "phoneNumber",
+                        "in": "path",
+                        "description": "Phone Number",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "token": {
+                                            "description": "JWT Token used for authentication",
+                                            "type": "string"
+                                        },
+                                        "timestamp": {
+                                            "description": "Timestamp of when the OTP was created",
+                                            "type": "integer",
+                                            "format": "int64"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/auth/verify-otp": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Verify OTP",
+                "operationId": "auth.verify_otp",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "token",
+                                    "timestamp",
+                                    "otpCode"
+                                ],
+                                "properties": {
+                                    "token": {
+                                        "description": "Token to verify",
+                                        "type": "string"
+                                    },
+                                    "timestamp": {
+                                        "description": "Timestamp of when the OTP was created",
+                                        "type": "integer",
+                                        "format": "int64"
+                                    },
+                                    "otpCode": {
+                                        "description": "User's OTP Code",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "description": "Verify status",
+                                            "type": "boolean",
+                                            "example": true
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/tele-app/listings": {
             "get": {
                 "tags": [
@@ -1199,6 +1300,16 @@
                 },
                 "type": "object"
             },
+            "VerifyStatus": {
+                "description": "Verification status",
+                "type": "string",
+                "enum": [
+                    "on_review",
+                    "approved",
+                    "rejected"
+                ],
+                "example": "approved"
+            },
             "FacingDirection": {
                 "description": "Facing Direction",
                 "type": "string",
@@ -1651,16 +1762,6 @@
                     }
                 },
                 "type": "object"
-            },
-            "VerifyStatus": {
-                "description": "Verification status",
-                "type": "string",
-                "enum": [
-                    "on_review",
-                    "approved",
-                    "rejected"
-                ],
-                "example": "approved"
             }
         }
     }

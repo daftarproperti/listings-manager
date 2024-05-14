@@ -71,5 +71,6 @@ class Kernel extends HttpKernel
         'property-user' => \App\Http\Middleware\PropertyUser::class,
         'listing-user' => \App\Http\Middleware\ListingUser::class,
         'auth-dev' => \App\Http\Middleware\AuthDev::class,
+        'throttle-otp-request' => \App\Http\Middleware\ThrottleOTPRequest::class,
     ];
 }
