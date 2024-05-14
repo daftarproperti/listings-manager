@@ -18,9 +18,9 @@
         @include('partials.header')
         <main>
             <div class="max-w-6xl mx-auto px-4 py-10 bg-white min-h-96 text-center">
-                <h1 class="font-newsreader text-4xl pt-0 md:pt-5 mb-10 tracking-wide font-medium">Maaf, terjadi kesalahan.</h1>
+                <h1 class="font-newsreader text-4xl pt-0 md:pt-5 mb-10 font-medium">Maaf, terjadi kesalahan.</h1>
                 <p class="mb-10">
-                    Saat ini sistem kami mengalami gangguan teknis. Silakan coba muat ulang halaman atau kembali lagi nanti.<br /> 
+                    Saat ini sistem kami mengalami gangguan teknis. Silakan coba muat ulang halaman atau kembali lagi nanti.<br />
                     Kami memohon maaf atas ketidaknyamanan ini dan sedang berusaha memperbaiki masalah secepat mungkin.<br /><br />
                     Jika Anda membutuhkan bantuan segera, silakan hubungi tim dukungan kami di <a href="mailto:support@contoh.com" class="text-blue-500 hover:text-blue-500">support@contoh.com</a>.<br />
                 </p>

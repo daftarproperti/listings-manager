@@ -18,7 +18,7 @@
         @include('partials.header')
         <main>
             <div class="max-w-6xl mx-auto px-4 py-10 bg-white min-h-96 text-center">
-                <h1 class="font-newsreader text-4xl pt-0 md:pt-5 mb-10 tracking-wide font-medium">Layanan Tidak Tersedia</h1>
+                <h1 class="font-newsreader text-4xl pt-0 md:pt-5 mb-10 font-medium">Layanan Tidak Tersedia</h1>
                 <p class="mb-10">
                     Maaf, saat ini layanan kami tidak dapat diakses.<br />
                     Kami berusaha untuk mengembalikan layanan secepat mungkin. Silakan coba lagi dalam beberapa menit. <br />

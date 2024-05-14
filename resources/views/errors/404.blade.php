@@ -18,7 +18,7 @@
         @include('partials.header')
         <main>
             <div class="max-w-6xl mx-auto px-4 py-10 bg-white min-h-96 text-center">
-                <h1 class="font-newsreader text-4xl pt-0 md:pt-5 mb-10 tracking-wide font-medium">Halaman tidak ditemukan</h1>
+                <h1 class="font-newsreader text-4xl pt-0 md:pt-5 mb-10 font-medium">Halaman tidak ditemukan</h1>
                 <p class="mb-10">
                     Maaf halaman yang Anda cari tidak ditemukan.<br />
                     Silahkan kembali ke beranda.

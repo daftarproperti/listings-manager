@@ -1,5 +1,5 @@
 <div>
-    <h1 class="font-newsreader text-4xl pt-0 md:pt-5 mb-2 tracking-wide font-medium">Contact Us</h1>
+    <h1 class="font-newsreader text-4xl pt-0 md:pt-5 mb-2 font-medium">Contact Us</h1>
     <p class="mb-5">Silahkan isi data di bawah ini.</p>
     <form class="py-2 max-w-xl" action="/">
         <div class="mb-4">
