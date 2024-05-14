@@ -7,11 +7,35 @@ use App\Models\FilterMinMax;
 use App\Models\FilterSet;
 use App\Models\Listing;
 use Illuminate\Contracts\Pagination\Paginator;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Str;
 use MongoDB\BSON\Regex;
 
 class ListingRepository
 {
+    /**
+     * @param Builder<Listing> $query
+     *
+     * @return Builder<Listing>
+     */
+    private function buildFilterQuery(Builder $query, \BackedEnum|string|int|FilterMinMax|null $filter, string $column): Builder
+    {
+        if (is_null($filter)) return $query;
+
+        if (is_scalar($filter) || $filter instanceof \BackedEnum) {
+            // Exact filter if it's a scalar (single value like e.g. string, int, enum).
+            return $query->where($column, $filter);
+        }
+
+        return $query
+            ->when(isset($filter->min), function ($query) use ($filter, $column) {
+                $query->where($column, '>=', $filter->min);
+            })
+            ->when(isset($filter->max), function ($query) use ($filter, $column) {
+                $query->where($column, '<=', $filter->max);
+            });
+    }
+
     /**
      * @return Paginator<Listing>
      */
@@ -19,7 +43,7 @@ class ListingRepository
     {
         $query = Listing::query();
 
-        $query->when(isset($filterSet->collection) && isset($filterSet->userId) , function ($query) use ($filterSet) {
+        $query->when(isset($filterSet->collection) && isset($filterSet->userId), function ($query) use ($filterSet) {
             $query->where('user.userId', $filterSet->userId);
         });
 
@@ -33,97 +57,16 @@ class ListingRepository
             });
         });
 
-        $query->when(isset($filterSet->price), function ($query) use ($filterSet) {
-            if (isset($filterSet->price->min)) {
-                $query->where('price', '>=', (int) $filterSet->price->min);
-            }
-            if (isset($filterSet->price->max)) {
-                $query->where('price', '<=', (int) $filterSet->price->max);
-            }
-        });
-
-        $query->when(isset($filterSet->propertyType), function ($query) use ($filterSet) {
-            $query->where('propertyType', $filterSet->propertyType);
-        });
-
-        $query->when(isset($filterSet->bedroomCount), function ($query) use ($filterSet) {
-
-            $query->when($filterSet->bedroomCount instanceof FilterMinMax, function ($q) use ($filterSet) {
-
-                if (isset($filterSet->bedroomCount->min)) {
-                    $q->where('bedroomCount', '>=', $filterSet->bedroomCount->min);
-                }
-                if (isset($filterSet->bedroomCount->max)) {
-                    $q->where('bedroomCount', '<=', $filterSet->bedroomCount->max);
-                }
-
-            }, function($q) use ($filterSet) {
-                $q->where('bedroomCount', Assert::int($filterSet->bedroomCount));
-            });
-
-        });
-
-        $query->when(isset($filterSet->bathroomCount), function ($query) use ($filterSet) {
-
-            $query->when($filterSet->bathroomCount instanceof FilterMinMax, function ($q) use ($filterSet) {
-
-                if (isset($filterSet->bathroomCount->min)) {
-                    $q->where('bathroomCount', '>=', $filterSet->bathroomCount->min);
-                }
-                if (isset($filterSet->bathroomCount->max)) {
-                    $q->where('bathroomCount', '<=', $filterSet->bathroomCount->max);
-                }
-
-            }, function($q) use ($filterSet) {
-                $q->where('bathroomCount', Assert::int($filterSet->bathroomCount));
-            });
-
-        });
-
-        $query->when(isset($filterSet->lotSize), function ($query) use ($filterSet) {
-            if (isset($filterSet->lotSize->min)) {
-                $query->where('lotSize', '>=', (int) $filterSet->lotSize->min);
-            }
-            if (isset($filterSet->lotSize->max)) {
-                $query->where('lotSize', '<=', (int) $filterSet->lotSize->max);
-            }
-        });
-
-        $query->when(isset($filterSet->buildingSize), function ($query) use ($filterSet) {
-            if (isset($filterSet->buildingSize->min)) {
-                $query->where('buildingSize', '>=', (int) $filterSet->buildingSize->min);
-            }
-            if (isset($filterSet->buildingSize->max)) {
-                $query->where('buildingSize', '<=', (int) $filterSet->buildingSize->max);
-            }
-        });
-
-        $query->when(isset($filterSet->ownership), function ($query) use ($filterSet) {
-            $query->where('ownership', $filterSet->ownership);
-        });
-
-        $query->when(isset($filterSet->carCount), function ($query) use ($filterSet) {
-            $query->when($filterSet->carCount instanceof FilterMinMax, function ($q) use ($filterSet) {
-
-                if (isset($filterSet->carCount->min)) {
-                    $q->where('carCount', '>=', $filterSet->carCount->min);
-                }
-                if (isset($filterSet->carCount->max)) {
-                    $q->where('carCount', '<=', $filterSet->carCount->max);
-                }
-
-            }, function($q) use ($filterSet) {
-                $q->where('carCount', Assert::int($filterSet->carCount));
-            });
-        });
-
-        $query->when(isset($filterSet->electricPower), function ($query) use ($filterSet) {
-            $query->where('electricPower', (int) $filterSet->electricPower);
-        });
-
-        $query->when(isset($filterSet->city), function ($query) use ($filterSet) {
-            $query->where('city', $filterSet->city);
-        });
+        $this->buildFilterQuery($query, $filterSet->price, 'price');
+        $this->buildFilterQuery($query, $filterSet->bedroomCount, 'bedroomCount');
+        $this->buildFilterQuery($query, $filterSet->bathroomCount, 'bathroomCount');
+        $this->buildFilterQuery($query, $filterSet->lotSize, 'lotSize');
+        $this->buildFilterQuery($query, $filterSet->buildingSize, 'buildingSize');
+        $this->buildFilterQuery($query, $filterSet->carCount, 'carCount');
+        $this->buildFilterQuery($query, $filterSet->propertyType, 'propertyType');
+        $this->buildFilterQuery($query, $filterSet->ownership, 'ownership');
+        $this->buildFilterQuery($query, $filterSet->electricPower, 'electricPower');
+        $this->buildFilterQuery($query, $filterSet->city, 'city');
 
         $query->when(isset($filterSet->sort), function ($query) use ($filterSet) {
             assert(is_string($filterSet->sort));

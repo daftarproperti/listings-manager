@@ -35,22 +35,22 @@ use Spatie\LaravelData\Data;
  */
 class FilterSet extends Data
 {
-    public ?int $userId;
-    public ?string $q;
-    public ?bool $collection;
-    public int|FilterMinMax|null $price;
-    public ?PropertyType $propertyType;
-    public ?ListingType $listingType;
-    public int|FilterMinMax|null $bedroomCount;
-    public int|FilterMinMax|null $bathroomCount;
-    public int|FilterMinMax|null $lotSize;
-    public int|FilterMinMax|null $buildingSize;
-    public ?FacingDirection $facing;
-    public ?PropertyOwnership $ownership;
-    public int|FilterMinMax|null $carCount;
-    public ?int $floorCount;
-    public ?int $electricPower;
-    public ?string $sort;
-    public ?string $order;
-    public ?string $city;
+    public ?int $userId = null;
+    public ?string $q = null;
+    public ?bool $collection = null;
+    public int|FilterMinMax|null $price = null;
+    public ?PropertyType $propertyType = null;
+    public ?ListingType $listingType = null;
+    public int|FilterMinMax|null $bedroomCount = null;
+    public int|FilterMinMax|null $bathroomCount = null;
+    public int|FilterMinMax|null $lotSize = null;
+    public int|FilterMinMax|null $buildingSize = null;
+    public ?FacingDirection $facing = null;
+    public ?PropertyOwnership $ownership = null;
+    public int|FilterMinMax|null $carCount = null;
+    public ?int $floorCount = null;
+    public ?int $electricPower = null;
+    public ?string $sort = null;
+    public ?string $order = null;
+    public ?string $city = null;
 }
