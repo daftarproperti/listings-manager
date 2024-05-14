@@ -7,6 +7,7 @@ import Dropdown from '@/Components/Dropdown'
 import NavLink from '@/Components/NavLink'
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink'
 
+import { usePreventBackButton } from '@/utils'
 import { type User } from '@/types'
 
 export default function Authenticated ({
@@ -14,6 +15,8 @@ export default function Authenticated ({
   header,
   children
 }: PropsWithChildren<{ user: User, header?: ReactNode }>): JSX.Element {
+  usePreventBackButton()
+
   const [showingNavigationDropdown, setShowingNavigationDropdown] =
         useState(false)
 

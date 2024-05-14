@@ -1,8 +1,12 @@
 import React from 'react'
 import { Head } from '@inertiajs/react'
+
+import { usePreventBackButton } from '@/utils'
 import ApplicationLogo from '@/Components/ApplicationLogo'
 
 export default function Welcome (): JSX.Element {
+  usePreventBackButton()
+
   return (
         <>
             <Head title="Welcome" />
