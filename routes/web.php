@@ -10,8 +10,6 @@ use App\Http\Controllers\VersionController;
 use App\Http\Controllers\Web\Public\AgentsController;
 use App\Http\Controllers\Web\Public\ListingsController;
 use App\Http\Controllers\Web\Public\HomeController;
-use App\Http\Controllers\Web\Public\TestController;
-use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -66,7 +64,3 @@ Route::group(['middleware' => ['auth-dev']], function () {
 
     Route::get('/', [HomeController::class, 'index']);
 });
-
-if (App::environment('development')) {
-    Route::get('/test', [TestController::class, 'index']);
-}

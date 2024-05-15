@@ -8,14 +8,32 @@ use Illuminate\Http\Request;
 
 class TestController extends Controller
 {
-    public function index(Request $request): View
+    public function index(): View
     {
-        $phase1 = env('PHASE1', false);
-        
-        if ($phase1 == 'true') {
-            return view('/pages/test');
-        } else {
-            abort(404, 'Page not found');
+        return view('pages/test-list', [
+            'pages' => [
+                'home',
+                'contact',
+            ],
+        ]);
+    }
+
+    public function page(string $page, Request $request): View
+    {
+        if (method_exists($this, $page)) {
+            return $this->$page($request);
         }
+
+        abort(404, 'Page not found');
+    }
+
+    public function home(): View
+    {
+        return view('home');
+    }
+
+    public function contact(): View
+    {
+        return view('contact');
     }
 }
