@@ -11,10 +11,10 @@
                 </a>
             </div>
             <div class="w-full md:w-1/3 pt-3">
-                <p class="text-sm text-slate-700">Made with ♥ in Indonesia &copy; 2024</p>
+                {{-- Middle footer empty for now --}}
             </div>
             <div class="w-full md:w-1/3 text-center md:text-right pt-3">
-                <p class="text-sm text-slate-700">Daftar Properti</p>
+                <p class="text-sm text-slate-700">Made with ♥ in Indonesia &copy; 2024</p>
             </div>
         </div>
     </div>
