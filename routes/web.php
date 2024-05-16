@@ -42,6 +42,7 @@ Route::group(['prefix' => 'admin'], function () {
 
         Route::group(['prefix' => 'listings', 'as' => 'listing.'], function () {
             Route::get('/', [AdminListingsController::class, 'index'])->name('index');
+            Route::get('/{listing}', [AdminListingsController::class, 'show'])->name('show');
         });
     });
 

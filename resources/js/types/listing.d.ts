@@ -8,7 +8,9 @@ export interface Listing {
   buildingSize: number
   bedroomCount: number
   bathroomCount: number
+  electricPower: number
   floorCount: number
+  carCount: number
   facing: string
   ownership: string
   verifyStatus: string
@@ -23,4 +25,9 @@ export interface User {
   name: string
   userId: number
   source: string
+  phoneNumber: string
+  city: string
+  description: string
+  company: string
+  profilePictureURL: string
 }

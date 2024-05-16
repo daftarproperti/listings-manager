@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Enums\VerifyStatus;
+use App\Models\Listing;
 use App\Models\Resources\ListingCollection;
+use App\Models\Resources\ListingResource;
 use App\Repositories\Admin\ListingRepository;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -32,6 +34,17 @@ class ListingsController extends Controller
                 'listings' => $listingCollection->collection,
                 'lastPage' => $listing->lastPage(),
                 'verifyStatusOptions' => VerifyStatus::options()
+            ]
+        ]);
+    }
+
+    public function show(Listing $listing): Response
+    {
+        $resourceData = new ListingResource($listing);
+
+        return Inertia::render('Admin/Listings/Detail/index', [
+            'data' => [
+                'listing' => $resourceData->resolve()
             ]
         ]);
     }

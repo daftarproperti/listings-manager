@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Head, router } from '@inertiajs/react'
 
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout'
@@ -20,13 +20,13 @@ export default function index ({
     verifyStatusOptions: Option[]
   }
 }>): JSX.Element {
-  const [keyword, setKeyword] = useState(getSearchParams('q') ?? '')
-  const [pageNumber, setPageNumber] = useState(
-    parseInt(getSearchParams('page') ?? '1')
-  )
-  const [verifyStatus, setVerifyStatus] = useState(
-    getSearchParams('verifyStatus') ?? ''
-  )
+  const q = getSearchParams('q') ?? ''
+  const page = parseInt(getSearchParams('page') ?? '1')
+  const status = getSearchParams('verifyStatus') ?? ''
+
+  const [keyword, setKeyword] = useState(q)
+  const [, setPageNumber] = useState(page)
+  const [, setVerifyStatus] = useState(status)
 
   const TABLE_HEAD = ['Judul', 'Agen', 'Harga', 'LT', 'LB', 'KT', 'KM', 'Status']
 
@@ -48,6 +48,10 @@ export default function index ({
       }
     )
   }
+
+  useEffect(() => {
+    setKeyword(q)
+  }, [q])
 
   return (
         <AuthenticatedLayout
@@ -71,7 +75,7 @@ export default function index ({
                             </div>
                             <div className="col-span-4 md:col-span-1">
                                 <SelectInput
-                                    value={verifyStatus}
+                                    value={status}
                                     options={data.verifyStatusOptions}
                                     className="w-full"
                                     onChange={(e) => {
@@ -88,7 +92,7 @@ export default function index ({
                                     className="w-full"
                                     onKeyDown={(e) => {
                                       if (e.key === 'Enter') {
-                                        fetchData(keyword, 1, verifyStatus)
+                                        fetchData(keyword, 1, status)
                                         setPageNumber(1)
                                       }
                                     }}
@@ -113,6 +117,7 @@ export default function index ({
                                 {data.listings.map(
                                   (
                                     {
+                                      id,
                                       title,
                                       user,
                                       price,
@@ -124,7 +129,13 @@ export default function index ({
                                     },
                                     index
                                   ) => (
-                                        <tr key={index}>
+                                        <tr
+                                            key={index}
+                                            className="cursor-pointer"
+                                            onClick={() => {
+                                              router.get(`/admin/listings/${id}`)
+                                            }}
+                                        >
                                             <Table.BodyItem colSpan={2}>
                                                 {title}
                                             </Table.BodyItem>
@@ -180,7 +191,7 @@ export default function index ({
                                 {data.listings.length === 0 && (
                                     <tr>
                                         <Table.BodyItem
-                                            colSpan={10}
+                                            colSpan={9}
                                             className="text-center text-sm"
                                         >
                                             No data
@@ -189,32 +200,33 @@ export default function index ({
                                 )}
                             </Table.Body>
                         </Table>
-                        <div className="flex items-center justify-between p-4">
+                        <div className="grid grid-cols-3 items-center justify-stretch p-4">
                             <SecondaryButton
                                 onClick={() => {
                                   setPageNumber((prev) => {
                                     const page = prev - 1
-                                    fetchData(keyword, page, verifyStatus)
+                                    fetchData(keyword, page, status)
                                     return page
                                   })
                                 }}
-                                disabled={pageNumber === 1}
+                                disabled={page === 1}
+                                className='w-fit justify-self-start'
                             >
                                 Previous
                             </SecondaryButton>
-                            <div className="flex items-center gap-2">
+                            <div className="flex justify-self-center items-center gap-2">
                                 {Array.from(Array(data.lastPage).keys()).map(
                                   (item) => (
                                         <SecondaryButton
                                             key={item}
                                             className={
-                                                pageNumber === item + 1
+                                                page === item + 1
                                                   ? 'bg-stone-200'
-                                                  : ''
+                                                  : 'hidden md:block'
                                             }
                                             onClick={() => {
                                               const page = item + 1
-                                              fetchData(keyword, page, verifyStatus)
+                                              fetchData(keyword, page, status)
                                               setPageNumber(page)
                                             }}
                                         >
@@ -227,11 +239,12 @@ export default function index ({
                                 onClick={() => {
                                   setPageNumber((prev) => {
                                     const page = prev + 1
-                                    fetchData(keyword, page, verifyStatus)
+                                    fetchData(keyword, page, status)
                                     return page
                                   })
                                 }}
-                                disabled={pageNumber === data.lastPage}
+                                disabled={page === data.lastPage}
+                                className='w-fit justify-self-end'
                             >
                                 Next
                             </SecondaryButton>
