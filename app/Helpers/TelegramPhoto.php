@@ -60,8 +60,13 @@ class TelegramPhoto
         /** @var array<string> $gcsUrls */
         $gcsUrls = [];
         foreach ($pictureUrls as $url) {
-                $fileName = TelegramPhoto::getFileNameFromUrl($url); // need this to handle old data
-                $gcsUrls[] = TelegramPhoto::getGcsUrlFromFileName($fileName);
+            if (str_starts_with($url, 'https://strapi')) {
+                // Imported from strapi, just use the URL as is.
+                $gcsUrls[] = $url;
+                continue;
+            }
+            $fileName = TelegramPhoto::getFileNameFromUrl($url); // need this to handle old data
+            $gcsUrls[] = TelegramPhoto::getGcsUrlFromFileName($fileName);
         }
         return $gcsUrls;
     }
@@ -74,6 +79,11 @@ class TelegramPhoto
      */
     public static function getFileNameFromUrl(string $url): string
     {
+        if (str_starts_with($url, 'https://strapi')) {
+            // Imported from strapi, save as is.
+            return $url;
+        }
+
         $path = explode('/', $url);
 
         if (strpos($url, 'photo/') !== false) {

@@ -24,6 +24,10 @@ use Spatie\Analytics\Period;
 
 /**
  * @property string $id
+ * @property ?int $strapiId Internal identifier to indicate whether this listing is imported from strapi DB.
+ *                          If set, this listing was imported from strapi DB having that id.
+ *                          This id is useful to prevent double import.
+ *                          May be deleted once strapi migration is done completely.
  * @property string $sourceText
  * @property string $title
  * @property PropertyType $propertyType
