@@ -110,9 +110,9 @@ SELECT DISTINCT ON (p.id) p.*, f.url as picture_url
 FROM properties p
 JOIN files_related_morphs frm ON p.id = frm.related_id
 JOIN files f ON frm.file_id = f.id
-WHERE frm.related_type = 'api::property.property' AND frm.field = 'pictures'
+WHERE frm.related_type = 'api::property.property' AND frm.field = 'pictures' AND p.address IS NOT NULL
 ORDER BY p.id, f.id
-LIMIT 5
+LIMIT 100
 EOD;
         $listings = DB::connection('strapi_pgsql')->select($sql);
         foreach ($listings as $listingObj) {
