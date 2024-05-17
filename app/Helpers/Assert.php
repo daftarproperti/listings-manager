@@ -52,4 +52,17 @@ class Assert
         assert(is_int($value));
         return $value;
     }
+
+    /**
+     * Asserts that a given value is instance of $class
+     *
+     * @template T
+     * @param class-string<T> $class
+     * @return T
+     */
+    public static function ofClass(mixed $x, string $class)
+    {
+        assert($x instanceof $class);
+        return $x;
+    }
 }
