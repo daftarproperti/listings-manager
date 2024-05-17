@@ -17,10 +17,12 @@ use Illuminate\Http\Request;
 class AuthController extends Controller
 {
     protected string $salt;
+    protected WhatsAppService $whatsappService;
 
-    public function __construct()
+    public function __construct(WhatsAppService $whatsappService)
     {
         $this->salt = Assert::string(config('app.key'));
+        $this->whatsappService = $whatsappService;
     }
 
     /**
@@ -66,9 +68,8 @@ class AuthController extends Controller
         $phoneNumber = $validatedRequest['phoneNumber'];
 
         $otpCode = sprintf("%06d", random_int(0, 999999));
-        $whatsappService = new WhatsAppService();
 
-        $whatsappService->sendOTP($phoneNumber, $otpCode);
+        $this->whatsappService->sendOTP($phoneNumber, $otpCode);
 
         $timestamp = time();
         $token = Hash::make($otpCode . $timestamp . $this->salt);
