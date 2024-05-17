@@ -20,6 +20,7 @@ class ListingRequest extends BaseApiRequest
      * @OA\Property(property="address",type="string", example="Jl. Pendidikan No. 1")
      * @OA\Property(property="description",type="string", example="Rumah bagus")
      * @OA\Property(property="price",type="integer", example=100000)
+     * @OA\Property(property="rentPrice",type="integer", example=40000)
      * @OA\Property(property="lotSize",type="integer", example=1000)
      * @OA\Property(property="buildingSize",type="integer", example=2000)
      * @OA\Property(property="carCount",type="integer", example=4)
@@ -32,6 +33,8 @@ class ListingRequest extends BaseApiRequest
      * @OA\Property(property="city",type="string", example="Bandung")
      * @OA\Property(property="listingType",ref="#/components/schemas/ListingType", example="Dijual")
      * @OA\Property(property="propertyType",ref="#/components/schemas/PropertyType", example="Rumah")
+     * @OA\Property(property="listingForRent",type="boolean", example=false)
+     * @OA\Property(property="listingForSale",type="boolean", example=false)
      * @OA\Property(property="pictureUrls",type="array",
      *      @OA\Items(
      *          oneOf={
@@ -60,14 +63,15 @@ class ListingRequest extends BaseApiRequest
     {
         return [
             'title' => 'required|string',
-            'address' => 'nullable|string',
+            'address' => 'required|string',
             'description' => 'required|string',
-            'price' => 'required|numeric',
-            'lotSize' => 'required|numeric',
+            'price' => 'required_if:listingForSale,true|numeric',
+            'rentPrice' => 'required_if:listingForRent,true|numeric',
+            'buildingSize' => 'required_unless:propertyType,land,unknown|numeric',
+            'lotSize' => 'required_unless:propertyType,apartment,unknown|numeric',
             'city' => 'required|string',
-            'bedroomCount' => 'required|numeric',
-            'bathroomCount' => 'required|numeric',
-            'buildingSize' => 'required|numeric',
+            'bedroomCount' => 'required_unless:propertyType,land,warehouse,unknown|numeric',
+            'bathroomCount' => 'required_unless:propertyType,land,warehouse,unknown|numeric',
             'carCount' => 'nullable|numeric',
             'floorCount' => 'nullable|numeric',
             'electricPower' => 'nullable|numeric',
@@ -79,6 +83,8 @@ class ListingRequest extends BaseApiRequest
             'isPrivate' => 'required|boolean',
             'listingType' => ['nullable', Rule::in(ListingType::cases())],
             'propertyType' => ['nullable', Rule::in(PropertyType::cases())],
+            'listingForSale' => 'required|boolean',
+            'listingForRent' => 'required|boolean',
         ];
     }
 }

@@ -813,6 +813,9 @@ components:
         price:
           type: integer
           example: 100000
+        rentPrice:
+          type: integer
+          example: 40000
         lotSize:
           type: integer
           example: 1000
@@ -847,6 +850,12 @@ components:
           $ref: '#/components/schemas/ListingType'
         propertyType:
           $ref: '#/components/schemas/PropertyType'
+        listingForRent:
+          type: boolean
+          example: false
+        listingForSale:
+          type: boolean
+          example: false
         pictureUrls:
           type: array
           items:
@@ -1045,11 +1054,17 @@ components:
           $ref: '#/components/schemas/PropertyType'
         listingType:
           $ref: '#/components/schemas/ListingType'
+        listingForSale:
+          type: boolean
+        listingForRent:
+          type: boolean
         address:
           type: string
         description:
           type: string
         price:
+          type: integer
+        rentPrice:
           type: integer
         lotSize:
           type: integer

@@ -209,11 +209,14 @@ class ListingApiTest extends TestCase
             'address' => 'Jl. itu',
             'description' => 'Dijual rumah bagus',
             'price' => '1000000000',
+            'rentPrice' => '40000000',
             'lotSize' => '230',
             'buildingSize' => '200',
             'city' => 'Jakarta',
             'bedroomCount' => '3',
             'bathroomCount' => '2',
+            'listingForSale' => true,
+            'listingForRent' => true,
             'isPrivate' => false,
         ]);
 
@@ -242,11 +245,15 @@ class ListingApiTest extends TestCase
             'address' => 'Jl. itu',
             'description' => 'Dijual rumah bagus',
             'price' => '1000000000',
+            'rentPrice' => '40000000',
             'lotSize' => '230',
             'buildingSize' => '200',
             'city' => 'Jakarta',
             'bedroomCount' => '3',
             'bathroomCount' => '2',
+            'listingForSale' => true,
+            'listingForRent' => true,
+            'propertyType' => 'house',
             'isPrivate' => false,
         ]);
 
@@ -261,11 +268,14 @@ class ListingApiTest extends TestCase
             'address' => 'Jl. itu',
             'description' => 'Dijual rumah bagus',
             'price' => '1000000000',
+            'rentPrice' => '40000000',
             'lotSize' => '230',
             'buildingSize' => '200',
             'city' => 'Jakarta',
             'bedroomCount' => '3',
             'bathroomCount' => '2',
+            'listingForSale' => true,
+            'listingForRent' => true,
             'isPrivate' => false,
         ]);
 

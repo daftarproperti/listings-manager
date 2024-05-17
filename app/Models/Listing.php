@@ -32,10 +32,13 @@ use Spatie\Analytics\Period;
  * @property string $title
  * @property PropertyType $propertyType
  * @property ListingType $listingType
+ * @property bool $listingForSale
+ * @property bool $listingForRent
  * @property string $address
  * @property string $description
  * @property string $formatted_price
  * @property float $price
+ * @property float $rentPrice
  * @property int $lotSize
  * @property int $buildingSize
  * @property int $carCount
