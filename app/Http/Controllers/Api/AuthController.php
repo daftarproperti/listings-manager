@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers\Api;
 
+use DateTime;
 use App\Helpers\Assert;
 use App\Http\Controllers\Controller;
 use App\Http\Services\WhatsAppService;
+use App\Models\Resources\UserResource;
+use App\Models\User;
 use App\Rules\IndonesiaPhoneFormat;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -86,7 +90,12 @@ class AuthController extends Controller
      *         @OA\MediaType(
      *             mediaType="application/json",
      *             @OA\Schema(
-     *                 required={"token", "timestamp", "otpCode"},
+     *                 required={"phoneNumber", "token", "timestamp", "otpCode"},
+     *                 @OA\Property(
+     *                     property="phoneNumber",
+     *                     type="string",
+     *                     description="User phone number"
+     *                 ),
      *                 @OA\Property(
      *                     property="token",
      *                     type="string",
@@ -115,7 +124,18 @@ class AuthController extends Controller
      *                 type="boolean",
      *                 example=true,
      *                 description="Verify status"
-     *             )
+     *             ),
+     *             @OA\Property(
+     *                 property="accessToken",
+     *                 type="string",
+     *                 example="Akoasdk131o3ipIaskdlz",
+     *                 description="Access token"
+     *             ),
+     *             @OA\Property(
+     *                 property="user",
+     *                 ref="#/components/schemas/User",
+     *                 description="User information"
+     *             ),
      *         ),
      *     )
      * )
@@ -123,20 +143,40 @@ class AuthController extends Controller
     public function verifyOTP(Request $request): JsonResponse
     {
         $validatedRequest = $request->validate([
+            'phoneNumber' => 'required', 'string', new IndonesiaPhoneFormat,
             'token' => ['required', 'string'],
             'timestamp' => ['required', 'numeric'],
             'otpCode' => ['required', 'string']
         ]);
+
+        $phoneNumber = $validatedRequest['phoneNumber'];
         $token = $validatedRequest['token'];
         $timestamp = $validatedRequest['timestamp'];
         $otpCode = $validatedRequest['otpCode'];
 
-        if (Hash::check($otpCode . $timestamp . $this->salt, $token) && (time() - $timestamp < 120)) {
+        if (!(Hash::check($otpCode . $timestamp . $this->salt, $token) && (time() - $timestamp < 120))) {
             return response()->json([
-                'success' => true
-            ]);
+                'success' => false
+            ], 401);
         }
-        
-        return response()->json(['success' => false], 401);
+
+        $expiryDate = new DateTime();
+        $expiryDate->modify('+1 hour');
+
+        /** @var User|null $user */
+        $user = User::where('phoneNumber', $phoneNumber)->first();
+        if (!$user) {
+            $user = new User();
+            $user->phoneNumber = $phoneNumber;
+            $user->save();
+        }
+
+        $token = $user->createToken('loginToken', ['*'], $expiryDate)->plainTextToken;
+
+        return response()->json([
+            'success' => true,
+            'accessToken' => $token,
+            'user' => new UserResource($user)
+        ]);
     }
 }

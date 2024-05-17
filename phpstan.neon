@@ -17,7 +17,8 @@ parameters:
 #    ignoreErrors:
 #        - '#PHPDoc tag @var#'
 #
-#    excludePaths:
-#        - ./*/*/FileToBeExcluded.php
+    excludePaths:
+        # File copied from vendor/laravel/sanctum
+        - app/Models/Sanctum/PersonalAccessToken.php
 #
 #    checkMissingIterableValueType: false
