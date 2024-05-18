@@ -26,6 +26,7 @@ class GoogleLoginController extends Controller
             /** @var Admin $user */
             $user = Socialite::driver('google')->user();
 
+            /** @var Admin|null $existingUser */
             $existingUser = Admin::where('google_id', $user->id)->first();
 
             if ($existingUser) {
@@ -33,6 +34,7 @@ class GoogleLoginController extends Controller
                 Auth::guard('admin')->login($existingUser);
             } else {
                 // Create a new user.
+                /** @var Admin $newUser */
                 $newUser = Admin::create([
                     'name' => $user->name,
                     'email' => $user->email,

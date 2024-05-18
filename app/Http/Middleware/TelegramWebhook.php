@@ -44,9 +44,11 @@ class TelegramWebhook
 
     private function isAllowedGroup(Message $message): bool
     {
+        /** @var TelegramAllowlistGroup|null $allowlistGroup */
         $allowlistGroup = TelegramAllowlistGroup::where('chatId', $message->chat->id)->first();
 
         if (!$allowlistGroup) {
+            /** @var TelegramAllowlistGroup $allowlistGroup */
             $allowlistGroup = TelegramAllowlistGroup::create([
                 'chatId' => $message->chat->id,
                 'allowed' => false,

@@ -27,6 +27,7 @@ class ParseService
         $listingUser = $this->populateListingUser($update->message);
 
         $emptyProfile = false;
+        /** @var TelegramUser|null $telegramUser */
         $telegramUser = TelegramUser::where('user_id', $listingUser->userId)->first();
         if ($telegramUser) {
             $userProfile = $telegramUser->profile;

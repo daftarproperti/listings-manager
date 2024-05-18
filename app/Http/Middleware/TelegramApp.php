@@ -66,6 +66,7 @@ class TelegramApp
             return null;
         }
 
+        /** @var TelegramUser|null $telegramUser */
         $telegramUser = TelegramUser::where('user_id', (int)$user['id'])
             ->firstOrCreate([
                 'user_id' => (int)$user['id'],

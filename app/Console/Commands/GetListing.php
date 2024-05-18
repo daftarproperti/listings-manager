@@ -28,6 +28,7 @@ class GetListing extends Command
     {
         $listingId = $this->argument('listing-id');
 
+        /** @var Listing|null $listing */
         $listing = Listing::find($listingId);
         if (!$listing) {
             $this->info("No listing found with id " . $listingId);
