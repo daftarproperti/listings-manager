@@ -4,7 +4,6 @@ namespace App\Http\Middleware;
 
 use App\DTO\Telegram\Message;
 use App\DTO\Telegram\Update;
-use App\Helpers\Assert;
 use App\Models\Enums\ChatType;
 use App\Models\TelegramAllowlistGroup;
 use Closure;
@@ -56,6 +55,6 @@ class TelegramWebhook
             ]);
         }
 
-        return Assert::boolean($allowlistGroup->allowed);
+        return $allowlistGroup->allowed;
     }
 }

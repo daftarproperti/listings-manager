@@ -14,7 +14,7 @@ class TelegramPhoto
         // Check if file exists in Google Cloud Storage (GCS)
         $gcsPublicUrl = sprintf(
             'https://storage.googleapis.com/%s/%s',
-            Assert::string(config('services.google.bucket_name')),
+            type(config('services.google.bucket_name'))->asString(),
             $fileName
         );
 
@@ -24,7 +24,7 @@ class TelegramPhoto
             // If not found in GCS, retrieve file info from Telegram
             $fileInfoEndpoint = sprintf(
                 'https://api.telegram.org/bot%s/getFile',
-                Assert::string(config('services.telegram.bot_token'))
+                type(config('services.telegram.bot_token'))->asString(),
             );
 
             $fileInfoRequest = Http::get($fileInfoEndpoint, [
@@ -39,11 +39,11 @@ class TelegramPhoto
                 if (isset($fileInfo['file_path'])) {
                     $telegramFileUrl = sprintf(
                         'https://api.telegram.org/file/bot%s/%s',
-                        Assert::string(config('services.telegram.bot_token')),
-                        Assert::string($fileInfo['file_path'])
+                        type(config('services.telegram.bot_token'))->asString(),
+                        type($fileInfo['file_path'])->asString(),
                     );
                     $googleStorageService = new GoogleStorageService();
-                    $googleStorageService->uploadFile(Assert::string(file_get_contents($telegramFileUrl)), $fileName);
+                    $googleStorageService->uploadFile(type(file_get_contents($telegramFileUrl))->asString(), $fileName);
                 }
             }
         }
@@ -87,8 +87,8 @@ class TelegramPhoto
         $path = explode('/', $url);
 
         if (strpos($url, 'photo/') !== false) {
-            $fileUniqueId = Assert::string($path[count($path) - 2]);
-            $fileNameInPath = Assert::string(end($path));
+            $fileUniqueId = $path[count($path) - 2];
+            $fileNameInPath = end($path);
             return sprintf('%s_%s', $fileUniqueId, $fileNameInPath);
         }
 
@@ -104,8 +104,8 @@ class TelegramPhoto
     {
         return sprintf(
             'https://storage.googleapis.com/%s/%s',
-            Assert::string(config('services.google.bucket_name') ?? ''),
-            Assert::string($fileName)
+            type(config('services.google.bucket_name') ?? '')->asString(),
+            $fileName,
         );
     }
 }

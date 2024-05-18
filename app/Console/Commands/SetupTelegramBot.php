@@ -2,7 +2,6 @@
 
 namespace App\Console\Commands;
 
-use App\Helpers\Assert;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Http;
 
@@ -31,7 +30,7 @@ class SetupTelegramBot extends Command
         $response = Http::asForm()->post(
             sprintf(
                 'https://api.telegram.org/bot%s/%s',
-                Assert::string(config('services.telegram.bot_token')),
+                type(config('services.telegram.bot_token'))->asString(),
                 $apiMethod
             ),
             $params,

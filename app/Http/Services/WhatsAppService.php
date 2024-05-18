@@ -2,7 +2,6 @@
 
 namespace App\Http\Services;
 
-use App\Helpers\Assert;
 use Illuminate\Support\Facades\Http;
 
 class WhatsAppService
@@ -13,9 +12,9 @@ class WhatsAppService
 
     public function __construct()
     {
-        $this->apiUrl = Assert::string(config('services.whatsapp.base_url'));
-        $this->apiSecret = Assert::string(config('services.whatsapp.secret'));
-        $this->phoneNumberId = Assert::string(config('services.whatsapp.phone_number_id'));
+        $this->apiUrl = type(config('services.whatsapp.base_url'))->asString();
+        $this->apiSecret = type(config('services.whatsapp.secret'))->asString();
+        $this->phoneNumberId = type(config('services.whatsapp.phone_number_id'))->asString();
     }
 
     public function sendOTP(string $phoneNumber, string $otpCode): bool

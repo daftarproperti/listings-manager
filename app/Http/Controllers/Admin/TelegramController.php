@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Helpers\Assert;
 use App\Http\Controllers\Controller;
 use App\Models\Resources\TelegramAllowlistGroupCollection;
 use App\Models\Resources\TelegramAllowlistGroupResource;
@@ -41,8 +40,8 @@ class TelegramController extends Controller
 
     public function allowlistUpdate(Request $request, TelegramAllowlistGroup $allowlist) : RedirectResponse
     {
-        $groupName = Assert::string($request->input('groupName', ''));
-        $allowed = Assert::boolean($request->input('allowed', false));
+        $groupName = type($request->input('groupName', ''))->asString();
+        $allowed = type($request->input('allowed', false))->asBool();
 
         $allowlist->groupName = $groupName;
         $allowlist->allowed = $allowed;

@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Helpers\Assert;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ListingRequest;
 use App\Http\Services\GoogleStorageService;
@@ -498,12 +497,12 @@ class ListingsController extends Controller
                 $fileName = sprintf('%s.%s', md5($image->getClientOriginalName()) , $image->getClientOriginalExtension());
                 $fileId = time();
                 $googleStorageService->uploadFile(
-                    Assert::string(file_get_contents($image->getRealPath())),
+                    type(file_get_contents($image->getRealPath()))->asString(),
                     sprintf('%s_%s', $fileId, $fileName)
                 );
                 $uploadedImages[] = route('telegram-photo', [$fileId, $fileName], false);
             } else {
-                $uploadedImages[] = Assert::string($image);
+                $uploadedImages[] = type($image)->asString();
             }
         }
 

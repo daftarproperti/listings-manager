@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Helpers\Assert;
+use App\Helpers\Cast;
 use App\Helpers\Extractor;
 use Illuminate\Console\Command;
 use Illuminate\Support\Arr;
@@ -96,7 +96,7 @@ class LanguageProcessingEvaluator extends Command
             'contact.name', 'contact.phoneNumber', 'contact.profilePictureURL',
             'contact.company',
             'price', 'lotSize', 'buildingSize', 'carCount', 'bedroomCount',
-            'additionalBedroomCount', 'bathroomCount', "additionalBathroomCount", 
+            'additionalBedroomCount', 'bathroomCount', "additionalBathroomCount",
             'floorCount', 'electricPower'
         ];
 
@@ -109,7 +109,7 @@ class LanguageProcessingEvaluator extends Command
 
             foreach ($fields as $field) {
                 $listing = (array) Arr::get($listings, $idx, []);
-                $listingArray = (array) json_decode(Assert::string(json_encode($listing)), true);
+                $listingArray = (array) json_decode(type(json_encode($listing))->asString(), true);
                 $expectedListing = (array) Arr::get($expectedListings, $idx, []);
 
                 $guessedValue = Arr::get($listingArray, $field, '');
@@ -120,8 +120,8 @@ class LanguageProcessingEvaluator extends Command
 
                 $this->line("Accuracy for field <$field> is $accuracy%.");
                 if ($accuracy < 80) {
-                    $this->error("Extracted: " . Assert::castToString($guessedValue));
-                    $this->error("Expected: " . Assert::castToString($correctValue));
+                    $this->error("Extracted: " . Cast::toString($guessedValue));
+                    $this->error("Expected: " . Cast::toString($correctValue));
                 }
             }
             $iterationAccuracy += $totalAccuracy / count($fields);
@@ -133,8 +133,8 @@ class LanguageProcessingEvaluator extends Command
     private function calculateFieldAccuracy(string $field, mixed $guessedValue, mixed $correctValue): float
     {
         // Handle the case where the correct value is nothing and the guessed is nothing
-        $guessedValueString = Assert::castToString($guessedValue);
-        $correctValueString = Assert::castToString($correctValue); 
+        $guessedValueString = Cast::toString($guessedValue);
+        $correctValueString = Cast::toString($correctValue);
         if (empty($correctValueString)) {
             if (empty($guessedValueString) || $guessedValueString == "unknown") {
                 return 100;

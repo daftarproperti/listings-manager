@@ -2,7 +2,6 @@
 
 namespace App\Http\Services;
 
-use App\Helpers\Assert;
 use Google\Cloud\Storage\Bucket;
 use Google\Cloud\Storage\StorageClient;
 use Google\Cloud\Storage\StorageObject;
@@ -24,7 +23,7 @@ class GoogleStorageService
             'projectId' => config('services.google.project_id')
         ]);
 
-        $this->bucket = $storageClient->bucket(Assert::string(config('services.google.bucket_name')));
+        $this->bucket = $storageClient->bucket(type(config('services.google.bucket_name'))->asString());
     }
 
     public function uploadFile(string $fileContent, string $fileName): ?StorageObject

@@ -3,13 +3,11 @@
 namespace App\Http\Controllers\Api;
 
 use DateTime;
-use App\Helpers\Assert;
 use App\Http\Controllers\Controller;
 use App\Http\Services\WhatsAppService;
 use App\Models\Resources\UserResource;
 use App\Models\User;
 use App\Rules\IndonesiaPhoneFormat;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -21,7 +19,7 @@ class AuthController extends Controller
 
     public function __construct(WhatsAppService $whatsappService)
     {
-        $this->salt = Assert::string(config('app.key'));
+        $this->salt = type(config('app.key'))->asString();
         $this->whatsappService = $whatsappService;
     }
 

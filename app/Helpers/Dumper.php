@@ -15,6 +15,6 @@ class Dumper
     {
         $cloner = new VarCloner();
         $dumper = new CliDumper();
-        return Assert::string($dumper->dump($cloner->cloneVar($variable), TRUE));
+        return type($dumper->dump($cloner->cloneVar($variable), TRUE))->asString();
     }
 }

@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Helpers\Assert;
+use App\Helpers\Cast;
 use App\Helpers\NumFormatter;
 use App\Helpers\TelegramPhoto;
 use App\Models\Enums\VerifyStatus;
@@ -244,11 +244,11 @@ class Listing extends Model
         switch ($key) {
             case "propertyType":
             case "listingType":
-                return $value ? strtolower(Assert::castToString($value)) : "unknown";
+                return $value ? strtolower(Cast::toString($value)) : "unknown";
             case "ownership":
-                return PropertyOwnership::sanitize(Assert::castToString($value));
+                return PropertyOwnership::sanitize(Cast::toString($value));
             case "facing":
-                return FacingDirection::sanitize(Assert::castToString($value));
+                return FacingDirection::sanitize(Cast::toString($value));
             default:
                 return $value;
         }

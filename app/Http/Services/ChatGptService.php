@@ -2,7 +2,6 @@
 
 namespace App\Http\Services;
 
-use App\Helpers\Assert;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Client\RequestException;
@@ -15,9 +14,9 @@ class ChatGptService
 
     public function __construct()
     {
-        $this->apiKey = Assert::string(config('services.chatgpt.key'));
-        $this->apiUrl = Assert::string(config('services.chatgpt.endpoint'));
-        $this->modelVersion = Assert::string(config('services.chatgpt.model_version'));
+        $this->apiKey = type(config('services.chatgpt.key'))->asString();
+        $this->apiUrl = type(config('services.chatgpt.endpoint'))->asString();
+        $this->modelVersion = type(config('services.chatgpt.model_version'))->asString();
     }
 
     public function seekAnswerWithRetry(string $question): string

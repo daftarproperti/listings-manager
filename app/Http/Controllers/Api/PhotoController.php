@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Helpers\Assert;
 use App\Helpers\TelegramPhoto;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ImageUploadRequest;
@@ -102,7 +101,7 @@ class PhotoController extends Controller
         $fileId = time();
 
         $googleStorageService->uploadFile(
-            Assert::string(file_get_contents($image->getRealPath())),
+            type(file_get_contents($image->getRealPath()))->asString(),
             sprintf('%s_%s', $fileId, $fileName)
         );
 

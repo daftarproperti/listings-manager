@@ -17,7 +17,7 @@ class TelegramInteractionHelper
 
         $url = sprintf(
             'https://api.telegram.org/bot%s/sendMessage',
-            Assert::string(config('services.telegram.bot_token'))
+            type(config('services.telegram.bot_token'))->asString(),
         );
 
         $sendRequest = Http::get($url, $params);

@@ -2,7 +2,6 @@
 
 namespace App\Repositories;
 
-use App\Helpers\Assert;
 use App\Models\Enums\VerifyStatus;
 use App\Models\FilterMinMax;
 use App\Models\FilterSet;
@@ -73,7 +72,7 @@ class PropertyRepository
 
         $query->when(isset($filterSet->sort), function ($query) use ($filterSet) {
             assert(is_string($filterSet->sort));
-            $order = isset($filterSet->order) ? Str::lower(Assert::string($filterSet->order)) : 'asc';
+            $order = isset($filterSet->order) ? Str::lower($filterSet->order) : 'asc';
             $sort = !in_array($filterSet->sort, ['created_at', 'updated_at']) ? Str::camel($filterSet->sort) : $filterSet->sort;
 
             $query->orderBy($sort, $order);

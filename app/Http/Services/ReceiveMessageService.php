@@ -2,7 +2,6 @@
 
 namespace App\Http\Services;
 
-use App\Helpers\Assert;
 use App\DTO\Telegram\PhotoSize;
 use App\DTO\Telegram\Update;
 use App\Helpers\ClassificationKeyword;
@@ -32,7 +31,7 @@ class ReceiveMessageService
 
     public function classifyMessage(string $message, float $threshold = 25): ?string
     {
-        $classificationEnabled = Assert::boolean(config('services.msg_classification.enabled'));
+        $classificationEnabled = type(config('services.msg_classification.enabled'))->asBool();
         if ($classificationEnabled) {
             return $this->determineFromClassificationAPI($message);
         }
@@ -65,9 +64,9 @@ class ReceiveMessageService
 
         try {
             $result = $classificationService->classify($message);
-            return Assert::string(MessageClassification::from($result));
+            return MessageClassification::from($result)->value;
         } catch (\Exception $e) {
-            Log::error("Error caught when trying to classify message:". $e->getMessage());
+            Log::error("Error caught when trying to classify message:" . $e->getMessage());
         }
 
         return null;
@@ -79,14 +78,14 @@ class ReceiveMessageService
         $isProperty = $this->classifiedByKeywords($message, $propertyKeywords, $threshold);
 
         if ($isProperty) {
-            return Assert::string(MessageClassification::LISTING->value);
+            return MessageClassification::LISTING->value;
         }
 
         $buyerRequestKeywords = ClassificationKeyword::BuyerRequestKeywords();
         $isBuyerRequest = $this->classifiedByKeywords($message, $buyerRequestKeywords, $threshold);
 
         if ($isBuyerRequest) {
-            return Assert::string(MessageClassification::BUYER_REQUEST->value);
+            return MessageClassification::BUYER_REQUEST->value;
         }
 
         return null;

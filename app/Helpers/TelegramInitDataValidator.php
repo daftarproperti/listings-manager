@@ -29,7 +29,7 @@ class TelegramInitDataValidator
     {
         [$checksum, $sortedInitData, $isWebApp] = self::convertInitData($initData);
 
-        $hash = self::generateHash($botToken, $sortedInitData, Assert::boolean($isWebApp));
+        $hash = self::generateHash($botToken, $sortedInitData, $isWebApp);
 
         return $hash === $checksum;
     }
@@ -73,7 +73,7 @@ class TelegramInitDataValidator
     {
         $initData = [
             'auth_date' => (string) $authDate,
-            'user' => Assert::string(json_encode($user)),
+            'user' => type(json_encode($user))->asString(),
         ];
 
         $dataCheckString = collect($initData)

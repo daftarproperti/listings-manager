@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Api;
 
 use App\DTO\Telegram\Update;
-use App\Helpers\Assert;
 use App\Http\Controllers\Controller;
 use App\Http\Services\ParseService;
 use App\Http\Services\ReceiveMessageService;
@@ -50,11 +49,11 @@ class WebhookController extends Controller
                 10
             );
 
-        if ($classification == Assert::string(MessageClassification::LISTING->value)) {
+        if ($classification == MessageClassification::LISTING->value) {
 
             $parseService->parseListing($update);
 
-        } else if ($classification == Assert::string(MessageClassification::BUYER_REQUEST->value)) {
+        } else if ($classification == MessageClassification::BUYER_REQUEST->value) {
 
             $parseService->parseBuyerRequest($update);
 

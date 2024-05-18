@@ -158,8 +158,8 @@ EOD;
             return [$message];
         }
 
-        $header = isset($ret->header) ? Assert::string($ret->header) : '';
-        $footer = isset($ret->footer) ? Assert::string($ret->footer) : '';
+        $header = $ret->header ?? '';
+        $footer = $ret->footer ?? '';
 
         return array_map(function ($listing) use ($header, $footer) {
             return "$header\n\n$listing\n\n$footer";

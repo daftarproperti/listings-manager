@@ -2,7 +2,6 @@
 
 namespace App\Observers;
 
-use App\Helpers\Assert;
 use App\Models\Listing;
 use App\Models\Property;
 use Illuminate\Support\Facades\Log;
@@ -23,7 +22,7 @@ class ListingObserver
             /**
              * in next iteration 1 property will have more than 1 listing, so we use array for listings attribute
              */
-            $property->listings = [Assert::string($listing->id)];
+            $property->listings = [$listing->id];
             $property->save();
 
         } catch (\Throwable $th) {

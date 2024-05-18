@@ -2,7 +2,6 @@
 
 namespace App\Console\Commands;
 
-use App\Helpers\Assert;
 use App\Helpers\TelegramInitDataValidator;
 use Illuminate\Console\Command;
 
@@ -28,7 +27,7 @@ class GenInitData extends Command
     public function handle(): void
     {
         $initData = TelegramInitDataValidator::generateInitData(
-            Assert::string(config('services.telegram.bot_token')),
+            type(config('services.telegram.bot_token'))->asString(),
             time(),
             [
                 'id' => (int)$this->argument('user-id'),

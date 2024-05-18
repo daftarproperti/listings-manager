@@ -2,7 +2,6 @@
 
 namespace App\Models\Resources;
 
-use App\Helpers\Assert;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
@@ -33,7 +32,7 @@ class TelegramAllowlistGroupResource extends JsonResource
             'chatId' => $allowlist->chatId,
             'groupName' => $allowlist->groupName,
             'sampleMessage' => $allowlist->sampleMessage,
-            'allowed' => Assert::boolean($allowlist->allowed),
+            'allowed' => $allowlist->allowed,
             'createdAt' => $allowlist->created_at?->format('d F Y H:i'),
         ];
     }

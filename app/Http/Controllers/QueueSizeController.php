@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Helpers\Assert;
 use App\Helpers\Queue;
 use App\Http\Controllers\Controller;
 use Illuminate\Contracts\Queue\Factory as QueueManager;
@@ -16,9 +15,9 @@ class QueueSizeController extends Controller
 {
     public function index(Request $request, QueueManager $qm): Response
     {
-        $prefix = Assert::string($request->query('prefix') ?? 'generic');
+        $prefix = type($request->query('prefix') ?? 'generic')->asString();
         $queueName = Queue::getQueueName($prefix);
-        $connection = $qm->connection(Assert::string(config('queue.default')));
+        $connection = $qm->connection(type(config('queue.default'))->asString());
         $queueSize = $connection->size($queueName);
         return response((string)$queueSize);
     }
