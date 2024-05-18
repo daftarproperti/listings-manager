@@ -18,14 +18,14 @@ use Illuminate\Database\Eloquent\Collection;
  * @property ListingType $listingType
  * @property string $address
  * @property string $description
- * @property string $price
- * @property string $lotSize
- * @property string $buildingSize
- * @property string $carCount
- * @property string $bedroomCount
- * @property string $bathroomCount
- * @property string $floorCount
- * @property string $electricPower
+ * @property int $price
+ * @property int $lotSize
+ * @property int $buildingSize
+ * @property int $carCount
+ * @property int $bedroomCount
+ * @property int $bathroomCount
+ * @property int $floorCount
+ * @property int $electricPower
  * @property FacingDirection $facing
  * @property PropertyOwnership $ownership
  * @property VerifyStatus $verifyStatus
@@ -60,7 +60,7 @@ class Property extends Model
         'carCount' => 'int',
         'floorCount' => 'int',
         'electricPower' => 'int',
-        'price' => 'float',
+        'price' => 'int',
     ];
 
 

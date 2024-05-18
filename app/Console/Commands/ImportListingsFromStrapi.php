@@ -64,7 +64,7 @@ class ImportListingsFromStrapi extends Command
         $listing->title = $strapiListing->title ?? '';
         $listing->address = $strapiListing->address ?? '';
         $listing->description = $strapiListing->description ?? '';
-        $listing->price = $strapiListing->price ? $strapiListing->price * 1000000 : 0;
+        $listing->price = $strapiListing->price ? (int)($strapiListing->price * 1000000) : 0;
         $listing->lotSize = (int)$strapiListing->lot_size;
         $listing->buildingSize = (int)$strapiListing->building_size;
         $listing->facing = FacingDirection::tryFrom($strapiListing->facing ?? '') ?? FacingDirection::Unknown;

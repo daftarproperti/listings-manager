@@ -37,8 +37,8 @@ use Spatie\Analytics\Period;
  * @property string $address
  * @property string $description
  * @property string $formatted_price
- * @property float $price
- * @property float $rentPrice
+ * @property int $price
+ * @property int $rentPrice
  * @property int $lotSize
  * @property int $buildingSize
  * @property int $carCount
@@ -85,7 +85,7 @@ class Listing extends Model
         'carCount' => 'int',
         'floorCount' => 'int',
         'electricPower' => 'int',
-        'price' => 'float',
+        'price' => 'int',
     ];
 
     public function getMatchFilterCountAttribute(): int
