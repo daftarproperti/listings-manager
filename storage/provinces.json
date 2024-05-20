@@ -1,0 +1,483 @@
+[
+    {
+        "administrativeId": 11,
+        "osmId": 2390836,
+        "osmType": "relation",
+        "name": "Aceh",
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                97.0253024,
+                4.3685491
+            ]
+        }
+    },
+    {
+        "administrativeId": 12,
+        "osmId": 2390843,
+        "osmType": "relation",
+        "name": "Sumatera Utara",
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                99.3812201,
+                2.1923519
+            ]
+        }
+    },
+    {
+        "administrativeId": 13,
+        "osmId": 2390841,
+        "osmType": "relation",
+        "name": "Sumatera Barat",
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                100.6133379,
+                -0.5827529
+            ]
+        }
+    },
+    {
+        "administrativeId": 14,
+        "osmId": 2390840,
+        "osmType": "relation",
+        "name": "Riau",
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                101.5475811,
+                0.5004112
+            ]
+        }
+    },
+    {
+        "administrativeId": 15,
+        "osmId": 2390838,
+        "osmType": "relation",
+        "name": "Jambi",
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                102.94542640112506,
+                -1.6394711
+            ]
+        }
+    },
+    {
+        "administrativeId": 16,
+        "osmId": 2390842,
+        "osmType": "relation",
+        "name": "Sumatera Selatan",
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                104.0930554,
+                -3.1266842
+            ]
+        }
+    },
+    {
+        "administrativeId": 17,
+        "osmId": 2390837,
+        "osmType": "relation",
+        "name": "Bengkulu",
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                102.5359834,
+                -3.5186763
+            ]
+        }
+    },
+    {
+        "administrativeId": 18,
+        "osmId": 2390839,
+        "osmType": "relation",
+        "name": "Lampung",
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                105.0272986,
+                -4.8555039
+            ]
+        }
+    },
+    {
+        "administrativeId": 19,
+        "osmId": 3797243,
+        "osmType": "relation",
+        "name": "Kepulauan Bangka Belitung",
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                106.3585607,
+                -2.7052886
+            ]
+        }
+    },
+    {
+        "administrativeId": 21,
+        "osmId": 3797244,
+        "osmType": "relation",
+        "name": "Kepulauan Riau",
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                104.5803745,
+                -0.1547846
+            ]
+        }
+    },
+    {
+        "administrativeId": 31,
+        "osmId": 6362934,
+        "osmType": "relation",
+        "name": "Dki Jakarta",
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                106.8270488,
+                -6.175247
+            ]
+        }
+    },
+    {
+        "administrativeId": 32,
+        "osmId": 2388361,
+        "osmType": "relation",
+        "name": "Jawa Barat",
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                107.6404716,
+                -6.8891904
+            ]
+        }
+    },
+    {
+        "administrativeId": 33,
+        "osmId": 2388357,
+        "osmType": "relation",
+        "name": "Jawa Tengah",
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                110.0044145,
+                -7.3032412
+            ]
+        }
+    },
+    {
+        "administrativeId": 34,
+        "osmId": 5616105,
+        "osmType": "relation",
+        "name": "Daerah Istimewa Yogyakarta",
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                110.36722565020224,
+                -7.9778383999999996
+            ]
+        }
+    },
+    {
+        "administrativeId": 35,
+        "osmId": 3438227,
+        "osmType": "relation",
+        "name": "Jawa Timur",
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                112.4914199,
+                -7.6977397
+            ]
+        }
+    },
+    {
+        "administrativeId": 36,
+        "osmId": 2388356,
+        "osmType": "relation",
+        "name": "Banten",
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                106.1375586,
+                -6.4453801
+            ]
+        }
+    },
+    {
+        "administrativeId": 51,
+        "osmId": 1615621,
+        "osmType": "relation",
+        "name": "Bali",
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                115.0906401,
+                -8.3304977
+            ]
+        }
+    },
+    {
+        "administrativeId": 52,
+        "osmId": 1615622,
+        "osmType": "relation",
+        "name": "Nusa Tenggara Barat",
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                117.146169,
+                -8.7892855
+            ]
+        }
+    },
+    {
+        "administrativeId": 53,
+        "osmId": 2396778,
+        "osmType": "relation",
+        "name": "Nusa Tenggara Timur",
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                120.6978581,
+                -8.5656787
+            ]
+        }
+    },
+    {
+        "administrativeId": 61,
+        "osmId": 2388616,
+        "osmType": "relation",
+        "name": "Kalimantan Barat",
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                111.0968901,
+                -0.1322387
+            ]
+        }
+    },
+    {
+        "administrativeId": 62,
+        "osmId": 2388613,
+        "osmType": "relation",
+        "name": "Kalimantan Tengah",
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                113.2903307,
+                -1.499583
+            ]
+        }
+    },
+    {
+        "administrativeId": 63,
+        "osmId": 2388615,
+        "osmType": "relation",
+        "name": "Kalimantan Selatan",
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                115.3700718,
+                -2.9285686
+            ]
+        }
+    },
+    {
+        "administrativeId": 64,
+        "osmId": 5449459,
+        "osmType": "relation",
+        "name": "Kalimantan Timur",
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                116.2419977,
+                0.7884397
+            ]
+        }
+    },
+    {
+        "administrativeId": 65,
+        "osmId": 5449460,
+        "osmType": "relation",
+        "name": "Kalimantan Utara",
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                116.2049306,
+                3.0235817
+            ]
+        }
+    },
+    {
+        "administrativeId": 71,
+        "osmId": 2388666,
+        "osmType": "relation",
+        "name": "Sulawesi Utara",
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                124.090151,
+                0.6555692
+            ]
+        }
+    },
+    {
+        "administrativeId": 72,
+        "osmId": 2388664,
+        "osmType": "relation",
+        "name": "Sulawesi Tengah",
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                120.8088555,
+                -1.6937786
+            ]
+        }
+    },
+    {
+        "administrativeId": 73,
+        "osmId": 2388667,
+        "osmType": "relation",
+        "name": "Sulawesi Selatan",
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                119.9471906,
+                -3.6446718
+            ]
+        }
+    },
+    {
+        "administrativeId": 74,
+        "osmId": 2388668,
+        "osmType": "relation",
+        "name": "Sulawesi Tenggara",
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                121.7279646,
+                -3.5491199
+            ]
+        }
+    },
+    {
+        "administrativeId": 75,
+        "osmId": 2388665,
+        "osmType": "relation",
+        "name": "Gorontalo",
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                122.4555927,
+                0.7186174
+            ]
+        }
+    },
+    {
+        "administrativeId": 76,
+        "osmId": 2388669,
+        "osmType": "relation",
+        "name": "Sulawesi Barat",
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                119.3918955,
+                -2.4974546
+            ]
+        }
+    },
+    {
+        "administrativeId": 81,
+        "osmId": 7225996,
+        "osmType": "relation",
+        "name": "Maluku",
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                127.47894514424743,
+                -2.58422595
+            ]
+        }
+    },
+    {
+        "administrativeId": 82,
+        "osmId": 2396796,
+        "osmType": "relation",
+        "name": "Maluku Utara",
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                127.9720219,
+                0.6301215
+            ]
+        }
+    },
+    {
+        "administrativeId": 91,
+        "osmId": 4521144,
+        "osmType": "relation",
+        "name": "Papua",
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                138.08485,
+                -2.4749149
+            ]
+        }
+    },
+    {
+        "administrativeId": 92,
+        "osmId": 4521145,
+        "osmType": "relation",
+        "name": "Papua Barat",
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                133.4738171,
+                -2.8553556
+            ]
+        }
+    },
+    {
+        "administrativeId": 93,
+        "osmId": 14309177,
+        "osmType": "relation",
+        "name": "Papua Selatan",
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                139.3835339,
+                -6.5008882
+            ]
+        }
+    },
+    {
+        "administrativeId": 94,
+        "osmId": 14309178,
+        "osmType": "relation",
+        "name": "Papua Tengah",
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                136.37328,
+                -3.8642437
+            ]
+        }
+    },
+    {
+        "administrativeId": 95,
+        "osmId": 14309176,
+        "osmType": "relation",
+        "name": "Papua Pegunungan",
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                139.3725476,
+                -4.2478013
+            ]
+        }
+    }
+]
