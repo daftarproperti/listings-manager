@@ -1271,37 +1271,9 @@ components:
           type: boolean
           example: true
       type: object
-    UserProfile:
-      properties:
-        name:
-          type: string
-          example: 'John Doe'
-        description:
-          type: string
-          example: 'I am a programmer'
-        city:
-          type: string
-          example: 'New York'
-        picture:
-          type: string
-          example: 'https://example.com/image.jpg'
-        company:
-          type: string
-          example: Google
-        cityOfOperation:
-          type: string
-          example: Jakarta
-        isPublicProfile:
-          type: boolean
-          example: true
-      type: object
     User:
       properties:
         id:
-          type: string
-        firstName:
-          type: string
-        lastName:
           type: string
         username:
           type: string
@@ -1311,8 +1283,16 @@ components:
           $ref: '#/components/schemas/AccountType'
         email:
           type: string
-        password:
+        name:
           type: string
-        profile:
-          $ref: '#/components/schemas/UserProfile'
+        city:
+          type: string
+        description:
+          type: string
+        picture:
+          type: string
+        company:
+          type: string
+        isPublicProfile:
+          type: boolean
       type: object

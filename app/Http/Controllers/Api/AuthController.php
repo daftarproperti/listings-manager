@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use DateTime;
+use Carbon\Carbon;
 use App\Http\Controllers\Controller;
 use App\Http\Services\WhatsAppService;
 use App\Models\Resources\UserResource;
@@ -69,8 +70,8 @@ class AuthController extends Controller
 
         $this->whatsappService->sendOTP($phoneNumber, $otpCode);
 
-        $timestamp = time();
-        $token = Hash::make($otpCode . $timestamp . $this->salt);
+        $timestamp = Carbon::now()->timestamp;
+        $token = Hash::make($phoneNumber . $otpCode . $timestamp . $this->salt);
 
         return response()->json([
             'token' => $token,
@@ -153,14 +154,14 @@ class AuthController extends Controller
         $timestamp = $validatedRequest['timestamp'];
         $otpCode = $validatedRequest['otpCode'];
 
-        if (!(Hash::check($otpCode . $timestamp . $this->salt, $token) && (time() - $timestamp < 120))) {
+        if (!(Hash::check($phoneNumber . $otpCode . $timestamp . $this->salt, $token) && (Carbon::now()->timestamp - $timestamp < 120))) {
             return response()->json([
                 'success' => false
             ], 401);
         }
 
         $expiryDate = new DateTime();
-        $expiryDate->modify('+1 hour');
+        $expiryDate->modify('+1 month');
 
         /** @var User|null $user */
         $user = User::where('phoneNumber', $phoneNumber)->first();

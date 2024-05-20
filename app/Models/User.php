@@ -9,14 +9,17 @@ use Laravel\Sanctum\HasApiTokens;
 
 /**
  * @property string $id
- * @property string $firstName
- * @property string $lastName
  * @property string $username
  * @property string $phoneNumber
  * @property string $accountType
  * @property string $email
  * @property string $password
- * @property UserProfile|null $profile
+ * @property string $name
+ * @property string $city
+ * @property string $description
+ * @property string $picture
+ * @property string $company
+ * @property bool $isPublicProfile
  */
 class User extends Authenticatable
 {
@@ -35,13 +38,17 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'firstName',
-        'lastName',
-        'username',
         'phoneNumber',
-        'accountType',
+        'username',
         'email',
         'password',
+        'accountType',
+        'name',
+        'city',
+        'description',
+        'picture',
+        'company',
+        'isPublicProfile'
     ];
 
     /**
@@ -62,7 +69,6 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
-        'profile' => AttributeCaster::class.':'.UserProfile::class,
     ];
 
     public function getAuthIdentifier()

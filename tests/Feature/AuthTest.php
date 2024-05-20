@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use Carbon\Carbon;
 use Tests\TestCase;
 use App\Models\User;
 use App\Http\Services\WhatsAppService;
@@ -30,6 +31,7 @@ class AuthTest extends TestCase
             $mock->shouldReceive('sendOTP')->once()->andReturn(true);
         });
 
+        Carbon::setTestNow(Carbon::create(2024, 05, 20, 10, 00));
         $response = $this->postJson('/api/auth/send-otp', [
             'phoneNumber' => $phoneNumber,
         ]);
@@ -42,9 +44,12 @@ class AuthTest extends TestCase
     {
         $phoneNumber = '081210112011';
         $otpCode = '123456';
-        $timestamp = time();
+        $time = Carbon::create(2024, 05, 20, 10, 01);
+        Carbon::setTestNow($time);
+
+        $timestamp = $time->timestamp;
         $salt = config('app.key');
-        $token = Hash::make($otpCode . $timestamp . $salt);
+        $token = Hash::make($phoneNumber . $otpCode . $timestamp . $salt);
 
         $response = $this->postJson('/api/auth/verify-otp', [
             'phoneNumber' => $phoneNumber,
@@ -62,7 +67,10 @@ class AuthTest extends TestCase
     {
         $phoneNumber = '081210012001';
         $otpCode = '133144';
-        $timestamp = time();
+        $time = Carbon::create(2024, 05, 20, 10, 01);
+        Carbon::setTestNow($time);
+
+        $timestamp = $time->timestamp;
         $invalidToken = 'invalidtoken';
 
         $response = $this->postJson('/api/auth/verify-otp', [
@@ -80,10 +88,36 @@ class AuthTest extends TestCase
     {
         $phoneNumber = '081210022002';
         $otpCode = '244411';
-        $timestamp = time();
+        $time = Carbon::create(2024, 05, 20, 10, 01);
+        Carbon::setTestNow($time);
+
+        $timestamp = $time->timestamp;
         $salt = config('app.key');
-        $token = Hash::make($otpCode . $timestamp . $salt);
-        $timestamp = time() + 12000;
+        $token = Hash::make($phoneNumber . $otpCode . $timestamp . $salt);
+        $timestamp = $timestamp + 25000;
+
+        $response = $this->postJson('/api/auth/verify-otp', [
+            'phoneNumber' => $phoneNumber,
+            'token' => $token,
+            'timestamp' => $timestamp,
+            'otpCode' => $otpCode,
+        ]);
+
+        $response->assertStatus(401)
+                 ->assertJson(['success' => false]);
+    }
+
+    public function testVerifyOTPWithInvalidOTP()
+    {
+        $phoneNumber = '081210022002';
+        $otpCode = '244411';
+        $time = Carbon::create(2024, 05, 20, 10, 01);
+        Carbon::setTestNow($time);
+
+        $timestamp = $time->timestamp;
+        $salt = config('app.key');
+        $token = Hash::make($phoneNumber . $otpCode . $timestamp . $salt);
+        $otpCode = '120101';
 
         $response = $this->postJson('/api/auth/verify-otp', [
             'phoneNumber' => $phoneNumber,

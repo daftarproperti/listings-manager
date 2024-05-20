@@ -15,14 +15,16 @@ class UserResource extends JsonResource
     public static $wrap = null;
     /**
      * @OA\Property(property="id",type="string")
-     * @OA\Property(property="firstName",type="string")
-     * @OA\Property(property="lastName",type="string")
      * @OA\Property(property="username",type="string")
      * @OA\Property(property="phoneNumber",type="string")
      * @OA\Property(property="accountType",ref="#/components/schemas/AccountType")
      * @OA\Property(property="email",type="string")
-     * @OA\Property(property="password",type="string")
-     * @OA\Property(property="profile",ref="#/components/schemas/UserProfile")
+     * @OA\Property(property="name",type="string")
+     * @OA\Property(property="city",type="string")
+     * @OA\Property(property="description",type="string")
+     * @OA\Property(property="picture",type="string")
+     * @OA\Property(property="company",type="string")
+     * @OA\Property(property="isPublicProfile",type="bool")
      * @return array<mixed>
      */
     public function toArray($request)
@@ -32,22 +34,27 @@ class UserResource extends JsonResource
 
         return [
             'id' => $prop->id,
-            'firstName' => $prop->firstName,
-            'lastName' => $prop->lastName,
             'username' => $prop->username,
             'phoneNumber' => $prop->phoneNumber,
             'accountType' => $prop->accountType,
             'email' => $prop->email,
             'password' => $prop->password,
+            'name' => $prop->name,
+            'city' => $prop->city,
+            'description' => $prop->description,
+            'company' => $prop->company,
+            'picture' => $prop->picture,
+            'isPublicProfile' => $prop->isPublicProfile,
+
+            // Deprecated
             'profile' => [
-                'name' => $prop->profile?->name,
-                'city' => $prop->profile?->city,
-                'description' => $prop->profile?->description,
-                'pictureURL' => $prop->profile?->picture,
-                'isPublicProfile' => $prop->profile?->isPublicProfile,
-                'company' => $prop->profile?->company,
-                'cityOfOperation' => $prop->profile?->cityOfOperation,
-            ],
+                'name' => $prop->name,
+                'city' => $prop->city,
+                'description' => $prop->description,
+                'pictureURL' => $prop->picture,
+                'isPublicProfile' => $prop->isPublicProfile,
+                'company' => $prop->company,
+            ]
         ];
     }
 }
