@@ -101,6 +101,14 @@ class Listing extends Model
 
     public function getViewCountAttribute(): int
     {
+        // Temporarily disable calling Google Analytics API since it turns out to be blocking very long.
+        // TODO: Optimize this by not directly fetching here, but dispatching the fetch job in a queue.
+        // Re-enable the function below when this is done.
+        return 0;
+    }
+
+    public function disabled_getViewCountAttribute(): int
+    {
         if (!env('PHASE1')) {
             return 0;
         }
