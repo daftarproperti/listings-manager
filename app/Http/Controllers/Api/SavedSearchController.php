@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Helpers\DPAuth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SavedSearchRequest;
 use App\Models\FilterSet;
 use App\Models\Resources\SavedSearchCollection;
 use App\Models\Resources\SavedSearchResource;
 use App\Models\SavedSearch;
-use App\Models\TelegramUser;
 use App\Repositories\SavedSearchRepository;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -41,7 +41,7 @@ class SavedSearchController extends Controller
     public function index(SavedSearchRepository $repository): JsonResource
     {
         $input = [
-            'userId' => app(TelegramUser::class)->user_id,
+            'userId' => DPAuth::getUser()->user_id,
         ];
         return new SavedSearchCollection($repository->list($input));
     }
@@ -119,7 +119,7 @@ class SavedSearchController extends Controller
         $data = $request->validated();
         $savedSearch = new SavedSearch;
         $this->setSavedSearchAttribute($data, $savedSearch);
-        $userId = app(TelegramUser::class)->user_id;
+        $userId = DPAuth::getUser()->user_id;
         $savedSearch->userId = $userId;
         $savedSearch->save();
 

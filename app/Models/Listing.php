@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Helpers\Cast;
+use App\Helpers\DPAuth;
 use App\Helpers\NumFormatter;
 use App\Helpers\TelegramPhoto;
 use App\Models\Enums\VerifyStatus;
@@ -156,7 +157,7 @@ class Listing extends Model
 
     public function getUserCanEditAttribute(): bool
     {
-        $currentUserId = app(TelegramUser::class)->user_id ?? null;
+        $currentUserId = DPAuth::getUser()->user_id ?? null;
 
         if (!$currentUserId) {
             return false;
@@ -169,10 +170,10 @@ class Listing extends Model
 
     public function getUserProfileAttribute(): ?TelegramUserProfile
     {
-        $user = $this->user ? (object) $this->user : null;
-        $userSource = $user ? ($user->source ?? null) : null;
+        $user = $this->user;
+        $userSource = $user?->source;
 
-        if (!$userSource || !$user) {
+        if (!$userSource) {
             return null;
         }
 
@@ -181,6 +182,24 @@ class Listing extends Model
                 /** @var TelegramUser|null $teleUser */
                 $teleUser = TelegramUser::where('user_id', $user->userId)->first();
                 return $teleUser?->profile;
+            case 'app':
+                /** @var User|null $appUser */
+                $appUser = User::where('user_id', $user->userId)->first();
+                if (!$appUser) {
+                    return null;
+                }
+
+                $profile = new TelegramUserProfile();
+
+                $profile->name = $appUser->name;
+                $profile->phoneNumber = $appUser->phoneNumber;
+                $profile->city = $appUser->city;
+                $profile->description = $appUser->description;
+                $profile->company = $appUser->company;
+                $profile->picture = $appUser->picture;
+                $profile->isPublicProfile = $appUser->isPublicProfile;
+
+                return $profile;
             default:
                 return null;
         }

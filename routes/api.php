@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\PhotoController;
 use App\Http\Controllers\Api\PropertiesController;
 use App\Http\Controllers\Api\SavedSearchController;
 use App\Http\Controllers\Api\TelegramUserController;
+use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\WebhookController;
 
 /*
@@ -56,9 +57,16 @@ Route::group(['prefix' => 'tele-app', 'middleware' => ['telegram-app']], functio
         Route::delete('/{savedSearch}', [SavedSearchController::class, 'delete']);
     });
 
-    Route::prefix('users')->group(function () {
+    // Temporarily let TelegramUserController stay to not break tests.
+    // TODO: Remove when everyone has migrated to User model instead of TelegramUser.
+    Route::prefix('telegram-users')->group(function () {
         Route::get('/profile', [TelegramUserController::class, 'profile']);
         Route::post('/profile', [TelegramUserController::class, 'updateProfile']);
+    });
+
+    Route::prefix('users')->group(function () {
+        Route::get('/profile', [UserController::class, 'profile']);
+        Route::post('/profile', [UserController::class, 'updateProfile']);
     });
 
     Route::post('upload/image', [PhotoController::class, 'uploadImage']);

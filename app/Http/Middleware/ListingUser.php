@@ -2,7 +2,7 @@
 
 namespace App\Http\Middleware;
 
-use App\Models\TelegramUser;
+use App\Helpers\DPAuth;
 use Closure;
 use Illuminate\Http\Request;
 
@@ -20,7 +20,13 @@ class ListingUser
         /** @var \App\Models\Listing $listing */
         $listing = $request->listing;
 
-        if (!$listing->user || ($listing->user->userId !== app(TelegramUser::class)->user_id)) {
+        $isMyListing = false;
+
+        if ($listing->user && ($listing->user->userId == DPAuth::getUser()->user_id)) {
+            $isMyListing = true;
+        }
+
+        if (!$isMyListing) {
             return response()->json(['error' => 'Unauthorized'], 403);
         }
 

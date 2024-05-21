@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Helpers\DPAuth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ListingRequest;
 use App\Http\Services\GoogleStorageService;
@@ -11,7 +12,6 @@ use App\Models\Listing;
 use App\Models\ListingUser;
 use App\Models\Resources\ListingCollection;
 use App\Models\Resources\ListingResource;
-use App\Models\TelegramUser;
 use App\Repositories\ListingRepository;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -260,8 +260,8 @@ class ListingsController extends Controller
         }
 
         if (boolval($filterSet->collection)) {
-            $telegramUser = app(TelegramUser::class);
-            $currentUserId = $telegramUser->user_id ?? null;
+            $currentUser = DPAuth::getUser();
+            $currentUserId = $currentUser->user_id ?? 0;
             $filterSet->userId = $currentUserId;
         }
 
@@ -389,17 +389,17 @@ class ListingsController extends Controller
      * )
      */
 
-     public function create(ListingRequest $request): JsonResource
-     {
-         $validatedRequest = $request->validated();
-         $listing = new Listing();
-         $this->fillCreateUpdateListing($validatedRequest, $listing);
-         $listing->user = $this->getListingUser();
-         $listing->verifyStatus = VerifyStatus::ON_REVIEW;
-         $listing->save();
+    public function create(ListingRequest $request): JsonResource
+    {
+        $validatedRequest = $request->validated();
+        $listing = new Listing();
+        $this->fillCreateUpdateListing($validatedRequest, $listing);
+        $listing->user = $this->getListingUser();
+        $listing->verifyStatus = VerifyStatus::ON_REVIEW;
+        $listing->save();
 
-         return new ListingResource($listing);
-     }
+        return new ListingResource($listing);
+    }
 
     /**
      * @OA\Delete(
@@ -445,7 +445,7 @@ class ListingsController extends Controller
         $booleanKeys = ['isPrivate', 'listingForSale', 'listingForRent'];
 
         foreach ($data as $key => $value) {
-            if(!is_array($value)) {
+            if (!is_array($value)) {
                 if (in_array($key, $booleanKeys)) {
                     $listing->{$key} = (bool) $value;
                     continue;
@@ -473,14 +473,8 @@ class ListingsController extends Controller
 
     private function getListingUser(): ListingUser
     {
-        $user = app(TelegramUser::class);
-        $listingUser = new ListingUser();
-        $listingUser->name = $user->first_name . ' ' . ($user->last_name ?? '');
-        $listingUser->userName = $user->username ?? null;
-        $listingUser->userId = (int) $user->user_id;
-        $listingUser->source = 'telegram';
-
-        return $listingUser;
+        $user = DPAuth::getUser();
+        return $user->toListingUser();
     }
 
     /**
@@ -493,10 +487,9 @@ class ListingsController extends Controller
         $googleStorageService = app()->make(GoogleStorageService::class);
 
         $uploadedImages = [];
-        foreach ($images as $image)
-        {
+        foreach ($images as $image) {
             if (is_object($image) && is_a($image, \Illuminate\Http\UploadedFile::class)) {
-                $fileName = sprintf('%s.%s', md5($image->getClientOriginalName()) , $image->getClientOriginalExtension());
+                $fileName = sprintf('%s.%s', md5($image->getClientOriginalName()), $image->getClientOriginalExtension());
                 $fileId = time();
                 $googleStorageService->uploadFile(
                     type(file_get_contents($image->getRealPath()))->asString(),

@@ -4,8 +4,9 @@ namespace Tests\Feature;
 
 use App\Helpers\TelegramInitDataValidator;
 use App\Models\Property;
-use App\Models\PropertyUser;
+use App\Models\User;
 use App\Models\TelegramUser;
+use DateTime;
 use Illuminate\Support\Facades\Config;
 use Tests\TestCase;
 
@@ -13,6 +14,9 @@ class PropertyApiTest extends TestCase
 {
     private string $fakeBotToken = 'fake-bot-token';
     private int $fakeUserId = 12345;
+
+    private User $user;
+    private string $token;
 
     /**
      * Generates fake init data and appends valid hash according to Telegram spec:
@@ -55,6 +59,31 @@ class PropertyApiTest extends TestCase
         // Ensure each test case starts with empty database.
         Property::truncate();
         TelegramUser::truncate();
+        User::truncate();
+
+        $this->user = User::factory()->create([
+            'name' => 'John Smith',
+            'phoneNumber' => '081239129321',
+            'password' => null
+        ]);
+
+        $expiryDate = new DateTime();
+        $expiryDate->modify('+1 month');
+
+        $this->token = $this->user->createToken('Test Token', ['*'], $expiryDate)->plainTextToken;
+    }
+
+    private function testWithBothAuth($testFunction)
+    {
+        // Test using telegram auth
+        $testFunction($this->withHeaders([
+            'x-init-data' => http_build_query($this->generate_telegram_init_data()),
+        ]));
+
+        // Test using access token
+        $testFunction($this->withHeaders([
+            'Authorization' => 'Bearer ' . $this->token,
+        ]));
     }
 
     public function test_without_authentication(): void
@@ -75,51 +104,51 @@ class PropertyApiTest extends TestCase
             'listingType' => 'sale',
         ]);
 
-        $response = $this->withHeaders([
-            'x-init-data' => http_build_query($this->generate_telegram_init_data()),
-        ])->get('/api/tele-app/properties');
+        $this->testWithBothAuth(function (self $makesHttpRequests) {
+            $response = $makesHttpRequests->get('/api/tele-app/properties');
 
-        $response->assertStatus(200);
+            $response->assertStatus(200);
 
-        // TODO: Test more fields other than title.
-        $response->assertJson([
-            "properties" => [
-                [
-                    "title" => "Dijual Gedung",
-                    "propertyType" => "warehouse",
-                    "listingType" => "sale",
+            // TODO: Test more fields other than title.
+            $response->assertJson([
+                "properties" => [
+                    [
+                        "title" => "Dijual Gedung",
+                        "propertyType" => "warehouse",
+                        "listingType" => "sale",
+                    ],
+                    [
+                        "title" => "Dijual Rumah",
+                        "propertyType" => "house",
+                        "listingType" => "rent",
+                    ],
                 ],
-                [
-                    "title" => "Dijual Rumah",
-                    "propertyType" => "house",
-                    "listingType" => "rent",
-                ],
-            ],
-        ]);
+            ]);
+        });
     }
 
     public function test_can_show_property(): void
     {
         $property = $this->addProperty("Dijual Rumah", $this->fakeUserId);
 
-        $response = $this->withHeaders([
-            'x-init-data' => http_build_query($this->generate_telegram_init_data()),
-        ])->get("/api/tele-app/properties/{$property->id}");
+        $this->testWithBothAuth(function (self $makesHttpRequests) use ($property) {
+            $response = $makesHttpRequests->get("/api/tele-app/properties/{$property->id}");
 
-        $response->assertStatus(200);
+            $response->assertStatus(200);
 
-        // TODO: Test more fields other than title.
-        $response->assertJson([
-            'id' => $property->id,
-            'title' => $property->title,
-        ]);
+            // TODO: Test more fields other than title.
+            $response->assertJson([
+                'id' => $property->id,
+                'title' => $property->title,
+            ]);
+        });
     }
 
     public function test_get_profile(): void
     {
         $response = $this->withHeaders([
             'x-init-data' => http_build_query($this->generate_telegram_init_data()),
-        ])->get('/api/tele-app/users/profile');
+        ])->get('/api/tele-app/telegram-users/profile');
 
         $response->assertStatus(201);
         $response->assertJsonStructure([
@@ -138,7 +167,7 @@ class PropertyApiTest extends TestCase
     {
         $response = $this->withHeaders([
             'x-init-data' => http_build_query($this->generate_telegram_init_data()),
-        ])->post('/api/tele-app/users/profile', [
+        ])->post('/api/tele-app/telegram-users/profile', [
             'name' => 'John No',
             'city' => 'Jakarta',
             'picture' => 'some_picture.jpg',
@@ -170,6 +199,57 @@ class PropertyApiTest extends TestCase
                 'picture' => 'some_picture.jpg',
                 'isPublicProfile' => false,
             ],
+        ]);
+    }
+
+    public function test_get_profile_with_access_token(): void
+    {
+        $response = $this->withHeaders([
+            'Authorization' => 'Bearer ' . $this->token,
+        ])->get('/api/tele-app/users/profile');
+
+        $response->assertStatus(200);
+        $response->assertJsonStructure([
+            'id',
+            'name',
+            'city',
+            'description',
+            'company',
+            'picture',
+            'phoneNumber',
+            'isPublicProfile'
+        ]);
+    }
+
+    public function test_set_profile_with_access_token(): void
+    {
+        $response = $this->withHeaders([
+            'Authorization' => 'Bearer ' . $this->token,
+        ])->post('/api/tele-app/users/profile', [
+            'name' => 'John No',
+            'city' => 'Jakarta',
+            'picture' => 'some_picture.jpg',
+        ]);
+
+        $response->assertStatus(200);
+        $response->assertJson([
+            'name' => 'John No',
+            'city' => 'Jakarta',
+            'description' => null,
+            'picture' => 'https://storage.googleapis.com/some-bucket/some_picture.jpg',
+            'phoneNumber' => '081239129321',
+            'isPublicProfile' => false,
+        ]);
+
+        $this->assertEquals('John No', $response->json('name'));
+        $this->assertEquals('Jakarta', $response->json('city'));
+
+        $this->assertDatabaseHas('users', [
+            'name' => 'John No',
+            'phoneNumber' => '081239129321',
+            'city' => 'Jakarta',
+            'picture' => 'some_picture.jpg',
+            'isPublicProfile' => false,
         ]);
     }
 }

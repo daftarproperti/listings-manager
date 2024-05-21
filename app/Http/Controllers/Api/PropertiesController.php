@@ -7,9 +7,7 @@ use App\Models\FilterSet;
 use App\Models\Property;
 use App\Models\Resources\PropertyCollection;
 use App\Models\Resources\PropertyResource;
-use App\Models\TelegramUser;
 use App\Repositories\PropertyRepository;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 

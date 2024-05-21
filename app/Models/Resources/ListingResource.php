@@ -51,6 +51,9 @@ class ListingResource extends JsonResource
      * @OA\Property(property="user",type="object",
      *      @OA\Property(property="name",type="string"),
      *      @OA\Property(property="profilePictureURL",type="string"),
+     *      @OA\Property(property="city",type="string"),
+     *      @OA\Property(property="company",type="string"),
+     *      @OA\Property(property="description",type="string"),
      *      @OA\Property(property="phoneNumber",type="string"),
      * )
      * @OA\Property(property="userCanEdit",type="boolean")

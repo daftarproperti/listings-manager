@@ -6,9 +6,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use MongoDB\Laravel\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use MongoDB\Laravel\Eloquent\Casts\ObjectId;
 
 /**
  * @property string $id
+ * @property int $user_id
  * @property string $username
  * @property string $phoneNumber
  * @property string $accountType
@@ -26,8 +28,6 @@ class User extends Authenticatable
     use HasApiTokens, HasFactory, Notifiable;
 
     protected $connection = 'mongodb';
-
-    protected $primaryKey = 'phoneNumber';
 
     protected const INDIVIDUAL = "individual";
     protected const PROFESSIONAL = "professional";
@@ -67,17 +67,30 @@ class User extends Authenticatable
      * @var array<string, string>
      */
     protected $casts = [
+        '_id' => ObjectId::class,
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
 
-    public function getAuthIdentifier()
+    public function toListingUser(): ListingUser
     {
-        return $this->phoneNumber;
+        $listingUser = new ListingUser();
+        $listingUser->name = $this->name;
+        $listingUser->userName = $this->username ?? null;
+        $listingUser->userId = $this->user_id;
+        $listingUser->source = 'app';
+
+        return $listingUser;
     }
 
-    public function getAuthPassword()
+    protected static function boot()
     {
-        return $this->password;
+        parent::boot();
+
+        static::creating(function (self $model) {
+            if (!isset($model->user_id)) {
+                $model->user_id = random_int(1, PHP_INT_MAX);
+            }
+        });
     }
 }

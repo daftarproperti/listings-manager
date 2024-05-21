@@ -24,4 +24,15 @@ class TelegramUser extends Model
     protected $casts = [
         'profile' => AttributeCaster::class.':'.TelegramUserProfile::class,
     ];
+
+    public function toListingUser(): ListingUser
+    {
+        $listingUser = new ListingUser();
+        $listingUser->name = $this->first_name . " " . $this->last_name;
+        $listingUser->userName = $this->username;
+        $listingUser->userId = $this->user_id;
+        $listingUser->source = 'telegram';
+
+        return $listingUser;
+    }
 }

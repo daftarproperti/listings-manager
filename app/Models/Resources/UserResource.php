@@ -2,6 +2,7 @@
 
 namespace App\Models\Resources;
 
+use App\Helpers\TelegramPhoto;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
@@ -34,6 +35,7 @@ class UserResource extends JsonResource
 
         return [
             'id' => $prop->id,
+            'user_id' => $prop->user_id,
             'username' => $prop->username,
             'phoneNumber' => $prop->phoneNumber,
             'accountType' => $prop->accountType,
@@ -43,7 +45,7 @@ class UserResource extends JsonResource
             'city' => $prop->city,
             'description' => $prop->description,
             'company' => $prop->company,
-            'picture' => $prop->picture,
+            'picture' => $prop->picture ? TelegramPhoto::getGcsUrlFromFileName($prop->picture) : null,
             'isPublicProfile' => $prop->isPublicProfile,
 
             // Deprecated
@@ -51,7 +53,7 @@ class UserResource extends JsonResource
                 'name' => $prop->name,
                 'city' => $prop->city,
                 'description' => $prop->description,
-                'pictureURL' => $prop->picture,
+                'picture' => $prop->picture ? TelegramPhoto::getGcsUrlFromFileName($prop->picture) : null,
                 'isPublicProfile' => $prop->isPublicProfile,
                 'company' => $prop->company,
             ]

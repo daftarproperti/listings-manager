@@ -36,10 +36,7 @@ use Illuminate\Database\Eloquent\Collection;
  * @property array<string> $pictureUrls
  * @property double $latitude
  * @property double $longitude
- * @property bool $user_can_edit
  * @property bool $isPrivate
- * @property TelegramUserProfile $user_profile
- * @property PropertyUser|null $user
  */
 class Property extends Model
 {
@@ -54,7 +51,6 @@ class Property extends Model
         'listingType' => ListingType::class,
         'listingForSale' => 'boolean',
         'listingForRent' => 'boolean',
-        'user' => AttributeCaster::class.':'.PropertyUser::class,
         'ownership' => PropertyOwnership::class,
         'facing' => FacingDirection::class,
         'verifyStatus' => VerifyStatus::class,
@@ -68,39 +64,6 @@ class Property extends Model
         'price' => 'int',
         'rentPrice' => 'int',
     ];
-
-
-    public function getUserCanEditAttribute(): bool
-    {
-        $currentUserId = app(TelegramUser::class)->user_id ?? null;
-
-        if (!$currentUserId) {
-            return false;
-        }
-
-        $propertyUser = (object) $this->user;
-
-        return $currentUserId == ($propertyUser->userId ?? null);
-    }
-
-    public function getUserProfileAttribute(): ?TelegramUserProfile
-    {
-        $user = $this->user ? (object) $this->user : null;
-        $userSource = $user ? ($user->source ?? null) : null;
-
-        if (!$userSource || !$user) {
-            return null;
-        }
-
-        switch($userSource) {
-            case 'telegram':
-                /** @var TelegramUser $teleUser */
-                $teleUser = TelegramUser::where('user_id', $user->userId)->first();
-                return $teleUser->profile;
-            default:
-                return null;
-        }
-    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Casts\Attribute<array<string>, array<string>>

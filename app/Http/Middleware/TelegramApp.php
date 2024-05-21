@@ -2,12 +2,15 @@
 
 namespace App\Http\Middleware;
 
+use Closure;
+use Carbon\Carbon;
 use App\Helpers\TelegramInitDataValidator;
 use App\Models\TelegramUser;
-use Closure;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\App;
+use App\Models\Sanctum\PersonalAccessToken;
 
 class TelegramApp
 {
@@ -20,6 +23,43 @@ class TelegramApp
      */
     public function handle(Request $request, Closure $next)
     {
+        if ($request->hasHeader('Authorization')) {
+            $authHeader = $request->header('Authorization');
+            if (!$authHeader) {
+                return response()->json(['error' => 'Unauthorized'], 403);
+            }
+
+            if (strpos($authHeader, 'Bearer ') != 0) {
+                return response()->json(['error' => 'Unauthorized'], 403);
+            }
+
+            $token = substr($authHeader, 7);
+
+            $accessToken = PersonalAccessToken::findToken($token);
+            if (!$accessToken) {
+                return response()->json(['error' => 'Unauthorized'], 403);
+            }
+
+            /** @var string $expiresAtString */
+            $expiresAtString = $accessToken->expires_at;
+            if (!$expiresAtString) {
+                return response()->json(['error' => 'Unauthorized'], 403);
+            }
+
+            $now = Carbon::now()->timestamp;
+            $tokenExpiryTimestamp = Carbon::parse($expiresAtString)->timestamp;
+            if ($tokenExpiryTimestamp < $now) {
+                return response()->json(['error' => 'Unauthorized'], 403);
+            }
+
+            $user = $accessToken->tokenable;
+            App::singleton(User::class, static function () use ($user) {
+                return $user;
+            });
+
+            return $next($request);
+        }
+
         $initData = $request->header('x-init-data');
 
         if (

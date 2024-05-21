@@ -61,6 +61,16 @@ class AuthTest extends TestCase
         $response->assertStatus(200)
                  ->assertJsonStructure(['accessToken', 'success', 'user'])
                  ->assertJson(['success' => true]);
+
+        $json = $response->json();
+
+        $this->assertIsInt($json['user']['user_id']);
+        $this->assertGreaterThan(0, $json['user']['user_id']);
+
+        $this->assertDatabaseHas('users', [
+            'user_id' => $json['user']['user_id'],
+            'phoneNumber' => '081210112011',
+        ]);
     }
 
     public function testVerifyOTPWithInvalidToken()
