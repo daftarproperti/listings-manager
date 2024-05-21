@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ListingRequest;
 use App\Http\Services\GoogleStorageService;
+use App\Models\Enums\VerifyStatus;
 use App\Models\FilterSet;
 use App\Models\Listing;
 use App\Models\ListingUser;
@@ -394,6 +395,7 @@ class ListingsController extends Controller
          $listing = new Listing();
          $this->fillCreateUpdateListing($validatedRequest, $listing);
          $listing->user = $this->getListingUser();
+         $listing->verifyStatus = VerifyStatus::ON_REVIEW;
          $listing->save();
 
          return new ListingResource($listing);
