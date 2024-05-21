@@ -74,6 +74,8 @@ class Listing extends Model
     protected $casts = [
         'propertyType' => PropertyType::class,
         'listingType' => ListingType::class,
+        'listingForSale' => 'boolean',
+        'listingForRent' => 'boolean',
         'user' => AttributeCaster::class.':'.ListingUser::class,
         'ownership' => PropertyOwnership::class,
         'facing' => FacingDirection::class,
@@ -86,6 +88,7 @@ class Listing extends Model
         'floorCount' => 'int',
         'electricPower' => 'int',
         'price' => 'int',
+        'rentPrice' => 'int',
     ];
 
     public function getMatchFilterCountAttribute(): int

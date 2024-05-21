@@ -19,9 +19,12 @@ class PropertyResource extends JsonResource
      * @OA\Property(property="title",type="string")
      * @OA\Property(property="propertyType",ref="#/components/schemas/PropertyType")
      * @OA\Property(property="listingType",ref="#/components/schemas/ListingType")
+     * @OA\Property(property="listingForSale",type="boolean")
+     * @OA\Property(property="listingForRent",type="boolean")
      * @OA\Property(property="address",type="string")
      * @OA\Property(property="description",type="string")
      * @OA\Property(property="price",type="integer")
+     * @OA\Property(property="rentPrice",type="integer")
      * @OA\Property(property="lotSize",type="integer")
      * @OA\Property(property="buildingSize",type="integer")
      * @OA\Property(property="carCount",type="integer")
@@ -53,9 +56,12 @@ class PropertyResource extends JsonResource
             'title' => $prop->title,
             'propertyType' => $prop->propertyType,
             'listingType' => $prop->listingType,
+            'listingForSale' => $prop->listingForSale ?? false,
+            'listingForRent' => $prop->listingForRent ?? false,
             'address' => $prop->address,
             'description' => $prop->description,
             'price' => $prop->price ? (int) $prop->price : null,
+            'rentPrice' => $prop->rentPrice ? (int) $prop->rentPrice : null,
             'lotSize' => $prop->lotSize ? (int) $prop->lotSize : null,
             'buildingSize' => $prop->buildingSize ? (int) $prop->buildingSize : null,
             'carCount' => $prop->carCount ? (int) $prop->carCount : null,

@@ -44,10 +44,14 @@ paths:
           application/json:
             schema:
               required:
+                - phoneNumber
                 - token
                 - timestamp
                 - otpCode
               properties:
+                phoneNumber:
+                  description: 'User phone number'
+                  type: string
                 token:
                   description: 'Token to verify'
                   type: string
@@ -70,6 +74,12 @@ paths:
                     description: 'Verify status'
                     type: boolean
                     example: true
+                  accessToken:
+                    description: 'Access token'
+                    type: string
+                    example: Akoasdk131o3ipIaskdlz
+                  user:
+                    $ref: '#/components/schemas/User'
                 type: object
   /api/tele-app/listings:
     get:
@@ -912,6 +922,13 @@ components:
           type: boolean
           example: 'true'
       type: object
+    AccountType:
+      description: 'Account type'
+      type: string
+      enum:
+        - individual
+        - professional
+      example: professional
     VerifyStatus:
       description: 'Verification status'
       type: string
@@ -1143,11 +1160,17 @@ components:
           $ref: '#/components/schemas/PropertyType'
         listingType:
           $ref: '#/components/schemas/ListingType'
+        listingForSale:
+          type: boolean
+        listingForRent:
+          type: boolean
         address:
           type: string
         description:
           type: string
         price:
+          type: integer
+        rentPrice:
           type: integer
         lotSize:
           type: integer
@@ -1247,4 +1270,49 @@ components:
         isPublicProfile:
           type: boolean
           example: true
+      type: object
+    UserProfile:
+      properties:
+        name:
+          type: string
+          example: 'John Doe'
+        description:
+          type: string
+          example: 'I am a programmer'
+        city:
+          type: string
+          example: 'New York'
+        picture:
+          type: string
+          example: 'https://example.com/image.jpg'
+        company:
+          type: string
+          example: Google
+        cityOfOperation:
+          type: string
+          example: Jakarta
+        isPublicProfile:
+          type: boolean
+          example: true
+      type: object
+    User:
+      properties:
+        id:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        username:
+          type: string
+        phoneNumber:
+          type: string
+        accountType:
+          $ref: '#/components/schemas/AccountType'
+        email:
+          type: string
+        password:
+          type: string
+        profile:
+          $ref: '#/components/schemas/UserProfile'
       type: object

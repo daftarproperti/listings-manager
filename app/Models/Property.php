@@ -16,9 +16,12 @@ use Illuminate\Database\Eloquent\Collection;
  * @property string $title
  * @property PropertyType $propertyType
  * @property ListingType $listingType
+ * @property bool $listingForSale
+ * @property bool $listingForRent
  * @property string $address
  * @property string $description
  * @property int $price
+ * @property int $rentPrice
  * @property int $lotSize
  * @property int $buildingSize
  * @property int $carCount
@@ -49,6 +52,8 @@ class Property extends Model
     protected $casts = [
         'propertyType' => PropertyType::class,
         'listingType' => ListingType::class,
+        'listingForSale' => 'boolean',
+        'listingForRent' => 'boolean',
         'user' => AttributeCaster::class.':'.PropertyUser::class,
         'ownership' => PropertyOwnership::class,
         'facing' => FacingDirection::class,
@@ -61,6 +66,7 @@ class Property extends Model
         'floorCount' => 'int',
         'electricPower' => 'int',
         'price' => 'int',
+        'rentPrice' => 'int',
     ];
 
 
