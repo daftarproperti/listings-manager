@@ -18,6 +18,7 @@ export interface Listing {
   pictureUrls: string[]
   listingType: string
   propertyType: string
+  coordinate: Coordinate
   user?: User
 }
 
@@ -30,4 +31,9 @@ export interface User {
   description: string
   company: string
   profilePictureURL: string
+}
+
+export interface Coordinate {
+  latitude: number
+  longitude: number
 }
