@@ -78,8 +78,8 @@ class ParseListingJobTest extends TestCase
       "provider": ""
     },
     "coordinate": {
-      "latitude": "",
-      "longitude": ""
+        "latitude": -6.175403,
+        "longitude": 106.824584
     }
   }
 ]
@@ -175,8 +175,8 @@ EOT);
             "provider": null
         },
         "coordinate": {
-            "latitude": null,
-            "longitude": null
+            "latitude": -6.175403,
+            "longitude": 106.824584
         }
     }
 ]
@@ -210,8 +210,8 @@ EOT);
             "provider": null
         },
         "coordinate": {
-            "latitude": null,
-            "longitude": null
+            "latitude": -6.175403,
+            "longitude": 106.824584
         }
     }
 ]
@@ -245,8 +245,8 @@ EOT);
             "provider": null
         },
         "coordinate": {
-            "latitude": null,
-            "longitude": null
+            "latitude": -6.175403,
+            "longitude": 106.824584
         }
     }
 ]
@@ -280,8 +280,8 @@ EOT);
             "provider": null
         },
         "coordinate": {
-            "latitude": null,
-            "longitude": null
+            "latitude": -6.175403,
+            "longitude": 106.824584
         }
     }
 ]
@@ -315,8 +315,8 @@ EOT);
             "provider": null
         },
         "coordinate": {
-            "latitude": null,
-            "longitude": null
+            "latitude": -6.175403,
+            "longitude": 106.824584
         }
     }
 ]
@@ -350,8 +350,8 @@ EOT);
             "provider": null
         },
         "coordinate": {
-            "latitude": null,
-            "longitude": null
+            "latitude": -6.175403,
+            "longitude": 106.824584
         }
     }
 ]
@@ -429,8 +429,8 @@ EOT);
   "provider": ""
 },
 "coordinate": {
-  "latitude": "",
-  "longitude": ""
+    "latitude": -6.175403,
+    "longitude": 106.824584
 }
 }
 EOT);

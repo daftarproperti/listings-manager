@@ -1,7 +1,7 @@
 import React, { Fragment, useState, type PropsWithChildren } from 'react'
-import { Head } from '@inertiajs/react'
-import { Button, Carousel, Tooltip } from '@material-tailwind/react'
-import { InformationCircleIcon } from '@heroicons/react/24/outline'
+import { Head, router } from '@inertiajs/react'
+import { Button, Carousel, Chip, Tooltip } from '@material-tailwind/react'
+import { CheckIcon, InformationCircleIcon, XMarkIcon } from '@heroicons/react/24/outline'
 
 import GoogleMaps from '@/Components/GoogleMaps'
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout'
@@ -12,7 +12,7 @@ import {
   HouseIconSVG,
   LotIconSVG
 } from '@/Assets/Icons'
-import type { Listing, PageProps } from '@/types'
+import type { Listing, Option, PageProps } from '@/types'
 
 export const LISTING_ICON: Record<string, JSX.Element> = {
   buildingSize: <HouseIconSVG />,
@@ -51,21 +51,89 @@ export default function index ({
 }: PageProps<{
   data: {
     listing: Listing
+    verifyStatusOptions: Option[]
   }
 }>): JSX.Element {
-  const { listing } = data
+  const { listing, verifyStatusOptions } = data
   const [coord, setCoord] = useState<google.maps.LatLngLiteral>({
     lat: listing.coordinate.latitude,
     lng: listing.coordinate.longitude
   })
 
+  const updateData = (): void => {
+    router.put(
+      `/admin/listings/${listing.id}`,
+      {
+        coordinate: {
+          latitude: coord.lat,
+          longitude: coord.lng
+        }
+      }
+    )
+  }
+
   return (
         <AuthenticatedLayout
             user={auth.user}
             header={
-                <h2 className="font-semibold text-xl text-gray-800 leading-tight">
-                    Detail Listing
-                </h2>
+                <div className='flex flex-wrap justify-between relative'>
+                    <h2 className="font-semibold text-xl text-gray-800 leading-tight">
+                        Detail Listing
+                    </h2>
+                    {listing.verifyStatus === verifyStatusOptions[0].value
+                      ? (
+                        <div className="flex gap-3 absolute right-0 -top-2.5">
+                            {verifyStatusOptions.slice(1).map((item, index) => (
+                                <Button
+                                    key={index}
+                                    variant={
+                                        item.value === 'approved'
+                                          ? 'gradient'
+                                          : 'outlined'
+                                    }
+                                    color={
+                                        item.value === 'approved'
+                                          ? 'green'
+                                          : 'red'
+                                    }
+                                    onClick={() => {
+                                      router.put(
+                                        `/admin/listings/${listing.id}`,
+                                        { verifyStatus: item.value }
+                                      )
+                                    }}
+                                >
+                                    {item.value === 'approved'
+                                      ? (
+                                        <CheckIcon className='h-5 w-5 md:hidden' />
+                                        )
+                                      : (
+                                        <XMarkIcon className='h-5 w-5 md:hidden' />
+                                        )}
+                                    <div className='text-sm hidden md:block'>
+                                        {item.label}
+                                    </div>
+                                </Button>
+                            ))}
+                        </div>
+                        )
+                      : (
+                        <Chip
+                            variant="ghost"
+                            color={
+                                listing.verifyStatus === 'approved'
+                                  ? 'green'
+                                  : 'red'
+                            }
+                            value={
+                                verifyStatusOptions.find(
+                                  (v) => v.value === listing.verifyStatus
+                                )?.label
+                            }
+                            className="rounded-full"
+                        />
+                        )}
+                </div>
             }
         >
             <Head title="Listings" />
@@ -265,7 +333,11 @@ export default function index ({
                                     </div>
                                 </div>
                                 <div className='basis-full md:basis-1/5 text-right'>
-                                    <Button color='blue'>
+                                    <Button
+                                        color="blue"
+                                        variant='gradient'
+                                        onClick={updateData}
+                                    >
                                         Simpan
                                     </Button>
                                 </div>
@@ -275,25 +347,27 @@ export default function index ({
                     </div>
                 </div>
             </div>
-            <nav className="bg-ribbon-50 border-t border-solid border-t-slate-200">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between">
-                    <div className="flex gap-3 items-center">
-                        {listing?.user?.profilePictureURL != null
-                          ? (
-                            <img
-                                className="h-12 w-12 rounded-full object-cover shadow"
-                                src={listing?.user?.profilePictureURL}
-                                alt={listing?.user?.name}
-                            />
-                            )
-                          : null}
-                        <div className='text-base'>
-                            <p className="text-slate-800">{listing?.user?.name}</p>
-                            <p className="text-slate-500">{listing?.user?.company ?? 'Independen'}</p>
+            {listing?.user?.name != null && (
+                <nav className="bg-ribbon-50 border-t border-solid border-t-slate-200">
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between">
+                        <div className="flex gap-3 items-center">
+                            {listing?.user?.profilePictureURL != null
+                              ? (
+                                <img
+                                    className="h-12 w-12 rounded-full object-cover shadow"
+                                    src={listing?.user?.profilePictureURL}
+                                    alt={listing?.user?.name}
+                                />
+                                )
+                              : null}
+                            <div className='text-base'>
+                                <p className="text-slate-800">{listing?.user?.name}</p>
+                                <p className="text-slate-500">{listing?.user?.company ?? 'Independen'}</p>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </nav>
+                </nav>
+            )}
         </AuthenticatedLayout>
   )
 }

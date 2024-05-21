@@ -54,8 +54,7 @@ use Spatie\Analytics\Period;
  * @property VerifyStatus $verifyStatus
  * @property string $city
  * @property array<string> $pictureUrls
- * @property double $latitude
- * @property double $longitude
+ * @property Coordinate $coordinate
  * @property array<string, string> $contact
  * @property bool $user_can_edit
  * @property bool $isPrivate
@@ -77,7 +76,8 @@ class Listing extends Model
         'listingType' => ListingType::class,
         'listingForSale' => 'boolean',
         'listingForRent' => 'boolean',
-        'user' => AttributeCaster::class.':'.ListingUser::class,
+        'user' => AttributeCaster::class . ':' . ListingUser::class,
+        'coordinate' => AttributeCaster::class . ':' . Coordinate::class,
         'ownership' => PropertyOwnership::class,
         'facing' => FacingDirection::class,
         'verifyStatus' => VerifyStatus::class,

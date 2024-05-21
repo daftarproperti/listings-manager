@@ -93,8 +93,8 @@ class ListingResource extends JsonResource
             'city' => $prop->city,
             'pictureUrls' => $prop->pictureUrls,
             'coordinate' => [
-                'latitude' => $prop->latitude,
-                'longitude' => $prop->longitude,
+                'latitude' => $prop->coordinate->latitude,
+                'longitude' => $prop->coordinate->longitude,
             ],
             'contact' => [
                 'name' => $prop->contact ? ($prop->contact['name'] ?? null) :  null,
