@@ -1,9 +1,8 @@
 import { useEffect } from 'react'
-import { router } from '@inertiajs/react'
 
 const usePreventBackButton = (): void => {
   const onpopstate = (): void => {
-    router.reload()
+    location.reload()
   }
 
   useEffect(() => {
