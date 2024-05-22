@@ -9,5 +9,5 @@ class ListingUser extends Data
     public string $name;
     public ?string $userName;
     public int $userId;
-    public string $source;
+    public ?string $source = null;
 }
