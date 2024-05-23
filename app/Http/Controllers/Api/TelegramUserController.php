@@ -13,11 +13,11 @@ class TelegramUserController extends Controller
 {
     /**
      * @OA\Get(
-     *     path="/api/tele-app/users/profile",
+     *     path="/api/tele-app/telegram-users/profile",
      *     tags={"Telegram Users"},
      *     summary="Get profile",
      *     description="Returns user profile",
-     *     operationId="profile",
+     *     operationId="telegramProfile",
      *     @OA\Response(
      *         response=200,
      *         description="success",
@@ -35,10 +35,10 @@ class TelegramUserController extends Controller
 
     /**
      * @OA\Post(
-     *     path="/api/tele-app/users/profile",
+     *     path="/api/tele-app/telegram-users/profile",
      *     tags={"Telegram Users"},
      *     summary="Update profile",
-     *     operationId="updateProfile",
+     *     operationId="updateTelegramProfile",
      *     @OA\RequestBody(
      *          @OA\MediaType(
      *              mediaType="multipart/form-data",

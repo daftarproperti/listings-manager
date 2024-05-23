@@ -1105,6 +1105,57 @@
                 }
             }
         },
+        "/api/tele-app/telegram-users/profile": {
+            "get": {
+                "tags": [
+                    "Telegram Users"
+                ],
+                "summary": "Get profile",
+                "description": "Returns user profile",
+                "operationId": "telegramProfile",
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TelegramUserProfile"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Telegram Users"
+                ],
+                "summary": "Update profile",
+                "operationId": "updateTelegramProfile",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/TelegramUserProfileRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TelegramUserProfile"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/tele-app/users/profile": {
             "get": {
                 "tags": [
@@ -1613,6 +1664,15 @@
                                 "type": "string"
                             },
                             "profilePictureURL": {
+                                "type": "string"
+                            },
+                            "city": {
+                                "type": "string"
+                            },
+                            "company": {
+                                "type": "string"
+                            },
+                            "description": {
                                 "type": "string"
                             },
                             "phoneNumber": {
