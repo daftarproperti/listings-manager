@@ -60,9 +60,9 @@ class SavedSearch extends Model
                 self::checkEnumMatch($listing->propertyType, $filter->filterSet->propertyType);
                 self::checkEnumMatch($listing->ownership, $filter->filterSet->ownership);
                 self::checkEnumMatch($listing->facing, $filter->filterSet->facing);
-            } catch (FilterMismatchException $e) {
-                Log::info($e);
+            } catch (FilterMismatchException) {
                 // If mismatch, skip to the next filter
+                // Don't log since the exception is meant to mark a normal mismatch and not an error.
                 continue;
             }
             // All checks passed for this listing
