@@ -4,28 +4,29 @@ namespace App\Models\Resources;
 
 use App\Helpers\TelegramPhoto;
 use Illuminate\Http\Resources\Json\JsonResource;
+use OpenApi\Attributes as OA;
 
-/**
- * @OA\Schema(
- *     schema="User",
- *     type="object",
- *)
- */
+#[OA\Schema(
+    schema: "User",
+    type: "object"
+)]
 class UserResource extends JsonResource
 {
+    #[OA\Property(property: "id", type: "string")]
+    #[OA\Property(property: "username", type: "string")]
+    #[OA\Property(property: "phoneNumber", type: "string")]
+    #[OA\Property(property: "accountType", ref: "#/components/schemas/AccountType")]
+    #[OA\Property(property: "email", type: "string")]
+    #[OA\Property(property: "name", type: "string")]
+    #[OA\Property(property: "city", type: "string")]
+    #[OA\Property(property: "description", type: "string")]
+    #[OA\Property(property: "picture", type: "string")]
+    #[OA\Property(property: "company", type: "string")]
+    #[OA\Property(property: "isPublicProfile", type: "bool")]
+
     public static $wrap = null;
+
     /**
-     * @OA\Property(property="id",type="string")
-     * @OA\Property(property="username",type="string")
-     * @OA\Property(property="phoneNumber",type="string")
-     * @OA\Property(property="accountType",ref="#/components/schemas/AccountType")
-     * @OA\Property(property="email",type="string")
-     * @OA\Property(property="name",type="string")
-     * @OA\Property(property="city",type="string")
-     * @OA\Property(property="description",type="string")
-     * @OA\Property(property="picture",type="string")
-     * @OA\Property(property="company",type="string")
-     * @OA\Property(property="isPublicProfile",type="bool")
      * @return array<mixed>
      */
     public function toArray($request)

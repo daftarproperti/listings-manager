@@ -2,15 +2,15 @@
 
 namespace App\Models;
 
-/**
- * @OA\Schema(
- *     schema="FacingDirection",
- *     type="string",
- *     description="Facing Direction",
- *     enum={"unknown", "north", "east", "south", "west", "northeast", "southeast", "southwest", "northwest"},
- *     example="east"
- * )
- */
+use OpenApi\Attributes as OA;
+
+#[OA\Schema(
+    schema: "FacingDirection",
+    type: "string",
+    description: "Facing Direction",
+    enum: ["unknown", "north", "east", "south", "west", "northeast", "southeast", "southwest", "northwest"],
+    example: "east"
+)]
 enum FacingDirection: string
 {
     case Unknown = 'unknown';

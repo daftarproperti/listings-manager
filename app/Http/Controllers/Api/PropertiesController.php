@@ -10,216 +10,181 @@ use App\Models\Resources\PropertyResource;
 use App\Repositories\PropertyRepository;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use OpenApi\Attributes as OA;
 
 class PropertiesController extends Controller
 {
-    /**
-     * @OA\Get(
-     *     path="/api/tele-app/properties",
-     *     tags={"Properties"},
-     *     summary="Get list of property",
-     *     description="Returns list of property",
-     *     operationId="index",
-     *     @OA\Parameter(
-     *        in="query",
-     *        name="q",
-     *        description="Search property by keyword",
-     *        required=false,
-     *        @OA\Schema(
-     *            type="string"
-     *        )
-     *     ),
-     *     @OA\Parameter(
-     *        in="query",
-     *        name="price[min]",
-     *        description="Minimum price",
-     *        required=false,
-     *        @OA\Schema(
-     *            type="integer"
-     *        )
-     *     ),
-     *     @OA\Parameter(
-     *        in="query",
-     *        name="price[max]",
-     *        description="Maximum price",
-     *        required=false,
-     *        @OA\Schema(
-     *            type="integer"
-     *        )
-     *     ),
-     *     @OA\Parameter(
-     *        in="query",
-     *        name="propertyType",
-     *        description="Property type",
-     *        required=false,
-     *        @OA\Schema(ref="#/components/schemas/PropertyType")
-     *     ),
-     *     @OA\Parameter(
-     *        in="query",
-     *        name="bedroomCount",
-     *        description="Bedroom count",
-     *        required=false,
-     *        @OA\Schema(
-     *            type="integer"
-     *        )
-     *     ),
-     *     @OA\Parameter(
-     *        in="query",
-     *        name="bedroomCount[min]",
-     *        description="Minimum Bedroom count",
-     *        required=false,
-     *        @OA\Schema(
-     *            type="integer"
-     *        )
-     *     ),
-     *     @OA\Parameter(
-     *        in="query",
-     *        name="bedroomCount[max]",
-     *        description="Maximum Bedroom count",
-     *        required=false,
-     *        @OA\Schema(
-     *            type="integer"
-     *        )
-     *     ),
-     *     @OA\Parameter(
-     *        in="query",
-     *        name="bathroomCount",
-     *        description="Bathroom count",
-     *        required=false,
-     *        @OA\Schema(
-     *            type="integer"
-     *        )
-     *     ),
-     *     @OA\Parameter(
-     *        in="query",
-     *        name="bathroomCount[min]",
-     *        description="Minimum Bathroom count",
-     *        required=false,
-     *        @OA\Schema(
-     *            type="integer"
-     *        )
-     *     ),
-     *     @OA\Parameter(
-     *        in="query",
-     *        name="bathroomCount[max]",
-     *        description="Maximum Bathroom count",
-     *        required=false,
-     *        @OA\Schema(
-     *            type="integer"
-     *        )
-     *     ),
-     *     @OA\Parameter(
-     *        in="query",
-     *        name="lotSize[min]",
-     *        description="Minimum lot size",
-     *        required=false,
-     *        @OA\Schema(
-     *            type="integer"
-     *        )
-     *     ),
-     *     @OA\Parameter(
-     *        in="query",
-     *        name="lotSize[max]",
-     *        description="Maximum lot size",
-     *        required=false,
-     *        @OA\Schema(
-     *            type="integer"
-     *        )
-     *     ),
-     *     @OA\Parameter(
-     *        in="query",
-     *        name="buildingSize[min]",
-     *        description="Minimum building size",
-     *        required=false,
-     *        @OA\Schema(
-     *            type="integer"
-     *        )
-     *     ),
-     *     @OA\Parameter(
-     *        in="query",
-     *        name="buildingSize[max]",
-     *        description="Maximum building size",
-     *        required=false,
-     *        @OA\Schema(
-     *            type="integer"
-     *        )
-     *     ),
-     *     @OA\Parameter(
-     *        in="query",
-     *        name="ownership",
-     *        description="Ownership",
-     *        required=false,
-     *        @OA\Schema(ref="#/components/schemas/PropertyOwnership")
-     *     ),
-     *     @OA\Parameter(
-     *        in="query",
-     *        name="carCount",
-     *        description="Car count",
-     *        required=false,
-     *        @OA\Schema(
-     *            type="integer"
-     *        )
-     *     ),
-     *     @OA\Parameter(
-     *        in="query",
-     *        name="carCount[min]",
-     *        description="Minimum Car count",
-     *        required=false,
-     *        @OA\Schema(
-     *            type="integer"
-     *        )
-     *     ),
-     *     @OA\Parameter(
-     *        in="query",
-     *        name="carCount[max]",
-     *        description="Maximum Car count",
-     *        required=false,
-     *        @OA\Schema(
-     *            type="integer"
-     *        )
-     *     ),
-     *     @OA\Parameter(
-     *        in="query",
-     *        name="electricPower",
-     *        description="Electric Power",
-     *        required=false,
-     *        @OA\Schema(
-     *            type="integer"
-     *        )
-     *     ),
-     *     @OA\Parameter(
-     *        in="query",
-     *        name="sort",
-     *        description="Sort By",
-     *        required=false,
-     *        @OA\Schema(ref="#/components/schemas/ListingSort")
-     *     ),
-     *     @OA\Parameter(
-     *        in="query",
-     *        name="order",
-     *        description="Order By",
-     *        required=false,
-     *        @OA\Schema(
-     *            type="string",
-     *            enum={"asc", "desc"}
-     *        )
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="success",
-     *         @OA\JsonContent(
-     *              @OA\Property(
-     *                  property="properties",
-     *                  type="array",
-     *                  @OA\Items(
-     *                      ref="#/components/schemas/Property",
-     *                  ),
-     *              )
-     *          ),
-     *     )
-     * )
-     */
-
+    #[OA\Get(
+        path: '/api/tele-app/properties',
+        tags: ['Properties'],
+        summary: 'Get list of property',
+        description: 'Returns list of property',
+        operationId: 'index',
+        parameters: [
+            new OA\Parameter(
+                name: 'q',
+                in: 'query',
+                description: 'Search property by keyword',
+                required: false,
+                schema: new OA\Schema(type: 'string')
+            ),
+            new OA\Parameter(
+                name: 'price[min]',
+                in: 'query',
+                description: 'Minimum price',
+                required: false,
+                schema: new OA\Schema(type: 'integer')
+            ),
+            new OA\Parameter(
+                name: 'price[max]',
+                in: 'query',
+                description: 'Maximum price',
+                required: false,
+                schema: new OA\Schema(type: 'integer')
+            ),
+            new OA\Parameter(
+                name: 'propertyType',
+                in: 'query',
+                description: 'Property type',
+                required: false,
+                schema: new OA\Schema(ref: '#/components/schemas/PropertyType')
+            ),
+            new OA\Parameter(
+                name: 'bedroomCount',
+                in: 'query',
+                description: 'Bedroom count',
+                required: false,
+                schema: new OA\Schema(type: 'integer')
+            ),
+            new OA\Parameter(
+                name: 'bedroomCount[min]',
+                in: 'query',
+                description: 'Minimum Bedroom count',
+                required: false,
+                schema: new OA\Schema(type: 'integer')
+            ),
+            new OA\Parameter(
+                name: 'bedroomCount[max]',
+                in: 'query',
+                description: 'Maximum Bedroom count',
+                required: false,
+                schema: new OA\Schema(type: 'integer')
+            ),
+            new OA\Parameter(
+                name: 'bathroomCount',
+                in: 'query',
+                description: 'Bathroom count',
+                required: false,
+                schema: new OA\Schema(type: 'integer')
+            ),
+            new OA\Parameter(
+                name: 'bathroomCount[min]',
+                in: 'query',
+                description: 'Minimum Bathroom count',
+                required: false,
+                schema: new OA\Schema(type: 'integer')
+            ),
+            new OA\Parameter(
+                name: 'bathroomCount[max]',
+                in: 'query',
+                description: 'Maximum Bathroom count',
+                required: false,
+                schema: new OA\Schema(type: 'integer')
+            ),
+            new OA\Parameter(
+                name: 'lotSize[min]',
+                in: 'query',
+                description: 'Minimum lot size',
+                required: false,
+                schema: new OA\Schema(type: 'integer')
+            ),
+            new OA\Parameter(
+                name: 'lotSize[max]',
+                in: 'query',
+                description: 'Maximum lot size',
+                required: false,
+                schema: new OA\Schema(type: 'integer')
+            ),
+            new OA\Parameter(
+                name: 'buildingSize[min]',
+                in: 'query',
+                description: 'Minimum building size',
+                required: false,
+                schema: new OA\Schema(type: 'integer')
+            ),
+            new OA\Parameter(
+                name: 'buildingSize[max]',
+                in: 'query',
+                description: 'Maximum building size',
+                required: false,
+                schema: new OA\Schema(type: 'integer')
+            ),
+            new OA\Parameter(
+                name: 'ownership',
+                in: 'query',
+                description: 'Ownership',
+                required: false,
+                schema: new OA\Schema(ref: '#/components/schemas/PropertyOwnership')
+            ),
+            new OA\Parameter(
+                name: 'carCount',
+                in: 'query',
+                description: 'Car count',
+                required: false,
+                schema: new OA\Schema(type: 'integer')
+            ),
+            new OA\Parameter(
+                name: 'carCount[min]',
+                in: 'query',
+                description: 'Minimum Car count',
+                required: false,
+                schema: new OA\Schema(type: 'integer')
+            ),
+            new OA\Parameter(
+                name: 'carCount[max]',
+                in: 'query',
+                description: 'Maximum Car count',
+                required: false,
+                schema: new OA\Schema(type: 'integer')
+            ),
+            new OA\Parameter(
+                name: 'electricPower',
+                in: 'query',
+                description: 'Electric Power',
+                required: false,
+                schema: new OA\Schema(type: 'integer')
+            ),
+            new OA\Parameter(
+                name: 'sort',
+                in: 'query',
+                description: 'Sort By',
+                required: false,
+                schema: new OA\Schema(ref: '#/components/schemas/ListingSort')
+            ),
+            new OA\Parameter(
+                name: 'order',
+                in: 'query',
+                description: 'Order By',
+                required: false,
+                schema: new OA\Schema(type: 'string', enum: ['asc', 'desc'])
+            ),
+        ],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'success',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(
+                            property: 'properties',
+                            type: 'array',
+                            items: new OA\Items(ref: '#/components/schemas/Property')
+                        )
+                    ]
+                )
+            )
+        ]
+    )]
     public function index(Request $request, PropertyRepository $repository): JsonResource
     {
         $filterSet = FilterSet::from($request->only([
@@ -247,42 +212,37 @@ class PropertiesController extends Controller
         return new PropertyCollection($repository->list($filterSet));
     }
 
-    /**
-     * @OA\Get(
-     *     path="/api/tele-app/properties/{id}",
-     *     tags={"Properties"},
-     *     summary="Get property by id",
-     *     operationId="show",
-     *     @OA\Parameter(
-     *         name="id",
-     *         in="path",
-     *         required=true,
-     *         description="Property Id",
-     *         @OA\Schema(
-     *             type="string"
-     *         ),
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="success",
-     *         @OA\JsonContent(
-     *              ref="#/components/schemas/Property"
-     *         ),
-     *     ),
-     *     @OA\Response(
-     *         response=404,
-     *         description="Property not found",
-     *         @OA\JsonContent(
-     *              @OA\Property(
-     *                  property="error",
-     *                  type="string",
-     *                  example="Property not found"
-     *              )
-     *         ),
-     *     ),
-     * )
-     */
-
+    #[OA\Get(
+        path: "/api/tele-app/properties/{id}",
+        tags: ["Properties"],
+        summary: "Get property by id",
+        operationId: "show",
+        parameters: [
+            new OA\Parameter(
+                name: "id",
+                in: "path",
+                required: true,
+                description: "Property Id",
+                schema: new OA\Schema(type: "string")
+            )
+        ],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: "success",
+                content: new OA\JsonContent(ref: "#/components/schemas/Property")
+            ),
+            new OA\Response(
+                response: 404,
+                description: "Property not found",
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(property: "error", type: "string", example: "Property not found")
+                    ]
+                )
+            )
+        ]
+    )]
     public function show(Property $property): JsonResource
     {
         return new PropertyResource($property);

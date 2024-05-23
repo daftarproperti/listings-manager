@@ -12,32 +12,34 @@ use App\Models\SavedSearch;
 use App\Repositories\SavedSearchRepository;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\JsonResource;
+use OpenApi\Attributes as OA;
 
 class SavedSearchController extends Controller
 {
-    /**
-     * @OA\Get(
-     *     path="/api/tele-app/saved-searches",
-     *     tags={"Saved Searches"},
-     *     summary="Get saved search items",
-     *     description="Returns saved search items",
-     *     operationId="saved_searches.index",
-     *     @OA\Response(
-     *         response=200,
-     *         description="success",
-     *         @OA\JsonContent(
-     *              @OA\Property(
-     *                  property="saved_searches",
-     *                  type="array",
-     *                  @OA\Items(
-     *                      ref="#/components/schemas/SavedSearch",
-     *                  ),
-     *              )
-     *          ),
-     *     )
-     * )
-     */
-
+    #[OA\Get(
+        path: "/api/tele-app/saved-searches",
+        tags: ["Saved Searches"],
+        summary: "Get saved search items",
+        description: "Returns saved search items",
+        operationId: "saved_searches.index",
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: "success",
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(
+                            property: "saved_searches",
+                            type: "array",
+                            items: new OA\Items(
+                                ref: "#/components/schemas/SavedSearch"
+                            )
+                        )
+                    ]
+                )
+            )
+        ]
+    )]
     public function index(SavedSearchRepository $repository): JsonResource
     {
         $input = [
@@ -46,74 +48,79 @@ class SavedSearchController extends Controller
         return new SavedSearchCollection($repository->list($input));
     }
 
-    /**
-     * @OA\Get(
-     *     path="/api/tele-app/saved-searches/{id}",
-     *     tags={"Saved Searches"},
-     *     summary="Get saved search by id",
-     *     operationId="saved_searches.show",
-     *     @OA\Parameter(
-     *         name="id",
-     *         in="path",
-     *         required=true,
-     *         description="Saved Search Id",
-     *         @OA\Schema(
-     *             type="string"
-     *         ),
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="success",
-     *         @OA\JsonContent(
-     *              ref="#/components/schemas/SavedSearch"
-     *         ),
-     *     ),
-     *     @OA\Response(
-     *         response=404,
-     *         description="Saved search not found",
-     *         @OA\JsonContent(
-     *              @OA\Property(
-     *                  property="error",
-     *                  type="string",
-     *                  example="Saved search not found"
-     *              )
-     *         ),
-     *     ),
-     * )
-     */
-
+    #[OA\Get(
+        path: "/api/tele-app/saved-searches/{id}",
+        tags: ["Saved Searches"],
+        summary: "Get saved search by id",
+        operationId: "saved_searches.show",
+        parameters: [
+            new OA\Parameter(
+                name: "id",
+                in: "path",
+                required: true,
+                description: "Saved Search Id",
+                schema: new OA\Schema(type: "string")
+            )
+        ],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: "success",
+                content: new OA\JsonContent(ref: "#/components/schemas/SavedSearch")
+            ),
+            new OA\Response(
+                response: 404,
+                description: "Saved search not found",
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(
+                            property: "error",
+                            type: "string",
+                            example: "Saved search not found"
+                        )
+                    ]
+                )
+            )
+        ]
+    )]
     public function show(SavedSearch $savedSearch): JsonResource
     {
         return new SavedSearchResource($savedSearch);
     }
 
-    /**
-     * @OA\Post(
-     *     path="/api/tele-app/saved-searches",
-     *     tags={"Saved Searches"},
-     *     summary="Create saved search",
-     *     operationId="saved_searches.create",
-     *     @OA\RequestBody(
-     *          @OA\MediaType(
-     *              mediaType="multipart/form-data",
-     *              @OA\Schema(type="object", ref="#/components/schemas/SavedSearchRequest")
-     *          ),
-     *         required=true,
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="success",
-     *         @OA\JsonContent(
-     *              @OA\Property(
-     *                  property="message",
-     *                  type="string",
-     *                  example="Saved search created successfully"
-     *              )
-     *         ),
-     *     )
-     * )
-     */
-
+    #[OA\Post(
+        path: "/api/tele-app/saved-searches",
+        tags: ["Saved Searches"],
+        summary: "Create saved search",
+        operationId: "saved_searches.create",
+        requestBody: new OA\RequestBody(
+            required: true,
+            content: [
+                "multipart/form-data" => new OA\MediaType(
+                    mediaType: "multipart/form-data",
+                    schema: new OA\Schema(
+                        type: "object",
+                        ref: "#/components/schemas/SavedSearchRequest"
+                    )
+                )
+            ]
+        ),
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: "success",
+                content: new OA\JsonContent(
+                    properties: [
+                        "message" => new OA\Property(
+                            property: "message",
+                            type: "string",
+                            example: "Saved search created successfully"
+                        )
+                    ]
+                )
+            )
+        ]
+    )]
     public function create(SavedSearchRequest $request): JsonResponse
     {
         $data = $request->validated();
@@ -126,53 +133,63 @@ class SavedSearchController extends Controller
         return response()->json(['message' => 'Saved search created successfully'], 200);
     }
 
-    /**
-     * @OA\Post(
-     *     path="/api/tele-app/saved-searches/{id}",
-     *     tags={"Saved Searches"},
-     *     summary="Update saved searches",
-     *     operationId="saved_searches.update",
-     *     @OA\Parameter(
-     *         name="id",
-     *         in="path",
-     *         required=true,
-     *         description="Saved Searches Id",
-     *         @OA\Schema(
-     *             type="string"
-     *         ),
-     *     ),
-     *     @OA\RequestBody(
-     *          @OA\MediaType(
-     *              mediaType="multipart/form-data",
-     *              @OA\Schema(type="object", ref="#/components/schemas/SavedSearchRequest")
-     *          ),
-     *         required=true,
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="success",
-     *         @OA\JsonContent(
-     *              @OA\Property(
-     *                  property="message",
-     *                  type="string",
-     *                  example="Saved search updated successfully"
-     *              )
-     *         ),
-     *     ),
-     *     @OA\Response(
-     *         response=404,
-     *         description="Saved search not found",
-     *         @OA\JsonContent(
-     *              @OA\Property(
-     *                  property="error",
-     *                  type="string",
-     *                  example="Saved search not found"
-     *              )
-     *         ),
-     *     ),
-     * )
-     */
-
+    #[OA\Post(
+        path: "/api/tele-app/saved-searches/{id}",
+        tags: ["Saved Searches"],
+        summary: "Update saved searches",
+        operationId: "saved_searches.update",
+        parameters: [
+            new OA\Parameter(
+                name: "id",
+                in: "path",
+                required: true,
+                description: "Saved Searches Id",
+                schema: new OA\Schema(
+                    type: "string"
+                )
+            )
+        ],
+        requestBody: new OA\RequestBody(
+            required: true,
+            content: [
+                new OA\MediaType(
+                    mediaType: "multipart/form-data",
+                    schema: new OA\Schema(
+                        type: "object",
+                        ref: "#/components/schemas/SavedSearchRequest"
+                    )
+                )
+            ]
+        ),
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: "success",
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(
+                            property: "message",
+                            type: "string",
+                            example: "Saved search updated successfully"
+                        )
+                    ]
+                )
+            ),
+            new OA\Response(
+                response: 404,
+                description: "Saved search not found",
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(
+                            property: "error",
+                            type: "string",
+                            example: "Saved search not found"
+                        )
+                    ]
+                )
+            )
+        ]
+    )]
     public function update(SavedSearchRequest $request, SavedSearch $savedSearch): JsonResponse
     {
         $data = $request->validated();
@@ -182,46 +199,49 @@ class SavedSearchController extends Controller
         return response()->json(['message' => 'Saved search updated successfully'], 200);
     }
 
-    /**
-     * @OA\Delete(
-     *     path="/api/tele-app/saved-searches/{id}",
-     *     tags={"Saved Searches"},
-     *     summary="Delete saved searches",
-     *     operationId="saved_searches.delete",
-     *     @OA\Parameter(
-     *         name="id",
-     *         in="path",
-     *         required=true,
-     *         description="Saved Searches Id",
-     *         @OA\Schema(
-     *             type="string"
-     *         ),
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="success",
-     *         @OA\JsonContent(
-     *              @OA\Property(
-     *                  property="message",
-     *                  type="string",
-     *                  example="Saved search deleted successfully"
-     *              )
-     *         ),
-     *     ),
-     *     @OA\Response(
-     *         response=404,
-     *         description="Saved search not found",
-     *         @OA\JsonContent(
-     *              @OA\Property(
-     *                  property="error",
-     *                  type="string",
-     *                  example="Saved search not found"
-     *              )
-     *         ),
-     *     ),
-     * )
-     */
-
+    #[OA\Delete(
+        path: "/api/tele-app/saved-searches/{id}",
+        tags: ["Saved Searches"],
+        summary: "Delete saved searches",
+        operationId: "saved_searches.delete",
+        parameters: [
+            new OA\Parameter(
+                name: "id",
+                in: "path",
+                required: true,
+                description: "Saved Searches Id",
+                schema: new OA\Schema(type: "string")
+            )
+        ],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: "success",
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(
+                            property: "message",
+                            type: "string",
+                            example: "Saved search deleted successfully"
+                        )
+                    ]
+                )
+            ),
+            new OA\Response(
+                response: 404,
+                description: "Saved search not found",
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(
+                            property: "error",
+                            type: "string",
+                            example: "Saved search not found"
+                        )
+                    ]
+                )
+            )
+        ]
+    )]
     public function delete(SavedSearch $savedSearch): JsonResponse
     {
         $savedSearch->delete();

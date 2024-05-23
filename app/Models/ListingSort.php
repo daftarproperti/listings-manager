@@ -2,15 +2,15 @@
 
 namespace App\Models;
 
-/**
- * @OA\Schema(
- *     schema="ListingSort",
- *     type="string",
- *     description="Sort Listing By",
- *     enum={"price", "bedroomCount", "bathroomCount", "lotSize", "buildingSize"},
- *     example="price"
- * )
- */
+use OpenApi\Attributes as OA;
+
+#[OA\Schema(
+    schema: "ListingSort",
+    type: "string",
+    description: "Sort Listing By",
+    enum: ["price", "bedroomCount", "bathroomCount", "lotSize", "buildingSize"],
+    example: "price"
+)]
 enum ListingSort: string
 {
     case Price = 'price'; // Harga

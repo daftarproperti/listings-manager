@@ -1,20 +1,17 @@
 <?php
+
 namespace App\Http\Requests;
 
 use App\Http\Requests\BaseApiRequest;
+use OpenApi\Attributes as OA;
 
-/**
- * @OA\Schema(
- *     schema="ImageUploadRequest",
- *     type="object",
- * )
- */
-
+#[OA\Schema(
+    schema: "ImageUploadRequest",
+    type: "object",
+)]
 class ImageUploadRequest extends BaseApiRequest
 {
-    /**
-     * @OA\Property(property="image",type="string", format="binary")
-     */
+    #[OA\Property(property: "image", type: "string", format: "binary")]
 
     public function authorize()
     {

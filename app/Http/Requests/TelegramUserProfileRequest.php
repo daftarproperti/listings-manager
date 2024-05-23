@@ -1,27 +1,23 @@
 <?php
+
 namespace App\Http\Requests;
 
 use App\Http\Requests\BaseApiRequest;
+use OpenApi\Attributes as OA;
 
-/**
- * @OA\Schema(
- *     schema="TelegramUserProfileRequest",
- *     type="object",
- * )
- */
-
+#[OA\Schema(
+    schema: "TelegramUserProfileRequest",
+    type: "object",
+)]
 class TelegramUserProfileRequest extends BaseApiRequest
 {
-    /**
-     * @OA\Property(property="name",type="string", example="Jono Doe")
-     * @OA\Property(property="phoneNumber",type="string", example="081111111111")
-     * @OA\Property(property="city",type="string", example="Surabaya")
-     * @OA\Property(property="description",type="string", example="Agen terpercaya")
-     * @OA\Property(property="company",type="string", example="Agen XXX")
-     * @OA\Property(property="picture",type="string", format="binary", example="\x00\x00\x00\x04\x00\x00\x00\x04")
-     * @OA\Property(property="isPublicProfile",type="boolean", example="true")
-     */
-
+    #[OA\Property(property: "name", type: "string", example: "Jono Doe")]
+    #[OA\Property(property: "phoneNumber", type: "string", example: "081111111111")]
+    #[OA\Property(property: "city", type: "string", example: "Surabaya")]
+    #[OA\Property(property: "description", type: "string", example: "Agen terpercaya")]
+    #[OA\Property(property: "company", type: "string", example: "Agen XXX")]
+    #[OA\Property(property: "picture", type: "string", format: "binary", example: "\x00\x00\x00\x04\x00\x00\x00\x04")]
+    #[OA\Property(property: "isPublicProfile", type: "boolean", example: "true")]
 
     public function authorize()
     {
@@ -29,10 +25,10 @@ class TelegramUserProfileRequest extends BaseApiRequest
     }
 
     /**
-    * Prepare inputs for validation.
-    *
-    * @return void
-    */
+     * Prepare inputs for validation.
+     *
+     * @return void
+     */
     protected function prepareForValidation()
     {
         $this->merge([
@@ -57,11 +53,11 @@ class TelegramUserProfileRequest extends BaseApiRequest
     }
 
     /**
-    * Convert to bool
-    *
-    * @param mixed $booleable
-    * @return boolean
-    */
+     * Convert to bool
+     *
+     * @param mixed $booleable
+     * @return boolean
+     */
     private static function toBoolean($booleable)
     {
         return (bool) filter_var($booleable, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);

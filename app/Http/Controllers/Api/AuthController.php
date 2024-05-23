@@ -12,6 +12,7 @@ use App\Rules\IndonesiaPhoneFormat;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use OpenApi\Attributes as OA;
 
 class AuthController extends Controller
 {
@@ -24,41 +25,45 @@ class AuthController extends Controller
         $this->whatsappService = $whatsappService;
     }
 
-    /**
-     * @OA\Post(
-     *     path="/api/auth/send-otp",
-     *     tags={"Auth"},
-     *     summary="Send OTP",
-     *     operationId="auth.send_otp",
-     *     @OA\Parameter(
-     *         name="phoneNumber",
-     *         in="path",
-     *         required=true,
-     *         description="Phone Number",
-     *         @OA\Schema(
-     *             type="string"
-     *         ),
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="success",
-     *         @OA\JsonContent(
-     *             type="object",
-     *             @OA\Property(
-     *                  property="token",
-     *                  type="string",
-     *                  description="JWT Token used for authentication"
-     *             ),
-     *             @OA\Property(
-     *                  property="timestamp",
-     *                  type="integer",
-     *                  format="int64",
-     *                  description="Timestamp of when the OTP was created"
-     *             )
-     *         ),
-     *     )
-     * )
-     */
+    #[OA\Post(
+        path: "/api/auth/send-otp",
+        tags: ["Auth"],
+        summary: "Send OTP",
+        operationId: "auth.send_otp",
+        parameters: [
+            new OA\Parameter(
+                name: "phoneNumber",
+                in: "path",
+                required: true,
+                description: "Phone Number",
+                schema: new OA\Schema(
+                    type: "string"
+                )
+            )
+        ],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: "success",
+                content: new OA\JsonContent(
+                    type: "object",
+                    properties: [
+                        new OA\Property(
+                            property: "token",
+                            type: "string",
+                            description: "JWT Token used for authentication"
+                        ),
+                        new OA\Property(
+                            property: "timestamp",
+                            type: "integer",
+                            format: "int64",
+                            description: "Timestamp of when the OTP was created"
+                        )
+                    ]
+                )
+            )
+        ]
+    )]
     public function sendOTP(Request $request): JsonResponse
     {
         $validatedRequest = $request->validate([
@@ -79,67 +84,37 @@ class AuthController extends Controller
         ]);
     }
 
-    /**
-     * @OA\Post(
-     *     path="/api/auth/verify-otp",
-     *     tags={"Auth"},
-     *     summary="Verify OTP",
-     *     operationId="auth.verify_otp",
-     *     @OA\RequestBody(
-     *         required=true,
-     *         @OA\MediaType(
-     *             mediaType="application/json",
-     *             @OA\Schema(
-     *                 required={"phoneNumber", "token", "timestamp", "otpCode"},
-     *                 @OA\Property(
-     *                     property="phoneNumber",
-     *                     type="string",
-     *                     description="User phone number"
-     *                 ),
-     *                 @OA\Property(
-     *                     property="token",
-     *                     type="string",
-     *                     description="Token to verify"
-     *                 ),
-     *                 @OA\Property(
-     *                     property="timestamp",
-     *                     type="integer",
-     *                     format="int64",
-     *                     description="Timestamp of when the OTP was created"
-     *                 ),
-     *                 @OA\Property(
-     *                     property="otpCode",
-     *                     type="string",
-     *                     description="User's OTP Code"
-     *                 ),
-     *             )
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="Success response",
-     *         @OA\JsonContent(
-     *             @OA\Property(
-     *                 property="success",
-     *                 type="boolean",
-     *                 example=true,
-     *                 description="Verify status"
-     *             ),
-     *             @OA\Property(
-     *                 property="accessToken",
-     *                 type="string",
-     *                 example="Akoasdk131o3ipIaskdlz",
-     *                 description="Access token"
-     *             ),
-     *             @OA\Property(
-     *                 property="user",
-     *                 ref="#/components/schemas/User",
-     *                 description="User information"
-     *             ),
-     *         ),
-     *     )
-     * )
-     */
+    #[OA\Post(
+        path: "/api/auth/verify-otp",
+        tags: ["Auth"],
+        summary: "Verify OTP",
+        operationId: "auth.verify_otp",
+        requestBody: new OA\RequestBody(
+            required: true,
+            content: new OA\JsonContent(
+                required: ["phoneNumber", "token", "timestamp", "otpCode"],
+                properties: [
+                    new OA\Property(property: "phoneNumber", type: "string", description: "User phone number"),
+                    new OA\Property(property: "token", type: "string", description: "Token to verify"),
+                    new OA\Property(property: "timestamp", type: "integer", format: "int64", description: "Timestamp of when the OTP was created"),
+                    new OA\Property(property: "otpCode", type: "string", description: "User's OTP Code")
+                ]
+            )
+        ),
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: "Success response",
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(property: "success", type: "boolean", example: true, description: "Verify status"),
+                        new OA\Property(property: "accessToken", type: "string", example: "Akoasdk131o3ipIaskdlz", description: "Access token"),
+                        new OA\Property(property: "user", ref: "#/components/schemas/User", description: "User information")
+                    ]
+                )
+            )
+        ]
+    )]
     public function verifyOTP(Request $request): JsonResponse
     {
         $validatedRequest = $request->validate([
