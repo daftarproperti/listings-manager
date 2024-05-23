@@ -5,12 +5,12 @@ namespace App\Models;
 use OpenApi\Attributes as OA;
 
 #[OA\Schema(
-    schema: "ListingSort",
     type: "string",
-    description: "Sort Listing By",
-    enum: ["price", "bedroomCount", "bathroomCount", "lotSize", "buildingSize"],
     example: "price"
 )]
+/**
+ * Sort Listing By
+ */
 enum ListingSort: string
 {
     case Price = 'price'; // Harga

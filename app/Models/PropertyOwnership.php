@@ -5,12 +5,12 @@ namespace App\Models;
 use OpenApi\Attributes as OA;
 
 #[OA\Schema(
-    schema: "PropertyOwnership",
     type: "string",
-    description: "Property ownership/certificate",
-    enum: ["unknown", "shm", "hgb", "strata", "girik"],
     example: "shm"
 )]
+/**
+ * Property ownership/certificate
+ */
 enum PropertyOwnership: string
 {
     case Unknown = 'unknown';

@@ -7,12 +7,12 @@ use App\Traits\EnumValues;
 use OpenApi\Attributes as OA;
 
 #[OA\Schema(
-    schema: "VerifyStatus",
     type: "string",
-    description: "Verification status",
-    enum: ["on_review", "approved", "rejected"],
     example: "approved"
 )]
+/**
+ * Verification status
+ */
 enum VerifyStatus: string
 {
     use EnumValues;

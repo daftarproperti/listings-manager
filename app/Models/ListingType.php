@@ -5,12 +5,12 @@ namespace App\Models;
 use OpenApi\Attributes as OA;
 
 #[OA\Schema(
-    schema: "ListingType",
     type: "string",
-    description: "Listing type",
-    enum: ["unknown", "sale", "rent"],
     example: "house"
 )]
+/**
+ * Listing type
+ */
 enum ListingType: string
 {
     case Unknown = 'unknown'; // Unknown
