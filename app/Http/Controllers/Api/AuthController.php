@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use OpenApi\Attributes as OA;
+use App\Models\Sanctum\PersonalAccessToken;
 
 class AuthController extends Controller
 {
@@ -153,5 +154,53 @@ class AuthController extends Controller
             'accessToken' => $token,
             'user' => new UserResource($user)
         ]);
+    }
+
+    #[OA\Post(
+        path: "/api/auth/logout",
+        tags: ["Auth"],
+        summary: "Logout",
+        operationId: "auth.logout",
+        security: [
+            ["bearerAuth" => []]
+        ],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: "Success response",
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(property: "success", type: "boolean", example: true, description: "Logout status")
+                    ]
+                )
+            ),
+            new OA\Response(
+                response: 404,
+                description: "Token not found response",
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(property: "success", type: "boolean", example: false, description: "Logout status"),
+                    ]
+                )
+            )
+        ]
+    )]
+    public function logout(Request $request): JsonResponse
+    {
+        $token = $request->bearerToken();
+
+        if ($token) {
+            $accessToken = PersonalAccessToken::findToken($token);
+            if ($accessToken) {
+                $accessToken->delete();
+                return response()->json([
+                    'success' => true
+                ]);
+            }
+        }
+
+        return response()->json([
+            'success' => false
+        ], 404);
     }
 }

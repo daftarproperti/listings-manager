@@ -139,4 +139,55 @@ class AuthTest extends TestCase
         $response->assertStatus(401)
                  ->assertJson(['success' => false]);
     }
+
+    public function testLogout()
+    {
+        $phoneNumber = '081210112011';
+        $otpCode = '123456';
+        $time = Carbon::create(2024, 05, 20, 10, 01);
+        Carbon::setTestNow($time);
+
+        $timestamp = $time->timestamp;
+        $salt = config('app.key');
+        $token = Hash::make($phoneNumber . $otpCode . $timestamp . $salt);
+
+        $response = $this->postJson('/api/auth/verify-otp', [
+            'phoneNumber' => $phoneNumber,
+            'token' => $token,
+            'timestamp' => $timestamp,
+            'otpCode' => $otpCode,
+        ]);
+
+        $response->assertStatus(200)
+                 ->assertJsonStructure(['accessToken', 'success', 'user'])
+                 ->assertJson(['success' => true]);
+
+        $json = $response->json();
+        $accessToken = $json['accessToken'];
+
+        $this->assertIsInt($json['user']['user_id']);
+        $this->assertGreaterThan(0, $json['user']['user_id']);
+
+        $this->assertDatabaseHas('users', [
+            'user_id' => $json['user']['user_id'],
+            'phoneNumber' => '081210112011',
+        ]);
+
+        $response = $this->withHeaders([
+            'Authorization' => 'Bearer ' . $accessToken,
+        ])->postJson('/api/auth/logout');
+
+        $response->assertStatus(200)
+                 ->assertJsonStructure(['success'])
+                 ->assertJson(['success' => true]);
+        
+        // If we hit logout or any other endpoints again with the revoked token, it now should return unauthorized
+        $response = $this->withHeaders([
+            'Authorization' => 'Bearer ' . $accessToken,
+        ])->postJson('/api/auth/logout');
+
+        $response->assertStatus(403)
+                 ->assertJsonStructure(['error'])
+                 ->assertJson(['error' => 'Unauthorized']);
+    }
 }
