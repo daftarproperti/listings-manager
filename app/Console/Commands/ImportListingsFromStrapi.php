@@ -36,6 +36,7 @@ class StrapiListing extends Data
     public ?string $created_by_id = null;
     public ?string $updated_by_id = null;
     public ?string $picture_url = null;
+    public ?string $city_name = null;
 }
 
 class ImportListingsFromStrapi extends Command
@@ -74,6 +75,7 @@ class ImportListingsFromStrapi extends Command
         $listing->carCount = (int)$strapiListing->car_count;
         $listing->ownership = PropertyOwnership::tryFrom($strapiListing->ownership ?? '') ?? PropertyOwnership::Unknown;
         if ($strapiListing->picture_url) $listing->pictureUrls = [$strapiListing->picture_url];
+        $listing->city = $strapiListing->city_name ?? '';
 
         // TODO: Import these fields
         // $listing->condition = $strapiListing->condition;
@@ -106,13 +108,14 @@ class ImportListingsFromStrapi extends Command
         config(['database.connections.strapi_pgsql' => $connection]);
 
         $sql = <<<EOD
-SELECT DISTINCT ON (p.id) p.*, f.url as picture_url
+SELECT DISTINCT ON (p.id) p.*, f.url as picture_url, c.name as city_name
 FROM properties p
 JOIN files_related_morphs frm ON p.id = frm.related_id
 JOIN files f ON frm.file_id = f.id
+JOIN properties_city_links pcl ON p.id = pcl.property_id
+JOIN cities c ON pcl.city_id = c.id
 WHERE frm.related_type = 'api::property.property' AND frm.field = 'pictures' AND p.address IS NOT NULL
 ORDER BY p.id, f.id
-LIMIT 100
 EOD;
         $listings = DB::connection('strapi_pgsql')->select($sql);
         foreach ($listings as $listingObj) {
