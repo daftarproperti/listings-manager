@@ -14,7 +14,7 @@
                 {{-- Middle footer empty for now --}}
             </div>
             <div class="w-full md:w-1/3 text-center md:text-right pt-3">
-                <p class="text-sm text-slate-700">Made with ♥ in Indonesia &copy; 2024</p>
+                <p class="text-sm text-slate-700">Copyright &copy; 2024 PT Daftar Properti Indonesia</p>
             </div>
         </div>
     </div>
