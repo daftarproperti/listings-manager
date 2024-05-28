@@ -81,6 +81,96 @@ paths:
                   user:
                     $ref: '#/components/schemas/User'
                 type: object
+  /api/auth/logout:
+    post:
+      tags:
+        - Auth
+      summary: Logout
+      operationId: auth.logout
+      responses:
+        200:
+          description: 'Success response'
+          content:
+            application/json:
+              schema:
+                properties:
+                  success:
+                    description: 'Logout status'
+                    type: boolean
+                    example: true
+                type: object
+        404:
+          description: 'Token not found response'
+          content:
+            application/json:
+              schema:
+                properties:
+                  success:
+                    description: 'Logout status'
+                    type: boolean
+                    example: false
+                type: object
+      security:
+        -
+          bearerAuth: []
+  /api/tele-app/cities:
+    get:
+      tags:
+        - Cities
+      summary: 'Get cities'
+      description: 'Returns city items'
+      operationId: cities.index
+      parameters:
+        -
+          name: q
+          in: query
+          description: 'Search city by keyword'
+          required: false
+          schema:
+            type: string
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                properties:
+                  cities:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/City'
+                type: object
+  '/api/tele-app/cities/{id}':
+    get:
+      tags:
+        - Cities
+      summary: 'Get city by id'
+      operationId: cities.getCityById
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'City Id'
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/City'
+        404:
+          description: 'City not found'
+          content:
+            application/json:
+              schema:
+                properties:
+                  error:
+                    type: string
+                    example: 'City not found'
+                type: object
   /api/tele-app/listings:
     get:
       tags:
@@ -1155,6 +1245,17 @@ components:
         - land
         - villa
       example: house
+    City:
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        latitude:
+          type: integer
+        longitude:
+          type: integer
+      type: object
     Listing:
       properties:
         id:
