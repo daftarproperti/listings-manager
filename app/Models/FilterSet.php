@@ -28,11 +28,20 @@ class FilterSet extends Data
     #[OA\Property(property: "price", ref: "#/components/schemas/FilterMinMax")]
     public int|FilterMinMax|null $price = null;
 
+    #[OA\Property(property: "rentPrice", ref: "#/components/schemas/FilterMinMax")]
+    public int|FilterMinMax|null $rentPrice = null;
+
     #[OA\Property(property: "propertyType", ref: "#/components/schemas/PropertyType")]
     public ?PropertyType $propertyType = null;
 
     #[OA\Property(property: "listingType", ref: "#/components/schemas/ListingType")]
     public ?ListingType $listingType = null;
+
+    #[OA\Property(property: "listingForSale", type: "boolean", nullable: true)]
+    public ?bool $listingForSale = null;
+
+    #[OA\Property(property: "listingForRent", type: "boolean", nullable: true)]
+    public ?bool $listingForRent = null;
 
     #[OA\Property(property: "bedroomCount", ref: "#/components/schemas/FilterMinMax")]
     public int|FilterMinMax|null $bedroomCount = null;

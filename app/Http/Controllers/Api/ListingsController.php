@@ -56,11 +56,39 @@ class ListingsController extends Controller
                 schema: new OA\Schema(type: 'integer')
             ),
             new OA\Parameter(
+                name: 'rentPrice[min]',
+                in: 'query',
+                description: 'Minimum rent price',
+                required: false,
+                schema: new OA\Schema(type: 'integer')
+            ),
+            new OA\Parameter(
+                name: 'rentPrice[max]',
+                in: 'query',
+                description: 'Maximum rent price',
+                required: false,
+                schema: new OA\Schema(type: 'integer')
+            ),
+            new OA\Parameter(
                 name: 'propertyType',
                 in: 'query',
                 description: 'Property type',
                 required: false,
                 schema: new OA\Schema(ref: '#/components/schemas/PropertyType')
+            ),
+            new OA\Parameter(
+                name: 'listingForSale',
+                in: 'query',
+                description: 'Listing for sale',
+                required: false,
+                schema: new OA\Schema(type: 'boolean')
+            ),
+            new OA\Parameter(
+                name: 'listingForRent',
+                in: 'query',
+                description: 'Listing for rent',
+                required: false,
+                schema: new OA\Schema(type: 'boolean')
             ),
             new OA\Parameter(
                 name: 'bedroomCount',
@@ -209,6 +237,7 @@ class ListingsController extends Controller
             'q',
             'collection',
             'price',
+            'rentPrice',
             'propertyType',
             'bedroomCount',
             'bathroomCount',
@@ -221,6 +250,14 @@ class ListingsController extends Controller
             'sort',
             'order'
         ]));
+
+        if ($request->has('listingForSale')) {
+            $filterSet->listingForSale = filter_var($request->input('listingForSale'), FILTER_VALIDATE_BOOLEAN);
+        }
+    
+        if ($request->has('listingForRent')) {
+            $filterSet->listingForRent = filter_var($request->input('listingForRent'), FILTER_VALIDATE_BOOLEAN);
+        }
 
         //if collection not present in filters, default set to true
         if (!isset($filterSet->collection)) {

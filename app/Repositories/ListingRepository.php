@@ -17,15 +17,15 @@ class ListingRepository
      *
      * @return Builder<Listing>
      */
-    private function buildFilterQuery(Builder $query, \BackedEnum|string|int|FilterMinMax|null $filter, string $column): Builder
-    {
+    private function buildFilterQuery(Builder $query, \BackedEnum|string|int|FilterMinMax|null|bool $filter, string $column): Builder
+    {        
         if (is_null($filter)) return $query;
 
         if (is_scalar($filter) || $filter instanceof \BackedEnum) {
             // Exact filter if it's a scalar (single value like e.g. string, int, enum).
             return $query->where($column, $filter);
         }
-
+        
         return $query
             ->when(isset($filter->min), function ($query) use ($filter, $column) {
                 $query->where($column, '>=', $filter->min);
@@ -57,16 +57,19 @@ class ListingRepository
         });
 
         $this->buildFilterQuery($query, $filterSet->price, 'price');
+        $this->buildFilterQuery($query, $filterSet->rentPrice, 'rentPrice');
         $this->buildFilterQuery($query, $filterSet->bedroomCount, 'bedroomCount');
         $this->buildFilterQuery($query, $filterSet->bathroomCount, 'bathroomCount');
         $this->buildFilterQuery($query, $filterSet->lotSize, 'lotSize');
         $this->buildFilterQuery($query, $filterSet->buildingSize, 'buildingSize');
         $this->buildFilterQuery($query, $filterSet->carCount, 'carCount');
         $this->buildFilterQuery($query, $filterSet->propertyType, 'propertyType');
+        $this->buildFilterQuery($query, $filterSet->listingForSale, 'listingForSale');
+        $this->buildFilterQuery($query, $filterSet->listingForRent, 'listingForRent');
         $this->buildFilterQuery($query, $filterSet->ownership, 'ownership');
         $this->buildFilterQuery($query, $filterSet->electricPower, 'electricPower');
         $this->buildFilterQuery($query, $filterSet->city, 'city');
-
+        
         $query->when(isset($filterSet->sort), function ($query) use ($filterSet) {
             assert(is_string($filterSet->sort));
             $order = isset($filterSet->order) ? Str::lower($filterSet->order) : 'asc';

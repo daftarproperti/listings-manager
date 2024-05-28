@@ -165,12 +165,48 @@
                         }
                     },
                     {
+                        "name": "rentPrice[min]",
+                        "in": "query",
+                        "description": "Minimum rent price",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "rentPrice[max]",
+                        "in": "query",
+                        "description": "Maximum rent price",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
                         "name": "propertyType",
                         "in": "query",
                         "description": "Property type",
                         "required": false,
                         "schema": {
                             "$ref": "#/components/schemas/PropertyType"
+                        }
+                    },
+                    {
+                        "name": "listingForSale",
+                        "in": "query",
+                        "description": "Listing for sale",
+                        "required": false,
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    },
+                    {
+                        "name": "listingForRent",
+                        "in": "query",
+                        "description": "Listing for rent",
+                        "required": false,
+                        "schema": {
+                            "type": "boolean"
                         }
                     },
                     {
@@ -642,12 +678,48 @@
                         }
                     },
                     {
+                        "name": "rentPrice[min]",
+                        "in": "query",
+                        "description": "Minimum rent price",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "rentPrice[max]",
+                        "in": "query",
+                        "description": "Maximum rent price",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
                         "name": "propertyType",
                         "in": "query",
                         "description": "Property type",
                         "required": false,
                         "schema": {
                             "$ref": "#/components/schemas/PropertyType"
+                        }
+                    },
+                    {
+                        "name": "listingForSale",
+                        "in": "query",
+                        "description": "Listing for sale",
+                        "required": false,
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    },
+                    {
+                        "name": "listingForRent",
+                        "in": "query",
+                        "description": "Listing for rent",
+                        "required": false,
+                        "schema": {
+                            "type": "boolean"
                         }
                     },
                     {
@@ -1448,11 +1520,22 @@
                     "price": {
                         "$ref": "#/components/schemas/FilterMinMax"
                     },
+                    "rentPrice": {
+                        "$ref": "#/components/schemas/FilterMinMax"
+                    },
                     "propertyType": {
                         "$ref": "#/components/schemas/PropertyType"
                     },
                     "listingType": {
                         "$ref": "#/components/schemas/ListingType"
+                    },
+                    "listingForSale": {
+                        "type": "boolean",
+                        "nullable": true
+                    },
+                    "listingForRent": {
+                        "type": "boolean",
+                        "nullable": true
                     },
                     "bedroomCount": {
                         "$ref": "#/components/schemas/FilterMinMax"

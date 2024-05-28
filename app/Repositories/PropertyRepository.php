@@ -18,7 +18,7 @@ class PropertyRepository
      *
      * @return Builder<Property>
      */
-    private function buildFilterQuery(Builder $query, \BackedEnum|string|int|FilterMinMax|null $filter, string $column): Builder
+    private function buildFilterQuery(Builder $query, \BackedEnum|string|int|FilterMinMax|null|bool $filter, string $column): Builder
     {
         if (is_null($filter)) return $query;
 
@@ -60,12 +60,15 @@ class PropertyRepository
         });
 
         $this->buildFilterQuery($query, $filterSet->price, 'price');
+        $this->buildFilterQuery($query, $filterSet->rentPrice, 'rentPrice');
         $this->buildFilterQuery($query, $filterSet->bedroomCount, 'bedroomCount');
         $this->buildFilterQuery($query, $filterSet->bathroomCount, 'bathroomCount');
         $this->buildFilterQuery($query, $filterSet->lotSize, 'lotSize');
         $this->buildFilterQuery($query, $filterSet->buildingSize, 'buildingSize');
         $this->buildFilterQuery($query, $filterSet->carCount, 'carCount');
         $this->buildFilterQuery($query, $filterSet->propertyType, 'propertyType');
+        $this->buildFilterQuery($query, $filterSet->listingForSale, 'listingForSale');
+        $this->buildFilterQuery($query, $filterSet->listingForRent, 'listingForRent');
         $this->buildFilterQuery($query, $filterSet->ownership, 'ownership');
         $this->buildFilterQuery($query, $filterSet->electricPower, 'electricPower');
         $this->buildFilterQuery($query, $filterSet->city, 'city');
