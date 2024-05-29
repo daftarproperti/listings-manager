@@ -99,6 +99,9 @@ class PropertyApiTest extends TestCase
             'propertyType' => 'house',
             'listingType' => 'rent',
         ]);
+        // Workaround to prevent timestamp being too close and not sorted correctly.
+        // TODO: Find a better solution to prevent flakiness.
+        sleep(1);
         $this->addProperty("Dijual Gedung", $this->fakeUserId, [
             'propertyType' => 'warehouse',
             'listingType' => 'sale',
