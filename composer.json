@@ -71,6 +71,9 @@
         "patches": {
             "spatie/laravel-analytics": {
                 "Optional credentials file": "patches/laravel-analytics/optional-credentials-file.patch"
+            },
+            "spatie/laravel-data": {
+                "Cast enum from array": "patches/laravel-data/cast-enum-from-array.patch"
             }
         },
         "laravel": {

@@ -1,0 +1,20 @@
+--- src/Casts/EnumCast.php	2024-05-03 08:01:04.000000000 -0700
++++ src/Casts/EnumCast.php	2024-05-29 12:07:59.833380641 -0700
+@@ -31,16 +31,16 @@
+     protected function castValue(
+         ?string $type,
+         mixed $value
+     ): BackedEnum|Uncastable {
+         if ($type === null) {
+             return Uncastable::create();
+         }
+
+         /** @var class-string<\BackedEnum> $type */
+         try {
+-            return $type::from($value);
++            return $type::from((is_array($value) && isset($value['value'])) ? $value['value'] : $value);
+         } catch (Throwable $e) {
+             throw CannotCastEnum::create($type, $value);
+         }
+     }
+ }
