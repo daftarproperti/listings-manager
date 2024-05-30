@@ -468,9 +468,14 @@ class ListingsController extends Controller
                     continue;
                 }
 
-                $currentData = $listing->{$key} ? array_filter($listing->{$key}) : [];
-                $updatedData = array_merge($currentData, $value);
-                $listing->{$key} = $updatedData;
+                $currentData = $listing->{$key};
+                if (is_array($currentData)) {
+                    $currentData = array_filter($listing->{$key});
+                    $updatedData = array_merge($currentData, $value);
+                    $listing->{$key} = $updatedData;
+                } else {
+                    $listing->{$key} = $value;
+                }
             }
         }
     }
