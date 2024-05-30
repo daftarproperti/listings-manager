@@ -6,23 +6,22 @@ use Illuminate\Http\Request;
 
 use App\Http\Controllers\Controller;
 use App\Models\FilterSet;
-use App\Models\TelegramUser;
+use App\Models\User;
 use App\Models\Resources\ListingCollection;
 use App\Repositories\ListingRepository;
 use Illuminate\Contracts\View\View;
 
 class AgentsController extends Controller
 {
-    public function detail(TelegramUser $telegramUser, Request $request): View
+    public function detail(User $user, Request $request): View
     {
-        $userProfile = $telegramUser->profile;
-        if(!$userProfile || !isset($userProfile->isPublicProfile) || !$userProfile->isPublicProfile) {
+        if(!isset($user->isPublicProfile) || !$user->isPublicProfile) {
             abort(404, 'User not found');
         }
 
         $filterSet = FilterSet::from([
             'collection' => true,
-            'userId' => $telegramUser->user_id,
+            'userId' => $user->user_id,
             'sort' => 'created_at',
             'order' => 'desc',
             'price' => $request->query('price'),
@@ -45,7 +44,7 @@ class AgentsController extends Controller
         $listings = $listingCollections->collection;
 
         return view('public/agent', [
-            'agent' => $telegramUser,
+            'agent' => $user,
             'listings' => $listings,
         ]);
     }

@@ -7,7 +7,7 @@
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css" rel="stylesheet" />
 
-    <title>{{ $agent->first_name }} {{ $agent->last_name }} - Daftar Properti</title>
+    <title>{{ $agent->name }} - Daftar Properti</title>
 
     @vite('resources/css/app.css')
 </head>
@@ -21,14 +21,14 @@
                         <path fillRule="evenodd" clipRule="evenodd" d="M0 0V314.481H116.697C117.109 314.481 117.521 314.479 117.931 314.477V239.005H91.7245V314.481H31.4491H0L0.000941753 225.685L104.828 125.792L209.654 225.685V289.887C228.235 277.766 242.88 261.652 253.588 241.542C266.23 217.997 272.55 189.845 272.55 157.087C272.55 124.431 266.23 96.3814 253.588 72.9387C240.948 49.3936 222.964 31.3764 199.633 18.8873C176.407 6.29575 148.71 0 116.543 0H0Z" fill="#0C5AE9" />
                     </svg>
                 </div>
-                <h1 class="text-xl text-slate-800">{{ $agent->first_name }} {{ $agent->last_name }}</h1>
+                <h1 class="text-xl text-slate-800">{{ $agent->name }}</h1>
             </div>
         </nav>
         <div class="max-w-5xl mx-auto">
             <div class="relative">
                 <div class="h-24 md:h-64 bg-ribbon-200 md:rounded-b-lg bg-cover bg-center bg-no-repeat" style="background-image: url('/images/header.jpg')"></div>
                 <div class="absolute top-12 md:top-44 flex items-center gap-3 px-3 md:px-6">
-                    <img class="h-24 w-24 md:h-40 md:w-40 rounded-full object-cover" src="{{ $agent->profile->picture }}" alt="{{ $agent->profile->name }}" onerror="this.src='/images/account.png'" />
+                    <img class="h-24 w-24 md:h-40 md:w-40 rounded-full object-cover" src="{{ $agent->picture }}" alt="{{ $agent->name }}" onerror="this.src='/images/account.png'" />
                     <div class="relative">
                         @if(false)
                         {{-- Verified status is not yet available, so hide this for now --}}
@@ -37,15 +37,15 @@
                         </div>
                         @endif
                         <div class="absolute w-max mt-2">
-                            <h1 class="text-xl md:text-2xl text-slate-800">{{ $agent->first_name }} {{ $agent->last_name }}</h1>
-                            <p class="text-sm md:text-base text-slate-500">{{ $agent->profile->city }} &bull; {{ $agent->profile->company }}</p>
+                            <h1 class="text-xl md:text-2xl text-slate-800">{{ $agent->name }}</h1>
+                            <p class="text-sm md:text-base text-slate-500">{{ $agent->city }} &bull; {{ $agent->company }}</p>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="mt-20 pb-4 md:mt-28 px-4 md:px-6">
                 <h1 class="text-base text-slate-500 uppercase">Tentang</h1>
-                <p class="mt-2 text-sm text-slate-800">"{{ $agent->profile->description }}"</p>
+                <p class="mt-2 text-sm text-slate-800">"{{ $agent->description }}"</p>
                 <h1 class="mt-10 mb-2 text-base text-slate-500 uppercase">Listing oleh {{ $agent->first_name }}</h1>
                 <div class="grid md:grid-cols-2 gap-4">
                     @foreach ($listings as $listing)
@@ -113,7 +113,7 @@
                         </a>
                         <div class="flex w-full justify-between gap-5 rounded-none bg-ribbon-100 px-3 py-2.5 rounded-b-lg">
                             @include('partials.copyButton')
-                            <a href="tel:{{ $agent->profile->phoneNumber }}" class="justify-center self-center whitespace-nowrap rounded-lg bg-ribbon-500 px-4 py-2 text-center text-sm text-slate-50">
+                            <a href="tel:{{ $agent->phoneNumber }}" class="justify-center self-center whitespace-nowrap rounded-lg bg-ribbon-500 px-4 py-2 text-center text-sm text-slate-50">
                                 Tanya Properti
                             </a>
                         </div>

@@ -60,7 +60,7 @@ Route::group(['middleware' => ['auth-dev']], function () {
     // Implicitly bind ID with corresponding model
     // Ref: https://laravel.com/docs/10.x/routing#implicit-binding
     Route::group(['prefix' => 'public'], function () {
-        Route::get('/agents/{telegramUser}', [AgentsController::class, 'detail']);
+        Route::get('/agents/{user}', [AgentsController::class, 'detail']);
         Route::get('/listings/{listing}', [ListingsController::class, 'detail']);
     });
 
