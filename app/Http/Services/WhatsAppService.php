@@ -70,7 +70,7 @@ class WhatsAppService
     private function addCountryCode(string $phoneNumber): string
     {
         $idCountryCode = "62";
-        if (substr($phoneNumber, 0, strlen($idCountryCode)) !== $idCountryCode) {
+        if (str_starts_with($phoneNumber, '0') && substr($phoneNumber, 0, strlen($idCountryCode)) !== $idCountryCode) {
             return  $idCountryCode . substr($phoneNumber, 1);
         }
 
