@@ -61,7 +61,8 @@ Route::group(['middleware' => ['auth-dev']], function () {
     // Ref: https://laravel.com/docs/10.x/routing#implicit-binding
     Route::group(['prefix' => 'public'], function () {
         Route::get('/agents/{user}', [AgentsController::class, 'detail']);
-        Route::get('/listings/{listing}', [ListingsController::class, 'detail']);
+        // {listingById} is bound by listingId in RouteServiceProvider.
+        Route::get('/listings/{listingById}', [ListingsController::class, 'detail']);
     });
 
     Route::get('/', [HomeController::class, 'index']);

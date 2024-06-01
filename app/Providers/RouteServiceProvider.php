@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\Listing;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Http\Request;
@@ -41,6 +42,10 @@ class RouteServiceProvider extends ServiceProvider
 
             Route::middleware('web')
                 ->group(base_path('routes/view-test.php'));
+        });
+
+        Route::bind('listingById', function ($value) {
+            return Listing::where('listingId', (int)$value)->firstOrFail();
         });
     }
 }
