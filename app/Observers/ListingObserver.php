@@ -2,6 +2,8 @@
 
 namespace App\Observers;
 
+use App\Helpers\Queue;
+use App\Jobs\Web3AddListing;
 use App\Models\Listing;
 use App\Models\Property;
 use Illuminate\Support\Facades\Log;
@@ -25,6 +27,10 @@ class ListingObserver
             $property->listings = [$listing->id];
             $property->save();
 
+            // Sync to web3 of this Listing created event.
+            $listingId = $listing->listingId;
+            Web3AddListing::dispatch($listingId, $listing->city, url("/public/listings/$listingId?format=json"))
+                ->onQueue(Queue::getQueueName('generic'));
         } catch (\Throwable $th) {
             Log::error('Error copy to property: ' . $th->getMessage());
         }
