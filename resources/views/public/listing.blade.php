@@ -143,7 +143,7 @@
                         @endif
                     </div>
                 </div>
-                <a href="tel:{{ $agent->profile->phoneNumber }}" class="justify-center self-center whitespace-nowrap rounded-lg bg-ribbon-500 px-6 py-3 text-center text-base text-slate-50">
+                <a href="tel:{{ $agent->profile?->phoneNumber }}" class="justify-center self-center whitespace-nowrap rounded-lg bg-ribbon-500 px-6 py-3 text-center text-base text-slate-50">
                     Hubungi
                 </a>
             </div>
