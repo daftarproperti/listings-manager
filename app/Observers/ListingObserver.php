@@ -55,7 +55,7 @@ class ListingObserver
     public function creating(Listing $listing): bool
     {
         $attributes = $listing->getAttributes();
-        $minimumFill = 25;
+        $minimumFill = 50;
 
         $filled = count(array_filter($attributes)) / count($attributes) * 100;
 

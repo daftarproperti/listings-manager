@@ -29,6 +29,7 @@ use Spatie\Analytics\Period;
  *                          If set, this listing was imported from strapi DB having that id.
  *                          This id is useful to prevent double import.
  *                          May be deleted once strapi migration is done completely.
+ * @property int $listingId The unique canonical ID known by external
  * @property string $sourceText
  * @property string $title
  * @property PropertyType $propertyType
@@ -72,6 +73,7 @@ class Listing extends Model
     protected $collection = 'listings';
 
     protected $casts = [
+        'listingId' => 'int',
         'propertyType' => PropertyType::class,
         'listingType' => ListingType::class,
         'listingForSale' => 'boolean',
@@ -301,5 +303,13 @@ class Listing extends Model
         }
 
         return parent::getEnumCaseFromValue($enumClass, $sanitized);
+    }
+
+    protected static function boot() {
+        parent::boot();
+
+        static::creating(function ($listing) {
+            $listing->listingId = random_int(1, PHP_INT_MAX);
+        });
     }
 }
