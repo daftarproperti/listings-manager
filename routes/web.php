@@ -56,14 +56,14 @@ Route::group(['prefix' => 'admin'], function () {
 
 Route::get('/version', [VersionController::class, 'index']);
 
-Route::group(['middleware' => ['auth-dev']], function () {
-    // Implicitly bind ID with corresponding model
-    // Ref: https://laravel.com/docs/10.x/routing#implicit-binding
-    Route::group(['prefix' => 'public'], function () {
-        Route::get('/agents/{user}', [AgentsController::class, 'detail']);
-        // {listingById} is bound by listingId in RouteServiceProvider.
-        Route::get('/listings/{listingById}', [ListingsController::class, 'detail']);
-    });
+// Implicitly bind ID with corresponding model
+// Ref: https://laravel.com/docs/10.x/routing#implicit-binding
+Route::group(['prefix' => 'public'], function () {
+    Route::get('/agents/{user}', [AgentsController::class, 'detail']);
+    // {listingById} is bound by listingId in RouteServiceProvider.
+    Route::get('/listings/{listingById}', [ListingsController::class, 'detail']);
+});
 
+Route::group(['middleware' => ['auth-dev']], function () {
     Route::get('/', [HomeController::class, 'index']);
 });
