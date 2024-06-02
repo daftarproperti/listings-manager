@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Helpers\TelegramInitDataValidator;
+use App\Models\Enums\VerifyStatus;
 use App\Models\Listing;
 use App\Models\TelegramUser;
 use App\Models\User;
@@ -289,6 +290,12 @@ class ListingApiTest extends TestCase
             ]);
 
             $response->assertStatus(201);
+
+            $this->assertDatabaseHas('listings', [
+                'title' => 'Lagi Dijual',
+                'address' => 'Jl. itu',
+                'verifyStatus' => 'on_review',
+            ]);
         });
     }
 

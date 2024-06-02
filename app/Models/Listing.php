@@ -309,6 +309,7 @@ class Listing extends Model
         parent::boot();
 
         static::creating(function ($listing) {
+            $listing->verifyStatus = VerifyStatus::ON_REVIEW;
             $listing->listingId = random_int(1, PHP_INT_MAX);
         });
     }

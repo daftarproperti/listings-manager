@@ -254,7 +254,7 @@ class ListingsController extends Controller
         if ($request->has('listingForSale')) {
             $filterSet->listingForSale = filter_var($request->input('listingForSale'), FILTER_VALIDATE_BOOLEAN);
         }
-    
+
         if ($request->has('listingForRent')) {
             $filterSet->listingForRent = filter_var($request->input('listingForRent'), FILTER_VALIDATE_BOOLEAN);
         }
@@ -397,7 +397,6 @@ class ListingsController extends Controller
         $listing = new Listing();
         $this->fillCreateUpdateListing($validatedRequest, $listing);
         $listing->user = $this->getListingUser();
-        $listing->verifyStatus = VerifyStatus::ON_REVIEW;
         $listing->save();
 
         return new ListingResource($listing);
