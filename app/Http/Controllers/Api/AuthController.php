@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use DateTime;
 use Carbon\Carbon;
 use App\Http\Controllers\Controller;
+use App\Http\Services\OTPService;
 use App\Http\Services\WhatsAppService;
 use App\Models\Resources\UserResource;
 use App\Models\User;
@@ -18,12 +19,12 @@ use App\Models\Sanctum\PersonalAccessToken;
 class AuthController extends Controller
 {
     protected string $salt;
-    protected WhatsAppService $whatsappService;
+    protected OTPService $otpService;
 
-    public function __construct(WhatsAppService $whatsappService)
+    public function __construct(OTPService $otpService)
     {
         $this->salt = type(config('app.key'))->asString();
-        $this->whatsappService = $whatsappService;
+        $this->otpService = $otpService;
     }
 
     #[OA\Post(
@@ -68,13 +69,13 @@ class AuthController extends Controller
     public function sendOTP(Request $request): JsonResponse
     {
         $validatedRequest = $request->validate([
-            'phoneNumber' => 'required', 'string', new IndonesiaPhoneFormat
+            'phoneNumber' => 'required', 'string', new IndonesiaPhoneFormat,
         ]);
         $phoneNumber = $validatedRequest['phoneNumber'];
 
         $otpCode = sprintf("%06d", random_int(0, 999999));
 
-        $this->whatsappService->sendOTP($phoneNumber, $otpCode);
+        $this->otpService->sendOTP($phoneNumber, $otpCode);
 
         $timestamp = Carbon::now()->timestamp;
         $token = Hash::make($phoneNumber . $otpCode . $timestamp . $this->salt);

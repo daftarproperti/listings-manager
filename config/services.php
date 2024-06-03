@@ -59,9 +59,18 @@ return [
 
     'default_listing_city' => env('DEFAULT_LISTING_CITY', ''),
 
+    'otp_method' => env('OTP_SENDING_METHOD', 'TWILIO'),
+
     'whatsapp' => [
         'secret' => env('WHATSAPP_SECRET'),
         'base_url' => env('WHATSAPP_BASE_URL', 'https://graph.facebook.com/v19.0/'),
         'phone_number_id' => env('WHATSAPP_PHONE_NUMBER_ID'),
+    ],
+
+    'twilio' => [
+        'base_url' => env('TWILIO_BASE_URL'),
+        'auth_token' => env('TWILIO_AUTH_TOKEN'),
+        'account_sid' => env('TWILIO_ACCOUNT_SID'),
+        'phone_number' => env('TWILIO_PHONE_NUMBER'),
     ],
 ];

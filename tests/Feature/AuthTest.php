@@ -5,7 +5,7 @@ namespace Tests\Feature;
 use Carbon\Carbon;
 use Tests\TestCase;
 use App\Models\User;
-use App\Http\Services\WhatsAppService;
+use App\Http\Services\OTPService;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Config;
 use Mockery\MockInterface;
@@ -16,9 +16,16 @@ class AuthTest extends TestCase
     {
         parent::setUp();
 
+        Config::set('services.otp_method', 'TWILIO');
+
         Config::set('services.whatsapp.base_url', 'https://fake-url.com/messages');
         Config::set('services.whatsapp.secret', 'fake-secret');
         Config::set('services.whatsapp.phone_number_id', '2912039102930');
+
+        Config::set('services.twilio.base_url', 'https://fake-url.com/messages');
+        Config::set('services.twilio.auth_token', 'fake-secret');
+        Config::set('services.twilio.account_sid', '291203910293011');
+        Config::set('services.twilio.phone_number', '2912039102930');
 
         User::truncate();
     }
@@ -27,7 +34,7 @@ class AuthTest extends TestCase
     {
         $phoneNumber = '081210002000';
 
-        $this->mock(WhatsAppService::class, function(MockInterface $mock) {
+        $this->mock(OTPService::class, function(MockInterface $mock) {
             $mock->shouldReceive('sendOTP')->once()->andReturn(true);
         });
 
