@@ -34,6 +34,8 @@ class ListingResource extends JsonResource
     #[OA\Property(property: "facing", ref: "#/components/schemas/FacingDirection")]
     #[OA\Property(property: "ownership", ref: "#/components/schemas/PropertyOwnership")]
     #[OA\Property(property: "verifyStatus", ref: "#/components/schemas/VerifyStatus")]
+    #[OA\Property(property: "cityName", type: "string")]
+    #[OA\Property(property: "cityId", type: "integer")]
     #[OA\Property(property: "city", type: "string")]
     #[OA\Property(property: "pictureUrls", type: "array", items: new OA\Items(type: "string", format: "uri", example: "https://example.com/image.jpg"))]
     #[OA\Property(property: "coordinate", type: "object", properties: [
@@ -49,6 +51,8 @@ class ListingResource extends JsonResource
         new OA\Property(property: "name", type: "string"),
         new OA\Property(property: "profilePictureURL", type: "string"),
         new OA\Property(property: "city", type: "string"),
+        new OA\Property(property: "cityId", type: "integer"),
+        new OA\Property(property: "cityName", type: "string"),
         new OA\Property(property: "company", type: "string"),
         new OA\Property(property: "description", type: "string"),
         new OA\Property(property: "phoneNumber", type: "string")
@@ -91,6 +95,8 @@ class ListingResource extends JsonResource
             'facing' => $prop->facing,
             'ownership' => $prop->ownership,
             'verifyStatus' => $prop->verifyStatus,
+            'cityName' => $prop->cityName,
+            'cityId' => $prop->cityId,
             'city' => $prop->city,
             'pictureUrls' => $prop->pictureUrls,
             'coordinate' => [
@@ -106,6 +112,8 @@ class ListingResource extends JsonResource
                 'name' => $prop->user_profile ? $prop->user_profile->name : null,
                 'phoneNumber' => $prop->user_profile ? $prop->user_profile->phoneNumber : null,
                 'city' => $prop->user_profile ? $prop->user_profile->city : null,
+                'cityId' => $prop->user_profile ? $prop->user_profile->cityId : null,
+                'cityName' => $prop->user_profile ? $prop->user_profile->cityName : null,
                 'profilePictureURL' => $prop->user_profile ? $prop->user_profile->picture : null,
                 'company' => $prop->user_profile ? $prop->user_profile->company : null,
                 'description' => $prop->user_profile ? $prop->user_profile->description : null,

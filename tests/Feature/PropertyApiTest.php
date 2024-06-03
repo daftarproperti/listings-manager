@@ -158,6 +158,7 @@ class PropertyApiTest extends TestCase
             'id',
             'name',
             'city',
+            'cityId',
             'description',
             'company',
             'picture',
@@ -173,6 +174,7 @@ class PropertyApiTest extends TestCase
         ])->post('/api/tele-app/telegram-users/profile', [
             'name' => 'John No',
             'city' => 'Jakarta',
+            'cityId' => 123,
             'picture' => 'some_picture.jpg',
         ]);
 
@@ -181,11 +183,13 @@ class PropertyApiTest extends TestCase
             'id' => $this->fakeUserId,
             'name' => 'John No',
             'city' => 'Jakarta',
+            'cityId' => 123,
+            'cityName' => null,
             'description' => null,
             'company' => null,
             'picture' => 'https://storage.googleapis.com/some-bucket/some_picture.jpg',
-            'phoneNumber' => '',
-            'isPublicProfile' => '',
+            'phoneNumber' => null,
+            'isPublicProfile' => false,
         ]);
 
         $this->assertEquals('John No', $response->json('name'));
@@ -197,6 +201,8 @@ class PropertyApiTest extends TestCase
                 'name' => 'John No',
                 'phoneNumber' => null,
                 'city' => 'Jakarta',
+                'cityId' => 123,
+                'cityName' => null,
                 'description' => null,
                 'company' => null,
                 'picture' => 'some_picture.jpg',
@@ -216,6 +222,7 @@ class PropertyApiTest extends TestCase
             'id',
             'name',
             'city',
+            'cityId',
             'description',
             'company',
             'picture',
@@ -231,6 +238,7 @@ class PropertyApiTest extends TestCase
         ])->post('/api/tele-app/users/profile', [
             'name' => 'John No',
             'city' => 'Jakarta',
+            'cityId' => 123,
             'picture' => 'some_picture.jpg',
         ]);
 
@@ -238,6 +246,7 @@ class PropertyApiTest extends TestCase
         $response->assertJson([
             'name' => 'John No',
             'city' => 'Jakarta',
+            'cityId' => 123,
             'description' => null,
             'picture' => 'https://storage.googleapis.com/some-bucket/some_picture.jpg',
             'phoneNumber' => '081239129321',

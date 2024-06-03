@@ -17,6 +17,8 @@ class TelegramUserProfileResource extends JsonResource
     #[OA\Property(property: "name", type: "string", example: "John Doe")]
     #[OA\Property(property: "phoneNumber", type: "string", example: "0811111")]
     #[OA\Property(property: "city", type: "string", example: "New York")]
+    #[OA\Property(property: "cityId", type: "integer", example: "123")]
+    #[OA\Property(property: "cityName", type: "string", example: "New York")]
     #[OA\Property(property: "description", type: "string", example: "I am a programmer")]
     #[OA\Property(property: "picture", type: "string", example: "https://example.com/image.jpg")]
     #[OA\Property(property: "company", type: "string", example: "Google")]
@@ -38,6 +40,8 @@ class TelegramUserProfileResource extends JsonResource
             'publicId' => $user->_id,
             'name' => $profile?->name ?? trim($user->first_name . ' ' . $user->last_name),
             'city' => $profile?->city ?? null,
+            'cityId' => $profile?->cityId,
+            'cityName' => $profile?->cityName ?? null,
             'description' => $profile?->description ?? null,
             'company' => $profile?->company ?? null,
             'picture' => $profile?->picture ? TelegramPhoto::getGcsUrlFromFileName($profile->picture) : null,

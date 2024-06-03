@@ -32,6 +32,8 @@ class PropertyResource extends JsonResource
     #[OA\Property(property: "facing", ref: "#/components/schemas/FacingDirection")]
     #[OA\Property(property: "ownership", ref: "#/components/schemas/PropertyOwnership")]
     #[OA\Property(property: "verifyStatus", ref: "#/components/schemas/VerifyStatus")]
+    #[OA\Property(property: "cityId", type: "integer")]
+    #[OA\Property(property: "cityName", type: "string")]
     #[OA\Property(property: "city", type: "string")]
     #[OA\Property(
         property: "pictureUrls",
@@ -80,6 +82,8 @@ class PropertyResource extends JsonResource
             'facing' => $prop->facing,
             'ownership' => $prop->ownership,
             'verifyStatus' => $prop->verifyStatus,
+            'cityId' => $prop->cityId,
+            'cityName' => $prop->cityName,
             'city' => $prop->city,
             'pictureUrls' => $prop->pictureUrls,
             'coordinate' => [

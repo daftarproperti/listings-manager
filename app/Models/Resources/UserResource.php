@@ -20,6 +20,8 @@ class UserResource extends JsonResource
     #[OA\Property(property: "email", type: "string")]
     #[OA\Property(property: "name", type: "string")]
     #[OA\Property(property: "city", type: "string")]
+    #[OA\Property(property: "cityId", type: "integer")]
+    #[OA\Property(property: "cityName", type: "string")]
     #[OA\Property(property: "description", type: "string")]
     #[OA\Property(property: "picture", type: "string")]
     #[OA\Property(property: "company", type: "string")]
@@ -46,6 +48,8 @@ class UserResource extends JsonResource
             'password' => $prop->password,
             'name' => $prop->name,
             'city' => $prop->city,
+            'cityId' => $prop->cityId,
+            'cityName' => $prop->cityName,
             'description' => $prop->description,
             'company' => $prop->company,
             'picture' => $prop->picture ? TelegramPhoto::getGcsUrlFromFileName($prop->picture) : null,

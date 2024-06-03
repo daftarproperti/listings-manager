@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Traits\CityAttributeTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use MongoDB\Laravel\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -18,6 +19,7 @@ use MongoDB\Laravel\Eloquent\Casts\ObjectId;
  * @property string $password
  * @property string $name
  * @property string $city
+ * @property int $cityId
  * @property string $description
  * @property string $picture
  * @property string $company
@@ -26,6 +28,8 @@ use MongoDB\Laravel\Eloquent\Casts\ObjectId;
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
+    /** @use CityAttributeTrait<User> */
+    use CityAttributeTrait;
 
     protected $connection = 'mongodb';
 
@@ -45,6 +49,7 @@ class User extends Authenticatable
         'accountType',
         'name',
         'city',
+        'cityId',
         'description',
         'picture',
         'company',

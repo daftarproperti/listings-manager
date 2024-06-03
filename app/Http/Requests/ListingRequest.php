@@ -29,6 +29,7 @@ class ListingRequest extends BaseApiRequest
     #[OA\Property(property: "facing", type: "string", example: "Utara")]
     #[OA\Property(property: "ownership", type: "string", example: "SHM")]
     #[OA\Property(property: "city", type: "string", example: "Bandung")]
+    #[OA\Property(property: "cityId", type: "integer", example: 1)]
     #[OA\Property(property: "listingType", ref: "#/components/schemas/ListingType", example: "Dijual")]
     #[OA\Property(property: "propertyType", ref: "#/components/schemas/PropertyType", example: "Rumah")]
     #[OA\Property(property: "listingForRent", type: "boolean", example: false)]
@@ -63,7 +64,8 @@ class ListingRequest extends BaseApiRequest
             'rentPrice' => 'required_if:listingForRent,true|numeric',
             'buildingSize' => 'required_unless:propertyType,land,unknown|numeric',
             'lotSize' => 'required_unless:propertyType,apartment,unknown|numeric',
-            'city' => 'required|string',
+            'city' => 'nullable|string',
+            'cityId' => 'required|integer',
             'bedroomCount' => 'required_unless:propertyType,land,warehouse,unknown|numeric',
             'bathroomCount' => 'required_unless:propertyType,land,warehouse,unknown|numeric',
             'carCount' => 'nullable|numeric',

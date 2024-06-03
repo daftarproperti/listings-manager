@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Helpers\TelegramPhoto;
 use App\Models\Enums\VerifyStatus;
+use App\Models\Traits\CityAttributeTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use MongoDB\Laravel\Eloquent\Model;
 use MongoDB\Laravel\Eloquent\SoftDeletes;
@@ -33,6 +34,7 @@ use Illuminate\Database\Eloquent\Collection;
  * @property PropertyOwnership $ownership
  * @property VerifyStatus $verifyStatus
  * @property string $city
+ * @property int $cityId
  * @property array<string> $pictureUrls
  * @property double $latitude
  * @property double $longitude
@@ -42,6 +44,9 @@ class Property extends Model
 {
     use SoftDeletes;
     use HasFactory;
+
+    /** @use CityAttributeTrait<Property> */
+    use CityAttributeTrait;
 
     protected $connection = 'mongodb';
     protected $collection = 'properties';

@@ -1492,6 +1492,10 @@
                         "type": "string",
                         "example": "Bandung"
                     },
+                    "cityId": {
+                        "type": "integer",
+                        "example": 1
+                    },
                     "listingType": {
                         "$ref": "#/components/schemas/ListingType"
                     },
@@ -1566,6 +1570,10 @@
                     "city": {
                         "type": "string",
                         "example": "Surabaya"
+                    },
+                    "cityId": {
+                        "type": "integer",
+                        "example": 123
                     },
                     "description": {
                         "type": "string",
@@ -1861,6 +1869,12 @@
                     "verifyStatus": {
                         "$ref": "#/components/schemas/VerifyStatus"
                     },
+                    "cityName": {
+                        "type": "string"
+                    },
+                    "cityId": {
+                        "type": "integer"
+                    },
                     "city": {
                         "type": "string"
                     },
@@ -1906,6 +1920,12 @@
                                 "type": "string"
                             },
                             "city": {
+                                "type": "string"
+                            },
+                            "cityId": {
+                                "type": "integer"
+                            },
+                            "cityName": {
                                 "type": "string"
                             },
                             "company": {
@@ -1997,6 +2017,12 @@
                     },
                     "verifyStatus": {
                         "$ref": "#/components/schemas/VerifyStatus"
+                    },
+                    "cityId": {
+                        "type": "integer"
+                    },
+                    "cityName": {
+                        "type": "string"
                     },
                     "city": {
                         "type": "string"
@@ -2095,6 +2121,14 @@
                         "type": "string",
                         "example": "New York"
                     },
+                    "cityId": {
+                        "type": "integer",
+                        "example": "123"
+                    },
+                    "cityName": {
+                        "type": "string",
+                        "example": "New York"
+                    },
                     "description": {
                         "type": "string",
                         "example": "I am a programmer"
@@ -2119,6 +2153,9 @@
                     "id": {
                         "type": "string"
                     },
+                    "publicId": {
+                        "type": "string"
+                    },
                     "username": {
                         "type": "string"
                     },
@@ -2135,6 +2172,12 @@
                         "type": "string"
                     },
                     "city": {
+                        "type": "string"
+                    },
+                    "cityId": {
+                        "type": "integer"
+                    },
+                    "cityName": {
                         "type": "string"
                     },
                     "description": {

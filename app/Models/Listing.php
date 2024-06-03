@@ -8,6 +8,7 @@ use App\Helpers\NumFormatter;
 use App\Helpers\TelegramPhoto;
 use App\Models\Enums\VerifyStatus;
 use App\Models\FacingDirection;
+use App\Models\Traits\CityAttributeTrait;
 use Carbon\Carbon;
 use Exception;
 use Google\Analytics\Data\V1alpha\Filter\StringFilter\MatchType;
@@ -53,6 +54,7 @@ use Spatie\Analytics\Period;
  * @property FacingDirection $facing
  * @property PropertyOwnership $ownership
  * @property VerifyStatus $verifyStatus
+ * @property int $cityId
  * @property string $city
  * @property array<string> $pictureUrls
  * @property Coordinate $coordinate
@@ -68,6 +70,9 @@ class Listing extends Model
 
     use SoftDeletes;
     use HasFactory;
+
+    /** @use CityAttributeTrait<Listing> */
+    use CityAttributeTrait;
 
     protected $connection = 'mongodb';
     protected $collection = 'listings';
@@ -92,7 +97,9 @@ class Listing extends Model
         'electricPower' => 'int',
         'price' => 'int',
         'rentPrice' => 'int',
+        'cityId' => 'int',
     ];
+
 
     public function getMatchFilterCountAttribute(): int
     {
@@ -196,6 +203,8 @@ class Listing extends Model
                 $profile->name = $appUser->name;
                 $profile->phoneNumber = $appUser->phoneNumber;
                 $profile->city = $appUser->city;
+                $profile->cityId = $appUser->cityId;
+                $profile->cityName = $appUser->cityName;
                 $profile->description = $appUser->description;
                 $profile->company = $appUser->company;
                 $profile->picture = $appUser->picture;

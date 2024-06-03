@@ -1034,6 +1034,9 @@ components:
         city:
           type: string
           example: Bandung
+        cityId:
+          type: integer
+          example: 1
         listingType:
           $ref: '#/components/schemas/ListingType'
         propertyType:
@@ -1086,6 +1089,9 @@ components:
         city:
           type: string
           example: Surabaya
+        cityId:
+          type: integer
+          example: 123
         description:
           type: string
           example: 'Agen terpercaya'
@@ -1304,6 +1310,8 @@ components:
           $ref: '#/components/schemas/PropertyOwnership'
         verifyStatus:
           $ref: '#/components/schemas/VerifyStatus'
+        cityId:
+          type: integer
         city:
           type: string
         pictureUrls:
@@ -1395,6 +1403,8 @@ components:
           $ref: '#/components/schemas/PropertyOwnership'
         verifyStatus:
           $ref: '#/components/schemas/VerifyStatus'
+        cityId:
+          type: integer
         city:
           type: string
         pictureUrls:
@@ -1461,6 +1471,9 @@ components:
         city:
           type: string
           example: 'New York'
+        cityId:
+          type: integer
+          example: '123'
         description:
           type: string
           example: 'I am a programmer'
@@ -1478,6 +1491,8 @@ components:
       properties:
         id:
           type: string
+        publicId:
+          type: string
         username:
           type: string
         phoneNumber:
@@ -1490,6 +1505,8 @@ components:
           type: string
         city:
           type: string
+        cityId:
+          type: integer
         description:
           type: string
         picture:
