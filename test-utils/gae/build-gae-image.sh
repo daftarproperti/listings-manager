@@ -39,7 +39,7 @@ cp -a public/build $TEMP_DIR/public/
 pushd $TEMP_DIR
 pack build daftarproperti --builder gcr.io/gae-runtimes/buildpacks/google-gae-22/php/builder \
     --env GOOGLE_COMPOSER_VERSION=2.6.5 \
-    --env GOOGLE_RUNTIME_VERSION=8.2 \
+    --env GOOGLE_RUNTIME_VERSION=8.3 \
     --env GOOGLE_RUNTIME=php \
     --env GAE_APPLICATION_YAML_PATH=./app.yaml
 

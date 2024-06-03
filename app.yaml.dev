@@ -9,7 +9,7 @@ manual_scaling:
 # based on https://cloud.google.com/appengine/docs/standard/lifecycle/support-schedule#php
 runtime_config:
   operating_system: "ubuntu22"
-  runtime_version: "8.2"
+  runtime_version: "8.3"
   document_root: public
   # Enable log daemon so our app isn't blocked
   # https://cloud.google.com/logging/docs/setup/php#gae-config
