@@ -13,6 +13,8 @@ class CitySeeder extends Seeder
      */
     public function run(): void
     {
+        logger()->info("Running City Seeder");
+
         $provinceData = storage_path('provinces.json');
         $provinces = json_decode(File::get($provinceData));
 
