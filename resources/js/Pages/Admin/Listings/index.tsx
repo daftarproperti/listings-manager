@@ -7,7 +7,7 @@ import SecondaryButton from '@/Components/SecondaryButton'
 import TextInput from '@/Components/TextInput'
 
 import { type Option, type Listing, type PageProps } from '@/types'
-import { getSearchParams } from '@/utils'
+import { getSearchParams, paginationRange } from '@/utils'
 import SelectInput from '@/Components/SelectInput'
 
 export default function index ({
@@ -23,6 +23,8 @@ export default function index ({
   const q = getSearchParams('q') ?? ''
   const page = parseInt(getSearchParams('page') ?? '1')
   const status = getSearchParams('verifyStatus') ?? ''
+
+  const [startPage, endPage] = paginationRange(page, data.lastPage)
 
   const [keyword, setKeyword] = useState(q)
   const [, setPageNumber] = useState(page)
@@ -215,8 +217,9 @@ export default function index ({
                                 Previous
                             </SecondaryButton>
                             <div className="flex justify-self-center items-center gap-2">
-                                {Array.from(Array(data.lastPage).keys()).map(
-                                  (item) => (
+                                {Array.from(Array(data.lastPage).keys())
+                                  .slice(startPage, endPage)
+                                  .map((item) => (
                                         <SecondaryButton
                                             key={item}
                                             className={
@@ -233,7 +236,7 @@ export default function index ({
                                             {item + 1}
                                         </SecondaryButton>
                                   )
-                                )}
+                                  )}
                             </div>
                             <SecondaryButton
                                 onClick={() => {

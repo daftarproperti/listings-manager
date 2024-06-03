@@ -1,11 +1,11 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { Head, router } from '@inertiajs/react'
 
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout'
 import Table from '@/Components/Table'
 
 import { type PageProps, type TelegramGroupAllowlist } from '@/types'
-import { getSearchParams } from '@/utils'
+import { getSearchParams, paginationRange } from '@/utils'
 import SecondaryButton from '@/Components/SecondaryButton'
 
 const Allowlist = ({
@@ -17,6 +17,8 @@ const Allowlist = ({
   const [pageNumber, setPageNumber] = useState(
     parseInt(getSearchParams('page') ?? '1')
   )
+
+  const [startPage, endPage] = paginationRange(pageNumber, data.lastPage)
 
   const TABLE_HEAD = ['Nama Group', 'Contoh Pesan', 'Tanggal Pesan', 'Status', '']
 
@@ -80,9 +82,7 @@ const Allowlist = ({
                                               : 'Tidak Diijinkan'}
                                         </Table.BodyItem>
                                         <Table.BodyItem>
-                                            {
-                                                // Edit Allowlist
-                                            }
+                                            {/* Edit Allowlist */}
                                             <a href={route('telegram.allowlists.detail', allowlist.id)}>
                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                                                     <path strokeLinecap="round" strokeLinejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
@@ -94,7 +94,7 @@ const Allowlist = ({
                                 {data.allowlists.length === 0 && (
                                     <tr>
                                         <Table.BodyItem
-                                            colSpan={4}
+                                            colSpan={5}
                                             className="text-center text-sm"
                                         >
                                             No data
@@ -103,7 +103,7 @@ const Allowlist = ({
                                 )}
                             </Table.Body>
                         </Table>
-                        <div className="flex items-center justify-between p-4">
+                        <div className="grid grid-cols-3 items-center justify-stretch p-4">
                             <SecondaryButton
                                 onClick={() => {
                                   setPageNumber((prev) => {
@@ -113,12 +113,14 @@ const Allowlist = ({
                                   })
                                 }}
                                 disabled={pageNumber === 1}
+                                className='w-fit justify-self-start'
                             >
                                 Previous
                             </SecondaryButton>
-                            <div className="flex items-center gap-2">
-                                {Array.from(Array(data.lastPage).keys()).map(
-                                  (item) => (
+                            <div className="flex justify-self-center items-center gap-2">
+                                {Array.from(Array(data.lastPage).keys())
+                                  .slice(startPage, endPage)
+                                  .map((item) => (
                                         <SecondaryButton
                                             key={item}
                                             className={
@@ -135,7 +137,7 @@ const Allowlist = ({
                                             {item + 1}
                                         </SecondaryButton>
                                   )
-                                )}
+                                  )}
                             </div>
                             <SecondaryButton
                                 onClick={() => {
@@ -146,6 +148,7 @@ const Allowlist = ({
                                   })
                                 }}
                                 disabled={pageNumber === data.lastPage}
+                                className='w-fit justify-self-end'
                             >
                                 Next
                             </SecondaryButton>

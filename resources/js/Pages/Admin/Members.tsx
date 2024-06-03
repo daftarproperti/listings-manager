@@ -6,7 +6,7 @@ import TextInput from '@/Components/TextInput'
 import Table from '@/Components/Table'
 
 import { type TelegramUser, type PageProps } from '@/types'
-import { getSearchParams } from '@/utils'
+import { getSearchParams, paginationRange } from '@/utils'
 import SecondaryButton from '@/Components/SecondaryButton'
 
 const Member = ({
@@ -19,6 +19,8 @@ const Member = ({
   const [pageNumber, setPageNumber] = useState(
     parseInt(getSearchParams('page') ?? '1')
   )
+
+  const [startPage, endPage] = paginationRange(pageNumber, data.lastPage)
 
   const TABLE_HEAD = ['Member', 'Nomor HP', 'Kota', 'Perusahaan', 'Status']
 
@@ -126,7 +128,7 @@ const Member = ({
                                 {data.members.length === 0 && (
                                     <tr>
                                         <Table.BodyItem
-                                            colSpan={9}
+                                            colSpan={5}
                                             className="text-center text-sm"
                                         >
                                             No data
@@ -135,7 +137,7 @@ const Member = ({
                                 )}
                             </Table.Body>
                         </Table>
-                        <div className="flex items-center justify-between p-4">
+                        <div className="grid grid-cols-3 items-center justify-stretch p-4">
                             <SecondaryButton
                                 onClick={() => {
                                   setPageNumber((prev) => {
@@ -145,12 +147,14 @@ const Member = ({
                                   })
                                 }}
                                 disabled={pageNumber === 1}
+                                className='w-fit justify-self-start'
                             >
                                 Previous
                             </SecondaryButton>
-                            <div className="flex items-center gap-2">
-                                {Array.from(Array(data.lastPage).keys()).map(
-                                  (item) => (
+                            <div className="flex justify-self-center items-center gap-2">
+                                {Array.from(Array(data.lastPage).keys())
+                                  .slice(startPage, endPage)
+                                  .map((item) => (
                                         <SecondaryButton
                                             key={item}
                                             className={
@@ -167,7 +171,7 @@ const Member = ({
                                             {item + 1}
                                         </SecondaryButton>
                                   )
-                                )}
+                                  )}
                             </div>
                             <SecondaryButton
                                 onClick={() => {
@@ -178,6 +182,7 @@ const Member = ({
                                   })
                                 }}
                                 disabled={pageNumber === data.lastPage}
+                                className='w-fit justify-self-end'
                             >
                                 Next
                             </SecondaryButton>

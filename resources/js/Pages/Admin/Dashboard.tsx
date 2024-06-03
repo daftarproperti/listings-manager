@@ -7,7 +7,7 @@ import SecondaryButton from '@/Components/SecondaryButton'
 import TextInput from '@/Components/TextInput'
 
 import { type Listing, type PageProps } from '@/types'
-import { getSearchParams } from '@/utils'
+import { getSearchParams, paginationRange } from '@/utils'
 
 export default function Dashboard ({
   auth,
@@ -19,6 +19,8 @@ export default function Dashboard ({
   const [pageNumber, setPageNumber] = useState(
     parseInt(getSearchParams('page') ?? '1')
   )
+
+  const [startPage, endPage] = paginationRange(pageNumber, data.lastPage)
 
   const TABLE_HEAD = ['Judul', 'Agen', 'Harga', 'LT', 'LB', 'KT', 'KM']
 
@@ -142,7 +144,7 @@ export default function Dashboard ({
                                 )}
                             </Table.Body>
                         </Table>
-                        <div className="flex items-center justify-between p-4">
+                        <div className="grid grid-cols-3 items-center justify-stretch p-4">
                             <SecondaryButton
                                 onClick={() => {
                                   setPageNumber((prev) => {
@@ -152,12 +154,14 @@ export default function Dashboard ({
                                   })
                                 }}
                                 disabled={pageNumber === 1}
+                                className='w-fit justify-self-start'
                             >
                                 Previous
                             </SecondaryButton>
-                            <div className="flex items-center gap-2">
-                                {Array.from(Array(data.lastPage).keys()).map(
-                                  (item) => (
+                            <div className="flex justify-self-center items-center gap-2">
+                                {Array.from(Array(data.lastPage).keys())
+                                  .slice(startPage, endPage)
+                                  .map((item) => (
                                         <SecondaryButton
                                             key={item}
                                             className={
@@ -174,7 +178,7 @@ export default function Dashboard ({
                                             {item + 1}
                                         </SecondaryButton>
                                   )
-                                )}
+                                  )}
                             </div>
                             <SecondaryButton
                                 onClick={() => {
@@ -185,6 +189,7 @@ export default function Dashboard ({
                                   })
                                 }}
                                 disabled={pageNumber === data.lastPage}
+                                className='w-fit justify-self-end'
                             >
                                 Next
                             </SecondaryButton>
