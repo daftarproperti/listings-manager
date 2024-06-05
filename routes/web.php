@@ -67,3 +67,11 @@ Route::group(['prefix' => 'public'], function () {
 Route::group(['middleware' => ['auth-dev']], function () {
     Route::get('/', [HomeController::class, 'index']);
 });
+
+Route::get('/privasi', function () {
+    return view('privacy');
+});
+
+Route::get('/syarat-ketentuan', function () {
+    return view('terms-of-service');
+});
