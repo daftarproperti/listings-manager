@@ -31,7 +31,7 @@ env_variables:
   APP_NAME: "Daftar Properti Dev"
   DP_VERSION: "0"
   LOG_LEVEL: debug
-  CACHE_DRIVER: file
+  CACHE_DRIVER: "mongodb"
   SESSION_DRIVER: cookie
   MONGODB_SRV: "mongodb+srv://usernam:password@host/"
   MONGODB_DATABASE: "daftarproperti-dev-2"
