@@ -29,8 +29,13 @@ class ListingObserver
 
             // Sync to web3 of this Listing created event.
             $listingId = $listing->listingId;
-            Web3AddListing::dispatch($listingId, $listing->city, url("/public/listings/$listingId?format=json"))
-                ->onQueue(Queue::getQueueName('generic'));
+            if (env('ETH_LIVE_PUSH')) {
+                Web3AddListing::dispatch(
+                    $listingId,
+                    $listing->city,
+                    url("/public/listings/$listingId?format=json")
+                )->onQueue(Queue::getQueueName('generic'));
+            }
         } catch (\Throwable $th) {
             Log::error('Error copy to property: ' . $th->getMessage());
         }
@@ -42,11 +47,9 @@ class ListingObserver
     public function updated(Listing $listing): void
     {
         try {
-
             $property = Property::where('listings', $listing->id)->first();
             $this->fillPropertyFromListing($listing, $property);
             $property->save();
-
         } catch (\Throwable $th) {
             Log::error('Error sync to property: ' . $th->getMessage());
         }
