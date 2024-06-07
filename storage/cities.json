@@ -702,56 +702,56 @@
     {
         "administrativeId": 1273,
         "administrativeProvinceId": 12,
-        "osmId": 721235772,
-        "osmType": "node",
+        "osmId": 8484621,
+        "osmType": "relation",
         "name": "Kota Sibolga",
         "location": {
             "type": "Point",
             "coordinates": [
-                98.78461,
-                1.736957
+                98.78991099761416,
+                1.7386192999999999
             ]
         }
     },
     {
         "administrativeId": 1274,
         "administrativeProvinceId": 12,
-        "osmId": 736405240,
-        "osmType": "node",
+        "osmId": 8484620,
+        "osmType": "relation",
         "name": "Kota Tanjung Balai",
         "location": {
             "type": "Point",
             "coordinates": [
-                99.8020903,
-                2.9703419
+                99.79461100229092,
+                2.97280325
             ]
         }
     },
     {
         "administrativeId": 1275,
         "administrativeProvinceId": 12,
-        "osmId": 763976609,
-        "osmType": "node",
+        "osmId": 8484617,
+        "osmType": "relation",
         "name": "Kota Binjai",
         "location": {
             "type": "Point",
             "coordinates": [
-                98.4899865,
-                3.6063964
+                98.48962252562653,
+                3.5999998499999997
             ]
         }
     },
     {
         "administrativeId": 1276,
         "administrativeProvinceId": 12,
-        "osmId": 10354282,
+        "osmId": 8484619,
         "osmType": "relation",
         "name": "Kota Tebing Tinggi",
         "location": {
             "type": "Point",
             "coordinates": [
-                102.74103995309304,
-                0.9875069
+                99.15652857678585,
+                3.3280819
             ]
         }
     },
@@ -772,14 +772,14 @@
     {
         "administrativeId": 1278,
         "administrativeProvinceId": 12,
-        "osmId": 5654023575,
-        "osmType": "node",
+        "osmId": 8484716,
+        "osmType": "relation",
         "name": "Kota Gunungsitoli",
         "location": {
             "type": "Point",
             "coordinates": [
-                97.6150768,
-                1.2900569
+                97.71401049033044,
+                1.3837958000000001
             ]
         }
     },
@@ -1052,14 +1052,14 @@
     {
         "administrativeId": 1401,
         "administrativeProvinceId": 14,
-        "osmId": 750989317,
-        "osmType": "way",
+        "osmId": 7830592,
+        "osmType": "relation",
         "name": "Kab. Kampar",
         "location": {
             "type": "Point",
             "coordinates": [
-                101.6725898,
-                0.2639628
+                101.06171228401269,
+                0.31997325
             ]
         }
     },
@@ -1584,14 +1584,14 @@
     {
         "administrativeId": 1673,
         "administrativeProvinceId": 16,
-        "osmId": 1308342648,
-        "osmType": "node",
+        "osmId": 10004781,
+        "osmType": "relation",
         "name": "Kota Lubuk Linggau",
         "location": {
             "type": "Point",
             "coordinates": [
-                102.8635806,
-                -3.2918275
+                102.8715732,
+                -3.2919136
             ]
         }
     },
@@ -1682,14 +1682,14 @@
     {
         "administrativeId": 1706,
         "administrativeProvinceId": 17,
-        "osmId": 7883365101,
-        "osmType": "node",
+        "osmId": 16196031,
+        "osmType": "relation",
         "name": "Kab. Muko Muko",
         "location": {
             "type": "Point",
             "coordinates": [
-                102.0536368,
-                -1.5264014
+                101.56853428716138,
+                -2.7082421500000002
             ]
         }
     },
@@ -1962,14 +1962,14 @@
     {
         "administrativeId": 1901,
         "administrativeProvinceId": 19,
-        "osmId": 9446003,
+        "osmId": 11018586,
         "osmType": "relation",
         "name": "Kab. Bangka",
         "location": {
             "type": "Point",
             "coordinates": [
-                106.02815209819913,
-                -2.30812445
+                105.93652078561858,
+                -1.9250896
             ]
         }
     },
@@ -2116,7 +2116,7 @@
     {
         "administrativeId": 2105,
         "administrativeProvinceId": 21,
-        "osmId": 10168686,
+        "osmId": 10660358,
         "osmType": "relation",
         "name": "Kab. Kepulauan Anambas",
         "location": {
@@ -2242,28 +2242,28 @@
     {
         "administrativeId": 3201,
         "administrativeProvinceId": 32,
-        "osmId": 14745927,
+        "osmId": 14762112,
         "osmType": "relation",
         "name": "Kab. Bogor",
         "location": {
             "type": "Point",
             "coordinates": [
-                106.7972421,
-                -6.5962986
+                107.00174246832204,
+                -6.5453255
             ]
         }
     },
     {
         "administrativeId": 3202,
         "administrativeProvinceId": 32,
-        "osmId": 14918119,
+        "osmId": 14918118,
         "osmType": "relation",
         "name": "Kab. Sukabumi",
         "location": {
             "type": "Point",
             "coordinates": [
-                106.9265095,
-                -6.9199289
+                106.73466083246038,
+                -7.0764508500000005
             ]
         }
     },
@@ -2284,14 +2284,14 @@
     {
         "administrativeId": 3204,
         "administrativeProvinceId": 32,
-        "osmId": 13290062,
+        "osmId": 14935959,
         "osmType": "relation",
         "name": "Kab. Bandung",
         "location": {
             "type": "Point",
             "coordinates": [
-                107.6110212,
-                -6.9215529
+                107.6342883447783,
+                -7.06134235
             ]
         }
     },
@@ -2312,14 +2312,14 @@
     {
         "administrativeId": 3206,
         "administrativeProvinceId": 32,
-        "osmId": 14925431,
+        "osmId": 14925428,
         "osmType": "relation",
         "name": "Kab. Tasikmalaya",
         "location": {
             "type": "Point",
             "coordinates": [
-                108.2201154,
-                -7.3262484
+                108.06842308702183,
+                -7.42717075
             ]
         }
     },
@@ -2354,14 +2354,14 @@
     {
         "administrativeId": 3209,
         "administrativeProvinceId": 32,
-        "osmId": 16991199,
+        "osmId": 16999941,
         "osmType": "relation",
         "name": "Kab. Cirebon",
         "location": {
             "type": "Point",
             "coordinates": [
-                108.5608483,
-                -6.7137044
+                108.45642319654783,
+                -6.7611892000000005
             ]
         }
     },
@@ -2452,14 +2452,14 @@
     {
         "administrativeId": 3216,
         "administrativeProvinceId": 32,
-        "osmId": 14509733,
+        "osmId": 14765575,
         "osmType": "relation",
         "name": "Kab. Bekasi",
         "location": {
             "type": "Point",
             "coordinates": [
-                106.9945444,
-                -6.2349858
+                107.16493925281344,
+                -6.2027280000000005
             ]
         }
     },
@@ -2606,14 +2606,14 @@
     {
         "administrativeId": 3279,
         "administrativeProvinceId": 32,
-        "osmId": 12354003,
+        "osmId": 14925430,
         "osmType": "relation",
         "name": "Kota Banjar",
         "location": {
             "type": "Point",
             "coordinates": [
-                114.59750526571096,
-                -3.3247398500000003
+                108.5415225,
+                -7.3695648
             ]
         }
     },
@@ -2682,8 +2682,8 @@
         "location": {
             "type": "Point",
             "coordinates": [
-                109.6519465,
-                -7.6686894
+                109.6028115,
+                -7.6439937
             ]
         }
     },
@@ -2710,22 +2710,22 @@
         "location": {
             "type": "Point",
             "coordinates": [
-                109.92096446847731,
-                -7.39979995
+                109.9056812,
+                -7.3997965
             ]
         }
     },
     {
         "administrativeId": 3308,
         "administrativeProvinceId": 33,
-        "osmId": 9686811,
+        "osmId": 9686814,
         "osmType": "relation",
         "name": "Kab. Magelang",
         "location": {
             "type": "Point",
             "coordinates": [
-                110.2182164,
-                -7.4770747
+                110.2145132553504,
+                -7.51361445
             ]
         }
     },
@@ -2914,14 +2914,14 @@
     {
         "administrativeId": 3322,
         "administrativeProvinceId": 33,
-        "osmId": 8409116,
+        "osmId": 9686813,
         "osmType": "relation",
         "name": "Kab. Semarang",
         "location": {
             "type": "Point",
             "coordinates": [
-                110.4229104,
-                -6.9903988
+                110.40194273525398,
+                -7.28765615
             ]
         }
     },
@@ -3082,28 +3082,28 @@
     {
         "administrativeId": 3375,
         "administrativeProvinceId": 33,
-        "osmId": 10957525364,
-        "osmType": "node",
+        "osmId": 9686826,
+        "osmType": "relation",
         "name": "Kota Pekalongan",
         "location": {
             "type": "Point",
             "coordinates": [
-                109.6761489,
-                -6.8905065
+                109.67552211340356,
+                -6.894186700000001
             ]
         }
     },
     {
         "administrativeId": 3376,
         "administrativeProvinceId": 33,
-        "osmId": 10957525367,
-        "osmType": "node",
+        "osmId": 9686828,
+        "osmType": "relation",
         "name": "Kota Tegal",
         "location": {
             "type": "Point",
             "coordinates": [
-                109.1378188,
-                -6.867334
+                109.11506461278614,
+                -6.86981145
             ]
         }
     },
@@ -3116,8 +3116,8 @@
         "location": {
             "type": "Point",
             "coordinates": [
-                110.14798278891979,
-                -7.8123076000000005
+                110.1388245,
+                -7.8124248
             ]
         }
     },
@@ -3236,42 +3236,42 @@
     {
         "administrativeId": 3505,
         "administrativeProvinceId": 35,
-        "osmId": 9676376,
+        "osmId": 9676377,
         "osmType": "relation",
         "name": "Kab. Blitar",
         "location": {
             "type": "Point",
             "coordinates": [
-                112.1650769,
-                -8.0982442
+                112.31155717762763,
+                -8.1311983
             ]
         }
     },
     {
         "administrativeId": 3506,
         "administrativeProvinceId": 35,
-        "osmId": 9676375,
+        "osmId": 9676374,
         "osmType": "relation",
         "name": "Kab. Kediri",
         "location": {
             "type": "Point",
             "coordinates": [
-                112.0046051,
-                -7.8111057
+                112.16863146094127,
+                -7.80262535
             ]
         }
     },
     {
         "administrativeId": 3507,
         "administrativeProvinceId": 35,
-        "osmId": 9674151,
+        "osmId": 9674152,
         "osmType": "relation",
         "name": "Kab. Malang",
         "location": {
             "type": "Point",
             "coordinates": [
-                112.6340291,
-                -7.9771206
+                112.68798721390587,
+                -8.10479815
             ]
         }
     },
@@ -3348,28 +3348,28 @@
     {
         "administrativeId": 3513,
         "administrativeProvinceId": 35,
-        "osmId": 9674161,
+        "osmId": 9674162,
         "osmType": "relation",
         "name": "Kab. Probolinggo",
         "location": {
             "type": "Point",
             "coordinates": [
-                113.2158401,
-                -7.7441461
+                113.30510534699638,
+                -7.86316
             ]
         }
     },
     {
         "administrativeId": 3514,
         "administrativeProvinceId": 35,
-        "osmId": 9674155,
+        "osmId": 9674154,
         "osmType": "relation",
         "name": "Kab. Pasuruan",
         "location": {
             "type": "Point",
             "coordinates": [
-                112.9070632,
-                -7.6399593
+                112.81848297670143,
+                -7.7508114
             ]
         }
     },
@@ -3740,14 +3740,14 @@
     {
         "administrativeId": 3603,
         "administrativeProvinceId": 36,
-        "osmId": 7641583,
+        "osmId": 7641584,
         "osmType": "relation",
         "name": "Kab. Tangerang",
         "location": {
             "type": "Point",
             "coordinates": [
-                106.6382161,
-                -6.1761924
+                106.4679311,
+                -6.1644013
             ]
         }
     },
@@ -3992,14 +3992,14 @@
     {
         "administrativeId": 5204,
         "administrativeProvinceId": 52,
-        "osmId": 7219492,
+        "osmId": 13263883,
         "osmType": "relation",
         "name": "Kab. Sumbawa",
         "location": {
             "type": "Point",
             "coordinates": [
-                117.27160682483327,
-                -8.5949025
+                117.4959869902373,
+                -8.73412725
             ]
         }
     },
@@ -4020,14 +4020,14 @@
     {
         "administrativeId": 5206,
         "administrativeProvinceId": 52,
-        "osmId": 13263887,
+        "osmId": 13263886,
         "osmType": "relation",
         "name": "Kab. Bima",
         "location": {
             "type": "Point",
             "coordinates": [
-                118.727689,
-                -8.4534091
+                118.7624739969225,
+                -8.5647631
             ]
         }
     },
@@ -4090,14 +4090,28 @@
     {
         "administrativeId": 5301,
         "administrativeProvinceId": 53,
-        "osmId": 11226931,
+        "osmId": 11226927,
         "osmType": "relation",
         "name": "Kab. Kupang",
         "location": {
             "type": "Point",
             "coordinates": [
-                123.6017755,
-                -10.1632209
+                123.87939078246231,
+                -9.852824
+            ]
+        }
+    },
+    {
+        "administrativeId": 5302,
+        "administrativeProvinceId": 53,
+        "osmId": 11226932,
+        "osmType": "relation",
+        "name": "Kab. Timor Tengah Selatan",
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                124.43559530205364,
+                -9.82305125
             ]
         }
     },
@@ -4712,8 +4726,8 @@
         "location": {
             "type": "Point",
             "coordinates": [
-                113.8648609,
-                -1.0983147
+                113.53571370933497,
+                -0.9677894499999999
             ]
         }
     },
@@ -5112,14 +5126,14 @@
     {
         "administrativeId": 6502,
         "administrativeProvinceId": 65,
-        "osmId": 892956047,
-        "osmType": "way",
+        "osmId": 9884463,
+        "osmType": "relation",
         "name": "Kab. Malinau",
         "location": {
             "type": "Point",
             "coordinates": [
-                115.1352294,
-                -3.4294663
+                115.69049695186618,
+                2.6185545
             ]
         }
     },
@@ -5546,14 +5560,14 @@
     {
         "administrativeId": 7271,
         "administrativeProvinceId": 72,
-        "osmId": 296110116,
-        "osmType": "node",
+        "osmId": 4277707,
+        "osmType": "relation",
         "name": "Kota Palu",
         "location": {
             "type": "Point",
             "coordinates": [
-                119.8679974,
-                -0.8957793
+                119.8722373,
+                -0.9051548
             ]
         }
     },
@@ -6120,14 +6134,14 @@
     {
         "administrativeId": 7472,
         "administrativeProvinceId": 74,
-        "osmId": 1070192778,
-        "osmType": "node",
+        "osmId": 14910173,
+        "osmType": "relation",
         "name": "Kota Bau Bau",
         "location": {
             "type": "Point",
             "coordinates": [
-                116.5764,
-                -8.3317
+                122.6057655,
+                -5.4620298
             ]
         }
     },
@@ -6540,7 +6554,7 @@
     {
         "administrativeId": 8207,
         "administrativeProvinceId": 82,
-        "osmId": 7175324,
+        "osmId": 13263678,
         "osmType": "relation",
         "name": "Kab. Pulau Morotai",
         "location": {
@@ -6596,14 +6610,14 @@
     {
         "administrativeId": 9103,
         "administrativeProvinceId": 91,
-        "osmId": 7754451,
+        "osmId": 7754449,
         "osmType": "relation",
         "name": "Kab. Jayapura",
         "location": {
             "type": "Point",
             "coordinates": [
-                140.7037389,
-                -2.5387539
+                139.9470355822034,
+                -3.03711605
             ]
         }
     },
@@ -6722,14 +6736,14 @@
     {
         "administrativeId": 9201,
         "administrativeProvinceId": 92,
-        "osmId": 14905729,
+        "osmId": 14954913,
         "osmType": "relation",
         "name": "Kab. Sorong",
         "location": {
             "type": "Point",
             "coordinates": [
-                131.2544805,
-                -0.8634105
+                131.5336145421483,
+                -1.154763
             ]
         }
     },
@@ -6750,14 +6764,14 @@
     {
         "administrativeId": 9203,
         "administrativeProvinceId": 92,
-        "osmId": 5818000058,
-        "osmType": "node",
+        "osmId": 14954918,
+        "osmType": "relation",
         "name": "Kab. Fak Fak",
         "location": {
             "type": "Point",
             "coordinates": [
-                132.5517487,
-                -2.9632987
+                133.08884774738942,
+                -3.27040235
             ]
         }
     },
@@ -6974,14 +6988,14 @@
     {
         "administrativeId": 9402,
         "administrativeProvinceId": 94,
-        "osmId": 1248787509,
-        "osmType": "node",
+        "osmId": 7754468,
+        "osmType": "relation",
         "name": "Kab. Puncak Jaya",
         "location": {
             "type": "Point",
             "coordinates": [
-                137.1586126,
-                -4.0786047
+                137.9649142,
+                -3.7009102
             ]
         }
     },
@@ -7178,20 +7192,6 @@
             "coordinates": [
                 138.22483809556405,
                 -4.443120199999999
-            ]
-        }
-    },
-    {
-        "administrativeId": 5302,
-        "administrativeProvinceId": 53,
-        "osmId": 11226932,
-        "osmType": "relation",
-        "name": "Kab. Timor Tengah Selatan",
-        "location": {
-            "type": "Point",
-            "coordinates": [
-                124.43559530205364,
-                -9.82305125
             ]
         }
     }
