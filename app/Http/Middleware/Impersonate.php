@@ -21,13 +21,18 @@ class Impersonate
      */
     public function handle(Request $request, Closure $next)
     {
+        // The impersonation feature is only to help development, don't allow this in production.
+        if (App::isProduction()) {
+            return response()->json(['error' => 'Unauthorized'], 403);
+        }
+
         $rootUsers = type(config('services.root_users'))->asArray();
 
         $authHeader = $request->header('Authorization');
         if(!$authHeader) {
             return response()->json(['error' => 'Unauthorized'], 403);
         }
-        
+
         $user = $this->validateToken($authHeader);
         if (!$user) {
             return response()->json(['error' => 'Unauthorized'], 403);

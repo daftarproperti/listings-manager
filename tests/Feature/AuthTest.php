@@ -189,7 +189,7 @@ class AuthTest extends TestCase
         $response->assertStatus(200)
                  ->assertJsonStructure(['success'])
                  ->assertJson(['success' => true]);
-        
+
         // If we hit logout or any other endpoints again with the revoked token, it now should return unauthorized
         $response = $this->withHeaders([
             'Authorization' => 'Bearer ' . $accessToken,
@@ -240,6 +240,16 @@ class AuthTest extends TestCase
         $response->assertStatus(200)
                  ->assertJsonStructure(['accessToken', 'success', 'user'])
                  ->assertJson(['success' => true]);
+
+        // The impersonation feature is only to help development, so make sure this does not work in production.
+        $this->app['env'] = 'production';
+        $response = $this->withHeaders([
+            'Authorization' => 'Bearer ' . $accessToken,
+        ])->postJson('/api/auth/impersonate', [
+            'phoneNumber' => '081231234567',
+        ]);
+        $response->assertStatus(403)
+                 ->assertJson(['error' => 'Unauthorized']);
     }
 
     public function testImpersonateWithNormalUser() {
