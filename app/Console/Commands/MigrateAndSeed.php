@@ -39,7 +39,12 @@ class MigrateAndSeed extends Command
 
             // Run migrations
             $this->info('Running migrations...');
-            Artisan::call('migrate', $migrateOptions, $this->output);
+            $migrateExitCode = Artisan::call('migrate', $migrateOptions, $this->output);
+
+            if ($migrateExitCode !== 0) {
+                $this->error('Migrate failed, not continuing to seed.');
+                return $migrateExitCode;
+            }
 
             // Run seeders
             $this->info('Running seeders...');
