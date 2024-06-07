@@ -93,6 +93,17 @@ return [
             'driver' => 'octane',
         ],
 
+        // Mostly following https://www.mongodb.com/docs/drivers/php/laravel-mongodb/v4.4/cache/
+        'mongodb' => [
+            'driver' => 'mongodb',
+            'connection' => 'mongodb',
+            'collection' => 'cache',
+            'lock_connection' => 'mongodb',
+            'lock_collections' => 'cache_locks',
+            'lock_lottery' => [0, 100],
+            'lock_timeout' => 3600,
+        ],
+
     ],
 
     /*
