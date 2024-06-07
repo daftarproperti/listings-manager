@@ -27,6 +27,8 @@ class AuthTest extends TestCase
         Config::set('services.twilio.account_sid', '291203910293011');
         Config::set('services.twilio.phone_number', '2912039102930');
 
+        Config::set('services.root_users', ['081211112222']);
+
         User::truncate();
     }
 
@@ -195,6 +197,82 @@ class AuthTest extends TestCase
 
         $response->assertStatus(403)
                  ->assertJsonStructure(['error'])
+                 ->assertJson(['error' => 'Unauthorized']);
+    }
+
+    public function testImpersonateWithRootUser() {
+        $phoneNumber = '081211112222';
+        $otpCode = '123456';
+        $time = Carbon::create(2024, 05, 20, 10, 01);
+        Carbon::setTestNow($time);
+
+        $timestamp = $time->timestamp;
+        $salt = config('app.key');
+        $token = Hash::make($phoneNumber . $otpCode . $timestamp . $salt);
+
+        $response = $this->postJson('/api/auth/verify-otp', [
+            'phoneNumber' => $phoneNumber,
+            'token' => $token,
+            'timestamp' => $timestamp,
+            'otpCode' => $otpCode,
+        ]);
+
+        $response->assertStatus(200)
+                 ->assertJsonStructure(['accessToken', 'success', 'user'])
+                 ->assertJson(['success' => true]);
+
+        $json = $response->json();
+        $accessToken = $json['accessToken'];
+
+        User::create([
+            'phoneNumber' => '081231234567',
+            'name' => 'test impersonate person',
+            'email' => 'test@impersonate.com',
+            'description' => 'this is for impersonate purpose only'
+        ]);
+
+        $response = $this->withHeaders([
+            'Authorization' => 'Bearer ' . $accessToken,
+        ])->postJson('/api/auth/impersonate', [
+            'phoneNumber' => '081231234567',
+        ]);
+
+        $response->assertStatus(200)
+                 ->assertJsonStructure(['accessToken', 'success', 'user'])
+                 ->assertJson(['success' => true]);
+    }
+
+    public function testImpersonateWithNormalUser() {
+        $phoneNumber = '081212341234';
+        $otpCode = '123456';
+        $time = Carbon::create(2024, 05, 20, 10, 01);
+        Carbon::setTestNow($time);
+
+        $timestamp = $time->timestamp;
+        $salt = config('app.key');
+        $token = Hash::make($phoneNumber . $otpCode . $timestamp . $salt);
+
+        $response = $this->postJson('/api/auth/verify-otp', [
+            'phoneNumber' => $phoneNumber,
+            'token' => $token,
+            'timestamp' => $timestamp,
+            'otpCode' => $otpCode,
+        ]);
+
+        $response->assertStatus(200)
+                 ->assertJsonStructure(['accessToken', 'success', 'user'])
+                 ->assertJson(['success' => true]);
+
+        $json = $response->json();
+        $accessToken = $json['accessToken'];
+
+        $response = $this->withHeaders([
+            'Authorization' => 'Bearer ' . $accessToken,
+        ])->postJson('/api/auth/impersonate', [
+            'phoneNumber' => '081210112011',
+        ]);
+
+        $response->assertStatus(403)
                  ->assertJson(['error' => 'Unauthorized']);
     }
 }

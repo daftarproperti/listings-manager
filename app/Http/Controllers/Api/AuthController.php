@@ -204,4 +204,61 @@ class AuthController extends Controller
             'success' => false
         ], 404);
     }
+
+    #[OA\Post(
+        path: "/api/auth/impersonate",
+        tags: ["Auth"],
+        summary: "Impersonate",
+        operationId: "auth.impersonate",
+        parameters: [
+            new OA\Parameter(
+                name: "phoneNumber",
+                in: "path",
+                required: true,
+                description: "Phone Number",
+                schema: new OA\Schema(
+                    type: "string"
+                )
+            )
+        ],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: "Success response",
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(property: "success", type: "boolean", example: true, description: "Verify status"),
+                        new OA\Property(property: "accessToken", type: "string", example: "Akoasdk131o3ipIaskdlz", description: "Access token"),
+                        new OA\Property(property: "user", ref: "#/components/schemas/User", description: "User information")
+                    ]
+                )
+            )
+        ]
+    )]
+    public function impersonate(Request $request): JsonResponse
+    {
+        $validatedRequest = $request->validate([
+            'phoneNumber' => 'required', 'string', new IndonesiaPhoneFormat,
+        ]);
+        $phoneNumber = $validatedRequest['phoneNumber'];
+
+        $expiryDate = new DateTime();
+        $expiryDate->modify('+3 hour');
+
+        /** @var User|null $user */
+        $user = User::where('phoneNumber', $phoneNumber)->first();
+        if (!$user) {
+            return response()->json([
+                'success' => false
+            ], 404);
+        }
+
+        $token = $user->createToken('loginToken', ['*'], $expiryDate)->plainTextToken;
+
+        return response()->json([
+            'success' => true,
+            'accessToken' => $token,
+            'user' => new UserResource($user)
+        ]);
+    }
 }

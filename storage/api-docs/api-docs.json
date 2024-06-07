@@ -169,6 +169,53 @@
                 ]
             }
         },
+        "/api/auth/impersonate": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Impersonate",
+                "operationId": "auth.impersonate",
+                "parameters": [
+                    {
+                        "name": "phoneNumber",
+                        "in": "path",
+                        "description": "Phone Number",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "description": "Verify status",
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "accessToken": {
+                                            "description": "Access token",
+                                            "type": "string",
+                                            "example": "Akoasdk131o3ipIaskdlz"
+                                        },
+                                        "user": {
+                                            "$ref": "#/components/schemas/User"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/tele-app/cities": {
             "get": {
                 "tags": [
