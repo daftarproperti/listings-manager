@@ -47,9 +47,8 @@ class CityController extends Controller
     public function index(Request $request, CityRepository $cityRepository): JsonResource
     {
         $q = type($request->input('q', ''))->asString();
-        $keyWord =  strlen($q) >= 3 ? $q : null;
 
-        $cities = $cityRepository->searchByKeyword($keyWord);
+        $cities = $cityRepository->searchByKeyword($q);
 
         return new CityCollection($cities);
     }
