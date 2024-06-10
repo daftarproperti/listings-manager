@@ -65,11 +65,31 @@ class Web3AddListing implements ShouldQueue
         $privateKey = type(env('ETH_PRIVATE_KEY'))->asString();
         $raw = $tx->getRaw($privateKey, (int)type(env('ETH_CHAIN_ID'))->asString());
 
+        $txHash = null;
         /** @phpstan-ignore-next-line */
-        $web3->getEth()->sendRawTransaction('0x' . $raw, function ($err, $txHash) {
+        $web3->getEth()->sendRawTransaction('0x' . $raw, function ($err, $hash) use (&$txHash) {
             if ($err !== null) throw $err;
-            logger()->info("Sent addListing transaction, txHash = $txHash");
+            logger()->info("Sent addListing transaction, txHash = $hash");
+            $txHash = $hash;
         });
+
+        $receipt = null;
+        $maxRetries = 100;
+        do {
+            /** @phpstan-ignore-next-line */
+            $web3->getEth()->getTransactionReceipt($txHash, function ($err, $rec) use (&$receipt) {
+                if ($err !== null) throw $err;
+                $receipt = $rec;
+            });
+            $maxRetries--;
+            sleep(1);
+        } while ($receipt === null && $maxRetries > 0);
+
+        if ($receipt && hexdec($receipt->status) == 1) {
+            logger()->info("Transaction successful: $txHash");
+        } else {
+            logger()->error("Transaction failed: $txHash, receipt = " . print_r($receipt, true));
+        }
     }
 
     private function getHash(string $offChainLink): string|null {
