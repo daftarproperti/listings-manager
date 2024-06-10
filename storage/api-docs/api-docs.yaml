@@ -1124,6 +1124,9 @@ components:
         cityId:
           type: integer
           example: 123
+        cityName:
+          type: string
+          example: Surabaya
         description:
           type: string
           example: 'Agen terpercaya'

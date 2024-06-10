@@ -15,6 +15,7 @@ class TelegramUserProfileRequest extends BaseApiRequest
     #[OA\Property(property: "phoneNumber", type: "string", example: "081111111111")]
     #[OA\Property(property: "city", type: "string", example: "Surabaya")]
     #[OA\Property(property: "cityId", type: "integer", example: 123)]
+    #[OA\Property(property: "cityName", type: "string", example: "Surabaya")]
     #[OA\Property(property: "description", type: "string", example: "Agen terpercaya")]
     #[OA\Property(property: "company", type: "string", example: "Agen XXX")]
     #[OA\Property(property: "picture", type: "string", format: "binary", example: "\x00\x00\x00\x04\x00\x00\x00\x04")]
