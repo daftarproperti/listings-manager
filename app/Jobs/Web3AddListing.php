@@ -72,6 +72,33 @@ class Web3AddListing implements ShouldQueue
         });
     }
 
+    private function getHash(string $offChainLink): string|null {
+        if (env('GET_HASH_EXTERNAL')) {
+            usleep(200000);
+            $content = file_get_contents($this->offChainLink);
+            if (!$content) return null;
+            return hash('sha256', $content);
+        }
+
+        $parsedUrl = parse_url($offChainLink);
+        if (!isset($parsedUrl['path'])) {
+            logger()->error("Cannot parse offChainLink $offChainLink, not sending addListing transaction.");
+            return null;
+        }
+
+        $path = $parsedUrl['path'];
+        $request = Request::create($path, 'GET');
+        $response = Route::dispatch($request);
+        $json = $response->getContent();
+
+        if (!$json) {
+            logger()->error('Error getting JSON content of listing, not sending addListing transaction.');
+            return null;
+        }
+
+        return hash('sha256', $json);
+    }
+
     /**
      * Execute the job.
      */
@@ -82,23 +109,13 @@ class Web3AddListing implements ShouldQueue
             return;
         }
 
-        $parsedUrl = parse_url($this->offChainLink);
-        if (!isset($parsedUrl['path'])) {
-            logger()->error("Cannot parse offChainLink $this->offChainLink, not sending addListing transaction.");
+        $hash = $this->getHash($this->offChainLink);
+
+        if (!$hash) {
+            logger()->error("Cannot get hash from $this->offChainLink, aborting.");
             return;
         }
 
-        $path = $parsedUrl['path'];
-        $request = Request::create($path, 'GET');
-        $response = Route::dispatch($request);
-        $json = $response->getContent();
-
-        if (!$json) {
-            logger()->error('Error getting JSON content of listing, not sending addListing transaction.');
-            return;
-        }
-
-        $hash = hash('sha256', $json);
         $this->executeContractAddListing($this->id, $this->city, $this->offChainLink, $hash);
     }
 }
