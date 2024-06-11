@@ -48,6 +48,8 @@ class OTPService
                 return $this->sendTwilioOTP($phoneNumber, $otpCode);
             case 'WHATSAPP':
                 return $this->sendWAOTP($phoneNumber, $otpCode);
+            case 'LOCAL':
+                return true;
             default:
                 throw new \InvalidArgumentException('Invalid OTP sending method.');
         }
