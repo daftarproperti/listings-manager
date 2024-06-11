@@ -63,6 +63,8 @@ use Spatie\Analytics\Period;
  * @property bool $isPrivate
  * @property TelegramUserProfile $user_profile
  * @property ListingUser|null $user
+ * @property Carbon $updated_at
+ * @property Carbon $created_at
  */
 class Listing extends Model
 {

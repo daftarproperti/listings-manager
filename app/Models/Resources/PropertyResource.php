@@ -90,7 +90,7 @@ class PropertyResource extends JsonResource
                 'latitude' => $prop->latitude,
                 'longitude' => $prop->longitude,
             ],
-            'updatedAt' => $prop->updated_at ? $prop->updated_at->isoFormat('D MMMM YYYY') : null,
+            'updatedAt' => $prop->updated_at->isoFormat('D MMMM YYYY'),
             'listings' => ListingResource::collection($prop->listings),
         ];
     }

@@ -116,7 +116,7 @@ class ListingResource extends JsonResource
             ],
             'userCanEdit' => $prop->user_can_edit,
             'isPrivate' => $prop->isPrivate ?? false,
-            'updatedAt' => $prop->updated_at ? $prop->updated_at->isoFormat('D MMMM YYYY') : null,
+            'updatedAt' => $prop->updated_at->isoFormat('D MMMM YYYY'),
         ];
     }
 }

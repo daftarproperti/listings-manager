@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Helpers\TelegramPhoto;
 use App\Models\Enums\VerifyStatus;
 use App\Models\Traits\CityAttributeTrait;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use MongoDB\Laravel\Eloquent\Model;
 use MongoDB\Laravel\Eloquent\SoftDeletes;
@@ -39,6 +40,8 @@ use Illuminate\Database\Eloquent\Collection;
  * @property double $latitude
  * @property double $longitude
  * @property bool $isPrivate
+ * @property Carbon $updated_at
+ * @property Carbon $created_at
  */
 class Property extends Model
 {
