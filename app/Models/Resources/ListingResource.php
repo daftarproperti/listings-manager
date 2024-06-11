@@ -44,7 +44,6 @@ class ListingResource extends JsonResource
     ])]
     #[OA\Property(property: "contact", type: "object", properties: [
         new OA\Property(property: "name", type: "string"),
-        new OA\Property(property: "phoneNumber", type: "string"),
         new OA\Property(property: "company", type: "string")
     ])]
     #[OA\Property(property: "user", type: "object", properties: [
@@ -55,7 +54,6 @@ class ListingResource extends JsonResource
         new OA\Property(property: "cityName", type: "string"),
         new OA\Property(property: "company", type: "string"),
         new OA\Property(property: "description", type: "string"),
-        new OA\Property(property: "phoneNumber", type: "string")
     ])]
     #[OA\Property(property: "userCanEdit", type: "boolean")]
     #[OA\Property(property: "isPrivate", type: "boolean")]
@@ -105,12 +103,10 @@ class ListingResource extends JsonResource
             ],
             'contact' => [
                 'name' => $prop->contact ? ($prop->contact['name'] ?? null) :  null,
-                'phoneNumber' => $prop->contact ? ($prop->contact['phoneNumber'] ?? null) : null,
                 'company' =>  $prop->contact ? ($prop->contact['company'] ?? null) : null,
             ],
             'user' => [
                 'name' => $prop->user_profile ? $prop->user_profile->name : null,
-                'phoneNumber' => $prop->user_profile ? $prop->user_profile->phoneNumber : null,
                 'city' => $prop->user_profile ? $prop->user_profile->city : null,
                 'cityId' => $prop->user_profile ? $prop->user_profile->cityId : null,
                 'cityName' => $prop->user_profile ? $prop->user_profile->cityName : null,

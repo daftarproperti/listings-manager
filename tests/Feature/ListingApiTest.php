@@ -197,7 +197,6 @@ class ListingApiTest extends TestCase
                 'title' => $listing->title,
                 'user' => [
                     'name' => 'The User',
-                    'phoneNumber' => '0123',
                     'city' => 'Some City',
                     'description' => 'About the user.',
                     'company' => 'The Company',
@@ -222,7 +221,6 @@ class ListingApiTest extends TestCase
                 'title' => $listing->title,
                 'user' => [
                     'name' => null,
-                    'phoneNumber' => null,
                     'city' => null,
                     'description' => null,
                     'company' => null,
