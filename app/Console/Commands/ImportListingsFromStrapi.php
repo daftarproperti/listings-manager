@@ -115,7 +115,7 @@ JOIN files f ON frm.file_id = f.id
 JOIN properties_city_links pcl ON p.id = pcl.property_id
 JOIN cities c ON pcl.city_id = c.id
 WHERE frm.related_type = 'api::property.property' AND frm.field = 'pictures' AND p.address IS NOT NULL
-ORDER BY p.id, f.id
+ORDER BY p.id
 EOD;
         $listings = DB::connection('strapi_pgsql')->select($sql);
         foreach ($listings as $listingObj) {
