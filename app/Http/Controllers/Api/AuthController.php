@@ -248,9 +248,9 @@ class AuthController extends Controller
         /** @var User|null $user */
         $user = User::where('phoneNumber', $phoneNumber)->first();
         if (!$user) {
-            return response()->json([
-                'success' => false
-            ], 404);
+            $user = new User();
+            $user->phoneNumber = $phoneNumber;
+            $user->save();
         }
 
         $token = $user->createToken('loginToken', ['*'], $expiryDate)->plainTextToken;
