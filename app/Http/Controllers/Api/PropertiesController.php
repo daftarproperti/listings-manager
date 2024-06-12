@@ -183,6 +183,13 @@ class PropertiesController extends Controller
                 schema: new OA\Schema(type: 'integer')
             ),
             new OA\Parameter(
+                name: 'cityId',
+                in: 'query',
+                description: 'City Id',
+                required: false,
+                schema: new OA\Schema(type: 'integer')
+            ),
+            new OA\Parameter(
                 name: 'sort',
                 in: 'query',
                 description: 'Sort By',
@@ -229,6 +236,7 @@ class PropertiesController extends Controller
             'carCount',
             'electricPower',
             'city',
+            'cityId',
             'sort',
             'order'
         ]));
@@ -236,7 +244,7 @@ class PropertiesController extends Controller
         if ($request->has('listingForSale')) {
             $filterSet->listingForSale = filter_var($request->input('listingForSale'), FILTER_VALIDATE_BOOLEAN);
         }
-    
+
         if ($request->has('listingForRent')) {
             $filterSet->listingForRent = filter_var($request->input('listingForRent'), FILTER_VALIDATE_BOOLEAN);
         }

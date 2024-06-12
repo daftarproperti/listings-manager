@@ -72,6 +72,7 @@ class PropertyRepository
         $this->buildFilterQuery($query, $filterSet->ownership, 'ownership');
         $this->buildFilterQuery($query, $filterSet->electricPower, 'electricPower');
         $this->buildFilterQuery($query, $filterSet->city, 'city');
+        $this->buildFilterQuery($query, $filterSet->cityId, 'cityId');
 
         $query->when(isset($filterSet->sort), function ($query) use ($filterSet) {
             assert(is_string($filterSet->sort));

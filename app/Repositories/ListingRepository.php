@@ -18,14 +18,14 @@ class ListingRepository
      * @return Builder<Listing>
      */
     private function buildFilterQuery(Builder $query, \BackedEnum|string|int|FilterMinMax|null|bool $filter, string $column): Builder
-    {        
+    {
         if (is_null($filter)) return $query;
 
         if (is_scalar($filter) || $filter instanceof \BackedEnum) {
             // Exact filter if it's a scalar (single value like e.g. string, int, enum).
             return $query->where($column, $filter);
         }
-        
+
         return $query
             ->when(isset($filter->min), function ($query) use ($filter, $column) {
                 $query->where($column, '>=', $filter->min);
@@ -69,7 +69,8 @@ class ListingRepository
         $this->buildFilterQuery($query, $filterSet->ownership, 'ownership');
         $this->buildFilterQuery($query, $filterSet->electricPower, 'electricPower');
         $this->buildFilterQuery($query, $filterSet->city, 'city');
-        
+        $this->buildFilterQuery($query, $filterSet->cityId, 'cityId');
+
         $query->when(isset($filterSet->sort), function ($query) use ($filterSet) {
             assert(is_string($filterSet->sort));
             $order = isset($filterSet->order) ? Str::lower($filterSet->order) : 'asc';

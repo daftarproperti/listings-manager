@@ -78,4 +78,7 @@ class FilterSet extends Data
 
     #[OA\Property(property: "city", type: "string", nullable: true, description: "City")]
     public ?string $city = null;
+
+    #[OA\Property(property: "cityId", type: "integer", nullable: true, description: "City (OSM) ID")]
+    public ?int $cityId = null;
 }

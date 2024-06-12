@@ -198,6 +198,13 @@ class ListingsController extends Controller
                 schema: new OA\Schema(type: 'integer')
             ),
             new OA\Parameter(
+                name: 'cityId',
+                in: 'query',
+                description: 'City Id',
+                required: false,
+                schema: new OA\Schema(type: 'integer')
+            ),
+            new OA\Parameter(
                 name: 'sort',
                 in: 'query',
                 description: 'Sort By',
@@ -247,6 +254,7 @@ class ListingsController extends Controller
             'carCount',
             'electricPower',
             'city',
+            'cityId',
             'sort',
             'order'
         ]));

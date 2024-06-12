@@ -531,6 +531,15 @@
                         }
                     },
                     {
+                        "name": "cityId",
+                        "in": "query",
+                        "description": "City Id",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
                         "name": "sort",
                         "in": "query",
                         "description": "Sort By",
@@ -1038,6 +1047,15 @@
                         "name": "electricPower",
                         "in": "query",
                         "description": "Electric Power",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "cityId",
+                        "in": "query",
+                        "description": "City Id",
                         "required": false,
                         "schema": {
                             "type": "integer"
@@ -1779,6 +1797,11 @@
                     "city": {
                         "description": "City",
                         "type": "string",
+                        "nullable": true
+                    },
+                    "cityId": {
+                        "description": "City (OSM) ID",
+                        "type": "integer",
                         "nullable": true
                     }
                 },
