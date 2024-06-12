@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Helpers\LocationHelper;
 use App\Http\Controllers\Controller;
+use App\Models\Coordinate;
 use App\Models\Resources\CityCollection;
 use App\Models\Resources\CityResource;
 use App\Repositories\CityRepository;
@@ -25,7 +27,7 @@ class CityController extends Controller
                 description: 'Search city by keyword',
                 required: false,
                 schema: new OA\Schema(type: 'string')
-            ),
+            )
         ],
         responses: [
             new OA\Response(
@@ -48,7 +50,18 @@ class CityController extends Controller
     {
         $q = type($request->input('q', ''))->asString();
 
-        $cities = $cityRepository->searchByKeyword($q);
+        $ip = $request->ip() ?? '127.0.0.1';
+
+        $locationByIp = LocationHelper::getLatLongByIpAddress($ip);
+        $userLocation = null;
+
+        if ($locationByIp) {
+            $userLocation = new Coordinate();
+            $userLocation->latitude = $locationByIp['latitude'];
+            $userLocation->longitude = $locationByIp['longitude'];
+        }
+
+        $cities = $cityRepository->searchByKeyword($q, $userLocation);
 
         return new CityCollection($cities);
     }
