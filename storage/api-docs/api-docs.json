@@ -2127,6 +2127,98 @@
                 },
                 "type": "object"
             },
+            "PublicListing": {
+                "description": "Representation of a Listing which is available publicly.",
+                "properties": {
+                    "listingId": {
+                        "type": "integer"
+                    },
+                    "title": {
+                        "type": "string"
+                    },
+                    "propertyType": {
+                        "$ref": "#/components/schemas/PropertyType"
+                    },
+                    "listingForSale": {
+                        "type": "boolean"
+                    },
+                    "listingForRent": {
+                        "type": "boolean"
+                    },
+                    "address": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "price": {
+                        "type": "integer"
+                    },
+                    "rentPrice": {
+                        "type": "integer"
+                    },
+                    "lotSize": {
+                        "type": "integer"
+                    },
+                    "buildingSize": {
+                        "type": "integer"
+                    },
+                    "carCount": {
+                        "type": "integer"
+                    },
+                    "bedroomCount": {
+                        "type": "integer"
+                    },
+                    "bathroomCount": {
+                        "type": "integer"
+                    },
+                    "floorCount": {
+                        "type": "integer"
+                    },
+                    "electricPower": {
+                        "type": "integer"
+                    },
+                    "facing": {
+                        "$ref": "#/components/schemas/FacingDirection"
+                    },
+                    "ownership": {
+                        "$ref": "#/components/schemas/PropertyOwnership"
+                    },
+                    "isVerified": {
+                        "type": "boolean"
+                    },
+                    "cityName": {
+                        "type": "string"
+                    },
+                    "cityId": {
+                        "type": "integer"
+                    },
+                    "pictureUrls": {
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "format": "uri",
+                            "example": "https://example.com/image.jpg"
+                        }
+                    },
+                    "coordinate": {
+                        "properties": {
+                            "latitude": {
+                                "type": "integer"
+                            },
+                            "longitude": {
+                                "type": "integer"
+                            }
+                        },
+                        "type": "object"
+                    },
+                    "updatedAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            },
             "SavedSearch": {
                 "properties": {
                     "id": {

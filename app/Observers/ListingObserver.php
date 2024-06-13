@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\Helpers\Queue;
+use App\Jobs\SyncListingToGCS;
 use App\Jobs\Web3AddListing;
 use App\Models\Listing;
 use App\Models\Property;
@@ -29,6 +30,9 @@ class ListingObserver
 
             // Sync to web3 of this Listing created event.
             $listingId = $listing->listingId;
+
+            SyncListingToGCS::dispatch($listingId)->onQueue(Queue::getQueueName('generic'));
+
             if (env('ETH_LIVE_PUSH')) {
                 Web3AddListing::dispatch(
                     $listingId,
@@ -50,6 +54,8 @@ class ListingObserver
             $property = Property::where('listings', $listing->id)->first();
             $this->fillPropertyFromListing($listing, $property);
             $property->save();
+
+            SyncListingToGCS::dispatch($listing->listingId)->onQueue(Queue::getQueueName('generic'));
         } catch (\Throwable $th) {
             Log::error('Error sync to property: ' . $th->getMessage());
         }
