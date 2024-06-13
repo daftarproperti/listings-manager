@@ -1976,9 +1976,6 @@
                             "name": {
                                 "type": "string"
                             },
-                            "phoneNumber": {
-                                "type": "string"
-                            },
                             "company": {
                                 "type": "string"
                             }
@@ -2006,9 +2003,6 @@
                                 "type": "string"
                             },
                             "description": {
-                                "type": "string"
-                            },
-                            "phoneNumber": {
                                 "type": "string"
                             }
                         },

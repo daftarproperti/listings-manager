@@ -380,6 +380,13 @@ paths:
           schema:
             type: integer
         -
+          name: cityId
+          in: query
+          description: 'City Id'
+          required: false
+          schema:
+            type: integer
+        -
           name: sort
           in: query
           description: 'Sort By'
@@ -738,6 +745,13 @@ paths:
           name: electricPower
           in: query
           description: 'Electric Power'
+          required: false
+          schema:
+            type: integer
+        -
+          name: cityId
+          in: query
+          description: 'City Id'
           required: false
           schema:
             type: integer
@@ -1245,6 +1259,10 @@ components:
           description: City
           type: string
           nullable: true
+        cityId:
+          description: 'City (OSM) ID'
+          type: integer
+          nullable: true
       type: object
     ListingSort:
       description: 'Sort Listing By'
@@ -1368,8 +1386,6 @@ components:
           properties:
             name:
               type: string
-            phoneNumber:
-              type: string
             company:
               type: string
           type: object
@@ -1388,8 +1404,6 @@ components:
             company:
               type: string
             description:
-              type: string
-            phoneNumber:
               type: string
           type: object
         userCanEdit:
