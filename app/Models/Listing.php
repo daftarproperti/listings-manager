@@ -105,7 +105,7 @@ class Listing extends Model
 
     public function getMatchFilterCountAttribute(): int
     {
-        if (!env('PHASE1')) {
+        if (!env('FEATURE_FILTER_COUNT_MATCHES')) {
             return 0;
         }
 
