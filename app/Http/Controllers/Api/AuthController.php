@@ -72,6 +72,7 @@ class AuthController extends Controller
             'phoneNumber' => 'required', 'string', new IndonesiaPhoneFormat,
         ]);
         $phoneNumber = $validatedRequest['phoneNumber'];
+        $phoneNumber = $this->otpService->canonicalizePhoneNumber($phoneNumber);
 
         $otpCode = sprintf("%06d", random_int(0, 999999));
 
@@ -127,6 +128,7 @@ class AuthController extends Controller
         ]);
 
         $phoneNumber = $validatedRequest['phoneNumber'];
+        $phoneNumber = $this->otpService->canonicalizePhoneNumber($phoneNumber);
         $token = $validatedRequest['token'];
         $timestamp = $validatedRequest['timestamp'];
         $otpCode = $validatedRequest['otpCode'];
@@ -241,6 +243,7 @@ class AuthController extends Controller
             'phoneNumber' => 'required', 'string', new IndonesiaPhoneFormat,
         ]);
         $phoneNumber = $validatedRequest['phoneNumber'];
+        $phoneNumber = $this->otpService->canonicalizePhoneNumber($phoneNumber);
 
         $expiryDate = new DateTime();
         $expiryDate->modify('+3 hour');

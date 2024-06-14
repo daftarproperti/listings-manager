@@ -27,7 +27,7 @@ class AuthTest extends TestCase
         Config::set('services.twilio.account_sid', '291203910293011');
         Config::set('services.twilio.phone_number', '2912039102930');
 
-        Config::set('services.root_users', ['081211112222']);
+        Config::set('services.root_users', ['+6281211112222']);
 
         User::truncate();
     }
@@ -38,6 +38,7 @@ class AuthTest extends TestCase
 
         $this->mock(OTPService::class, function(MockInterface $mock) {
             $mock->shouldReceive('sendOTP')->once()->andReturn(true);
+            $mock->shouldReceive('canonicalizePhoneNumber')->once()->andReturn('+6281210002000');
         });
 
         Carbon::setTestNow(Carbon::create(2024, 05, 20, 10, 00));
@@ -51,7 +52,7 @@ class AuthTest extends TestCase
 
     public function testVerifyOTPWithValidToken()
     {
-        $phoneNumber = '081210112011';
+        $phoneNumber = '+6281210112011';
         $otpCode = '123456';
         $time = Carbon::create(2024, 05, 20, 10, 01);
         Carbon::setTestNow($time);
@@ -78,13 +79,13 @@ class AuthTest extends TestCase
 
         $this->assertDatabaseHas('users', [
             'user_id' => $json['user']['user_id'],
-            'phoneNumber' => '081210112011',
+            'phoneNumber' => '+6281210112011',
         ]);
     }
 
     public function testVerifyOTPWithInvalidToken()
     {
-        $phoneNumber = '081210012001';
+        $phoneNumber = '+6281210012001';
         $otpCode = '133144';
         $time = Carbon::create(2024, 05, 20, 10, 01);
         Carbon::setTestNow($time);
@@ -105,7 +106,7 @@ class AuthTest extends TestCase
 
     public function testVerifyOTPWithExpiredTimestamp()
     {
-        $phoneNumber = '081210022002';
+        $phoneNumber = '+6281210022002';
         $otpCode = '244411';
         $time = Carbon::create(2024, 05, 20, 10, 01);
         Carbon::setTestNow($time);
@@ -128,7 +129,7 @@ class AuthTest extends TestCase
 
     public function testVerifyOTPWithInvalidOTP()
     {
-        $phoneNumber = '081210022002';
+        $phoneNumber = '+6281210022002';
         $otpCode = '244411';
         $time = Carbon::create(2024, 05, 20, 10, 01);
         Carbon::setTestNow($time);
@@ -151,7 +152,7 @@ class AuthTest extends TestCase
 
     public function testLogout()
     {
-        $phoneNumber = '081210112011';
+        $phoneNumber = '+6281210112011';
         $otpCode = '123456';
         $time = Carbon::create(2024, 05, 20, 10, 01);
         Carbon::setTestNow($time);
@@ -179,7 +180,7 @@ class AuthTest extends TestCase
 
         $this->assertDatabaseHas('users', [
             'user_id' => $json['user']['user_id'],
-            'phoneNumber' => '081210112011',
+            'phoneNumber' => '+6281210112011',
         ]);
 
         $response = $this->withHeaders([
@@ -201,7 +202,7 @@ class AuthTest extends TestCase
     }
 
     public function testImpersonateWithRootUser() {
-        $phoneNumber = '081211112222';
+        $phoneNumber = '+6281211112222';
         $otpCode = '123456';
         $time = Carbon::create(2024, 05, 20, 10, 01);
         Carbon::setTestNow($time);
@@ -225,7 +226,7 @@ class AuthTest extends TestCase
         $accessToken = $json['accessToken'];
 
         User::create([
-            'phoneNumber' => '081231234567',
+            'phoneNumber' => '+6281231234567',
             'name' => 'test impersonate person',
             'email' => 'test@impersonate.com',
             'description' => 'this is for impersonate purpose only'
@@ -253,7 +254,7 @@ class AuthTest extends TestCase
     }
 
     public function testImpersonateWithNormalUser() {
-        $phoneNumber = '081212341234';
+        $phoneNumber = '+6281212341234';
         $otpCode = '123456';
         $time = Carbon::create(2024, 05, 20, 10, 01);
         Carbon::setTestNow($time);

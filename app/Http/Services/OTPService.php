@@ -121,7 +121,7 @@ class OTPService
         return true;
     }
 
-    private function canonicalizePhoneNumber(string $phoneNumber): string
+    public function canonicalizePhoneNumber(string $phoneNumber): string
     {
         $idCountryCode = "+62";
         if (str_starts_with($phoneNumber, '0') && substr($phoneNumber, 0, strlen($idCountryCode)) !== $idCountryCode) {
