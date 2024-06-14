@@ -12,6 +12,8 @@ use OpenApi\Attributes as OA;
 class ListingResource extends JsonResource
 {
     #[OA\Property(property: "id", type: "string")]
+    #[OA\Property(property: "listingId", type: "integer")]
+    #[OA\Property(property: "listingIdStr", type: "string")]
     #[OA\Property(property: "sourceText", type: "string")]
     #[OA\Property(property: "title", type: "string")]
     #[OA\Property(property: "propertyType", ref: "#/components/schemas/PropertyType")]
@@ -71,6 +73,8 @@ class ListingResource extends JsonResource
 
         return [
             'id' => $prop->id,
+            'listingId' => $prop->listingId,
+            'listingIdStr' => (string)$prop->listingId,
             'sourceText' => $prop->sourceText,
             'title' => $prop->title,
             'propertyType' => $prop->propertyType,

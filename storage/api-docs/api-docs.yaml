@@ -1319,6 +1319,10 @@ components:
       properties:
         id:
           type: string
+        listingId:
+          type: integer
+        listingIdStr:
+          type: string
         sourceText:
           type: string
         title:
