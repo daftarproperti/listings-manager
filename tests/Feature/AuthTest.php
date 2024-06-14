@@ -274,6 +274,10 @@ class AuthTest extends TestCase
                  ->assertJsonStructure(['accessToken', 'success', 'user'])
                  ->assertJson(['success' => true]);
 
+        $this->assertDatabaseHas('users', [
+            'phoneNumber' => '+6281212341234',
+        ]);
+
         $json = $response->json();
         $accessToken = $json['accessToken'];
 
@@ -285,5 +289,13 @@ class AuthTest extends TestCase
 
         $response->assertStatus(403)
                  ->assertJson(['error' => 'Unauthorized']);
+    }
+
+    public function testCanonicalizePhoneNumber() {
+        $otpService = new OTPService();
+        $this->assertEquals('+6281234', $otpService->canonicalizePhoneNumber('081234'));
+        $this->assertEquals('+1400500', $otpService->canonicalizePhoneNumber('1-400-500'));
+        $this->assertEquals('+6212345', $otpService->canonicalizePhoneNumber('+6212 345'));
+        $this->assertEquals('+1800700', $otpService->canonicalizePhoneNumber('+1 800_700'));
     }
 }

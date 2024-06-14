@@ -104,7 +104,7 @@ class OTPService
         return true;
     }
 
-    private function sendTwilioOTP(string $phoneNumber, string $otpCode): bool 
+    private function sendTwilioOTP(string $phoneNumber, string $otpCode): bool
     {
         $response = Http::withBasicAuth($this->twilioAccountSID, $this->twilioAuthToken)
             ->asForm()
@@ -123,11 +123,14 @@ class OTPService
 
     public function canonicalizePhoneNumber(string $phoneNumber): string
     {
-        $idCountryCode = "+62";
-        if (str_starts_with($phoneNumber, '0') && substr($phoneNumber, 0, strlen($idCountryCode)) !== $idCountryCode) {
-            return  $idCountryCode . substr($phoneNumber, 1);
+        $phoneNumber = preg_replace('/\D/', '', $phoneNumber);;
+
+        if (!$phoneNumber) return '';
+
+        if (str_starts_with($phoneNumber, '0')) {
+            $phoneNumber = '62' . substr($phoneNumber, 1);
         }
 
-        return $phoneNumber;
+        return '+' . $phoneNumber;
     }
 }
