@@ -1494,6 +1494,8 @@ components:
       properties:
         listingId:
           type: integer
+        listingIdStr:
+          type: string
         title:
           type: string
         propertyType:
