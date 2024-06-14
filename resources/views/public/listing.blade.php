@@ -136,16 +136,9 @@
                     <img class="h-12 w-12 rounded-full object-cover" src="{{ $listing->user_profile->picture }}" alt="{{ $listing->user_profile->name }}" onerror="this.src='/images/account.png'" />
                     <div>
                         <p class="text-base text-slate-800">{{ $listing->user_profile->name }}</p>
-                        @if($listing->user_profile->company)
-                        <p class="text-base text-slate-500">{{ $listing->user_profile->company }}</p>
-                        @else
-                        <p class="text-base text-slate-500">Independen</p>
-                        @endif
+                        <p class="text-base text-slate-500">[Hubungi]</p>
                     </div>
                 </div>
-                <a href="tel:{{ $agent->profile?->phoneNumber }}" class="justify-center self-center whitespace-nowrap rounded-lg bg-ribbon-500 px-6 py-3 text-center text-base text-slate-50">
-                    Hubungi
-                </a>
             </div>
         </nav>
     </div>
