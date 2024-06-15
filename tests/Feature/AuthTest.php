@@ -242,15 +242,16 @@ class AuthTest extends TestCase
                  ->assertJsonStructure(['accessToken', 'success', 'user'])
                  ->assertJson(['success' => true]);
 
-        // The impersonation feature is only to help development, so make sure this does not work in production.
+        // For now allow impersonation in production since it's expected to have a lot of manual help for customers.
         $this->app['env'] = 'production';
         $response = $this->withHeaders([
             'Authorization' => 'Bearer ' . $accessToken,
         ])->postJson('/api/auth/impersonate', [
             'phoneNumber' => '081231234567',
         ]);
-        $response->assertStatus(403)
-                 ->assertJson(['error' => 'Unauthorized']);
+        $response->assertStatus(200)
+                 ->assertJsonStructure(['accessToken', 'success', 'user'])
+                 ->assertJson(['success' => true]);
     }
 
     public function testImpersonateWithNormalUser() {
