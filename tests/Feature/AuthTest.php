@@ -31,7 +31,7 @@ class AuthTest extends TestCase
 
         User::truncate();
 
-        putenv('ETH_PRIVATE_KEY=some-secret-key');
+        putenv('USER_ID_KEY=some-secret-key');
     }
 
     public function testSendOTP()

@@ -90,7 +90,7 @@ class User extends Authenticatable
 
     private static function generateUserId(string $phoneNumber): int
     {
-        $secret_key = type(env('ETH_PRIVATE_KEY') ?? 'default-key')->asString();  // Use a secure, private key
+        $secret_key = type(env('USER_ID_KEY') ?? 'default-key')->asString();  // Use a secure, private key
 
         $hash = hash_hmac('sha256', $phoneNumber, $secret_key, true);
 
