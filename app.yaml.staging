@@ -23,6 +23,7 @@ env_variables:
   APP_KEY: "appkey"
   APP_NAME: "Daftar Properti Staging"
   DP_VERSION: "0"
+  USER_ID_KEY: "secret"
   LOG_LEVEL: debug
   CACHE_DRIVER: "mongodb"
   SESSION_DRIVER: cookie
