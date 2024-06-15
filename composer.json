@@ -82,6 +82,9 @@
             },
             "spatie/laravel-data": {
                 "Cast enum from array": "patches/laravel-data/cast-enum-from-array.patch"
+            },
+            "laravel/sanctum": {
+                "Relax PersonalAccessToken type": "patches/laravel-sanctum/relax-personal-access-token-type.patch"
             }
         },
         "laravel": {

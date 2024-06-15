@@ -1,0 +1,15 @@
+--- src/NewAccessToken.php	2024-06-14 22:46:20.702197314 -0700
++++ src/NewAccessToken.php	2024-06-14 22:46:27.468327518 -0700
+@@ -26,11 +26,11 @@
+      *
+      * @param  \Laravel\Sanctum\PersonalAccessToken  $accessToken
+      * @param  string  $plainTextToken
+      * @return void
+      */
+-    public function __construct(PersonalAccessToken $accessToken, string $plainTextToken)
++    public function __construct(mixed $accessToken, string $plainTextToken)
+     {
+         $this->accessToken = $accessToken;
+         $this->plainTextToken = $plainTextToken;
+     }
+
