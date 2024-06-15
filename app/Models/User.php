@@ -88,13 +88,29 @@ class User extends Authenticatable
         return $listingUser;
     }
 
+    private static function generateUserId(string $phoneNumber): int
+    {
+        $secret_key = type(env('ETH_PRIVATE_KEY') ?? 'default-key')->asString();  // Use a secure, private key
+
+        $hash = hash_hmac('sha256', $phoneNumber, $secret_key, true);
+
+        // Take the first 7 bytes (56 bits) of the hash and convert the 7-byte string to a 56-bit unsigned integer
+        $hash_56bit = substr($hash, 0, 7);
+        $userid = 0;
+        for ($i = 0; $i < 7; $i++) {
+            $userid = ($userid << 8) | ord($hash_56bit[$i]);
+        }
+
+        return $userid;
+    }
+
     protected static function boot()
     {
         parent::boot();
 
         static::creating(function (self $model) {
             if (!isset($model->user_id)) {
-                $model->user_id = random_int(1, PHP_INT_MAX);
+                $model->user_id = self::generateUserId($model->phoneNumber);
             }
         });
     }

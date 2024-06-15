@@ -30,6 +30,8 @@ class AuthTest extends TestCase
         Config::set('services.root_users', ['+6281211112222']);
 
         User::truncate();
+
+        putenv('ETH_PRIVATE_KEY=some-secret-key');
     }
 
     public function testSendOTP()
@@ -74,8 +76,7 @@ class AuthTest extends TestCase
 
         $json = $response->json();
 
-        $this->assertIsInt($json['user']['user_id']);
-        $this->assertGreaterThan(0, $json['user']['user_id']);
+        $this->assertEquals(43453923302522360, $json['user']['user_id']);
 
         $this->assertDatabaseHas('users', [
             'user_id' => $json['user']['user_id'],
@@ -175,8 +176,7 @@ class AuthTest extends TestCase
         $json = $response->json();
         $accessToken = $json['accessToken'];
 
-        $this->assertIsInt($json['user']['user_id']);
-        $this->assertGreaterThan(0, $json['user']['user_id']);
+        $this->assertEquals(43453923302522360, $json['user']['user_id']);
 
         $this->assertDatabaseHas('users', [
             'user_id' => $json['user']['user_id'],
