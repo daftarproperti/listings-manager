@@ -75,3 +75,7 @@ Route::get('/privasi', function () {
 Route::get('/syarat-ketentuan', function () {
     return view('terms-of-service');
 });
+
+Route::get('/peraturan', function () {
+    return view('rules');
+});
