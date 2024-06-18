@@ -71,11 +71,12 @@ Route::group(['middleware' => ['auth-dev']], function () {
 Route::get('/privasi', function () {
     return view('privacy');
 });
-
 Route::get('/syarat-ketentuan', function () {
     return view('terms-of-service');
 });
-
 Route::get('/peraturan', function () {
     return view('rules');
+});
+Route::get('/whitepaper', function () {
+    return view('whitepaper');
 });

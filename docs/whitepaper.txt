@@ -1,0 +1,164 @@
+In Indonesia (and many other countries), real estate market is often inefficient.
+For example, potential buyers are often faced with candidate properties that are presented
+in not transparent ways: hidden address, intentionally blurry pictures to make it unsearchable
+without contacting the agent, ambiguous or inaccurate description like "near place X" without
+objective data. This often makes potential buyers difficult to decide whether the candidate property
+is the right one. Also as a side effect of this non-transparent mechanics, the industry cannot have
+clear visibility of historical sales/rents of properties in the country/locality, making it difficult
+for property owners to value the properties accurately, again leading to inefficiencies in the market
+as evident by properties usually sit for at least a year at the wrong pricing before getting a
+closing/deal at the right price.
+
+One of the underlying causes of this inefficiencies is in the way the game is played. An agent/broker
+isn't usually able to get a property owner's confidence in being an exclusive reprensentative in
+the selling effort. It usually ends up being multiple agents/brokers trying to do the job of the
+owner's side (e.g. creating quality listing, photos, and other marketing materials). Counter
+intuitively, multiple agents representing the owner leads to lower quality effort because each agent
+thinks that spending a lot of effort is a losing strategy, because there is a high chance that
+the future sale is made not being through that agent.
+
+In the current mechanics, all stakeholders suffer:
+* Potential buyers have difficulty in getting a clear list of options.
+* Property owners don't have confidence in pricing their properties and having to wait for years
+  in the market.
+* Agents/brokers can't serve owners well due to lack of protection of their hard work reward.
+* Agents/brokers can't serve potential buyers well due to the game that naturally forces them to
+  hide more information rather than be transparent.
+* The public not directly involved in the market, including the authority, have little transparency
+  of the real estate market condition making future decision hard (e.g. making public policies).
+
+We are introducing a system (or ecosystem) where the all the parties will benefit from.
+The end goal of this system is:
+* Potential buyers have a clear list of options of properties for sale/rent.
+* Property owners have confidence in valuing their properties leading to quick turnover.
+* Agents/brokers who represent property owners should feel protected of their effort. This means
+  that the system should encourage exclusive agent representation of a property owner.
+* Agents/brokers who help buyers should be protected that they should get their reward without
+  resorting to intentionally hiding information from the potential buyers. This means that the system
+  should have a fair and reliable way in determining that an agent (or actually anyone/anything)
+  is the one who refers a buyer to a seller in a particular sale.
+* The system should make it possible for the public to get clear visibility of real estate transactions
+  that happened while still protecting private information (like phone numbers).
+
+Component 1: Listing Registry
+
+One of the components to support the system is a Listing Registry. Unlike existing property
+marketplaces, this registry's role in the ecosystem should only be maintaining quality and moderated
+listings that are shared in the ecosystem. The registry keeps which properties are currently in the
+market (clearly identified without ambiguity, meaning addresses are transparent) and the corresponding
+representatives (which may be the owner directly or an agent/broker).
+
+To summarize, the listings in this registry:
+* Are unique (there is no duplicate listings referring to the same property)
+* Are each represented by a single entity, which may be the owner or an agent.
+* Are publicly available, meaning no entity is monopilizing this information.
+* Contain open agreement about the reward for the referrer of future closing (sale/rent). This motivates
+  marketers to find the right buyers/renters.
+
+Technically, to achieve the above, we propose the usage of blockchain technology to keep track of that information.
+In order for the information to be public but also privacy protected, here is what should be available in blockchain:
+
+* List of Listings
+* For each Listing, the basic information (e.g. location/city) and the off-chain link to the detailed
+  spec.
+* In the detailed spec, it contains the industry-standard specs (e.g. building size, number of bedrooms)
+  and the encrypted contact number of the representative. To protect privacy (e.g. from unauthorized
+  collection of phone numbers) the contact number here is encrypted and only the Listing Manager
+  has the key to decrypt it.
+* Each interesting event should be emitted, e.g. "new Listing added", "Listing updated", "Listing
+  becoming verified", "Listing rejected", "Listing removed", "Listing closing".
+* Each Listing should contain the Unlock Service that is an off-chain service to unlock the encrypted
+  contact number. The detail of this is elaborated in Referrral Tracking section below.
+
+New Listing submissions and information update can be done by any Listing Manager (third-party) that
+pays the blockchain network cost.
+The Listing Registry controls which listings are verified and should be active at a time.
+
+To highlight the design decision of choosing blockchain over traditional database + API, here
+are the benefits that support our goals:
+* Listings are publicly available and always will be. There is no way that the Listing Registry
+  betrays the mission and turns it into a closed monopolized data, due to the nature of blockchain
+  immutability.
+* Blockchain is highly reliable due to its decentralized nature. This is very important as the Listing
+  Registry should be the "operating system" of the industry and has low tolerance to downtime.
+  Being available in blockchain makes it easy for everybody, especially marketers to sync data
+  with the Listing Registry.
+
+Component 2: Marketers
+
+The listing registry alone is not useful without entities who look them up and do active effort
+in finding matching buyers/renters. These entities are called Marketers.
+
+Marketers are incentivized by the reward agreement that the Listing representatives explicitly state
+in the Listing Registry. We propose the standard compensation of 0.5% for sale and 2% for rent.
+
+Unlike the traditional ecosystem where marketers have to prove their involvement by becoming an intermediary
+(forcing them to hide information rather than be transparent),
+our proposed system is able to determine the Marketers involvement as being referrers and maintaining
+high transparency to potential buyers. The Referral Tracking system is transparent, verifiable, and privacy-protected.
+
+Component 3: Referral Tracking System
+
+Marketer registration:
+* A Marketer registers themself to the blockchain contract. Once registered, it should contain
+  the information about the Marketer:
+  * Name: can be agent/broker name if individual, or company name if a business entity.
+  * Contact Number: This is publicly available, so this should be business phone number instead
+    of personal.
+  * The public key: This will be used for cryptographic purposes, for example verification of
+    signed messages.
+* The Marketer pays only the blockchain network cost and no registration cost.
+
+The registered Marketer may participate in the Verifiable Transparent Log for referral tracking:
+* The Marketer displays the Listing to a potential buyer/renter. The Listing is sourced from Listing
+  Registry and the Marketer has its own way of reaching the buyer, for example by becoming a search
+  engine, on online content creator, a personal real estate broker, or even just a friend or
+  acquintance sending a link to a potential buyer.
+* The contact number of the Listing is not shown, but the potential buyer can unlock it at real time
+  if they are interested to proceed to continue the interaction with the Listing representative.
+* When the potential buyer clicks the "Unlock Contact", it should open the Listing Registry's
+  page that displays the interface. The interface authenticates the potential buyer's phone number
+  and present the user confirmation that they (the owner of that authenticated phone number) is
+  unlocking the contact number of that Listing through the mentioned Marketer.
+* Once the potential buyer confirms, the Listing Registry unlock interface returns a signed log
+  that the Marketer should then post to the blockchain. This unlock log entry in the blockchain
+  contains:
+  * The sha256 hash of the Marketer's random number + phone number ID (assigned by Listing Registry as blinding factor) + phone number.
+    The purpose of the Marketer's random number is so that this log appears unique in the blockchain log
+    and does not repeat the hash of another log with the same phone number (the log is public so this
+    is important to protect privacy). And also the Marketer's
+    random number will be revealed by the Marketer to proof that this log corresponds to the phone
+    number of the buyer when closing happens in the future.
+  * The Marketer id
+  * The listing id
+  * The unlocked contact number, this time encrypted using the Marketer's public key so that the Marketer can decrypt it
+    using their private key.
+  * The timestamp
+* Once the Marketer posts this to blockchain, they are sure that their involvement is recorded and
+  cannot be cheated. They should then display the decrypted contact number to the potential buyer
+  to continue interaction with Listing representative.
+
+At closing:
+* Closing is reported by either Listing representative, the buyer/renter, or a third party.
+* Once the Listing Registry confirms the truth, the closing is logged to the blockchain containing:
+  * The hash of phone number ID + phone number as the buyer identity
+  * The closing amount: publicly available.
+* Once this appears in the blockchain, an event is emitted so that Marketers may check whether
+  they are involved in the referral. The Marketer then checks their log if there is a match
+  with their Unlock log and only the Marketer can make this confirmation because of the random
+  number that they attached to the Unlock log.
+* If found, the Marketer then posts a Claim to the blockchain by mentioning:
+  * The Unlock log id
+  * The random number prefix: will be checked to verify whether they have the random number that
+    when hashed with phone number id + phone number of the potential buyer is equal to the
+    Closing log's buyer/renter.
+* After given some time, all Claims are already cryptographically confirmed to be true without
+  revealing private information.
+* Listing Registry then proceeds to send reward obligation document to the Listing representative
+  and the Claimers.
+
+Conclusion
+
+The mechanics above provide a way so that each participant is incentivized to do their roles
+the best ways with maintaining transparency, ensuring efficiency, and providing useful public
+information to the public that over time will strengthen the industry.
