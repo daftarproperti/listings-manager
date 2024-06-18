@@ -65,9 +65,10 @@ memberikan informasi yang memuaskan untuk calon pembeli.
 
 ## Persetujuan Imbalan
 
-Setiap Listing dianjurkan untuk menyetujui akan memberikan imbalan 0,5% untuk Pemasar Daftar Properti yang berhasil
-merujuk pembeli/penyewa. Walaupun Listing boleh didaftarkan tanpa persetujuan komisi, Pemasar akan lebih terpacu untuk
-merujuk pembeli untuk Listing-listing yang menyetujui imbalan.
+Setiap Listing dianjurkan untuk menyetujui akan memberikan imbalan 0,5% (jual) atau 2% (sewa) untuk
+Pemasar Daftar Properti yang berhasil merujuk pembeli/penyewa. Walaupun Listing boleh didaftarkan
+tanpa persetujuan komisi, Pemasar akan lebih terpacu untuk merujuk pembeli untuk Listing-listing
+yang menyetujui imbalan.
 
 ## Pemasar
 
