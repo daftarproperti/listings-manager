@@ -56,7 +56,7 @@ Sebuah Listing disebut terverifikasi jika memenuhi syarat-syarat di bawah ini:
 2. Listing mengandung foto-foto yang cukup untuk mengidentifikasi properti yang diacu. Biasanya ini adalah foto tampak
    depan dan foto dalam setiap ruangan. Foto-foto yang disediakan harus berkualitas (tidak buram atau terpotong).
 
-3. Admin Daftar Properti akan mencari dan menentukan titip di peta (koordinat latitude dan longitude) untuk
+3. Admin Daftar Properti akan mencari dan menentukan titik di peta (koordinat latitude dan longitude) untuk
    memverifikasi Listing. Oleh karena itu, pendaftar dianjurkan menyediakan titik di peta untuk membantu mempercepat
    verifikasi.
 
