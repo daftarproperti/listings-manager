@@ -60,8 +60,8 @@ Sebuah Listing disebut terverifikasi jika memenuhi syarat-syarat di bawah ini:
    memverifikasi Listing. Oleh karena itu, pendaftar dianjurkan menyediakan titik di peta untuk membantu mempercepat
    verifikasi.
 
-4. Syarat-syarat di atas diperlukan untuk memastikan kualitas Listing-listing di Daftar Properti sehingga pemasar dapat
-   memberikan informasi yang memuaskan untuk calon pembeli.
+Syarat-syarat di atas diperlukan untuk memastikan kualitas Listing-listing di Daftar Properti sehingga pemasar dapat
+memberikan informasi yang memuaskan untuk calon pembeli.
 
 ## Persetujuan Imbalan
 
