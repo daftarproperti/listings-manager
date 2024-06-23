@@ -32,14 +32,6 @@ class ListingObserver
             $listingId = $listing->listingId;
 
             SyncListingToGCS::dispatch($listingId)->onQueue(Queue::getQueueName('generic'));
-
-            if (env('ETH_LIVE_PUSH')) {
-                Web3AddListing::dispatch(
-                    $listingId,
-                    $listing->city,
-                    url("/public/listings/$listingId?format=json")
-                )->onQueue(Queue::getQueueName('generic'));
-            }
         } catch (\Throwable $th) {
             Log::error('Error copy to property: ' . $th->getMessage());
         }
