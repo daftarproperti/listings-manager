@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Helpers\Queue;
 use App\Helpers\TelegramPhoto;
 use App\Jobs\SyncListingToGCS;
 use App\Jobs\Web3AddListing;
@@ -70,17 +71,14 @@ class EthSync extends Command
                 file_get_contents($offChainLink);
             } catch (\Exception) {
                 // Upload to GCS first if not yet uploaded.
-                $gcsJob = new SyncListingToGCS($listingId);
-                $gcsJob->handle();
+                SyncListingToGCS::dispatch($listingId)->onQueue(Queue::getQueueName('generic'));
             }
 
-            $job = new Web3AddListing(
+            Web3AddListing::dispatch(
                 $listingId,
                 $listing->cityName ?? ($listing->city ?? 'No City'),
                 TelegramPhoto::getGcsUrlFromFileName($fileName),
-            );
-
-            $job->handle();
+            )->onQueue(Queue::getQueueName('generic'));
         }
     }
 }

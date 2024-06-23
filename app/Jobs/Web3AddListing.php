@@ -3,12 +3,12 @@
 namespace App\Jobs;
 
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Cache\LockTimeoutException;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Http\Request;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Cache;
 use Web3\Contract;
 use Web3\Web3;
 use kornrunner\Ethereum\Transaction;
@@ -116,6 +116,16 @@ class Web3AddListing implements ShouldQueue
             return;
         }
 
-        $this->executeContractAddListing($this->id, $this->city, $this->offChainLink, $hash);
+        // Lock for 120 seconds, migrate and seed should take no more than 1 minute.
+        $lock = Cache::lock('execute-contract', 60);
+
+        try {
+            $lock->block(120);
+            $this->executeContractAddListing($this->id, $this->city, $this->offChainLink, $hash);
+        } catch (LockTimeoutException) {
+            logger()->error("Unable to acquire lock execute-contract");
+        } finally {
+            $lock->release();
+        }
     }
 }
