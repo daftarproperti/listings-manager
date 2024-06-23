@@ -47,13 +47,5 @@ class SyncListingToGCS implements ShouldQueue
         $googleStorageService->uploadFile($json, $fileName);
 
         logger()->debug("Successfully uploading to GCS for listing $this->listingId");
-
-        if (env('ETH_LIVE_PUSH')) {
-            Web3AddListing::dispatch(
-                $this->listingId,
-                $listing->cityName ?? 'Default City',
-                TelegramPhoto::getGcsUrlFromFileName($fileName),
-            )->onQueue(Queue::getQueueName('generic'));
-        }
     }
 }
