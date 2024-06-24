@@ -46,7 +46,9 @@ use Spatie\Analytics\Period;
  * @property int $buildingSize
  * @property int $carCount
  * @property int $bedroomCount
+ * @property int $additionalBedroomCount
  * @property int $bathroomCount
+ * @property int $additionalBathroomCount
  * @property int $floorCount
  * @property int $electricPower
  * @property int $viewCount
@@ -93,7 +95,9 @@ class Listing extends Model
         'verifyStatus' => VerifyStatus::class,
         'buildingSize' => 'int',
         'bedroomCount' => 'int',
+        'additionalBedroomCount' => 'int',
         'bathroomCount' => 'int',
+        'additionalBathroomCount' => 'int',
         'lotSize' => 'int',
         'carCount' => 'int',
         'floorCount' => 'int',

@@ -423,6 +423,15 @@
                         }
                     },
                     {
+                        "name": "additionalBedroomCount",
+                        "in": "query",
+                        "description": "Additional Bedroom count",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
                         "name": "bathroomCount",
                         "in": "query",
                         "description": "Bathroom count",
@@ -444,6 +453,15 @@
                         "name": "bathroomCount[max]",
                         "in": "query",
                         "description": "Maximum Bathroom count",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "additionalBathroomCount",
+                        "in": "query",
+                        "description": "Additional Bathroom count",
                         "required": false,
                         "schema": {
                             "type": "integer"
@@ -1533,7 +1551,15 @@
                         "type": "integer",
                         "example": 3
                     },
+                    "additionalBedroomCount": {
+                        "type": "integer",
+                        "example": 3
+                    },
                     "bathroomCount": {
+                        "type": "integer",
+                        "example": 2
+                    },
+                    "additionalBathroomCount": {
                         "type": "integer",
                         "example": 2
                     },
@@ -1929,7 +1955,13 @@
                     "bedroomCount": {
                         "type": "integer"
                     },
+                    "additionalBedroomCount": {
+                        "type": "integer"
+                    },
                     "bathroomCount": {
+                        "type": "integer"
+                    },
+                    "additionalBathroomCount": {
                         "type": "integer"
                     },
                     "floorCount": {

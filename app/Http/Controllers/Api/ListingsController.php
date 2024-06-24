@@ -112,6 +112,13 @@ class ListingsController extends Controller
                 schema: new OA\Schema(type: 'integer')
             ),
             new OA\Parameter(
+                name: 'additionalBedroomCount',
+                in: 'query',
+                description: 'Additional Bedroom count',
+                required: false,
+                schema: new OA\Schema(type: 'integer')
+            ),
+            new OA\Parameter(
                 name: 'bathroomCount',
                 in: 'query',
                 description: 'Bathroom count',
@@ -129,6 +136,13 @@ class ListingsController extends Controller
                 name: 'bathroomCount[max]',
                 in: 'query',
                 description: 'Maximum Bathroom count',
+                required: false,
+                schema: new OA\Schema(type: 'integer')
+            ),
+            new OA\Parameter(
+                name: 'additionalBathroomCount',
+                in: 'query',
+                description: 'Additional Bathroom count',
                 required: false,
                 schema: new OA\Schema(type: 'integer')
             ),

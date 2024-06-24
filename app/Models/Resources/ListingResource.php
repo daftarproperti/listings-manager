@@ -29,7 +29,9 @@ class ListingResource extends JsonResource
     #[OA\Property(property: "buildingSize", type: "integer")]
     #[OA\Property(property: "carCount", type: "integer")]
     #[OA\Property(property: "bedroomCount", type: "integer")]
+    #[OA\Property(property: "additionalBedroomCount", type: "integer")]
     #[OA\Property(property: "bathroomCount", type: "integer")]
+    #[OA\Property(property: "additionalBathroomCount", type: "integer")]
     #[OA\Property(property: "floorCount", type: "integer")]
     #[OA\Property(property: "electricPower", type: "integer")]
     #[OA\Property(property: "viewCount", type: "integer")]
@@ -92,7 +94,9 @@ class ListingResource extends JsonResource
             'buildingSize' => $prop->buildingSize ? (int) $prop->buildingSize : null,
             'carCount' => $prop->carCount ? (int) $prop->carCount : null,
             'bedroomCount' => $prop->bedroomCount ? (int) $prop->bedroomCount : null,
+            'additionalBedroomCount' => $prop->additionalBedroomCount ? (int) $prop->additionalBedroomCount : null,
             'bathroomCount' => $prop->bathroomCount ? (int) $prop->bathroomCount : null,
+            'additionalBathroomCount' => $prop->additionalBathroomCount ? (int) $prop->additionalBathroomCount : null,
             'floorCount' => $prop->floorCount ? (int) $prop->floorCount : null,
             'electricPower' => $prop->electricPower ? (int) $prop->electricPower : null,
             'viewCount' => $prop->viewCount,

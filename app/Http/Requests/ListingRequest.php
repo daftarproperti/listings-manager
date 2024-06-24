@@ -23,7 +23,9 @@ class ListingRequest extends BaseApiRequest
     #[OA\Property(property: "buildingSize", type: "integer", example: 2000)]
     #[OA\Property(property: "carCount", type: "integer", example: 4)]
     #[OA\Property(property: "bedroomCount", type: "integer", example: 3)]
+    #[OA\Property(property: "additionalBedroomCount", type: "integer", example: 3)]
     #[OA\Property(property: "bathroomCount", type: "integer", example: 2)]
+    #[OA\Property(property: "additionalBathroomCount", type: "integer", example: 2)]
     #[OA\Property(property: "floorCount", type: "integer", example: 2)]
     #[OA\Property(property: "electricPower", type: "integer", example: 2200)]
     #[OA\Property(property: "facing", type: "string", example: "Utara")]
@@ -68,7 +70,9 @@ class ListingRequest extends BaseApiRequest
             'city' => 'nullable|string',
             'cityId' => 'required|integer',
             'bedroomCount' => 'required_unless:propertyType,land,warehouse,unknown|numeric',
+            'additionalBedroomCount' => 'nullable|numeric',
             'bathroomCount' => 'required_unless:propertyType,land,warehouse,unknown|numeric',
+            'additionalBathroomCount' => 'nullable|numeric',
             'carCount' => 'nullable|numeric',
             'floorCount' => 'nullable|numeric',
             'electricPower' => 'nullable|numeric',

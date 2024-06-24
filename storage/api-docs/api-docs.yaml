@@ -296,6 +296,13 @@ paths:
           schema:
             type: integer
         -
+          name: additionalBedroomCount
+          in: query
+          description: 'Additional Bedroom count'
+          required: false
+          schema:
+            type: integer
+        -
           name: bathroomCount
           in: query
           description: 'Bathroom count'
@@ -313,6 +320,13 @@ paths:
           name: 'bathroomCount[max]'
           in: query
           description: 'Maximum Bathroom count'
+          required: false
+          schema:
+            type: integer
+        -
+          name: additionalBathroomCount
+          in: query
+          description: 'Additional Bathroom count'
           required: false
           schema:
             type: integer
@@ -1062,7 +1076,13 @@ components:
         bedroomCount:
           type: integer
           example: 3
+        additionalBedroomCount:
+          type: integer
+          example: 3
         bathroomCount:
+          type: integer
+          example: 2
+        additionalBathroomCount:
           type: integer
           example: 2
         floorCount:
@@ -1354,7 +1374,11 @@ components:
           type: integer
         bedroomCount:
           type: integer
+        additionalBedroomCount:
+          type: integer
         bathroomCount:
+          type: integer
+        additionalBathroomCount:
           type: integer
         floorCount:
           type: integer
