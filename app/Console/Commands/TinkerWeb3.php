@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Helpers\EthWrapper;
 use Illuminate\Console\Command;
 use Web3\Contract;
 use Web3\Web3;
@@ -25,13 +26,9 @@ class TinkerWeb3 extends Command
 
     private function getListing(Contract $contract, int $id): void
     {
-        $contract->call('getListing', $id, function ($err, $ret) {
-            if ($err !== null) {
-                $this->line("err = " . $err);
-                return;
-            }
-            $this->line("ret = " . print_r($ret, true));
-        });
+        $wrapper = new EthWrapper($contract);
+        $ret = $wrapper->call('getListing', $id);
+        $this->line("ret = " . print_r($ret, true));
     }
 
     /**
@@ -40,35 +37,17 @@ class TinkerWeb3 extends Command
     public function handle(): void
     {
         $web3 = new Web3(type(env('ETH_NODE'))->asString());
+        $ethWrapper = new EthWrapper($web3->getEth());
 
         $abi = type(file_get_contents(storage_path('blockchain/Listings.abi.json')))->asString();
         $contractAddress = type(env('ETH_LISTINGS_CONTRACT_ADDRESS'))->asString();
 
         $contract = (new Contract($web3->getProvider(), $abi))->at($contractAddress);
 
-        $this->getListing($contract, 1);
+        $this->getListing($contract, 19);
 
-        $gasPrice = '0x0';
-        /** @phpstan-ignore-next-line */
-        $web3->getEth()->gasPrice(function ($err, $ret) use (&$gasPrice) {
-            if ($err !== null) {
-                $this->line("err = " . $err);
-                return;
-            }
-            $this->line('gas price = 0x' . $ret->toHex());
-            $gasPrice = $ret->toHex();
-        });
-
-        $nonce = '0x0';
-        /** @phpstan-ignore-next-line */
-        $web3->getEth()->getTransactionCount(env('ETH_ACCOUNT'), function ($err, $ret) use (&$nonce) {
-            if ($err !== null) {
-                $this->line("err = " . $err);
-                return;
-            }
-            $this->line('nonce = 0x' . $ret->toHex());
-            $nonce = $ret->toHex();
-        });
+        $gasPrice = $ethWrapper->gasPrice();
+        $nonce = $ethWrapper->getTransactionCount(env('ETH_ACCOUNT'))->toHex();
 
         /** @var string $contractData */
         $contractData = $contract->at($contractAddress)->getData('addListing', 19, 'Salatiga', 'http://xxx', 'zzz'); // @phpstan-ignore-line
@@ -84,13 +63,7 @@ class TinkerWeb3 extends Command
         $privateKey = type(env('ETH_PRIVATE_KEY'))->asString();
         $raw = $tx->getRaw($privateKey, (int)type(env('ETH_CHAIN_ID'))->asString());
 
-        /** @phpstan-ignore-next-line */
-        $web3->getEth()->sendRawTransaction('0x' . $raw, function ($err, $txHash) {
-            if ($err !== null) {
-                $this->line("err = " . $err);
-                return;
-            }
-            $this->info("txHash = $txHash");
-        });
+        $txHash = $ethWrapper->sendRawTransaction('0x' . $raw);
+        $this->info("txHash = $txHash");
     }
 }
