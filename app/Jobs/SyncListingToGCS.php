@@ -2,8 +2,6 @@
 
 namespace App\Jobs;
 
-use App\Helpers\Queue;
-use App\Helpers\TelegramPhoto;
 use App\Http\Services\GoogleStorageService;
 use App\Models\Listing;
 use App\Models\Resources\PublicListingResource;

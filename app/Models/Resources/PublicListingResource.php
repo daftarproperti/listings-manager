@@ -82,6 +82,7 @@ class PublicListingResource extends JsonResource
                 'latitude' => $listing->coordinate->latitude,
                 'longitude' => $listing->coordinate->longitude,
             ],
+            'withRewardAgreement' => $listing->withRewardAgreement,
             'updatedAt' => $listing->updated_at->toIso8601String(),
         ];
     }

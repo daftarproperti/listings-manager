@@ -1115,6 +1115,9 @@ components:
         isPrivate:
           type: boolean
           example: false
+        withRewardAgreement:
+          type: boolean
+          example: true
       type: object
     SavedSearchRequest:
       properties:
@@ -1413,6 +1416,8 @@ components:
         userCanEdit:
           type: boolean
         isPrivate:
+          type: boolean
+        withRewardAgreement:
           type: boolean
         updatedAt:
           type: string

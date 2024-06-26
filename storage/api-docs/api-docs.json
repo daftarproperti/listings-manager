@@ -1606,6 +1606,10 @@
                     "isPrivate": {
                         "type": "boolean",
                         "example": false
+                    },
+                    "withRewardAgreement": {
+                        "type": "boolean",
+                        "example": true
                     }
                 },
                 "type": "object"
@@ -2018,6 +2022,9 @@
                         "type": "boolean"
                     },
                     "isPrivate": {
+                        "type": "boolean"
+                    },
+                    "withRewardAgreement": {
                         "type": "boolean"
                     },
                     "updatedAt": {

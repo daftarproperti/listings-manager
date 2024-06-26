@@ -453,7 +453,7 @@ class ListingsController extends Controller
      */
     private function fillCreateUpdateListing(array $data, Listing &$listing): void
     {
-        $booleanKeys = ['isPrivate', 'listingForSale', 'listingForRent'];
+        $booleanKeys = ['isPrivate', 'withRewardAgreement', 'listingForSale', 'listingForRent'];
 
         foreach ($data as $key => $value) {
             if (!is_array($value)) {

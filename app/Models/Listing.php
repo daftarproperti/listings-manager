@@ -61,6 +61,7 @@ use Spatie\Analytics\Period;
  * @property array<string, string> $contact
  * @property bool $user_can_edit
  * @property bool $isPrivate
+ * @property bool $withRewardAgreement
  * @property TelegramUserProfile $user_profile
  * @property ListingUser|null $user
  * @property Carbon $updated_at
