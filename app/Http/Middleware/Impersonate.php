@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Auth;
 use App\Traits\TokenValidation;
 
 class Impersonate
@@ -40,9 +40,7 @@ class Impersonate
             return response()->json(['error' => 'Unauthorized'], 403);
         }
 
-        App::singleton(User::class, static function () use ($user) {
-            return $user;
-        });
+        Auth::setUser($user);
 
         return $next($request);
     }

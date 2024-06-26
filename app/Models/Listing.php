@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use App\Helpers\Cast;
-use App\Helpers\DPAuth;
 use App\Helpers\NumFormatter;
 use App\Helpers\TelegramPhoto;
 use App\Models\Enums\VerifyStatus;
@@ -19,6 +18,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use MongoDB\Laravel\Eloquent\Model;
 use MongoDB\Laravel\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use Spatie\Analytics\Facades\Analytics;
@@ -169,7 +169,7 @@ class Listing extends Model
 
     public function getUserCanEditAttribute(): bool
     {
-        $currentUserId = DPAuth::getUser()->user_id ?? null;
+        $currentUserId = Auth::user()->user_id ?? null;
 
         if (!$currentUserId) {
             return false;
@@ -190,10 +190,6 @@ class Listing extends Model
         }
 
         switch ($userSource) {
-            case 'telegram':
-                /** @var TelegramUser|null $teleUser */
-                $teleUser = TelegramUser::where('user_id', $user->userId)->first();
-                return $teleUser?->profile;
             case 'app':
                 /** @var User|null $appUser */
                 $appUser = User::where('user_id', $user->userId)->first();

@@ -7,6 +7,7 @@ use App\Models\Resources\UserResource;
 use App\Http\Requests\TelegramUserProfileRequest;
 use App\Models\User;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Auth;
 use OpenApi\Attributes as OA;
 
 class UserController extends Controller
@@ -29,7 +30,7 @@ class UserController extends Controller
     )]
     public function profile(): JsonResource
     {
-        $currentUser = app(User::class);
+        $currentUser = Auth::user();
         return new UserResource($currentUser);
     }
 
@@ -56,7 +57,7 @@ class UserController extends Controller
     public function updateProfile(TelegramUserProfileRequest $request): JsonResource
     {
         /** @var User $currentUser */
-        $currentUser = app(User::class);
+        $currentUser = Auth::user();
 
         $validatedRequest = $request->validated();
         foreach ($validatedRequest as $key => $value) {

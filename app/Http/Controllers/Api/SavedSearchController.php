@@ -2,16 +2,17 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Helpers\DPAuth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SavedSearchRequest;
 use App\Models\FilterSet;
 use App\Models\Resources\SavedSearchCollection;
 use App\Models\Resources\SavedSearchResource;
 use App\Models\SavedSearch;
+use App\Models\User;
 use App\Repositories\SavedSearchRepository;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Auth;
 use OpenApi\Attributes as OA;
 
 class SavedSearchController extends Controller
@@ -42,9 +43,13 @@ class SavedSearchController extends Controller
     )]
     public function index(SavedSearchRepository $repository): JsonResource
     {
+        /** @var User $user */
+        $user = Auth::user();
+
         $input = [
-            'userId' => DPAuth::getUser()->user_id,
+            'userId' => $user->user_id,
         ];
+
         return new SavedSearchCollection($repository->list($input));
     }
 
@@ -126,7 +131,9 @@ class SavedSearchController extends Controller
         $data = $request->validated();
         $savedSearch = new SavedSearch;
         $this->setSavedSearchAttribute($data, $savedSearch);
-        $userId = DPAuth::getUser()->user_id;
+        /** @var User $user */
+        $user = Auth::user();
+        $userId = $user->user_id;
         $savedSearch->userId = $userId;
         $savedSearch->save();
 

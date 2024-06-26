@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use App\Helpers\TelegramPhoto;
 use App\Models\Traits\CityAttributeTrait;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use MongoDB\Laravel\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;

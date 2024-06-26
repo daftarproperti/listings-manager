@@ -2,10 +2,7 @@
 
 namespace Tests\Feature;
 
-use App\Helpers\TelegramInitDataValidator;
-use App\Models\Enums\VerifyStatus;
 use App\Models\Listing;
-use App\Models\TelegramUser;
 use App\Models\User;
 use DateTime;
 use Illuminate\Support\Facades\Config;
@@ -19,32 +16,12 @@ class ListingApiTest extends TestCase
     private User $user;
     private string $token;
 
-    /**
-     * Generates fake init data and appends valid hash according to Telegram spec:
-     * https://core.telegram.org/bots/webapps#validating-data-received-via-the-mini-app
-     *
-     * @return array<string, string>
-     */
-    private function generate_telegram_init_data(): array
-    {
-        return TelegramInitDataValidator::generateInitData(
-            $this->fakeBotToken,
-            0,
-            [
-                'id' => $this->fakeUserId,
-                'first_name' => "John",
-                'last_name' => "Smith",
-                'username' => "johnsmith",
-            ]
-        );
-    }
-
     private function addListing(string $title, int $userId, array $fields = []): Listing
     {
         return Listing::factory()->create([
             'user' => [
                 'userId' => $userId,
-                'source' => 'telegram',
+                'source' => 'app',
             ],
             'title' => $title,
         ] + $fields);
@@ -59,7 +36,6 @@ class ListingApiTest extends TestCase
 
         // Ensure each test case starts with empty database.
         Listing::truncate();
-        TelegramUser::truncate();
         User::truncate();
 
         // Create fake user that will use token authentication
@@ -67,7 +43,11 @@ class ListingApiTest extends TestCase
             'user_id' => $this->fakeUserId,
             'name' => 'John Smith',
             'phoneNumber' => '081239129321',
-            'password' => null
+            'password' => null,
+            'city' => 'Some City',
+            'company' => 'The Company',
+            'description' => 'About the user.',
+            'picture' => 'some_picture.jpg',
         ]);
 
         $expiryDate = new DateTime();
@@ -78,11 +58,6 @@ class ListingApiTest extends TestCase
 
     private function testWithBothAuth($testFunction)
     {
-        // Test using telegram auth
-        $testFunction($this->withHeaders([
-            'x-init-data' => http_build_query($this->generate_telegram_init_data()),
-        ]));
-
         // Test using access token
         $testFunction($this->withHeaders([
             'Authorization' => 'Bearer ' . $this->token,
@@ -172,18 +147,6 @@ class ListingApiTest extends TestCase
 
     public function test_can_show_Listing(): void
     {
-        TelegramUser::factory()->create([
-            'user_id' => $this->fakeUserId,
-            'profile' => [
-                'name' => 'The User',
-                'phoneNumber' => '0123',
-                'city' => 'Some City',
-                'description' => 'About the user.',
-                'company' => 'The Company',
-                'picture' => 'some_picture.jpg',
-            ],
-        ]);
-
         $listing = $this->addListing("Dijual Rumah", $this->fakeUserId);
 
         $this->testWithBothAuth(function (self $makesHttpRequests) use ($listing) {
@@ -196,7 +159,7 @@ class ListingApiTest extends TestCase
                 'id' => $listing->id,
                 'title' => $listing->title,
                 'user' => [
-                    'name' => 'The User',
+                    'name' => 'John Smith',
                     'city' => 'Some City',
                     'description' => 'About the user.',
                     'company' => 'The Company',
@@ -220,10 +183,11 @@ class ListingApiTest extends TestCase
                 'id' => $listing->id,
                 'title' => $listing->title,
                 'user' => [
-                    'name' => null,
-                    'city' => null,
-                    'description' => null,
-                    'company' => null,
+                    'name' => 'John Smith',
+                    'city' => 'Some City',
+                    'description' => 'About the user.',
+                    'company' => 'The Company',
+                    'profilePictureURL' => 'https://storage.googleapis.com/some-bucket/some_picture.jpg',
                 ],
             ]);
         });

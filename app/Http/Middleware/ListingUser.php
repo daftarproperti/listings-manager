@@ -2,9 +2,10 @@
 
 namespace App\Http\Middleware;
 
-use App\Helpers\DPAuth;
 use Closure;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ListingUser
 {
@@ -22,7 +23,9 @@ class ListingUser
 
         $isMyListing = false;
 
-        if ($listing->user && ($listing->user->userId == DPAuth::getUser()->user_id)) {
+        /** @var User user */
+        $user = Auth::user();
+        if ($listing->user && ($listing->user->userId == $user->user_id)) {
             $isMyListing = true;
         }
 

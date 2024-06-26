@@ -2,10 +2,8 @@
 
 namespace Tests\Feature;
 
-use App\Helpers\TelegramInitDataValidator;
 use App\Models\Property;
 use App\Models\User;
-use App\Models\TelegramUser;
 use DateTime;
 use Illuminate\Support\Facades\Config;
 use Tests\TestCase;
@@ -17,26 +15,6 @@ class PropertyApiTest extends TestCase
 
     private User $user;
     private string $token;
-
-    /**
-     * Generates fake init data and appends valid hash according to Telegram spec:
-     * https://core.telegram.org/bots/webapps#validating-data-received-via-the-mini-app
-     *
-     * @return array<string, string>
-     */
-    private function generate_telegram_init_data(): array
-    {
-        return TelegramInitDataValidator::generateInitData(
-            $this->fakeBotToken,
-            0,
-            [
-                'id' => $this->fakeUserId,
-                'first_name' => "John",
-                'last_name' => "Smith",
-                'username' => "johnsmith",
-            ]
-        );
-    }
 
     private function addProperty(string $title, int $userId, array $fields = []): Property
     {
@@ -58,7 +36,6 @@ class PropertyApiTest extends TestCase
 
         // Ensure each test case starts with empty database.
         Property::truncate();
-        TelegramUser::truncate();
         User::truncate();
 
         $this->user = User::factory()->create([
@@ -75,11 +52,6 @@ class PropertyApiTest extends TestCase
 
     private function testWithBothAuth($testFunction)
     {
-        // Test using telegram auth
-        $testFunction($this->withHeaders([
-            'x-init-data' => http_build_query($this->generate_telegram_init_data()),
-        ]));
-
         // Test using access token
         $testFunction($this->withHeaders([
             'Authorization' => 'Bearer ' . $this->token,
@@ -145,70 +117,6 @@ class PropertyApiTest extends TestCase
                 'title' => $property->title,
             ]);
         });
-    }
-
-    public function test_get_profile(): void
-    {
-        $response = $this->withHeaders([
-            'x-init-data' => http_build_query($this->generate_telegram_init_data()),
-        ])->get('/api/tele-app/telegram-users/profile');
-
-        $response->assertStatus(201);
-        $response->assertJsonStructure([
-            'id',
-            'name',
-            'city',
-            'cityId',
-            'description',
-            'company',
-            'picture',
-            'phoneNumber',
-            'isPublicProfile'
-        ]);
-    }
-
-    public function test_set_profile(): void
-    {
-        $response = $this->withHeaders([
-            'x-init-data' => http_build_query($this->generate_telegram_init_data()),
-        ])->post('/api/tele-app/telegram-users/profile', [
-            'name' => 'John No',
-            'city' => 'Jakarta',
-            'cityId' => 123,
-            'picture' => 'some_picture.jpg',
-        ]);
-
-        $response->assertStatus(201);
-        $response->assertJson([
-            'id' => $this->fakeUserId,
-            'name' => 'John No',
-            'city' => 'Jakarta',
-            'cityId' => 123,
-            'cityName' => null,
-            'description' => null,
-            'company' => null,
-            'picture' => 'https://storage.googleapis.com/some-bucket/some_picture.jpg',
-            'phoneNumber' => null,
-            'isPublicProfile' => false,
-        ]);
-
-        $this->assertEquals('John No', $response->json('name'));
-        $this->assertEquals('Jakarta', $response->json('city'));
-
-        $this->assertDatabaseHas('telegram_users', [
-            'username' => 'johnsmith',
-            'profile' => [
-                'name' => 'John No',
-                'phoneNumber' => null,
-                'city' => 'Jakarta',
-                'cityId' => 123,
-                'cityName' => null,
-                'description' => null,
-                'company' => null,
-                'picture' => 'some_picture.jpg',
-                'isPublicProfile' => false,
-            ],
-        ]);
     }
 
     public function test_get_profile_with_access_token(): void

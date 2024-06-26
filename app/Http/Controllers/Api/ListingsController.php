@@ -2,20 +2,20 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Helpers\DPAuth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ListingRequest;
 use App\Http\Services\GoogleStorageService;
-use App\Models\Enums\VerifyStatus;
 use App\Models\FilterSet;
 use App\Models\Listing;
 use App\Models\ListingUser;
 use App\Models\Resources\ListingCollection;
 use App\Models\Resources\ListingResource;
+use App\Models\User;
 use App\Repositories\ListingRepository;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Auth;
 use OpenApi\Attributes as OA;
 
 class ListingsController extends Controller
@@ -273,7 +273,7 @@ class ListingsController extends Controller
         }
 
         if (boolval($filterSet->collection)) {
-            $currentUser = DPAuth::getUser();
+            $currentUser = Auth::user();
             $currentUserId = $currentUser->user_id ?? 0;
             $filterSet->userId = $currentUserId;
         }
@@ -489,7 +489,8 @@ class ListingsController extends Controller
 
     private function getListingUser(): ListingUser
     {
-        $user = DPAuth::getUser();
+        /** @var User $user */
+        $user = Auth::user();
         return $user->toListingUser();
     }
 

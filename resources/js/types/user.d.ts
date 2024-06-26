@@ -1,8 +1,10 @@
 export interface TelegramUser {
   user_id: number
   username: string
-  first_name: string
-  last_name: string
+  phoneNumber: string
+  name: string
+  cityId: number
+  company: string
   profile?: Profile
 }
 
