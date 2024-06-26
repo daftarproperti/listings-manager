@@ -2,6 +2,7 @@
 
 namespace App\Models\Resources;
 
+use App\Helpers\TelegramPhoto;
 use Illuminate\Http\Resources\Json\JsonResource;
 use OpenApi\Attributes as OA;
 
@@ -50,6 +51,7 @@ class ListingResource extends JsonResource
     ])]
     #[OA\Property(property: "user", type: "object", properties: [
         new OA\Property(property: "name", type: "string"),
+        new OA\Property(property: "phoneNumber", type: "string"),
         new OA\Property(property: "profilePictureURL", type: "string"),
         new OA\Property(property: "city", type: "string"),
         new OA\Property(property: "cityId", type: "integer"),
@@ -111,13 +113,14 @@ class ListingResource extends JsonResource
                 'company' =>  $prop->contact ? ($prop->contact['company'] ?? null) : null,
             ],
             'user' => [
-                'name' => $prop->user_profile ? $prop->user_profile->name : null,
-                'city' => $prop->user_profile ? $prop->user_profile->city : null,
-                'cityId' => $prop->user_profile ? $prop->user_profile->cityId : null,
-                'cityName' => $prop->user_profile ? $prop->user_profile->cityName : null,
-                'profilePictureURL' => $prop->user_profile ? $prop->user_profile->picture : null,
-                'company' => $prop->user_profile ? $prop->user_profile->company : null,
-                'description' => $prop->user_profile ? $prop->user_profile->description : null,
+                'name' => $prop->user_profile?->name,
+                'phoneNumber' => $prop->user_profile?->phoneNumber,
+                'city' => $prop->user_profile?->city,
+                'cityId' => $prop->user_profile?->cityId,
+                'cityName' => $prop->user_profile?->cityName,
+                'profilePictureURL' => $prop->user_profile?->picture ? TelegramPhoto::getGcsUrlFromFileName($prop->user_profile->picture) : null,
+                'company' => $prop->user_profile?->company,
+                'description' => $prop->user_profile?->description,
             ],
             'userCanEdit' => $prop->user_can_edit,
             'isPrivate' => $prop->isPrivate ?? false,

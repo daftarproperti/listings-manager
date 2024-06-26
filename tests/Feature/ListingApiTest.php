@@ -200,7 +200,7 @@ class ListingApiTest extends TestCase
                     'city' => 'Some City',
                     'description' => 'About the user.',
                     'company' => 'The Company',
-                    'profilePictureURL' => 'some_picture.jpg',
+                    'profilePictureURL' => 'https://storage.googleapis.com/some-bucket/some_picture.jpg',
                 ],
             ]);
         });
