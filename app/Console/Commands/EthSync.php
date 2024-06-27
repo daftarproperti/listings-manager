@@ -49,11 +49,7 @@ class EthSync extends Command
         $contract = (new Contract($web3->getProvider(), $abi))->at($contractAddress);
 
         $listings = Listing::all();
-        $count = 7;
         foreach ($listings as $listing) {
-            if ($count <= 0) break;
-            $count--;
-
             $listingId = $listing->listingId;
             $this->line("Processing Listing ID $listingId");
 
