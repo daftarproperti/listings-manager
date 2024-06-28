@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ListingRequest;
 use App\Http\Services\GoogleStorageService;
+use App\Models\Coordinate;
 use App\Models\FilterSet;
 use App\Models\Listing;
 use App\Models\ListingUser;
@@ -486,6 +487,11 @@ class ListingsController extends Controller
                 if ($key == 'pictureUrls') {
                     $uploadedImages = $this->uploadImages($value);
                     $listing->pictureUrls = $uploadedImages;
+                    continue;
+                }
+
+                if ($key == 'coordinate') {
+                    $listing->coordinate = Coordinate::from($value);
                     continue;
                 }
 
