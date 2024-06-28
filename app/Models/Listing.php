@@ -105,6 +105,8 @@ class Listing extends Model
         'price' => 'int',
         'rentPrice' => 'int',
         'cityId' => 'int',
+        'address' => 'string',
+        'description' => 'string',
     ];
 
 
