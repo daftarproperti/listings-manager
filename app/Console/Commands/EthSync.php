@@ -72,7 +72,7 @@ class EthSync extends Command
 
             Web3AddListing::dispatch(
                 $listingId,
-                $listing->cityName ?? ($listing->city ?? 'No City'),
+                $listing->cityId ?? 0,
                 TelegramPhoto::getGcsUrlFromFileName($fileName),
             )->onQueue(Queue::getQueueName('generic'));
         }

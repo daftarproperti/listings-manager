@@ -22,13 +22,13 @@ class Web3AddListing implements ShouldQueue
      */
     public function __construct(
         public int $id,
-        public string $city,
+        public int $cityId,
         public string $offChainLink)
     {
         //
     }
 
-    private function executeContractAddListing(int $id, string $city, string $offChainLink, string $hash): void
+    private function executeContractAddListing(int $id, int $cityId, string $offChainLink, string $hash): void
     {
         $web3 = new Web3(type(env('ETH_NODE'))->asString());
 
@@ -52,7 +52,7 @@ class Web3AddListing implements ShouldQueue
         });
 
         /** @var string $contractData */
-        $contractData = $contract->at($contractAddress)->getData('addListing', $id, $city, $offChainLink, $hash); // @phpstan-ignore-line
+        $contractData = $contract->at($contractAddress)->getData('addListing', $id, $cityId, $offChainLink, $hash); // @phpstan-ignore-line
         $tx = new Transaction(
             $nonce, // nonce
             $gasPrice, // gas price
@@ -121,7 +121,7 @@ class Web3AddListing implements ShouldQueue
 
         try {
             $lock->block(120);
-            $this->executeContractAddListing($this->id, $this->city, $this->offChainLink, $hash);
+            $this->executeContractAddListing($this->id, $this->cityId, $this->offChainLink, $hash);
         } catch (LockTimeoutException) {
             logger()->error("Unable to acquire lock execute-contract");
         } finally {
