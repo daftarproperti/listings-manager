@@ -298,5 +298,6 @@ class AuthTest extends TestCase
         $this->assertEquals('+1400500', $otpService->canonicalizePhoneNumber('1-400-500'));
         $this->assertEquals('+6212345', $otpService->canonicalizePhoneNumber('+6212 345'));
         $this->assertEquals('+1800700', $otpService->canonicalizePhoneNumber('+1 800_700'));
+        $this->assertEquals('+6281234', $otpService->canonicalizePhoneNumber('81234'));
     }
 }
