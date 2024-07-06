@@ -72,9 +72,9 @@ The Referral Tracking System consists of two main processes: Marketer registrati
 #### 2.3.1 Marketer Registration
 
 1. A Marketer registers themselves to the blockchain contract, providing the following information:
-  - Name: Agent/broker name if individual, or company name if a business entity
-  - Contact Number: Publicly available business phone number
-  - Public key: Used for cryptographic purposes, such as verification of signed messages
+   - Name: Agent/broker name if individual, or company name if a business entity
+   - Contact Number: Publicly available business phone number
+   - Public key: Used for cryptographic purposes, such as verification of signed messages
 2. The Marketer pays only the blockchain network cost and no registration cost.
 
 #### 2.3.2 Verifiable Transparent Log for Referral Tracking
@@ -83,11 +83,11 @@ The Referral Tracking System consists of two main processes: Marketer registrati
 2. The contact number of the Listing is not shown, but the potential buyer can unlock it in real-time if they are interested in proceeding with the interaction.
 3. When the potential buyer clicks "Unlock Contact," they are directed to the Listing Registry's interface, which authenticates their phone number and presents a confirmation that they are unlocking the contact number through the mentioned Marketer.
 4. Upon confirmation, the Listing Registry returns a signed log that the Marketer posts to the blockchain, containing:
-  - SHA256 hash of the Marketer's random number + phone number ID (assigned by Listing Registry as a blinding factor) + phone number
-  - Marketer ID
-  - Listing ID
-  - Unlocked contact number, encrypted using the Marketer's public key
-  - Timestamp
+   - SHA256 hash of the Marketer's random number + phone number ID (assigned by Listing Registry as a blinding factor) + phone number
+   - Marketer ID
+   - Listing ID
+   - Unlocked contact number, encrypted using the Marketer's public key
+   - Timestamp
 5. The Marketer posts this log to the blockchain, ensuring their involvement is recorded and cannot be cheated.
 6. The Marketer displays the decrypted contact number to the potential buyer to continue interaction with the Listing representative.
 
@@ -95,13 +95,13 @@ The Referral Tracking System consists of two main processes: Marketer registrati
 
 1. Closing is reported by either the Listing representative, the buyer/renter, or a third party.
 2. Upon confirmation by the Listing Registry, the closing is logged to the blockchain, containing:
-  - Hash of phone number ID + phone number as the buyer identity
-  - Closing amount (publicly available)
+   - Hash of phone number ID + phone number as the buyer identity
+   - Closing amount (publicly available)
 3. An event is emitted, allowing Marketers to check if they were involved in the referral.
 4. The Marketer checks their log for a match with their Unlock log, which only they can confirm due to the random number attached to the Unlock log.
 5. If a match is found, the Marketer posts a Claim to the blockchain, mentioning:
-  - Unlock log ID
-  - Random number prefix (to verify the hash with the phone number ID + phone number of the potential buyer matches the Closing log's buyer/renter)
+   - Unlock log ID
+   - Random number prefix (to verify the hash with the phone number ID + phone number of the potential buyer matches the Closing log's buyer/renter)
 6. After a given time, all Claims are cryptographically confirmed to be true without revealing private information.
 7. The Listing Registry sends reward obligation documents to the Listing representative and the Claimers.
 
