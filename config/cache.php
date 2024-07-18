@@ -104,6 +104,11 @@ return [
             'lock_timeout' => 3600,
         ],
 
+        // Disable cache, useful for local development
+        'null' => [
+            'driver' => 'null',
+        ],
+
     ],
 
     /*

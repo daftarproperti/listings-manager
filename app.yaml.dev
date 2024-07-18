@@ -69,3 +69,4 @@ env_variables:
   TWILIO_AUTH_TOKEN: "secret"
 
   ROOT_USERS: "+14156048197,+6289656763200"
+  IPINFO_TOKEN: "secret"
