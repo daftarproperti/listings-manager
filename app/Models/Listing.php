@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Helpers\Cast;
 use App\Helpers\NumFormatter;
 use App\Helpers\TelegramPhoto;
+use App\Models\Enums\ActiveStatus;
 use App\Models\Enums\VerifyStatus;
 use App\Models\FacingDirection;
 use App\Models\Traits\CityAttributeTrait;
@@ -56,6 +57,9 @@ use Spatie\Analytics\Period;
  * @property FacingDirection $facing
  * @property PropertyOwnership $ownership
  * @property VerifyStatus $verifyStatus
+ * @property ActiveStatus $activeStatus
+ * @property StatusNote $statusNote
+ * @property array<Closing> $closings
  * @property int $cityId
  * @property string $city
  * @property array<string> $pictureUrls
@@ -93,6 +97,7 @@ class Listing extends Model
         'ownership' => PropertyOwnership::class,
         'facing' => FacingDirection::class,
         'verifyStatus' => VerifyStatus::class,
+        'activeStatus' => ActiveStatus::class,
         'buildingSize' => 'int',
         'bedroomCount' => 'int',
         'additionalBedroomCount' => 'int',
@@ -107,8 +112,8 @@ class Listing extends Model
         'cityId' => 'int',
         'address' => 'string',
         'description' => 'string',
+        'statusNote' => AttributeCaster::class . ':' . StatusNote::class
     ];
-
 
     public function getMatchFilterCountAttribute(): int
     {

@@ -39,6 +39,8 @@ class ListingResource extends JsonResource
     #[OA\Property(property: "facing", ref: "#/components/schemas/FacingDirection")]
     #[OA\Property(property: "ownership", ref: "#/components/schemas/PropertyOwnership")]
     #[OA\Property(property: "verifyStatus", ref: "#/components/schemas/VerifyStatus")]
+    #[OA\Property(property: "activeStatus", ref: "#/components/schemas/ActiveStatus")]
+    #[OA\Property(property: "statusNote", ref: "#/components/schemas/StatusNote")]
     #[OA\Property(property: "cityName", type: "string")]
     #[OA\Property(property: "cityId", type: "integer")]
     #[OA\Property(property: "city", type: "string")]

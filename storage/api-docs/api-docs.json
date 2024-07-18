@@ -1399,57 +1399,6 @@
                 }
             }
         },
-        "/api/tele-app/telegram-users/profile": {
-            "get": {
-                "tags": [
-                    "Telegram Users"
-                ],
-                "summary": "Get profile",
-                "description": "Returns user profile",
-                "operationId": "telegramProfile",
-                "responses": {
-                    "200": {
-                        "description": "success",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/TelegramUserProfile"
-                                }
-                            }
-                        }
-                    }
-                }
-            },
-            "post": {
-                "tags": [
-                    "Telegram Users"
-                ],
-                "summary": "Update profile",
-                "operationId": "updateTelegramProfile",
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "multipart/form-data": {
-                            "schema": {
-                                "$ref": "#/components/schemas/TelegramUserProfileRequest"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "success",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/TelegramUserProfile"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
         "/api/tele-app/users/profile": {
             "get": {
                 "tags": [
@@ -1702,6 +1651,25 @@
                     "professional"
                 ],
                 "example": "professional"
+            },
+            "ActiveStatus": {
+                "description": "Active status",
+                "type": "string",
+                "enum": [
+                    "waitlisted",
+                    "active",
+                    "archived"
+                ],
+                "example": "waitlisted"
+            },
+            "ClosingType": {
+                "description": "Closing Type",
+                "type": "string",
+                "enum": [
+                    "sold",
+                    "rented"
+                ],
+                "example": "sold"
             },
             "VerifyStatus": {
                 "description": "Verification status",
@@ -1985,6 +1953,12 @@
                     "verifyStatus": {
                         "$ref": "#/components/schemas/VerifyStatus"
                     },
+                    "activeStatus": {
+                        "$ref": "#/components/schemas/ActiveStatus"
+                    },
+                    "statusNote": {
+                        "$ref": "#/components/schemas/StatusNote"
+                    },
                     "cityName": {
                         "type": "string"
                     },
@@ -2063,6 +2037,10 @@
                         "type": "boolean"
                     },
                     "updatedAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "createdAt": {
                         "type": "string",
                         "format": "date-time"
                     }
@@ -2310,55 +2288,6 @@
                 },
                 "type": "object"
             },
-            "TelegramUserProfile": {
-                "properties": {
-                    "id": {
-                        "type": "integer",
-                        "example": "123"
-                    },
-                    "publicId": {
-                        "type": "string",
-                        "example": "id-123"
-                    },
-                    "name": {
-                        "type": "string",
-                        "example": "John Doe"
-                    },
-                    "phoneNumber": {
-                        "type": "string",
-                        "example": "0811111"
-                    },
-                    "city": {
-                        "type": "string",
-                        "example": "New York"
-                    },
-                    "cityId": {
-                        "type": "integer",
-                        "example": "123"
-                    },
-                    "cityName": {
-                        "type": "string",
-                        "example": "New York"
-                    },
-                    "description": {
-                        "type": "string",
-                        "example": "I am a programmer"
-                    },
-                    "picture": {
-                        "type": "string",
-                        "example": "https://example.com/image.jpg"
-                    },
-                    "company": {
-                        "type": "string",
-                        "example": "Google"
-                    },
-                    "isPublicProfile": {
-                        "type": "boolean",
-                        "example": true
-                    }
-                },
-                "type": "object"
-            },
             "User": {
                 "properties": {
                     "id": {
@@ -2402,6 +2331,73 @@
                     },
                     "isPublicProfile": {
                         "type": "boolean"
+                    }
+                },
+                "type": "object"
+            },
+            "StatusNote": {
+                "properties": {
+                    "email": {
+                        "type": "string",
+                        "example": "john@doe.web"
+                    },
+                    "message": {
+                        "type": "string",
+                        "example": "Hello World"
+                    },
+                    "date": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            },
+            "TelegramUserProfile": {
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "example": "John Doe",
+                        "nullable": true
+                    },
+                    "phoneNumber": {
+                        "type": "string",
+                        "example": "+6281234567890",
+                        "nullable": true
+                    },
+                    "city": {
+                        "type": "string",
+                        "example": "Jakarta",
+                        "nullable": true
+                    },
+                    "cityId": {
+                        "type": "integer",
+                        "example": 1,
+                        "nullable": true
+                    },
+                    "cityName": {
+                        "type": "string",
+                        "example": "Jakarta",
+                        "nullable": true
+                    },
+                    "description": {
+                        "type": "string",
+                        "example": "Lorem ipsum",
+                        "nullable": true
+                    },
+                    "company": {
+                        "type": "string",
+                        "example": "Company",
+                        "nullable": true
+                    },
+                    "picture": {
+                        "type": "string",
+                        "example": "https://example.com/picture.jpg",
+                        "nullable": true
+                    },
+                    "isPublicProfile": {
+                        "type": "boolean",
+                        "example": true,
+                        "nullable": true
                     }
                 },
                 "type": "object"
