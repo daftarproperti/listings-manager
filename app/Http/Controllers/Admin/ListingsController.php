@@ -9,6 +9,7 @@ use App\Models\Listing;
 use App\Models\Resources\ListingCollection;
 use App\Models\Resources\ListingResource;
 use App\Repositories\Admin\ListingRepository;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
@@ -26,10 +27,6 @@ class ListingsController extends Controller
 
         $listing = $repository->list($input);
         $listingCollection = new ListingCollection($listing);
-
-        if (!isset($input['verifyStatus'])) {
-            return redirect()->route('listing.index', ['verifyStatus' => VerifyStatus::ON_REVIEW]);
-        }
 
         return Inertia::render('Admin/Listings/index', [
             'data' => [

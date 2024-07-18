@@ -30,7 +30,7 @@ export default function index ({
   const [, setPageNumber] = useState(page)
   const [, setVerifyStatus] = useState(status)
 
-  const TABLE_HEAD = ['Judul', 'Agen', 'Harga', 'LT', 'LB', 'KT', 'KM', 'Status']
+  const TABLE_HEAD = ['Judul', 'Agen', 'Harga', 'LT', 'LB', 'KT', 'KM', 'Tanggal', 'Status']
 
   const fetchData = (
     q?: string,
@@ -49,6 +49,11 @@ export default function index ({
         preserveScroll: true
       }
     )
+  }
+
+  const getVerifyStatusLabel = (status: string): string => {
+    const statusOption = data.verifyStatusOptions.find(v => v.value === status)
+    return statusOption != null ? statusOption.label : 'N/A'
   }
 
   useEffect(() => {
@@ -78,7 +83,7 @@ export default function index ({
                             <div className="col-span-4 md:col-span-1">
                                 <SelectInput
                                     value={status}
-                                    options={data.verifyStatusOptions}
+                                    options={[{ label: 'Semua', value: '' }, ...data.verifyStatusOptions]}
                                     className="w-full"
                                     onChange={(e) => {
                                       fetchData(keyword, 1, e.target.value)
@@ -110,6 +115,7 @@ export default function index ({
                                     <Table.HeaderItem
                                         key={head}
                                         colSpan={head === 'Judul' ? 2 : 1}
+                                        className={head === 'KT' || head === 'KM' ? 'w-[50px]' : 'w-[100px]'}
                                     >
                                         {head}
                                     </Table.HeaderItem>
@@ -127,7 +133,8 @@ export default function index ({
                                       buildingSize,
                                       bedroomCount,
                                       bathroomCount,
-                                      verifyStatus
+                                      verifyStatus,
+                                      createdAt
                                     },
                                     index
                                   ) => (
@@ -167,6 +174,9 @@ export default function index ({
                                                 {`${bathroomCount}`}
                                             </Table.BodyItem>
                                             <Table.BodyItem>
+                                                {`${String(createdAt)}`}
+                                            </Table.BodyItem>
+                                            <Table.BodyItem>
                                                 <span
                                                     className={`${
                                                         verifyStatus ===
@@ -175,16 +185,13 @@ export default function index ({
                                                             : verifyStatus ===
                                                               'rejected'
                                                             ? 'bg-red-100 text-red-800'
-                                                            : 'bg-yellow-100 text-yellow-800'
+                                                            : verifyStatus ===
+                                                              'on_review'
+                                                            ? 'bg-yellow-100 text-yellow-800'
+                                                            : 'bg-gray-100 text-gray-800'
                                                     } truncate text-xs font-medium me-2 px-2.5 py-0.5 rounded-full`}
                                                 >
-                                                    {
-                                                      data.verifyStatusOptions.find(
-                                                        (v) =>
-                                                          v.value ===
-                                                          verifyStatus
-                                                      )?.label
-                                                    }
+                                                    {getVerifyStatusLabel(verifyStatus)}
                                                 </span>
                                             </Table.BodyItem>
                                         </tr>

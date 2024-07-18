@@ -165,8 +165,27 @@ export default function index ({
                               notation: 'compact'
                             }).format(listing.price)}
                         </div>
-                        <div className="mt-1.5 line-clamp-3 text-xs md:text-sm leading-4 text-slate-500">
-                            {listing.address}
+                        <div className="flex justify-between mt-1.5 line-clamp-3 text-xs md:text-sm leading-4 text-slate-500">
+                            <div>
+                              {listing.address}
+                              <div className="text-[11px] text-slate-500">
+                                Diposting pada: {listing.createdAt}
+                              </div>
+                            </div>
+                            <div className="text-sm">
+                            <table>
+                              <tbody>
+                                <tr>
+                                  <td>Nama</td>
+                                  <td>: {((listing.user?.name) != null) ? listing.user.name : '-'}</td>
+                                </tr>
+                                <tr>
+                                  <td>No HP</td>
+                                  <td>: {((listing.user?.phoneNumber) != null) ? listing.user.phoneNumber : '-'}</td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
                         </div>
                     </div>
                     <div className="mt-1 px-4 md:px-6 flex flex-col flex-wrap content-start border-y border-solid border-y-slate-200 py-2">
@@ -232,7 +251,7 @@ export default function index ({
                                                                 {listItem}
                                                             </TableItem>
                                                           )
-                                                        case 'city':
+                                                        case 'cityName':
                                                           return (
                                                             <TableItem title="Kota">
                                                                 {listItem}

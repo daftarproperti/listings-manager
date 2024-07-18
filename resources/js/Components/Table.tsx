@@ -39,7 +39,7 @@ const TableHeaderItem = ({
 }: ThHTMLAttributes<HTMLTableHeaderCellElement>): JSX.Element => {
   return (
         <th
-            className={`border-y border-blue-gray-100 bg-stone-50 px-6 py-4 ${className}`}
+            className={`border-y border-blue-gray-100 bg-stone-50 px-4 py-4 ${className}`}
             {...props}
         >
             {typeof children === 'string'
@@ -73,7 +73,7 @@ const TableBodyItem = ({
   ...props
 }: TdHTMLAttributes<HTMLTableDataCellElement>): JSX.Element => {
   return (
-        <td className={`p-5 border-b ${className}`} {...props}>
+        <td className={`p-4 border-b ${className}`} {...props}>
             {typeof children === 'string'
               ? (
                 <p className="truncate text-neutral-600 font-normal">

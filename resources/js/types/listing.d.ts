@@ -1,4 +1,8 @@
+import { type ReactNode } from 'react'
+
 export interface Listing {
+  updatedAt: ReactNode
+  createdAt: ReactNode
   id: string
   title: string
   address: string
@@ -15,6 +19,7 @@ export interface Listing {
   ownership: string
   verifyStatus: string
   city: string
+  cityName: string
   pictureUrls: string[]
   listingType: string
   propertyType: string
