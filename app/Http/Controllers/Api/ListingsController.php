@@ -5,8 +5,11 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ListingRequest;
 use App\Http\Services\GoogleStorageService;
+use App\Helpers\Queue;
+use App\Jobs\GenerateListingFromText;
 use App\Models\Coordinate;
 use App\Models\FilterSet;
+use App\Models\GeneratedListing;
 use App\Models\Listing;
 use App\Models\ListingUser;
 use App\Models\Resources\ListingCollection;
@@ -17,6 +20,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 use OpenApi\Attributes as OA;
 
 class ListingsController extends Controller
@@ -459,6 +463,103 @@ class ListingsController extends Controller
     {
         $listing->delete();
         return response()->json(['message' => 'Listing deleted successfully'], 200);
+    }
+
+    #[OA\Post(
+        path: "/api/tele-app/listings/generate-from-text",
+        tags: ["Listings"],
+        summary: "Generate Listing from Text",
+        operationId: "listings.generateFromText",
+        parameters: [
+            new OA\Parameter(
+                name: "text",
+                in: "path",
+                required: true,
+                description: "Listing Message",
+                schema: new OA\Schema(type: "string")
+            )
+        ],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: "success",
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(
+                            property: "jobId",
+                            type: "string",
+                            example: "sample-result-id-1"
+                        )
+                    ]
+                )
+            )
+        ]
+    )]
+    public function generateFromText(Request $request): JsonResponse
+    {
+        $request->validate([
+            'text' => 'required|string',
+        ]);
+
+        $text = $request->input('text');
+        if (!is_string($text)) {
+            return response()->json(['error' => 'text is not a string'], 400);
+        }
+
+        $jobId = Str::uuid()->toString();
+        GenerateListingFromText::dispatch($jobId, $text)->onQueue(Queue::getQueueName('generic'));
+
+        return response()->json(['jobId' => $jobId], 200);
+    }
+
+
+    #[OA\Post(
+        path: "/api/tele-app/listings/getGenerateResult",
+        tags: ["Listings"],
+        summary: "Get Generate Listing Result",
+        operationId: "listings.getGenerateResult",
+        parameters: [
+            new OA\Parameter(
+                name: "jobId",
+                in: "path",
+                required: true,
+                description: "Generate Listing Id",
+                schema: new OA\Schema(
+                    type: "string",
+                ),
+            ),
+        ],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: "success",
+                content: new OA\JsonContent(
+                    type: "object",
+                    properties: [
+                        new OA\Property(
+                            property: "generated_listing",
+                            ref: "#/components/schemas/Listing",
+                        ),
+                    ],
+                ),
+            ),
+        ],
+    )]
+    public function getGenerateResult(Request $request): JsonResponse
+    {
+        $request->validate([
+            'jobId' => 'required|string',
+        ]);
+
+        $jobId = $request->input('jobId');
+
+        /** @var GeneratedListing|null $jobResult */
+        $jobResult = GeneratedListing::where('job_id', $jobId)->first();
+        if (!$jobResult) {
+            return response()->json(['error' => 'Generated listing not found'], 404);
+        }
+
+        return response()->json(['generatedListing' => $jobResult->generated_listing], 200);
     }
 
 

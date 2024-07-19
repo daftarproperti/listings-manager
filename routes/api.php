@@ -38,6 +38,8 @@ Route::group(['prefix' => 'tele-app', 'middleware' => ['telegram-app']], functio
         Route::get('/', [ListingsController::class, 'index']);
         Route::post('/', [ListingsController::class, 'create']);
         Route::get('/{listing}', [ListingsController::class, 'show']);
+        Route::post('/generate-from-text', [ListingsController::class, 'generateFromText']);
+        Route::post('/get-generate-result', [ListingsController::class, 'getGenerateResult']);
         Route::post('/{listing}', [ListingsController::class, 'update'])->middleware('listing-user');
         Route::delete('/{listing}', [ListingsController::class, 'delete'])->middleware('listing-user');
     });

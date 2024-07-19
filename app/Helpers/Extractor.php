@@ -4,6 +4,7 @@ namespace App\Helpers;
 
 use App\Http\Services\ChatGptService;
 use Illuminate\Support\Facades\Log;
+use stdClass;
 
 class Extractor
 {
@@ -178,36 +179,47 @@ EOD;
 
         foreach ($splitMessages as $key => $singleMsg) {
             Log::debug("extracting listing #$key, msg = $singleMsg");
-
-            $answer = $this->chatGptService->seekAnswerWithRetry(Extractor::generatePrompt($singleMsg));
-
-            Log::debug("Answer from LLM = " . $answer);
-
-            $extracted = json_decode(
-                $answer,
-                // 'false' means don't translate JSON object to associative array, because below we want to check whether
-                // we get an object or an array of objects.
-                false,
-            );
-
-            if (!$extracted) {
-                Log::error("Failed to parse JSON from LLM");
-            }
-
-            // Sometimes LLM returns a single object instead of array of objects, in that case wrap it in an array
-            // because we want to process the answer as array of multiple listings below.
-            if (!is_array($extracted)) {
-                $extracted = [$extracted];
-            }
-
-            foreach ($extracted as $singleExtracted) {
-                $singleExtracted->description = $singleMsg;
-            }
-
-            $extractedData = array_merge($extractedData, $extracted);
+            $extracted = $this->extractSingleListingFromMessage($singleMsg);
+            $extractedData[] = $extracted;
         }
 
         return $extractedData;
+    }
+
+    /**
+     * @param string $message
+     * @return stdClass
+     */
+    public function extractSingleListingFromMessage($message): stdClass
+    {
+
+        $answer = $this->chatGptService->seekAnswerWithRetry(Extractor::generatePrompt($message));
+
+        Log::debug("Answer from LLM = " . $answer);
+
+        $extracted = json_decode(
+            $answer,
+            // 'false' means don't translate JSON object to associative array, because below we want to check whether
+            // we get an object or an array of objects.
+            false,
+        );
+
+        if (!$extracted) {
+            Log::error("Failed to parse JSON from LLM");
+        }
+
+        if (!is_array($extracted)) {
+            $extracted = [$extracted];
+        }
+    
+        if (!isset($extracted[0]) || !($extracted[0] instanceof stdClass)) {
+            Log::error("Unexpected JSON structure from LLM");
+            return new stdClass();
+        }
+
+        $extracted[0]->description = $message;
+    
+        return $extracted[0];
     }
 
     /**

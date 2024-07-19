@@ -55,6 +55,10 @@
             Remember that in Indonesian locale, sometimes comma is used for decimal point, e.g. 1,050 Milyar is 1.05 billion and not 1050 billion
             Please extract this to be the canonical integer number representation, not containing letter suffixes anymore
         ]",
+        "rentPrice": "[
+            Same format as price, only fill this if the property is rented, otherwise fill with 0
+        ]",
+
         "lotSize": "[Lot size: Number]",
         "buildingSize": "[Building size: Number]",
 

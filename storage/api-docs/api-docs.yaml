@@ -538,6 +538,55 @@ paths:
                     type: string
                     example: 'Listing deleted successfully'
                 type: object
+  /api/tele-app/listings/generate-from-text:
+    post:
+      tags:
+        - Listings
+      summary: 'Generate Listing from Text'
+      operationId: listings.generateFromText
+      parameters:
+        -
+          name: text
+          in: path
+          description: 'Listing Message'
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                properties:
+                  jobId:
+                    type: string
+                    example: sample-result-id-1
+                type: object
+  /api/tele-app/listings/getGenerateResult:
+    post:
+      tags:
+        - Listings
+      summary: 'Get Generate Listing Result'
+      operationId: listings.getGenerateResult
+      parameters:
+        -
+          name: jobId
+          in: path
+          description: 'Generate Listing Id'
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                properties:
+                  generated_listing:
+                    $ref: '#/components/schemas/Listing'
+                type: object
   '/api/photo/{fileId}/{fileName}':
     get:
       tags:
