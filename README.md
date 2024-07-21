@@ -33,20 +33,8 @@ Running tests:
 * Prepare test environment (see test-utils/)
 * Run `php artisan test`
 
-### Setting up a Telegram Bot
-Daftar Properti uses Telegram Bot to receive new listings. Here is a guide how to set up your own development bot:
-
-* Chat with `BotFather` and type `/newbot`. Full reference: https://core.telegram.org/bots/features#botfather
-* Follow the prompts, e.g. set the bot name and id. At the end, BotFather will give you a bot token. Keep this token
-  safely and securely.
-* Use the bot token in your env var called `TELEGRAM_BOT_TOKEN`. The system uses this token to verify user
-  authentication, send reply messages, etc.
-* You can use the helper script to further set up your bot: `php artisan app:setup-telegram-bot {base-url} {ui-url}`,
-  with `base-url` being your publicly accessible address of the backend and `ui-url` is the front-end.
-* Your bot is ready to use for development. Chat with it by searching for its bot id and you should be able to forward
-  listings to the bot. If your setup is correct, the webhook handler will handle incoming messages and reply.
-
 ### Running tests in a container
+
 To make it easy to run tests in an isolated environment, e.g. in a CI, a
 docker-compose is provided in test-env/.
 
@@ -73,8 +61,23 @@ console, go to Logs Explorer (https://console.cloud.google.com/logs), and filter
 logName="projects/{project-name}/logs/app"
 ```
 
+### Laravel Queue Usage
+
+Daftar Properti uses Laravel Queues (https://laravel.com/docs/10.x/queues) to execute time-consuming tasks so that
+the main request handler does not block user requests, for example LLM execution, upload to cloud storage, etc.
+
+In our app engine deployment, we use named queue (https://laravel.com/docs/10.x/queues#dispatching-to-a-particular-queue)
+so that each deployment version operates on the queue jobs that were posted by the same code version to avoid mismatched
+code between jobs and queue workers.
+
+For now, we only operate one named queue for each version which is called `generic-<version>`. Due to the dynamic name
+of the queue, one can use `App\Helpers\Queue::getQueueName()` to generate the queue name with the correct version.
+For code reference, see [additional-supervisord.conf.template](additional-supervisord.conf.template).
+
 ### Production Deployment
+
 TODO
 
 ### Database set up
+
 TODO
