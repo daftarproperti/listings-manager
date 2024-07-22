@@ -30,7 +30,7 @@ export default function index ({
   const [, setPageNumber] = useState(page)
   const [, setVerifyStatus] = useState(status)
 
-  const TABLE_HEAD = ['Judul', 'Agen', 'Harga', 'LT', 'LB', 'KT', 'KM', 'Tanggal', 'Status']
+  const TABLE_HEAD = ['Judul', 'Agen', 'No HP','Harga', 'LT', 'LB', 'KT', 'KM', 'Tanggal', 'Status']
 
   const fetchData = (
     q?: string,
@@ -152,6 +152,9 @@ export default function index ({
                                                 {user?.name}
                                             </Table.BodyItem>
                                             <Table.BodyItem>
+                                                {user?.phoneNumber}
+                                            </Table.BodyItem>
+                                            <Table.BodyItem>
                                                 {new Intl.NumberFormat(
                                                   'id-ID',
                                                   {
@@ -200,7 +203,7 @@ export default function index ({
                                 {data.listings.length === 0 && (
                                     <tr>
                                         <Table.BodyItem
-                                            colSpan={9}
+                                            colSpan={11}
                                             className="text-center text-sm"
                                         >
                                             No data
