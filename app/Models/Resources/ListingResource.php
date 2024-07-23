@@ -66,6 +66,7 @@ class ListingResource extends JsonResource
     #[OA\Property(property: "userCanEdit", type: "boolean")]
     #[OA\Property(property: "isPrivate", type: "boolean")]
     #[OA\Property(property: "withRewardAgreement", type: "boolean")]
+    #[OA\Property(property: "isMultipleUnits", type: "boolean")]
     #[OA\Property(property: "updatedAt", type: "string", format: "date-time")]
     #[OA\Property(property: "createdAt", type: "string", format: "date-time")]
 
@@ -132,6 +133,7 @@ class ListingResource extends JsonResource
             'userCanEdit' => $prop->user_can_edit,
             'isPrivate' => $prop->isPrivate ?? false,
             'withRewardAgreement' => $prop->withRewardAgreement ?? false,
+            'isMultipleUnits' => $prop->isMultipleUnits ?? false,
             'updatedAt' => $prop->updated_at->isoFormat('D MMMM YYYY'),
             'createdAt' => $prop->updated_at->isoFormat('D MMMM YYYY'),
         ];

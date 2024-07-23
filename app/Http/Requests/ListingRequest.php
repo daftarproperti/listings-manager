@@ -48,6 +48,7 @@ class ListingRequest extends BaseApiRequest
     ])]
     #[OA\Property(property: "isPrivate", type: "boolean", example: false)]
     #[OA\Property(property: "withRewardAgreement", type: "boolean", example: true)]
+    #[OA\Property(property: "isMultipleUnits", type: "boolean", example: true)]
 
     public function authorize()
     {
@@ -83,6 +84,7 @@ class ListingRequest extends BaseApiRequest
             'coordinate.longitude' => 'nullable|string',
             'isPrivate' => 'required|boolean',
             'withRewardAgreement' => 'required|boolean',
+            'isMultipleUnits' => 'required|boolean',
             'listingType' => ['nullable', Rule::in(ListingType::cases())],
             'propertyType' => ['nullable', Rule::in(PropertyType::cases())],
             'listingForSale' => 'required|boolean',

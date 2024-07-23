@@ -68,6 +68,7 @@ use Spatie\Analytics\Period;
  * @property bool $user_can_edit
  * @property bool $isPrivate
  * @property bool $withRewardAgreement
+ * @property bool $isMultipleUnits
  * @property TelegramUserProfile $user_profile
  * @property ListingUser|null $user
  * @property Carbon $updated_at

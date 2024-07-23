@@ -214,6 +214,7 @@ class ListingApiTest extends TestCase
                 'listingForRent' => true,
                 'isPrivate' => false,
                 'withRewardAgreement' => true,
+                'isMultipleUnits' => true,
             ]);
 
             $response->assertStatus(200);
@@ -231,6 +232,7 @@ class ListingApiTest extends TestCase
             $this->assertEquals('2', $updatedListing->bathroomCount);
             $this->assertEquals(false, $updatedListing->isPrivate);
             $this->assertEquals(true, $updatedListing->withRewardAgreement);
+            $this->assertEquals(true, $updatedListing->isMultipleUnits);
         });
     }
 
@@ -254,6 +256,7 @@ class ListingApiTest extends TestCase
                 'propertyType' => 'house',
                 'isPrivate' => false,
                 'withRewardAgreement' => true,
+                'isMultipleUnits' => true,
             ]);
 
             $response->assertStatus(201);

@@ -1106,6 +1106,9 @@ components:
         withRewardAgreement:
           type: boolean
           example: true
+        isMultipleUnits:
+          type: boolean
+          example: true
       type: object
     SavedSearchRequest:
       properties:
@@ -1154,7 +1157,6 @@ components:
         - professional
       example: professional
     ActiveStatus:
-      description: 'Active status'
       type: string
       enum:
         - waitlisted
@@ -1432,6 +1434,8 @@ components:
           type: boolean
         withRewardAgreement:
           type: boolean
+        isMultipleUnits:
+          type: boolean
         updatedAt:
           type: string
           format: date-time
@@ -1671,11 +1675,11 @@ components:
           nullable: true
         company:
           type: string
-          example: Company
+          example: 'Company Name'
           nullable: true
         picture:
           type: string
-          example: 'https://example.com/picture.jpg'
+          example: 'https://example.com/image.jpg'
           nullable: true
         isPublicProfile:
           type: boolean

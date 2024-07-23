@@ -83,6 +83,7 @@ class PublicListingResource extends JsonResource
                 'longitude' => $listing->coordinate->longitude,
             ],
             'withRewardAgreement' => $listing->withRewardAgreement,
+            'isMultipleUnits' => $listing->isMultipleUnits,
             'updatedAt' => $listing->updated_at->toIso8601String(),
         ];
     }
