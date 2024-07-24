@@ -1,7 +1,7 @@
-import React, { Fragment, useState, type PropsWithChildren } from 'react'
+import React, { Fragment, useEffect, useState, type PropsWithChildren } from 'react'
 import { Head, router } from '@inertiajs/react'
 import { Button, Carousel, Tooltip } from '@material-tailwind/react'
-import { InformationCircleIcon } from '@heroicons/react/24/outline'
+import { InformationCircleIcon, ExclamationCircleIcon } from '@heroicons/react/24/outline'
 
 import GoogleMaps from '@/Components/GoogleMaps'
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout'
@@ -45,6 +45,12 @@ const TableItem = ({
   )
 }
 
+const detectPhoneNumber = (text: string): RegExpMatchArray | never[] => {
+  const phoneRegex = /(\+62|62|0)\d{2,4}-?\d{3,4}-?\d{3,4}/g
+  const phones = text.match(phoneRegex)
+  return phones ?? []
+}
+
 export default function index ({
   auth,
   data
@@ -59,6 +65,17 @@ export default function index ({
     lat: listing.coordinate.latitude,
     lng: listing.coordinate.longitude
   })
+  const [phoneNumberWarnings, setPhoneNumberWarnings] = useState('')
+  const [verifyStatus, setVerifyStatus] = useState(listing.verifyStatus)
+  const [editMode, setEditMode] = useState(false)
+
+  useEffect(() => {
+    if (listing.description.length > 0) {
+      const foundPhones = detectPhoneNumber(listing.description)
+      const phonesString = foundPhones.join(', ')
+      setPhoneNumberWarnings(phonesString)
+    }
+  }, [listing.description])
 
   const updateData = (): void => {
     router.put(
@@ -71,9 +88,6 @@ export default function index ({
       }
     )
   }
-
-  const [verifyStatus, setVerifyStatus] = useState(listing.verifyStatus)
-  const [editMode, setEditMode] = useState(false)
 
   const updateStatus = (): void => {
     router.put(`/admin/listings/${listing.id}`, { verifyStatus })
@@ -313,6 +327,12 @@ export default function index ({
                                     className="text-sm md:text-base text-slate-800 whitespace-pre-wrap"
                                 />
                             </div>
+                            {phoneNumberWarnings.length > 0 && (
+                              <div className="text-red-500 text-sm flex items-start pt-5">
+                                <ExclamationCircleIcon className="w-5 h-5 mr-2" />
+                                Terdapat No HP {phoneNumberWarnings} di deskripsi.
+                              </div>
+                            )}
                         </div>
                         <div className='py-3 md:col-span-2 space-y-2 md:space-y-0'>
                             <div className='flex flex-wrap md:mb-2 w-full items-center text-sm md:text-base text-slate-800 space-y-2 md:space-y-0'>
