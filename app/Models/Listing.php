@@ -58,7 +58,7 @@ use Spatie\Analytics\Period;
  * @property PropertyOwnership $ownership
  * @property VerifyStatus $verifyStatus
  * @property ActiveStatus $activeStatus
- * @property StatusNote $statusNote
+ * @property AdminNote $adminNote
  * @property array<Closing> $closings
  * @property int $cityId
  * @property string $city
@@ -113,7 +113,7 @@ class Listing extends Model
         'cityId' => 'int',
         'address' => 'string',
         'description' => 'string',
-        'statusNote' => AttributeCaster::class . ':' . StatusNote::class
+        'adminNote' => AttributeCaster::class . ':' . AdminNote::class
     ];
 
     public function getMatchFilterCountAttribute(): int

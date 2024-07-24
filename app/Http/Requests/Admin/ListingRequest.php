@@ -2,8 +2,11 @@
 
 namespace App\Http\Requests\Admin;
 
-use Illuminate\Foundation\Http\FormRequest;
+use App\Models\Enums\ActiveStatus;
+use App\Models\Enums\VerifyStatus;
 
+use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 class ListingRequest extends FormRequest
 {
     /**
@@ -22,7 +25,8 @@ class ListingRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'verifyStatus' => 'nullable|string',
+            'verifyStatus' => ['nullable', Rule::enum(VerifyStatus::class)],
+            'activeStatus' => ['nullable', Rule::enum(ActiveStatus::class)],
             'coordinate.latitude' => 'nullable|numeric',
             'coordinate.longitude' => 'nullable|numeric',
         ];

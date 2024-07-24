@@ -1731,6 +1731,23 @@
                 ],
                 "example": "professional"
             },
+            "AdminNote": {
+                "properties": {
+                    "email": {
+                        "type": "string",
+                        "example": "john@doe.web"
+                    },
+                    "message": {
+                        "type": "string",
+                        "example": "Hello World"
+                    },
+                    "date": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            },
             "ActiveStatus": {
                 "type": "string",
                 "enum": [
@@ -2034,8 +2051,8 @@
                     "activeStatus": {
                         "$ref": "#/components/schemas/ActiveStatus"
                     },
-                    "statusNote": {
-                        "$ref": "#/components/schemas/StatusNote"
+                    "adminNote": {
+                        "$ref": "#/components/schemas/AdminNote"
                     },
                     "cityName": {
                         "type": "string"
@@ -2412,23 +2429,6 @@
                     },
                     "isPublicProfile": {
                         "type": "boolean"
-                    }
-                },
-                "type": "object"
-            },
-            "StatusNote": {
-                "properties": {
-                    "email": {
-                        "type": "string",
-                        "example": "john@doe.web"
-                    },
-                    "message": {
-                        "type": "string",
-                        "example": "Hello World"
-                    },
-                    "date": {
-                        "type": "string",
-                        "format": "date-time"
                     }
                 },
                 "type": "object"

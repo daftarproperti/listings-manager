@@ -14,7 +14,7 @@ use OpenApi\Attributes as OA;
         new OA\Property(property: "date", type: "string", format: "date-time"),
     ]
 )]
-class StatusNote extends Data
+class AdminNote extends Data
 {
     public string $email;
     public string $message;

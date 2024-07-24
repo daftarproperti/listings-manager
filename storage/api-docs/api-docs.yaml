@@ -1205,6 +1205,18 @@ components:
         - individual
         - professional
       example: professional
+    AdminNote:
+      properties:
+        email:
+          type: string
+          example: john@doe.web
+        message:
+          type: string
+          example: 'Hello World'
+        date:
+          type: string
+          format: date-time
+      type: object
     ActiveStatus:
       type: string
       enum:
@@ -1430,8 +1442,8 @@ components:
           $ref: '#/components/schemas/VerifyStatus'
         activeStatus:
           $ref: '#/components/schemas/ActiveStatus'
-        statusNote:
-          $ref: '#/components/schemas/StatusNote'
+        adminNote:
+          $ref: '#/components/schemas/AdminNote'
         cityName:
           type: string
         cityId:
@@ -1683,18 +1695,6 @@ components:
           type: string
         isPublicProfile:
           type: boolean
-      type: object
-    StatusNote:
-      properties:
-        email:
-          type: string
-          example: john@doe.web
-        message:
-          type: string
-          example: 'Hello World'
-        date:
-          type: string
-          format: date-time
       type: object
     TelegramUserProfile:
       properties:

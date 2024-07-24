@@ -40,7 +40,7 @@ class ListingResource extends JsonResource
     #[OA\Property(property: "ownership", ref: "#/components/schemas/PropertyOwnership")]
     #[OA\Property(property: "verifyStatus", ref: "#/components/schemas/VerifyStatus")]
     #[OA\Property(property: "activeStatus", ref: "#/components/schemas/ActiveStatus")]
-    #[OA\Property(property: "statusNote", ref: "#/components/schemas/StatusNote")]
+    #[OA\Property(property: "adminNote", ref: "#/components/schemas/AdminNote")]
     #[OA\Property(property: "cityName", type: "string")]
     #[OA\Property(property: "cityId", type: "integer")]
     #[OA\Property(property: "city", type: "string")]
@@ -108,6 +108,7 @@ class ListingResource extends JsonResource
             'facing' => $prop->facing,
             'ownership' => $prop->ownership,
             'verifyStatus' => $prop->verifyStatus ?? '',
+            'activeStatus' => $prop->activeStatus ?? '',
             'cityName' => $prop->cityName ?? '',
             'cityId' => $prop->cityId ?? 0,
             'city' => $prop->city ?? '',
@@ -134,6 +135,7 @@ class ListingResource extends JsonResource
             'isPrivate' => $prop->isPrivate ?? false,
             'withRewardAgreement' => $prop->withRewardAgreement ?? false,
             'isMultipleUnits' => $prop->isMultipleUnits ?? false,
+            'adminNote' => $prop->adminNote,
             'updatedAt' => $prop->updated_at->isoFormat('D MMMM YYYY'),
             'createdAt' => $prop->updated_at->isoFormat('D MMMM YYYY'),
         ];
