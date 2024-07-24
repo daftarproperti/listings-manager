@@ -1,7 +1,7 @@
 import React, { Fragment, useState, type PropsWithChildren } from 'react'
 import { Head, router } from '@inertiajs/react'
-import { Button, Carousel, Chip, Tooltip } from '@material-tailwind/react'
-import { CheckIcon, InformationCircleIcon, XMarkIcon } from '@heroicons/react/24/outline'
+import { Button, Carousel, Tooltip } from '@material-tailwind/react'
+import { InformationCircleIcon } from '@heroicons/react/24/outline'
 
 import GoogleMaps from '@/Components/GoogleMaps'
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout'
@@ -72,67 +72,71 @@ export default function index ({
     )
   }
 
+  const [verifyStatus, setVerifyStatus] = useState(listing.verifyStatus)
+  const [editMode, setEditMode] = useState(false)
+
+  const updateStatus = (): void => {
+    router.put(`/admin/listings/${listing.id}`, { verifyStatus })
+    setEditMode(false)
+  }
+
   return (
         <AuthenticatedLayout
             user={auth.user}
             header={
-                <div className='flex flex-wrap justify-between relative'>
-                    <h2 className="font-semibold text-xl text-gray-800 leading-tight">
+                <div className='md:flex flex-wrap justify-between relative'>
+                    <h2 className="font-semibold text-xl text-gray-800 leading-tight mb-3 md:mb-0">
                         Detail Listing
                     </h2>
-                    {listing.verifyStatus === verifyStatusOptions[0].value
-                      ? (
-                        <div className="flex gap-3 absolute right-0 -top-2.5">
-                            {verifyStatusOptions.slice(1).map((item, index) => (
+                    <div className="flex gap-3">
+                        {!editMode
+                          ? (
+                            <div className="flex">
+                              <span
+                                  className={`${
+                                      verifyStatus ===
+                                      'approved'
+                                          ? 'bg-green-100 text-green-800'
+                                          : verifyStatus ===
+                                            'rejected'
+                                          ? 'bg-red-100 text-red-800'
+                                          : verifyStatus ===
+                                            'on_review'
+                                          ? 'bg-yellow-100 text-yellow-800'
+                                          : 'bg-gray-100 text-gray-800'
+                                  } truncate text-sm font-medium px-6 py-2.5 rounded-lg mr-4`}
+                              >
+                                  {verifyStatusOptions.find((v) => v.value === listing.verifyStatus)?.label}
+                              </span>
+                              <Button color="green" onClick={() => { setEditMode(true) }}>
+                                Ubah Status
+                              </Button>
+                            </div>
+                            )
+                          : (
+                              <>
+                                  <select
+                                      value={verifyStatus}
+                                      onChange={(e) => { setVerifyStatus(e.target.value) } }
+                                      className="bg-white border border-gray-300 rounded-md text-gray-800 text-sm leading-6 py-1.5 pl-3 pr-8 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                                    >
+                                      {verifyStatusOptions.map((option) => (
+                                        <option key={option.value} value={option.value}>
+                                          {option.label}
+                                        </option>
+                                      ))}
+                                  </select>
                                 <Button
-                                    key={index}
-                                    variant={
-                                        item.value === 'approved'
-                                          ? 'gradient'
-                                          : 'outlined'
-                                    }
-                                    color={
-                                        item.value === 'approved'
-                                          ? 'green'
-                                          : 'red'
-                                    }
-                                    onClick={() => {
-                                      router.put(
-                                        `/admin/listings/${listing.id}`,
-                                        { verifyStatus: item.value }
-                                      )
-                                    }}
-                                >
-                                    {item.value === 'approved'
-                                      ? (
-                                        <CheckIcon className='h-5 w-5 md:hidden' />
-                                        )
-                                      : (
-                                        <XMarkIcon className='h-5 w-5 md:hidden' />
-                                        )}
-                                    <div className='text-sm hidden md:block'>
-                                        {item.label}
-                                    </div>
+                                    color="green"
+                                    variant='gradient'
+                                    onClick={updateStatus}
+                                    className=""
+                                  >
+                                      Simpan Status
                                 </Button>
-                            ))}
-                        </div>
-                        )
-                      : (
-                        <Chip
-                            variant="ghost"
-                            color={
-                                listing.verifyStatus === 'approved'
-                                  ? 'green'
-                                  : 'red'
-                            }
-                            value={
-                                verifyStatusOptions.find(
-                                  (v) => v.value === listing.verifyStatus
-                                )?.label
-                            }
-                            className="rounded-full"
-                        />
-                        )}
+                              </>
+                            )}
+                      </div>
                 </div>
             }
         >
