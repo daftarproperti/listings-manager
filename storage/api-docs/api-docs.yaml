@@ -584,7 +584,7 @@ paths:
             application/json:
               schema:
                 properties:
-                  generated_listing:
+                  generatedListing:
                     $ref: '#/components/schemas/Listing'
                 type: object
   '/api/photo/{fileId}/{fileName}':

@@ -537,7 +537,7 @@ class ListingsController extends Controller
                     type: "object",
                     properties: [
                         new OA\Property(
-                            property: "generated_listing",
+                            property: "generatedListing",
                             ref: "#/components/schemas/Listing",
                         ),
                     ],
