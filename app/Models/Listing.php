@@ -11,7 +11,6 @@ use App\Models\FacingDirection;
 use App\Models\Traits\CityAttributeTrait;
 use Carbon\Carbon;
 use DateTime;
-use DateTimeZone;
 use Exception;
 use Google\Analytics\Data\V1alpha\Filter\StringFilter\MatchType;
 use Google\Analytics\Data\V1beta\Filter;
@@ -21,6 +20,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use MongoDB\Laravel\Eloquent\Model;
 use MongoDB\Laravel\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
@@ -117,6 +117,15 @@ class Listing extends Model
         'address' => 'string',
         'description' => 'string'
     ];
+
+    /**
+     * Retrieve the closings relationship.
+     *  @return \Illuminate\Database\Eloquent\Relations\HasMany<Closing>.
+     */
+    public function closings(): HasMany
+    {
+        return $this->hasMany(Closing::class);
+    }
 
     public function getMatchFilterCountAttribute(): int
     {
@@ -228,7 +237,6 @@ class Listing extends Model
                 return null;
         }
     }
-
 
     /**
      * @return \Illuminate\Database\Eloquent\Casts\Attribute<array<string>, array<string>>

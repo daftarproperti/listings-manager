@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CityController;
+use App\Http\Controllers\Api\ClosingsController;
 use App\Http\Controllers\Api\DevController;
 use App\Http\Controllers\Api\PhotoController;
 use App\Http\Controllers\Api\PropertiesController;
@@ -42,6 +43,7 @@ Route::group(['prefix' => 'tele-app', 'middleware' => ['telegram-app']], functio
         Route::post('/get-generate-result', [ListingsController::class, 'getGenerateResult']);
         Route::post('/{listing}', [ListingsController::class, 'update'])->middleware('listing-user');
         Route::delete('/{listing}', [ListingsController::class, 'delete'])->middleware('listing-user');
+        Route::post('/{listing}/closings', [ClosingsController::class, 'closing'])->middleware('listing-user');
     });
 
     Route::prefix('saved-searches')->group(function () {

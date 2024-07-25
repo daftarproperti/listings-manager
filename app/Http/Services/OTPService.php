@@ -2,6 +2,7 @@
 
 namespace App\Http\Services;
 
+use App\Helpers\PhoneNumber;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
@@ -37,7 +38,7 @@ class OTPService
 
     public function sendOTP(string $phoneNumber, string $otpCode): bool
     {
-        $phoneNumber = $this->canonicalizePhoneNumber($phoneNumber);
+        $phoneNumber = PhoneNumber::canonicalize($phoneNumber);
 
         if (App::environment('local', 'development')) {
             Log::info('OTP Code: '.$otpCode.' sent to: '.$phoneNumber);
@@ -119,22 +120,5 @@ class OTPService
         }
 
         return true;
-    }
-
-    public function canonicalizePhoneNumber(string $phoneNumber): string
-    {
-        $phoneNumber = preg_replace('/\D/', '', $phoneNumber);;
-
-        if (!$phoneNumber) return '';
-
-        if (str_starts_with($phoneNumber, '8')) {
-            $phoneNumber = '62' . $phoneNumber;
-        }
-
-        if (str_starts_with($phoneNumber, '0')) {
-            $phoneNumber = '62' . substr($phoneNumber, 1);
-        }
-
-        return '+' . $phoneNumber;
     }
 }

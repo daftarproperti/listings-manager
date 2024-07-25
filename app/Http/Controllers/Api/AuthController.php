@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Helpers\PhoneNumber;
 use DateTime;
 use Carbon\Carbon;
 use App\Http\Controllers\Controller;
@@ -73,7 +74,7 @@ class AuthController extends Controller
         ]);
         $phoneNumber = $validatedRequest['phoneNumber'];
         logger()->debug("PHONEDEBUG: Executing sendOTP with phoneNumber = $phoneNumber");
-        $phoneNumber = $this->otpService->canonicalizePhoneNumber($phoneNumber);
+        $phoneNumber = PhoneNumber::canonicalize($phoneNumber);
         logger()->debug("PHONEDEBUG: Executing sendOTP with phoneNumber canonicalized = $phoneNumber");
 
         $otpCode = sprintf("%06d", random_int(0, 999999));
@@ -131,7 +132,7 @@ class AuthController extends Controller
 
         $phoneNumber = $validatedRequest['phoneNumber'];
         logger()->debug("PHONEDEBUG: Executing verifyOTP with phoneNumber = $phoneNumber");
-        $phoneNumber = $this->otpService->canonicalizePhoneNumber($phoneNumber);
+        $phoneNumber = PhoneNumber::canonicalize($phoneNumber);
         logger()->debug("PHONEDEBUG: Executing verifyOTP with phoneNumber canonicalized = $phoneNumber");
         $token = $validatedRequest['token'];
         $timestamp = $validatedRequest['timestamp'];
@@ -248,7 +249,7 @@ class AuthController extends Controller
             'phoneNumber' => 'required', 'string', new IndonesiaPhoneFormat,
         ]);
         $phoneNumber = $validatedRequest['phoneNumber'];
-        $phoneNumber = $this->otpService->canonicalizePhoneNumber($phoneNumber);
+        $phoneNumber = PhoneNumber::canonicalize($phoneNumber);
 
         $expiryDate = new DateTime();
         $expiryDate->modify('+3 hour');

@@ -67,6 +67,7 @@ class ListingResource extends JsonResource
     #[OA\Property(property: "isPrivate", type: "boolean")]
     #[OA\Property(property: "withRewardAgreement", type: "boolean")]
     #[OA\Property(property: "isMultipleUnits", type: "boolean")]
+    #[OA\Property(property: "closings", type: "array", items: new OA\Items(ref: "#/components/schemas/Closing"))]
     #[OA\Property(property: "updatedAt", type: "string", format: "date-time")]
     #[OA\Property(property: "createdAt", type: "string", format: "date-time")]
 
@@ -136,6 +137,7 @@ class ListingResource extends JsonResource
             'withRewardAgreement' => $prop->withRewardAgreement ?? false,
             'isMultipleUnits' => $prop->isMultipleUnits ?? false,
             'adminNote' => $prop->adminNote ? AdminNoteResource::make($prop->adminNote)->resolve() : null,
+            'closings' => $prop->closings ? ClosingCollection::make($prop->closings)->resolve() : null,
             'updatedAt' => $prop->updated_at->isoFormat('D MMMM YYYY'),
             'createdAt' => $prop->updated_at->isoFormat('D MMMM YYYY'),
         ];

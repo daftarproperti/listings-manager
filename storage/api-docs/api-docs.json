@@ -305,6 +305,41 @@
                 }
             }
         },
+        "/api/tele-app/listings/{id}/closings": {
+            "post": {
+                "tags": [
+                    "Listings"
+                ],
+                "summary": "Close a listing",
+                "operationId": "listings.closing",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Listing Id",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "$ref": "#/components/schemas/ClosingRequest"
+                },
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Listing"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/tele-app/listings": {
             "get": {
                 "tags": [
@@ -1528,6 +1563,27 @@
     },
     "components": {
         "schemas": {
+            "ClosingRequest": {
+                "properties": {
+                    "closingType": {
+                        "$ref": "#/components/schemas/ClosingType"
+                    },
+                    "clientName": {
+                        "type": "string"
+                    },
+                    "clientPhoneNumber": {
+                        "type": "string"
+                    },
+                    "transactionValue": {
+                        "type": "integer"
+                    },
+                    "date": {
+                        "type": "string",
+                        "format": "date"
+                    }
+                },
+                "type": "object"
+            },
             "ImageUploadRequest": {
                 "properties": {
                     "image": {
@@ -1965,6 +2021,39 @@
                 },
                 "type": "object"
             },
+            "Closing": {
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "example": "6asdasd"
+                    },
+                    "listingId": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "closingType": {
+                        "$ref": "#/components/schemas/ClosingType"
+                    },
+                    "clientName": {
+                        "type": "string",
+                        "example": "John Doe"
+                    },
+                    "clientPhoneNumber": {
+                        "type": "string",
+                        "example": "+6281234567890"
+                    },
+                    "transactionValue": {
+                        "type": "integer",
+                        "example": 100000
+                    },
+                    "date": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-03-01T23:00:00+00:00"
+                    }
+                },
+                "type": "object"
+            },
             "Listing": {
                 "properties": {
                     "id": {
@@ -2133,6 +2222,12 @@
                     },
                     "isMultipleUnits": {
                         "type": "boolean"
+                    },
+                    "closings": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Closing"
+                        }
                     },
                     "updatedAt": {
                         "type": "string",
