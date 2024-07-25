@@ -18,6 +18,7 @@ export interface Listing {
   facing: string
   ownership: string
   verifyStatus: string
+  activeStatus: string
   city: string
   cityName: string
   pictureUrls: string[]

@@ -5,11 +5,11 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\ListingRequest;
 use App\Models\Enums\VerifyStatus;
+use App\Models\Enums\ActiveStatus;
 use App\Models\Listing;
 use App\Models\Resources\ListingCollection;
 use App\Models\Resources\ListingResource;
 use App\Repositories\Admin\ListingRepository;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
@@ -22,7 +22,8 @@ class ListingsController extends Controller
     {
         $input = $request->only([
             'q',
-            'verifyStatus'
+            'verifyStatus',
+            'activeStatus',
         ]);
 
         $listing = $repository->list($input);
@@ -32,7 +33,8 @@ class ListingsController extends Controller
             'data' => [
                 'listings' => $listingCollection->collection,
                 'lastPage' => $listing->lastPage(),
-                'verifyStatusOptions' => VerifyStatus::options()
+                'verifyStatusOptions' => VerifyStatus::options(),
+                'activeStatusOptions' => ActiveStatus::options()
             ]
         ]);
     }
@@ -44,7 +46,8 @@ class ListingsController extends Controller
         return Inertia::render('Admin/Listings/Detail/index', [
             'data' => [
                 'listing' => $resourceData->resolve(),
-                'verifyStatusOptions' => VerifyStatus::options()
+                'verifyStatusOptions' => VerifyStatus::options(),
+                'activeStatusOptions' => ActiveStatus::options()
             ]
         ]);
     }

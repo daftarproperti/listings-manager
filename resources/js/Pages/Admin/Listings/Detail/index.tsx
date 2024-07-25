@@ -13,6 +13,7 @@ import {
   LotIconSVG
 } from '@/Assets/Icons'
 import type { Listing, Option, PageProps } from '@/types'
+import StatusDialog from './StatusDialog'
 
 export const LISTING_ICON: Record<string, JSX.Element> = {
   buildingSize: <HouseIconSVG />,
@@ -58,16 +59,19 @@ export default function index ({
   data: {
     listing: Listing
     verifyStatusOptions: Option[]
+    activeStatusOptions: Option[]
   }
 }>): JSX.Element {
-  const { listing, verifyStatusOptions } = data
+  const { listing, verifyStatusOptions, activeStatusOptions } = data
   const [coord, setCoord] = useState<google.maps.LatLngLiteral>({
     lat: listing.coordinate.latitude,
     lng: listing.coordinate.longitude
   })
   const [phoneNumberWarnings, setPhoneNumberWarnings] = useState('')
   const [verifyStatus, setVerifyStatus] = useState(listing.verifyStatus)
+  const [activeStatus, setActiveStatus] = useState(listing.activeStatus)
   const [editMode, setEditMode] = useState(false)
+  const [showDialog, setShowDialog] = useState(false)
 
   useEffect(() => {
     if (listing.description.length > 0) {
@@ -106,23 +110,47 @@ export default function index ({
                         {!editMode
                           ? (
                             <div className="flex">
-                              <span
-                                  className={`${
-                                      verifyStatus ===
-                                      'approved'
-                                          ? 'bg-green-100 text-green-800'
-                                          : verifyStatus ===
-                                            'rejected'
-                                          ? 'bg-red-100 text-red-800'
-                                          : verifyStatus ===
-                                            'on_review'
-                                          ? 'bg-yellow-100 text-yellow-800'
-                                          : 'bg-gray-100 text-gray-800'
-                                  } truncate text-sm font-medium px-6 py-2.5 rounded-lg mr-4`}
-                              >
-                                  {verifyStatusOptions.find((v) => v.value === listing.verifyStatus)?.label}
-                              </span>
-                              <Button color="green" onClick={() => { setEditMode(true) }}>
+                              <div className="flex">
+                                <span className="pt-2 mr-2">Status Verifikasi: </span>
+                                <span
+                                    className={`${
+                                        verifyStatus ===
+                                        'approved'
+                                            ? 'bg-green-100 text-green-800'
+                                            : verifyStatus ===
+                                              'rejected'
+                                            ? 'bg-red-100 text-red-800'
+                                            : verifyStatus ===
+                                              'on_review'
+                                            ? 'bg-yellow-100 text-yellow-800'
+                                            : 'bg-gray-100 text-gray-800'
+                                    } truncate text-sm font-medium px-6 py-2.5 rounded-lg mr-4`}
+                                >
+                                    {verifyStatusOptions.find((v) => v.value === listing.verifyStatus)?.label}
+                                </span>
+                              </div>
+                              {verifyStatus === 'approved' && (
+                                <div className="flex">
+                                  <span className="pt-2 mr-2">Status Aktif: </span>
+                                  <span
+                                      className={`${
+                                          activeStatus ===
+                                          'active'
+                                              ? 'bg-green-100 text-green-800'
+                                              : activeStatus ===
+                                                'archived'
+                                              ? 'bg-red-100 text-red-800'
+                                              : activeStatus ===
+                                                'waitlisted'
+                                              ? 'bg-yellow-100 text-yellow-800'
+                                              : 'bg-gray-100 text-gray-800'
+                                      } truncate text-sm font-medium px-6 py-2.5 rounded-lg mr-4`}
+                                  >
+                                      {activeStatusOptions.find((v) => v.value === listing.activeStatus)?.label}
+                                  </span>
+                                </div>
+                              )}
+                              <Button color="green" onClick={() => { setShowDialog(true) }}>
                                 Ubah Status
                               </Button>
                             </div>
@@ -411,6 +439,16 @@ export default function index ({
                     </div>
                 </nav>
             )}
+            <StatusDialog
+              showDialog={showDialog}
+              setShowDialog={setShowDialog}
+              listingId={listing.id}
+              verifyStatusOptions={data.verifyStatusOptions}
+              activeStatusOptions={data.activeStatusOptions}
+              currentVerifyStatus={listing.verifyStatus}
+              currentActiveStatus={listing.activeStatus}
+              currentNote={listing.adminNote}
+            />
         </AuthenticatedLayout>
   )
 }
