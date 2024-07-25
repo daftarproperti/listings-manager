@@ -135,7 +135,7 @@ class ListingResource extends JsonResource
             'isPrivate' => $prop->isPrivate ?? false,
             'withRewardAgreement' => $prop->withRewardAgreement ?? false,
             'isMultipleUnits' => $prop->isMultipleUnits ?? false,
-            'adminNote' => $prop->adminNote,
+            'adminNote' => $prop->adminNote ? AdminNoteResource::make($prop->adminNote)->resolve() : null,
             'updatedAt' => $prop->updated_at->isoFormat('D MMMM YYYY'),
             'createdAt' => $prop->updated_at->isoFormat('D MMMM YYYY'),
         ];

@@ -27,6 +27,7 @@ class ListingRequest extends FormRequest
         return [
             'verifyStatus' => ['nullable', Rule::enum(VerifyStatus::class)],
             'activeStatus' => ['nullable', Rule::enum(ActiveStatus::class)],
+            'adminNote' => 'nullable|string',
             'coordinate.latitude' => 'nullable|numeric',
             'coordinate.longitude' => 'nullable|numeric',
         ];

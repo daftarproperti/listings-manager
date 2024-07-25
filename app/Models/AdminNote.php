@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use MongoDB\BSON\UTCDateTime;
+use Carbon\Carbon;
 use Spatie\LaravelData\Data;
 use OpenApi\Attributes as OA;
 
@@ -16,7 +16,10 @@ use OpenApi\Attributes as OA;
 )]
 class AdminNote extends Data
 {
-    public string $email;
-    public string $message;
-    public UTCDateTime $date;
+    public function __construct(
+        public ?string $email = null,
+        public string $message='',
+        public Carbon $date = new Carbon()
+    ) {
+    }
 }

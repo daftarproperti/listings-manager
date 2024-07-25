@@ -10,6 +10,8 @@ use App\Models\Enums\VerifyStatus;
 use App\Models\FacingDirection;
 use App\Models\Traits\CityAttributeTrait;
 use Carbon\Carbon;
+use DateTime;
+use DateTimeZone;
 use Exception;
 use Google\Analytics\Data\V1alpha\Filter\StringFilter\MatchType;
 use Google\Analytics\Data\V1beta\Filter;
@@ -24,6 +26,7 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use Spatie\Analytics\Facades\Analytics;
 use Spatie\Analytics\Period;
+use MongoDB\BSON\UTCDateTime;
 
 /**
  * @property string $id
@@ -112,8 +115,7 @@ class Listing extends Model
         'rentPrice' => 'int',
         'cityId' => 'int',
         'address' => 'string',
-        'description' => 'string',
-        'adminNote' => AttributeCaster::class . ':' . AdminNote::class
+        'description' => 'string'
     ];
 
     public function getMatchFilterCountAttribute(): int
@@ -244,6 +246,7 @@ class Listing extends Model
         );
     }
 
+
     /**
      * put fileName only into DB
      * @return void
@@ -277,6 +280,31 @@ class Listing extends Model
         }
 
         $this->attributes['city'] = $value;
+    }
+
+    /**
+     * @return Attribute<?AdminNote, AdminNote>
+     * modifying date format in adminNote input, from Carbon\Carbon to MongoDB\BSON\UTCDateTime
+     */
+    protected function adminNote(): Attribute
+    {
+        return Attribute::make(
+            get: function (mixed $val): ?AdminNote {
+                if (!is_array($val)) return null;
+
+                if (isset($val['date'])) {
+                    $val['date'] = Carbon::createFromTimestamp($val['date']->toDateTime()->getTimestamp());
+                }
+
+                return AdminNote::from($val);
+            },
+            // from generic Carbon to mongo-specific UTCDateTime.
+            set: function (AdminNote $val) {
+                $obj = (object)(array)$val;
+                $obj->date = new UTCDateTime($val->date->getTimestampMs());
+                return $obj;
+            }
+        );
     }
 
     // Cast every attribute to the right type before going into DB.
