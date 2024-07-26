@@ -34,6 +34,7 @@ class LocationHelper
                 $data = type(json_decode($locationResponse->getBody(), true))->asArray();
 
                 // Extract the latitude and longitude from the 'loc' field
+                if (!isset($data['loc'])) return null;
                 $location = explode(',', $data['loc']);
 
                 $latLongData = [
