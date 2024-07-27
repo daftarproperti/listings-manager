@@ -18,6 +18,7 @@ export default function index ({
     listings: Listing[]
     lastPage: number
     verifyStatusOptions: Option[]
+    activeStatusOptions: Option[]
   }
 }>): JSX.Element {
   const q = getSearchParams('q') ?? ''
@@ -30,7 +31,7 @@ export default function index ({
   const [, setPageNumber] = useState(page)
   const [, setVerifyStatus] = useState(status)
 
-  const TABLE_HEAD = ['Judul', 'Agen', 'No HP','Harga', 'LT', 'LB', 'KT', 'KM', 'Tanggal', 'Status']
+  const TABLE_HEAD = ['Judul', 'Agen', 'No HP','Harga', 'LT', 'LB', 'KT', 'KM', 'Tanggal', 'Verifikasi', 'Aktifasi']
 
   const fetchData = (
     q?: string,
@@ -53,6 +54,11 @@ export default function index ({
 
   const getVerifyStatusLabel = (status: string): string => {
     const statusOption = data.verifyStatusOptions.find(v => v.value === status)
+    return statusOption != null ? statusOption.label : 'N/A'
+  }
+
+  const getActiveStatusLabel = (status: string): string => {
+    const statusOption = data.activeStatusOptions.find(v => v.value === status)
     return statusOption != null ? statusOption.label : 'N/A'
   }
 
@@ -115,7 +121,7 @@ export default function index ({
                                     <Table.HeaderItem
                                         key={head}
                                         colSpan={head === 'Judul' ? 2 : 1}
-                                        className={head === 'KT' || head === 'KM' ? 'w-[50px]' : 'w-[100px]'}
+                                        className={head === 'KT' || head === 'KM' ? 'w-[80px]' : 'w-[100px]'}
                                     >
                                         {head}
                                     </Table.HeaderItem>
@@ -134,6 +140,7 @@ export default function index ({
                                       bedroomCount,
                                       bathroomCount,
                                       verifyStatus,
+                                      activeStatus,
                                       createdAt
                                     },
                                     index
@@ -195,6 +202,24 @@ export default function index ({
                                                     } truncate text-xs font-medium me-2 px-2.5 py-0.5 rounded-full`}
                                                 >
                                                     {getVerifyStatusLabel(verifyStatus)}
+                                                </span>
+                                            </Table.BodyItem>
+                                            <Table.BodyItem>
+                                                <span
+                                                    className={`${
+                                                        activeStatus ===
+                                                        'active'
+                                                            ? 'bg-green-100 text-green-800'
+                                                            : activeStatus ===
+                                                              'archived'
+                                                            ? 'bg-red-100 text-red-800'
+                                                            : activeStatus ===
+                                                              'waitlisted'
+                                                            ? 'bg-yellow-100 text-yellow-800'
+                                                            : 'bg-gray-100 text-gray-800'
+                                                    } truncate text-xs font-medium me-2 px-2.5 py-0.5 rounded-full`}
+                                                >
+                                                    {getActiveStatusLabel(activeStatus)}
                                                 </span>
                                             </Table.BodyItem>
                                         </tr>

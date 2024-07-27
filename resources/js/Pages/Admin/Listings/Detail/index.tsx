@@ -68,9 +68,6 @@ export default function index ({
     lng: listing.coordinate.longitude
   })
   const [phoneNumberWarnings, setPhoneNumberWarnings] = useState('')
-  const [verifyStatus, setVerifyStatus] = useState(listing.verifyStatus)
-  const [activeStatus, setActiveStatus] = useState(listing.activeStatus)
-  const [editMode, setEditMode] = useState(false)
   const [showDialog, setShowDialog] = useState(false)
 
   useEffect(() => {
@@ -93,93 +90,66 @@ export default function index ({
     )
   }
 
-  const updateStatus = (): void => {
-    router.put(`/admin/listings/${listing.id}`, { verifyStatus })
-    setEditMode(false)
-  }
-
   return (
         <AuthenticatedLayout
             user={auth.user}
             header={
-                <div className='md:flex flex-wrap justify-between relative'>
-                    <h2 className="font-semibold text-xl text-gray-800 leading-tight mb-3 md:mb-0">
-                        Detail Listing
-                    </h2>
-                    <div className="flex gap-3">
-                        {!editMode
-                          ? (
-                            <div className="flex">
-                              <div className="flex">
-                                <span className="pt-2 mr-2">Status Verifikasi: </span>
-                                <span
-                                    className={`${
-                                        verifyStatus ===
-                                        'approved'
-                                            ? 'bg-green-100 text-green-800'
-                                            : verifyStatus ===
-                                              'rejected'
-                                            ? 'bg-red-100 text-red-800'
-                                            : verifyStatus ===
-                                              'on_review'
-                                            ? 'bg-yellow-100 text-yellow-800'
-                                            : 'bg-gray-100 text-gray-800'
-                                    } truncate text-sm font-medium px-6 py-2.5 rounded-lg mr-4`}
-                                >
-                                    {verifyStatusOptions.find((v) => v.value === listing.verifyStatus)?.label}
-                                </span>
-                              </div>
-                              {verifyStatus === 'approved' && (
-                                <div className="flex">
-                                  <span className="pt-2 mr-2">Status Aktif: </span>
-                                  <span
-                                      className={`${
-                                          activeStatus ===
-                                          'active'
-                                              ? 'bg-green-100 text-green-800'
-                                              : activeStatus ===
-                                                'archived'
-                                              ? 'bg-red-100 text-red-800'
-                                              : activeStatus ===
-                                                'waitlisted'
-                                              ? 'bg-yellow-100 text-yellow-800'
-                                              : 'bg-gray-100 text-gray-800'
-                                      } truncate text-sm font-medium px-6 py-2.5 rounded-lg mr-4`}
-                                  >
-                                      {activeStatusOptions.find((v) => v.value === listing.activeStatus)?.label}
-                                  </span>
-                                </div>
-                              )}
-                              <Button color="green" onClick={() => { setShowDialog(true) }}>
-                                Ubah Status
-                              </Button>
-                            </div>
-                            )
-                          : (
-                              <>
-                                  <select
-                                      value={verifyStatus}
-                                      onChange={(e) => { setVerifyStatus(e.target.value) } }
-                                      className="bg-white border border-gray-300 rounded-md text-gray-800 text-sm leading-6 py-1.5 pl-3 pr-8 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
-                                    >
-                                      {verifyStatusOptions.map((option) => (
-                                        <option key={option.value} value={option.value}>
-                                          {option.label}
-                                        </option>
-                                      ))}
-                                  </select>
-                                <Button
-                                    color="green"
-                                    variant='gradient'
-                                    onClick={updateStatus}
-                                    className=""
-                                  >
-                                      Simpan Status
-                                </Button>
-                              </>
-                            )}
+              <div className='md:flex flex-wrap justify-between relative'>
+                <h2 className="font-semibold text-xl text-gray-800 leading-tight mb-0 pt-2">
+                    Detail Listing
+                </h2>
+                <div className="flex gap-3 lg:jus">
+                    <div className="flex mb-2 lg:mb-0">
+                      <span className="pt-3 mr-2 text-sm">Status Verifikasi: </span>
+                      <span
+                          className={`${
+                              listing.verifyStatus ===
+                              'approved'
+                                  ? 'bg-green-100 text-green-800'
+                                  : listing.verifyStatus ===
+                                    'rejected'
+                                  ? 'bg-red-100 text-red-800'
+                                  : listing.verifyStatus ===
+                                    'on_review'
+                                  ? 'bg-yellow-100 text-yellow-800'
+                                  : 'bg-gray-100 text-gray-800'
+                          } truncate text-sm font-medium px-6 py-2.5 rounded-lg mr-4 h-10`}
+                      >
+                          {verifyStatusOptions.find((v) => v.value === listing.verifyStatus)?.label}
+                      </span>
+                    </div>
+                    {listing.verifyStatus === 'approved' && (
+                      <div className="flex mb-2 lg:mb-0">
+                        <span className="pt-3 mr-2 text-sm">Status Aktif: </span>
+                        <span
+                            className={`${
+                              listing.activeStatus ===
+                                'active'
+                                    ? 'bg-green-100 text-green-800'
+                                    : listing.activeStatus ===
+                                      'archived'
+                                    ? 'bg-red-100 text-red-800'
+                                    : listing.activeStatus ===
+                                      'waitlisted'
+                                    ? 'bg-yellow-100 text-yellow-800'
+                                    : 'bg-gray-100 text-gray-800'
+                            } truncate text-sm font-medium px-6 py-2.5 rounded-lg mr-4 h-10`}
+                        >
+                            {activeStatusOptions.find((v) => v.value === listing.activeStatus)?.label}
+                        </span>
                       </div>
+                    )}
+                    <div className='lg:justify-end lg:text-right'>
+                      <Button
+                        color="blue"
+                        onClick={() => { setShowDialog(true) }}
+                        className='mb-2 lg:mb-0'
+                      >
+                        Ubah Status
+                      </Button>
+                    </div>
                 </div>
+              </div>
             }
         >
             <Head title="Listings" />
@@ -344,7 +314,7 @@ export default function index ({
                                     </tbody>
                                 </table>
                             </div>
-                            <div className="space-y-1">
+                            <div className="space-y-1 mb-5">
                                 <h1 className="font-semibold leading-7 text-slate-500">
                                     Deskripsi
                                 </h1>
@@ -447,7 +417,6 @@ export default function index ({
               activeStatusOptions={data.activeStatusOptions}
               currentVerifyStatus={listing.verifyStatus}
               currentActiveStatus={listing.activeStatus}
-              currentNote={listing.adminNote}
             />
         </AuthenticatedLayout>
   )

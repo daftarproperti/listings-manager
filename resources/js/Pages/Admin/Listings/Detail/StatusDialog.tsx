@@ -20,7 +20,6 @@ interface StatusDialogProps {
   activeStatusOptions: Option[]
   currentVerifyStatus: string
   currentActiveStatus: string
-  currentNote: string
 }
 
 const StatusDialog: React.FC<StatusDialogProps> = ({
@@ -30,28 +29,30 @@ const StatusDialog: React.FC<StatusDialogProps> = ({
   verifyStatusOptions,
   activeStatusOptions,
   currentVerifyStatus,
-  currentActiveStatus,
-  currentNote
+  currentActiveStatus
 }) => {
   const [verifyStatus, setVerifyStatus] = useState(currentVerifyStatus)
   const [activeStatus, setActiveStatus] = useState(currentActiveStatus)
-  const [note, setNotes] = useState('')
 
   useEffect(() => {
     setVerifyStatus(currentVerifyStatus)
     setActiveStatus(currentActiveStatus)
   }, [currentVerifyStatus, currentActiveStatus])
 
+  useEffect(() => {
+    if (verifyStatus !== 'approved') {
+      setActiveStatus('')
+    }
+  }, [verifyStatus])
+
   const handleSubmit = (event: { preventDefault: () => void }): void => {
     event.preventDefault()
     router.put(`/admin/listings/${listingId}`, {
       verifyStatus,
-      activeStatus,
-      adminNote: note
+      activeStatus
     }, {
       preserveState: true,
       onSuccess: () => {
-        console.log('Update status successful')
         setShowDialog(false)
       },
       onError: errors => {
@@ -93,14 +94,6 @@ const StatusDialog: React.FC<StatusDialogProps> = ({
                         <option key={option.value} value={option.value} selected={option.value === activeStatus}>{option.label}</option>
                     ))}
                 </select>
-            </div>
-            <div className="mb-3">
-                <label>Catatan:</label>
-                <textarea
-                    name="note"
-                    onChange={e => { setNotes(e.target.value) }}
-                    className="w-full border-solid border-gray-300 rounded-lg"
-                >{currentNote}</textarea>
             </div>
             <div className="actions justify-end gap-3 flex mt-5">
                 <Button type="button" onClick={() => { setShowDialog(false) }}>Batal</Button>
