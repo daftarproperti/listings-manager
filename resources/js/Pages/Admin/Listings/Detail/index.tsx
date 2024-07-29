@@ -1,7 +1,11 @@
 import React, { Fragment, useEffect, useState, type PropsWithChildren } from 'react'
 import { Head, router } from '@inertiajs/react'
 import { Button, Carousel, Tooltip } from '@material-tailwind/react'
-import { InformationCircleIcon, ExclamationCircleIcon } from '@heroicons/react/24/outline'
+import {
+  InformationCircleIcon,
+  ExclamationCircleIcon,
+  ChevronDownIcon
+} from '@heroicons/react/24/outline'
 
 import GoogleMaps from '@/Components/GoogleMaps'
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout'
@@ -69,6 +73,9 @@ export default function index ({
   })
   const [phoneNumberWarnings, setPhoneNumberWarnings] = useState('')
   const [showDialog, setShowDialog] = useState(false)
+  const [showAdminNote, setShowAdminNote] = useState(false)
+  const [note, setNote] = useState<string>(listing.adminNote?.message ?? '')
+  const [showNoteForm, setShowNoteForm] = useState(false)
 
   useEffect(() => {
     if (listing.description.length > 0) {
@@ -85,6 +92,23 @@ export default function index ({
         coordinate: {
           latitude: coord.lat,
           longitude: coord.lng
+        }
+      }
+    )
+  }
+
+  const handleUpdateNote = (): void => {
+    router.put(
+      `/admin/listings/${listing.id}`,
+      {
+        adminNote: note
+      },
+      {
+        preserveScroll: true,
+        preserveState: true,
+        onSuccess: () => {
+          setShowNoteForm(false)
+          router.reload()
         }
       }
     )
@@ -245,7 +269,7 @@ export default function index ({
                         </div>
                     </div>
                     <div className='px-4 md:px-6 grid md:grid-cols-3 gap-4'>
-                        <div className="py-3 space-y-2">
+                        <div className="py-3">
                             <div className="space-y-1">
                                 <h1 className="font-semibold leading-7 text-slate-500">
                                     Detail Listing
@@ -331,6 +355,51 @@ export default function index ({
                                 Terdapat No HP {phoneNumberWarnings} di deskripsi.
                               </div>
                             )}
+                            <div className="p-4 bg-gray-200 rounded-lg mb-5">
+                              <div className="flex justify-between">
+                                {(listing.adminNote?.message !== undefined &&
+                                listing.adminNote?.message !== '') &&
+                                (
+                                  <div
+                                    className="flex cursor-pointer text-blue-600 hover:text-blue-800 text-xs pt-4"
+                                    onClick={() => { setShowAdminNote(!showAdminNote) }}>
+                                      <span>Lihat Catatan</span>
+                                      <ChevronDownIcon className='h-4 w-4' />
+                                  </div>
+                                )}
+                                {!showNoteForm && (
+                                  <Button color='blue'
+                                    onClick={() => { setShowNoteForm(!showNoteForm) }}
+                                  >
+                                    {((listing.adminNote?.message) !== undefined) ? 'Ubah' : 'Tambah'} Catatan
+                                  </Button>
+                                )}
+                              </div>
+                              {showNoteForm && (
+                                <>
+                                  <textarea
+                                    value={note}
+                                    onChange={(e) => { setNote(e.target.value) }}
+                                    placeholder="Tambah catatan"
+                                    className="border-gray-300 rounded-lg p-3 mt-3 w-full min-h-56"
+                                  >
+                                  </textarea>
+                                  <div className="justify-end flex gap-3 mt-2">
+                                    <Button color='gray' onClick={() => { setShowNoteForm(!showNoteForm) }}>Batal</Button>
+                                    <Button color='green' onClick={handleUpdateNote}>Simpan</Button>
+                                  </div>
+                                </>
+                              )}
+                              {(showAdminNote &&
+                              listing.adminNote?.message !== undefined &&
+                              listing.adminNote?.message !== '') &&
+                              (
+                                <div className="text-sm pt-4">
+                                  <p>{listing.adminNote?.message}</p>
+                                  <p>{listing.adminNote?.email}</p>
+                                </div>
+                              )}
+                            </div>
                         </div>
                         <div className='py-3 md:col-span-2 space-y-2 md:space-y-0'>
                             <div className='flex flex-wrap md:mb-2 w-full items-center text-sm md:text-base text-slate-800 space-y-2 md:space-y-0'>

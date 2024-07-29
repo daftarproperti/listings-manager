@@ -19,6 +19,7 @@ export interface Listing {
   ownership: string
   verifyStatus: string
   activeStatus: string
+  adminNote: AdminNote
   city: string
   cityName: string
   pictureUrls: string[]
@@ -42,4 +43,10 @@ export interface User {
 export interface Coordinate {
   latitude: number
   longitude: number
+}
+
+export interface AdminNote {
+  message: string
+  email: string
+  date: ReactNode
 }

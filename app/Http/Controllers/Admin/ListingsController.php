@@ -60,9 +60,9 @@ class ListingsController extends Controller
     public function update(Listing $listing, ListingRequest $request): RedirectResponse
     {
         $data = $request->validated();
-
+        $adminNoteMessage = $data['adminNote'] ?? '';
         $adminNote = [
-            'message' => $data['adminNote'],
+            'message' => $adminNoteMessage,
             'email' => Auth::user()?->email,
             'date' => Carbon::now(),
         ];
