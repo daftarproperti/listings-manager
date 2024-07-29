@@ -9,6 +9,7 @@ import TextInput from '@/Components/TextInput'
 import { type Option, type Listing, type PageProps } from '@/types'
 import { getSearchParams, paginationRange } from '@/utils'
 import SelectInput from '@/Components/SelectInput'
+import { Tooltip } from '@material-tailwind/react'
 
 export default function index ({
   auth,
@@ -148,8 +149,7 @@ export default function index ({
                                 {TABLE_HEAD.map((head) => (
                                     <Table.HeaderItem
                                         key={head}
-                                        colSpan={head === 'Judul' ? 2 : 1}
-                                        className={head === 'KT' || head === 'KM' ? 'w-[80px]' : 'w-[100px]'}
+                                        className={head === 'KT' || head === 'KM' ? 'w-[60px]' : head === 'Judul' ? 'w-[130px]' : 'w-[100px]'}
                                     >
                                         {head}
                                     </Table.HeaderItem>
@@ -176,12 +176,20 @@ export default function index ({
                                         <tr
                                             key={index}
                                             className="cursor-pointer"
-                                            onClick={() => {
-                                              router.get(`/admin/listings/${id}`)
+                                            onClick={(event) => {
+                                              if (event.metaKey || event.ctrlKey) {
+                                                window.open(`/admin/listings/${id}`, '_blank')
+                                              } else {
+                                                router.get(`/admin/listings/${id}`)
+                                              }
                                             }}
                                         >
-                                            <Table.BodyItem colSpan={2}>
-                                                {title}
+                                            <Table.BodyItem>
+                                              {title != null && (
+                                                <Tooltip content={title}>
+                                                  <span>{title.length > 10 ? `${title.substring(0, 10)}...` : title}</span>
+                                                </Tooltip>
+                                              )}
                                             </Table.BodyItem>
                                             <Table.BodyItem>
                                                 {user?.name}
@@ -256,7 +264,7 @@ export default function index ({
                                 {data.listings.length === 0 && (
                                     <tr>
                                         <Table.BodyItem
-                                            colSpan={11}
+                                            colSpan={12}
                                             className="text-center text-sm"
                                         >
                                             No data
