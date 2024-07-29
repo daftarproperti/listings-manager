@@ -24,26 +24,34 @@ export default function index ({
   const q = getSearchParams('q') ?? ''
   const page = parseInt(getSearchParams('page') ?? '1')
   const status = getSearchParams('verifyStatus') ?? ''
+  const sortByParam = getSearchParams('sortBy') ?? 'created_at'
+  const sortOrderParam = getSearchParams('sortOrder') ?? 'desc'
 
   const [startPage, endPage] = paginationRange(page, data.lastPage)
 
   const [keyword, setKeyword] = useState(q)
   const [, setPageNumber] = useState(page)
   const [, setVerifyStatus] = useState(status)
+  const [currentSortBy, setSortBy] = useState(sortByParam)
+  const [currentSortOrder, setSortOrder] = useState(sortOrderParam)
 
-  const TABLE_HEAD = ['Judul', 'Agen', 'No HP','Harga', 'LT', 'LB', 'KT', 'KM', 'Tanggal', 'Verifikasi', 'Aktifasi']
+  const TABLE_HEAD = ['Judul', 'Agen', 'No HP', 'Harga', 'LT', 'LB', 'KT', 'KM', 'Tanggal', 'Verifikasi', 'Aktifasi']
 
   const fetchData = (
     q?: string,
     page?: number,
-    verifyStatus?: string
+    verifyStatus?: string,
+    sortBy?: string,
+    sortOrder?: string
   ): void => {
     router.get(
       '/admin/listings',
       {
         ...(q !== '' ? { q } : {}),
         ...(page !== 1 ? { page } : {}),
-        ...(verifyStatus !== '' ? { verifyStatus } : {})
+        ...(verifyStatus !== '' ? { verifyStatus } : {}),
+        ...(sortBy !== '' ? { sortBy } : {}),
+        ...(sortOrder !== '' ? { sortOrder } : {})
       },
       {
         preserveState: true,
@@ -66,6 +74,13 @@ export default function index ({
     setKeyword(q)
   }, [q])
 
+  const handleSortChange = (e: React.ChangeEvent<HTMLSelectElement>): void => {
+    const [sortBy, sortOrder] = e.target.value.split('|')
+    setSortBy(sortBy)
+    setSortOrder(sortOrder)
+    fetchData(keyword, 1, status, sortBy, sortOrder)
+  }
+
   return (
         <AuthenticatedLayout
             user={auth.user}
@@ -81,38 +96,51 @@ export default function index ({
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="p-6 mb-2 grid grid-cols-4 gap-4 md:gap-8 md:flex-row md:items-center">
-                            <div className="col-span-4 md:col-span-2">
+                            <div className="col-span-3 md:col-span-1">
                                 <p className="font-bold text-2xl leading-none text-neutral-700">
                                     Daftar Listing
                                 </p>
                             </div>
-                            <div className="col-span-4 md:col-span-1">
-                                <SelectInput
-                                    value={status}
-                                    options={[{ label: 'Semua', value: '' }, ...data.verifyStatusOptions]}
-                                    className="w-full"
-                                    onChange={(e) => {
-                                      fetchData(keyword, 1, e.target.value)
-                                      setVerifyStatus(e.target.value)
-                                      setPageNumber(1)
-                                    }}
-                                />
+                            <div className="col-span-3 md:col-span-1">
+                              <SelectInput
+                                value={`${currentSortBy}|${currentSortOrder}`}
+                                options={[
+                                  { label: 'Listing Terbaru', value: 'created_at|desc' },
+                                  { label: 'Listing Terlama', value: 'created_at|asc' },
+                                  { label: 'Listing Terbaru Diubah', value: 'updated_at|desc' },
+                                  { label: 'Listing Terlama Diubah', value: 'updated_at|asc' }
+                                ]}
+                                className="w-full"
+                                onChange={handleSortChange}
+                              />
                             </div>
-                            <div className="col-span-4 md:col-span-1">
-                                <TextInput
-                                    value={keyword}
-                                    placeholder="Cari berdasarkan judul atau id"
-                                    className="w-full"
-                                    onKeyDown={(e) => {
-                                      if (e.key === 'Enter') {
-                                        fetchData(keyword, 1, status)
-                                        setPageNumber(1)
-                                      }
-                                    }}
-                                    onChange={(e) => {
-                                      setKeyword(e.target.value)
-                                    }}
-                                />
+                            <div className="col-span-3 md:col-span-1">
+                              <SelectInput
+                                value={status}
+                                options={[{ label: 'Semua', value: '' }, ...data.verifyStatusOptions]}
+                                className="w-full"
+                                onChange={(e) => {
+                                  fetchData(keyword, 1, e.target.value, currentSortBy, currentSortOrder)
+                                  setVerifyStatus(e.target.value)
+                                  setPageNumber(1)
+                                }}
+                              />
+                            </div>
+                            <div className="col-span-3 md:col-span-1">
+                              <TextInput
+                                value={keyword}
+                                placeholder="Cari berdasarkan judul, id atau no HP"
+                                className="w-full"
+                                onKeyDown={(e) => {
+                                  if (e.key === 'Enter') {
+                                    fetchData(keyword, 1, status, currentSortBy, currentSortOrder)
+                                    setPageNumber(1)
+                                  }
+                                }}
+                                onChange={(e) => {
+                                  setKeyword(e.target.value)
+                                }}
+                              />
                             </div>
                         </div>
                         <Table>

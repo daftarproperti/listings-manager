@@ -32,6 +32,12 @@ class ListingRepository
             $query->where('verifyStatus', $input['verifyStatus']);
         });
 
+        if (isset($input['sortBy']) && isset($input['sortOrder'])) {
+            $query->orderBy($input['sortBy'], $input['sortOrder']);
+        } else {
+            $query->orderBy('created_at', 'desc');
+        }
+
         return $query->paginate($itemsPerPage);
     }
 }

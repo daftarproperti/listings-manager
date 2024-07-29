@@ -27,6 +27,8 @@ class ListingsController extends Controller
             'q',
             'verifyStatus',
             'activeStatus',
+            'sortBy',
+            'sortOrder'
         ]);
 
         $listing = $repository->list($input);
