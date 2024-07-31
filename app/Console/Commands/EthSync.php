@@ -6,8 +6,10 @@ use App\Helpers\Queue;
 use App\Helpers\TelegramPhoto;
 use App\Jobs\SyncListingToGCS;
 use App\Jobs\Web3AddListing;
+use App\Models\Enums\VerifyStatus;
 use App\Models\Listing;
 use Illuminate\Console\Command;
+use Illuminate\Database\Eloquent\Collection;
 use Web3\Contract;
 use Web3\Web3;
 
@@ -48,7 +50,8 @@ class EthSync extends Command
         $web3 = new Web3(type(env('ETH_NODE'))->asString());
         $contract = (new Contract($web3->getProvider(), $abi))->at($contractAddress);
 
-        $listings = Listing::all();
+        /** @var Collection<int, Listing> $listings */
+        $listings = Listing::where('verifyStatus', VerifyStatus::APPROVED)->get();
         foreach ($listings as $listing) {
             $listingId = $listing->listingId;
             $this->line("Processing Listing ID $listingId");
