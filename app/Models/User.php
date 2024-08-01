@@ -90,7 +90,7 @@ class User extends Authenticatable
         return $listingUser;
     }
 
-    private static function generateUserId(string $phoneNumber): int
+    public static function generateUserId(string $phoneNumber): int
     {
         $secret_key = type(env('USER_ID_KEY') ?? 'default-key')->asString();  // Use a secure, private key
 

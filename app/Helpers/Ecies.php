@@ -4,6 +4,7 @@ namespace App\Helpers;
 
 use Mdanter\Ecc\EccFactory;
 use Mdanter\Ecc\Serializer\Point\UncompressedPointSerializer;
+use Mdanter\Ecc\Crypto\Key\PrivateKey;
 
 /**
  * ECIES encrypt/decrypt utility compatible with eciespy (https://github.com/ecies/py)
@@ -49,5 +50,17 @@ class Ecies
 
         $result = $ephemeralPublicKeyHex . bin2hex($iv) . bin2hex($tag) . bin2hex($ciphertext);
         return $result;
+    }
+
+    public static function publicHexFromPrivateHex(string $privateHex): string
+    {
+        $privateKey = new PrivateKey(
+            EccFactory::getAdapter(),
+            EccFactory::getSecgCurves()->generator256k1(),
+            gmp_init($privateHex, 16),
+        );
+
+        $serializer = new UncompressedPointSerializer();
+        return $serializer->serialize($privateKey->getPublicKey()->getPoint());
     }
 }

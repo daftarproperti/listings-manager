@@ -2,7 +2,10 @@
 
 namespace App\Models\Resources;
 
+use App\Helpers\Ecies;
+use App\Helpers\TelegramPhoto;
 use App\Models\Enums\VerifyStatus;
+use App\Models\User;
 use Illuminate\Http\Resources\Json\JsonResource;
 use OpenApi\Attributes as OA;
 
@@ -54,6 +57,9 @@ class PublicListingResource extends JsonResource
         /** @var \App\Models\Listing $listing */
         $listing = $this->resource;
 
+        $ethPrivateHex = env('ETH_PRIVATE_KEY');
+        $pubHex = is_string($ethPrivateHex) ? substr(Ecies::publicHexFromPrivateHex($ethPrivateHex), 2) : null;
+
         return [
             'listingId' => $listing->listingId,
             'listingIdStr' => (string)$listing->listingId,
@@ -85,6 +91,31 @@ class PublicListingResource extends JsonResource
             'withRewardAgreement' => $listing->withRewardAgreement,
             'isMultipleUnits' => $listing->isMultipleUnits,
             'updatedAt' => $listing->updated_at->toIso8601String(),
+            'registrant' => [
+                'name' => $listing->user_profile?->name,
+                // Only DP can decrypt this since only DP has the private key of $pubHex
+                'phoneNumberEncrypted' => $pubHex && $listing->user_profile?->phoneNumber ?
+                    Ecies::encrypt($pubHex, $listing->user_profile->phoneNumber) :
+                    null,
+                // The hash of userid:phone.
+                //
+                // User ID is added so that it's difficult to brute force which phone number results to this hash.
+                // It is also difficult to check whether a particular phone number results to this hash.
+                //
+                // This still allows listing registrant to detect their own listings since they know their user id +
+                // phone number and can check whether userid:phone equals this hash. This is a feature by design.
+                'phoneNumberHash' => $listing->user_profile?->phoneNumber ?
+                    hash(
+                        'sha256',
+                        User::generateUserId($listing->user_profile->phoneNumber) . ':' .
+                            $listing->user_profile->phoneNumber
+                    ) :
+                    null,
+                'profilePictureURL' => $listing->user_profile?->picture ?
+                    TelegramPhoto::getGcsUrlFromFileName($listing->user_profile->picture) :
+                    null,
+                'company' => $listing->user_profile?->company,
+            ],
         ];
     }
 }
