@@ -13,6 +13,7 @@ use OpenApi\Attributes as OA;
 class UserResource extends JsonResource
 {
     #[OA\Property(property: "id", type: "string")]
+    #[OA\Property(property: "userId", type:"integer")]
     #[OA\Property(property: "publicId", type:"string")]
     #[OA\Property(property: "username", type: "string")]
     #[OA\Property(property: "phoneNumber", type: "string")]
@@ -39,7 +40,7 @@ class UserResource extends JsonResource
 
         return [
             'id' => $prop->id,
-            'user_id' => $prop->user_id,
+            'userId' => $prop->user_id,
             'publicId' => $prop->_id,
             'username' => $prop->username,
             'phoneNumber' => $prop->phoneNumber,

@@ -1488,7 +1488,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/TelegramUserProfile"
+                                    "$ref": "#/components/schemas/User"
                                 }
                             }
                         }
@@ -1517,7 +1517,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/TelegramUserProfile"
+                                    "$ref": "#/components/schemas/User"
                                 }
                             }
                         }
@@ -2390,6 +2390,9 @@
                 "properties": {
                     "id": {
                         "type": "string"
+                    },
+                    "userId": {
+                        "type": "integer"
                     },
                     "publicId": {
                         "type": "string"

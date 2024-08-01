@@ -76,10 +76,10 @@ class AuthTest extends TestCase
 
         $json = $response->json();
 
-        $this->assertEquals(43453923302522360, $json['user']['user_id']);
+        $this->assertEquals(43453923302522360, $json['user']['userId']);
 
         $this->assertDatabaseHas('users', [
-            'user_id' => $json['user']['user_id'],
+            'user_id' => $json['user']['userId'],
             'phoneNumber' => '+6281210112011',
         ]);
     }
@@ -176,10 +176,10 @@ class AuthTest extends TestCase
         $json = $response->json();
         $accessToken = $json['accessToken'];
 
-        $this->assertEquals(43453923302522360, $json['user']['user_id']);
+        $this->assertEquals(43453923302522360, $json['user']['userId']);
 
         $this->assertDatabaseHas('users', [
-            'user_id' => $json['user']['user_id'],
+            'user_id' => $json['user']['userId'],
             'phoneNumber' => '+6281210112011',
         ]);
 

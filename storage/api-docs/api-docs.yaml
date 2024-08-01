@@ -1037,7 +1037,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/TelegramUserProfile'
+                $ref: '#/components/schemas/User'
     post:
       tags:
         - 'Telegram Users'
@@ -1055,7 +1055,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/TelegramUserProfile'
+                $ref: '#/components/schemas/User'
 components:
   schemas:
     ImageUploadRequest:
@@ -1669,6 +1669,8 @@ components:
       properties:
         id:
           type: string
+        userId:
+          type: integer
         publicId:
           type: string
         username:

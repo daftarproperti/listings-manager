@@ -23,7 +23,7 @@ class UserController extends Controller
                 response: 200,
                 description: "success",
                 content: new OA\JsonContent(
-                    ref: "#/components/schemas/TelegramUserProfile"
+                    ref: "#/components/schemas/User"
                 )
             )
         ]
@@ -50,7 +50,7 @@ class UserController extends Controller
             new OA\Response(
                 response: 200,
                 description: "success",
-                content: new OA\JsonContent(ref: "#/components/schemas/TelegramUserProfile")
+                content: new OA\JsonContent(ref: "#/components/schemas/User")
             )
         ]
     )]
