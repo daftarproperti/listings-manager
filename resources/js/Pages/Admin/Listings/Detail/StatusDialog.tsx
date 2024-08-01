@@ -40,7 +40,9 @@ const StatusDialog: React.FC<StatusDialogProps> = ({
   }, [currentVerifyStatus, currentActiveStatus])
 
   useEffect(() => {
-    if (verifyStatus !== 'approved') {
+    if (verifyStatus === 'approved') {
+      setActiveStatus('active')
+    } else {
       setActiveStatus('')
     }
   }, [verifyStatus])
