@@ -355,6 +355,7 @@ export default function index ({
                                 Terdapat No HP {phoneNumberWarnings} di deskripsi.
                               </div>
                             )}
+                            <div>Catatan untuk <span className="font-bold text-red-500">dilihat pendaftar</span>:</div>
                             <div className="p-4 bg-gray-200 rounded-lg mb-5">
                               <div className="flex justify-between">
                                 {(listing.adminNote?.message !== undefined &&
