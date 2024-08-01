@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Web\Public;
 
 use App\Http\Controllers\Controller;
 use App\Models\Listing;
+use App\Models\Resources\PublicListingResource;
 use App\Models\User;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
@@ -16,7 +17,7 @@ class ListingsController extends Controller
         $user = User::where('user_id', $listing->user->userId ?? '')->first();
 
         if ($request->wantsJson() || $request->query('format') === 'json') {
-            return response()->json($listing);
+            return response()->json(new PublicListingResource($listing));
         }
 
         return view('public/listing', [
