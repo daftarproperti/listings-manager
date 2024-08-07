@@ -18,6 +18,8 @@ use OpenApi\Attributes as OA;
         new OA\Property(property: "clientPhoneNumber", type: "string", example: "+6281234567890"),
         new OA\Property(property: "transactionValue", type: "integer", example: 100000),
         new OA\Property(property: "date", type: "string", format: "date-time", example: "2024-03-01T23:00:00+00:00"),
+        new OA\Property(property: "notes", type: "string", example: "Notes"),
+        new OA\Property(property: "status", type: "string", example: "on_review", ref: "#/components/schemas/ClosingStatus"),
     ]
 )]
 class ClosingResource extends JsonResource
@@ -41,7 +43,8 @@ class ClosingResource extends JsonResource
             'clientPhoneNumber' => $closing->clientPhoneNumber,
             'transactionValue' => $closing->transactionValue,
             'date' => $date->toIso8601ZuluString(),
-
+            'status' => $closing->status,
+            'notes' => $closing->notes
         ];
     }
 }

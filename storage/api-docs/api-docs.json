@@ -310,7 +310,7 @@
                 "tags": [
                     "Listings"
                 ],
-                "summary": "Close a listing",
+                "summary": "Add a closing to a listing",
                 "operationId": "listings.closing",
                 "parameters": [
                     {
@@ -1813,6 +1813,16 @@
                 ],
                 "example": "waitlisted"
             },
+            "ClosingStatus": {
+                "description": "Closing Status",
+                "type": "string",
+                "enum": [
+                    "on_review",
+                    "approved",
+                    "rejected"
+                ],
+                "example": "approved"
+            },
             "ClosingType": {
                 "description": "Closing Type",
                 "type": "string",
@@ -1821,6 +1831,16 @@
                     "rented"
                 ],
                 "example": "sold"
+            },
+            "CommissionStatus": {
+                "description": "Commission Status",
+                "type": "string",
+                "enum": [
+                    "pending",
+                    "paid",
+                    "unpaid"
+                ],
+                "example": "paid"
             },
             "VerifyStatus": {
                 "description": "Verification status",
@@ -2050,6 +2070,13 @@
                         "type": "string",
                         "format": "date-time",
                         "example": "2024-03-01T23:00:00+00:00"
+                    },
+                    "notes": {
+                        "type": "string",
+                        "example": "Notes"
+                    },
+                    "status": {
+                        "$ref": "#/components/schemas/ClosingStatus"
                     }
                 },
                 "type": "object"

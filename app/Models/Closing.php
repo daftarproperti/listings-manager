@@ -15,6 +15,8 @@ use Carbon\Carbon;
  * @property Carbon $date
  * @property Listing $listing
  * @property string $listing_id
+ * @property string $status
+ * @property string $notes
  * @property string $id
  */
 class Closing extends Model

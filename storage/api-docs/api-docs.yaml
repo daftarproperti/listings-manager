@@ -207,7 +207,7 @@ paths:
     post:
       tags:
         - Listings
-      summary: 'Close a listing'
+      summary: 'Add a closing to a listing'
       operationId: listings.closing
       parameters:
         -
@@ -1083,7 +1083,7 @@ components:
   schemas:
     ClosingRequest:
       properties:
-        type:
+        closingType:
           $ref: '#/components/schemas/ClosingType'
         clientName:
           type: string
@@ -1261,6 +1261,14 @@ components:
         - active
         - archived
       example: waitlisted
+    ClosingStatus:
+      description: 'Closing Status'
+      type: string
+      enum:
+        - on_review
+        - approved
+        - rejected
+      example: approved
     ClosingType:
       description: 'Closing Type'
       type: string
@@ -1268,6 +1276,14 @@ components:
         - sold
         - rented
       example: sold
+    CommissionStatus:
+      description: 'Commission Status'
+      type: string
+      enum:
+        - pending
+        - paid
+        - unpaid
+      example: paid
     VerifyStatus:
       description: 'Verification status'
       type: string
@@ -1424,12 +1440,12 @@ components:
     Closing:
       properties:
         id:
-          type: integer
-          example: 1
+          type: string
+          example: 6asdasd
         listingId:
           type: integer
           example: 1
-        type:
+        closingType:
           $ref: '#/components/schemas/ClosingType'
         clientName:
           type: string
@@ -1444,6 +1460,11 @@ components:
           type: string
           format: date-time
           example: '2024-03-01T23:00:00+00:00'
+        notes:
+          type: string
+          example: Notes
+        status:
+          $ref: '#/components/schemas/ClosingStatus'
       type: object
     Listing:
       properties:

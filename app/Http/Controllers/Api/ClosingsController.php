@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ClosingRequest;
 use App\Models\Closing;
+use App\Models\Enums\ClosingStatus;
 use App\Models\Listing;
 use App\Models\Resources\ListingResource;
 use Carbon\Carbon;
@@ -17,7 +18,7 @@ class ClosingsController extends Controller
     #[OA\Post(
         path: "/api/tele-app/listings/{id}/closings",
         tags: ["Listings"],
-        summary: "Close a listing",
+        summary: "Add a closing to a listing",
         operationId: "listings.closing",
         parameters: [
             new OA\Parameter(
@@ -54,6 +55,7 @@ class ClosingsController extends Controller
 
         $closing = new Closing();
         $closing->listing = $listing;
+        $closing->status = (ClosingStatus::ON_REVIEW)->value;
         $closing->fill($validated);
 
         $listing->closings()->save($closing);

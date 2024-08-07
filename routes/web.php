@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\GoogleLoginController;
 use App\Http\Controllers\Admin\ListingsController as AdminListingsController;
 use App\Http\Controllers\Admin\MembersController;
 use App\Http\Controllers\Admin\TelegramController;
+use App\Http\Controllers\Admin\ClosingsController as AdminClosingsController;
 use App\Http\Controllers\QueueSizeController;
 use App\Http\Controllers\VersionController;
 use App\Http\Controllers\Web\Public\AgentsController;
@@ -44,6 +45,12 @@ Route::group(['prefix' => 'admin'], function () {
             Route::get('/', [AdminListingsController::class, 'index'])->name('index');
             Route::get('/{listing}', [AdminListingsController::class, 'show'])->name('show');
             Route::put('/{listing}', [AdminListingsController::class, 'update'])->name('update');
+        });
+
+        Route::group(['prefix' => 'closings', 'as' => 'closing.'], function () {
+            Route::get('/', [AdminClosingsController::class, 'index'])->name('index');
+            Route::get('/{closing}', [AdminClosingsController::class, 'show'])->name('show');
+            Route::post('/{closing}', [AdminClosingsController::class, 'update'])->name('update');
         });
     });
 
