@@ -90,11 +90,9 @@ class User extends Authenticatable
         return $listingUser;
     }
 
-    public static function generateUserId(string $phoneNumber): int
+    public static function generateUserIdWithKey(string $userIdKey, string $phoneNumber): int
     {
-        $secret_key = type(env('USER_ID_KEY') ?? 'default-key')->asString();  // Use a secure, private key
-
-        $hash = hash_hmac('sha256', $phoneNumber, $secret_key, true);
+        $hash = hash_hmac('sha256', $phoneNumber, $userIdKey, true);
 
         // Take the first 7 bytes (56 bits) of the hash and convert the 7-byte string to a 56-bit unsigned integer
         $hash_56bit = substr($hash, 0, 7);
@@ -104,6 +102,14 @@ class User extends Authenticatable
         }
 
         return $userid;
+    }
+
+    public static function generateUserId(string $phoneNumber): int
+    {
+        return self::generateUserIdWithKey(
+            type(env('USER_ID_KEY') ?? 'default-key')->asString(),
+            $phoneNumber,
+        );
     }
 
     protected static function boot()
