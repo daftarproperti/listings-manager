@@ -120,14 +120,23 @@ class Ecies
         return rtrim($result, "\0");
     }
 
-    public static function publicHexFromPrivateHex(string $privateHex): string
+    public static function privateKeyFromHex(string $privateHex): PrivateKeyInterface
     {
-        $privateKey = new PrivateKey(
+        return new PrivateKey(
             EccFactory::getAdapter(),
             EccFactory::getSecgCurves()->generator256k1(),
             gmp_init($privateHex, 16),
         );
+    }
 
+    public static function publicKeyFromPrivateHex(string $privateHex): PublicKeyInterface
+    {
+        return self::privateKeyFromHex($privateHex)->getPublicKey();
+    }
+
+    public static function publicHexFromPrivateHex(string $privateHex): string
+    {
+        $privateKey = self::privateKeyFromHex($privateHex);
         $serializer = new UncompressedPointSerializer();
         return $serializer->serialize($privateKey->getPublicKey()->getPoint());
     }

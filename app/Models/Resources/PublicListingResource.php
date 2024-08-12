@@ -58,7 +58,7 @@ class PublicListingResource extends JsonResource
         $listing = $this->resource;
 
         $ethPrivateHex = env('ETH_PRIVATE_KEY');
-        $pubHex = is_string($ethPrivateHex) ? substr(Ecies::publicHexFromPrivateHex($ethPrivateHex), 2) : null;
+        $pubKey = is_string($ethPrivateHex) ? Ecies::publicKeyFromPrivateHex($ethPrivateHex) : null;
 
         return [
             'listingId' => $listing->listingId,
@@ -93,9 +93,9 @@ class PublicListingResource extends JsonResource
             'updatedAt' => $listing->updated_at->toIso8601String(),
             'registrant' => [
                 'name' => $listing->user_profile?->name,
-                // Only DP can decrypt this since only DP has the private key of $pubHex
-                'phoneNumberEncrypted' => $pubHex && $listing->user_profile?->phoneNumber ?
-                    Ecies::encrypt($pubHex, $listing->user_profile->phoneNumber) :
+                // Only DP can decrypt this since only DP has the private key of $pubKey
+                'phoneNumberEncrypted' => $pubKey && $listing->user_profile?->phoneNumber ?
+                    Ecies::encryptString($pubKey, $listing->user_profile->phoneNumber) :
                     null,
                 // The hash of userid:phone.
                 //
