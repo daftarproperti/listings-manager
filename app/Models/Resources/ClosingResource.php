@@ -12,7 +12,7 @@ use OpenApi\Attributes as OA;
     type: "object",
     properties: [
         new OA\Property(property: "id", type: "string", example: '6asdasd'),
-        new OA\Property(property: "listingId", type: "integer", example: 1),
+        new OA\Property(property: "listingId", type: "string", example: "15000"),
         new OA\Property(property: "closingType", ref: "#/components/schemas/ClosingType"),
         new OA\Property(property: "clientName", type: "string", example: "John Doe"),
         new OA\Property(property: "clientPhoneNumber", type: "string", example: "+6281234567890"),
@@ -37,7 +37,7 @@ class ClosingResource extends JsonResource
 
         return [
             'id' => $closing->id,
-            'listingId' => $closing->listing->listingId,
+            'listingId' => (string) $closing->listing->listingId,
             'closingType' => $closing->closingType,
             'clientName' => $closing->clientName,
             'clientPhoneNumber' => $closing->clientPhoneNumber,

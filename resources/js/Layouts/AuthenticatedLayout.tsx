@@ -49,6 +49,14 @@ export default function Authenticated ({
                             </div>
                             <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                                 <NavLink
+                                    href={route('closing.index')}
+                                    active={route().current('closing.index')}
+                                >
+                                    Closings Report
+                                </NavLink>
+                            </div>
+                            <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                                <NavLink
                                     href={route('telegram.allowlists')}
                                     active={route().current('telegram.allowlists')}
                                 >

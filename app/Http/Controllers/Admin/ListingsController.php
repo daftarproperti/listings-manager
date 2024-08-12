@@ -44,8 +44,14 @@ class ListingsController extends Controller
         ]);
     }
 
-    public function show(Listing $listing): Response
+    public function show(string|int $listingId): Response
     {
+        $listing = $this->getListingByIdOrListingId($listingId);
+
+        if (is_null($listing)) {
+            abort(404);
+        }
+
         $resourceData = new ListingResource($listing);
 
         return Inertia::render('Admin/Listings/Detail/index', [
@@ -57,8 +63,13 @@ class ListingsController extends Controller
         ]);
     }
 
-    public function update(Listing $listing, ListingRequest $request): RedirectResponse
+    public function update(string|int $listingId, ListingRequest $request): RedirectResponse
     {
+        $listing = $this->getListingByIdOrListingId($listingId);
+        if (is_null($listing)) {
+            abort(404);
+        }
+
         $data = $request->validated();
         $adminNoteMessage = $data['adminNote'] ?? '';
         $adminNote = [
@@ -74,5 +85,19 @@ class ListingsController extends Controller
         $listing->save();
 
         return Redirect::to($request->url());
+    }
+
+    /**
+     * @param string|int $listingId
+     * @return Listing|null
+     */
+    private function getListingByIdOrListingId(string|int $listingId): ?Listing
+    {
+        /** @var Listing|null $result */
+        $result = Listing::where('id', $listingId)
+            ->orWhere('listingId', intval($listingId))
+            ->first();
+
+        return $result;
     }
 }

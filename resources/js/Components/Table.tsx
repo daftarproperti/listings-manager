@@ -7,7 +7,7 @@ import React, {
 
 const Table = ({
   children,
-  className,
+  className = '',
   ...props
 }: TableHTMLAttributes<HTMLTableElement>): JSX.Element => {
   return (
@@ -34,7 +34,7 @@ const TableHeader = ({
 
 const TableHeaderItem = ({
   children,
-  className,
+  className = '',
   ...props
 }: ThHTMLAttributes<HTMLTableHeaderCellElement>): JSX.Element => {
   return (
@@ -69,7 +69,7 @@ const TableBody = ({
 
 const TableBodyItem = ({
   children,
-  className,
+  className = '',
   ...props
 }: TdHTMLAttributes<HTMLTableDataCellElement>): JSX.Element => {
   return (

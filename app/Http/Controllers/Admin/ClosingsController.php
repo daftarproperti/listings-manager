@@ -29,7 +29,7 @@ class ClosingsController extends Controller
         $closingsCollection = new ClosingCollection($closings);
 
 
-        return Inertia::render('Admin/Closings/index', [
+        return Inertia::render('Admin/Closings/Index', [
             'data' => [
                 'closings' => $closingsCollection->collection,
                 'lastPage' => $closings->lastPage()
@@ -41,7 +41,7 @@ class ClosingsController extends Controller
     {
         $resourceData = new ClosingResource($closing);
 
-        return Inertia::render('Admin/Closings/detail', [
+        return Inertia::render('Admin/Closings/Form', [
             'data' => [
                 'closing' => $resourceData->resolve(),
             ]
@@ -60,7 +60,7 @@ class ClosingsController extends Controller
 
         $closing->save();
 
-        return Redirect::to($request->url());
+        return Redirect::route('closing.index');
     }
 
 }

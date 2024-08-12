@@ -2070,8 +2070,8 @@
                         "example": "6asdasd"
                     },
                     "listingId": {
-                        "type": "integer",
-                        "example": 1
+                        "type": "string",
+                        "example": "15000"
                     },
                     "closingType": {
                         "$ref": "#/components/schemas/ClosingType"
