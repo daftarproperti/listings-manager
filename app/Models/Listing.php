@@ -62,6 +62,7 @@ use MongoDB\BSON\UTCDateTime;
  * @property VerifyStatus $verifyStatus
  * @property ActiveStatus $activeStatus
  * @property AdminNote $adminNote
+ * @property CancellationNote $cancellationNote
  * @property array<Closing> $closings
  * @property int $cityId
  * @property string $city
@@ -314,6 +315,24 @@ class Listing extends Model
             }
         );
     }
+
+    /**
+     * @return Attribute<?CancellationNote, CancellationNote>
+     */
+    protected function cancellationNote(): Attribute
+    {
+        return Attribute::make(
+            get: function (mixed $val): ?CancellationNote {
+                if (!is_array($val)) return null;
+                return CancellationNote::from($val);
+            },
+            set: function (CancellationNote $val) {
+                $obj = (object)(array)$val;
+                return $obj;
+            }
+        );
+    }
+
 
     // Cast every attribute to the right type before going into DB.
     public function setAttribute($key, $value)

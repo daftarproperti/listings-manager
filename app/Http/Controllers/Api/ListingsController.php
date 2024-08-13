@@ -8,6 +8,8 @@ use App\Http\Services\GoogleStorageService;
 use App\Helpers\Queue;
 use App\Jobs\GenerateListingFromText;
 use App\Models\Coordinate;
+use App\Models\CancellationNote;
+use App\Models\Enums\CancellationStatus;
 use App\Models\FilterSet;
 use App\Models\GeneratedListing;
 use App\Models\Listing;
@@ -17,9 +19,11 @@ use App\Models\Resources\ListingResource;
 use App\Models\User;
 use App\Repositories\ListingRepository;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Str;
 use OpenApi\Attributes as OA;
 
@@ -640,5 +644,31 @@ class ListingsController extends Controller
         }
 
         return $uploadedImages;
+    }
+
+    /**
+     * Update the cancellation note for a listing.
+     * 
+     * @param Request $request
+     * @param Listing $listing
+     * @return JsonResponse
+     */
+    public function updateCancellationNote(Request $request, Listing $listing): JsonResponse
+    {
+        $validated = $request->validate([
+            'reason' => 'required|string',
+        ]);
+
+        $listing->cancellationNote = new CancellationNote(
+            reason: $validated['reason'],
+            status: CancellationStatus::ON_REVIEW 
+        );
+
+        $listing->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Cancellation note updated successfully.',
+        ]); 
     }
 }

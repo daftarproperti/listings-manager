@@ -44,6 +44,8 @@ Route::group(['prefix' => 'tele-app', 'middleware' => ['telegram-app']], functio
         Route::post('/{listing}', [ListingsController::class, 'update'])->middleware('listing-user');
         Route::delete('/{listing}', [ListingsController::class, 'delete'])->middleware('listing-user');
         Route::post('/{listing}/closings', [ClosingsController::class, 'closing'])->middleware('listing-user');
+        Route::put('/{listing}/cancel', [ListingsController::class, 'updateCancellationNote'])->middleware('listing-user');
+
     });
 
     Route::prefix('saved-searches')->group(function () {

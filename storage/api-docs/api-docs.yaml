@@ -1254,6 +1254,15 @@ components:
           type: string
           format: date-time
       type: object
+    CancellationNote:
+      properties:
+        reason:
+          type: string
+          example: 'Hello World'
+        status:
+          type: string
+          example: on_review
+      type: object
     ActiveStatus:
       type: string
       enum:
@@ -1261,6 +1270,13 @@ components:
         - active
         - archived
       example: waitlisted
+    CancellationStatus:
+      type: string
+      enum:
+        - on_review
+        - approved
+        - rejected
+      example: on_review
     ClosingStatus:
       description: 'Closing Status'
       type: string
@@ -1526,6 +1542,8 @@ components:
           $ref: '#/components/schemas/ActiveStatus'
         adminNote:
           $ref: '#/components/schemas/AdminNote'
+        cancellationNote:
+          $ref: '#/components/schemas/CancellationNote'
         cityName:
           type: string
         cityId:

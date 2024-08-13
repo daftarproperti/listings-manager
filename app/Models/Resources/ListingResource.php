@@ -3,6 +3,7 @@
 namespace App\Models\Resources;
 
 use App\Helpers\TelegramPhoto;
+use App\Models\Resources\CancellationNoteResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 use OpenApi\Attributes as OA;
 
@@ -41,6 +42,7 @@ class ListingResource extends JsonResource
     #[OA\Property(property: "verifyStatus", ref: "#/components/schemas/VerifyStatus")]
     #[OA\Property(property: "activeStatus", ref: "#/components/schemas/ActiveStatus")]
     #[OA\Property(property: "adminNote", ref: "#/components/schemas/AdminNote")]
+    #[OA\Property(property: "cancellationNote", ref: "#/components/schemas/CancellationNote")]
     #[OA\Property(property: "cityName", type: "string")]
     #[OA\Property(property: "cityId", type: "integer")]
     #[OA\Property(property: "city", type: "string")]
@@ -137,6 +139,7 @@ class ListingResource extends JsonResource
             'withRewardAgreement' => $prop->withRewardAgreement ?? false,
             'isMultipleUnits' => $prop->isMultipleUnits ?? false,
             'adminNote' => $prop->adminNote ? AdminNoteResource::make($prop->adminNote)->resolve() : null,
+            'cancellationNote' => $prop->cancellationNote ? CancellationNoteResource::make($prop->cancellationNote)->resolve() : null,
             'closings' => $prop->closings ? ClosingCollection::make($prop->closings)->resolve() : null,
             'updatedAt' => $prop->updated_at->isoFormat('D MMMM YYYY'),
             'createdAt' => $prop->updated_at->isoFormat('D MMMM YYYY'),

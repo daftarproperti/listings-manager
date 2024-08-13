@@ -1804,6 +1804,19 @@
                 },
                 "type": "object"
             },
+            "CancellationNote": {
+                "properties": {
+                    "reason": {
+                        "type": "string",
+                        "example": "Hello World"
+                    },
+                    "status": {
+                        "type": "string",
+                        "example": "on_review"
+                    }
+                },
+                "type": "object"
+            },
             "ActiveStatus": {
                 "type": "string",
                 "enum": [
@@ -1812,6 +1825,15 @@
                     "archived"
                 ],
                 "example": "waitlisted"
+            },
+            "CancellationStatus": {
+                "type": "string",
+                "enum": [
+                    "on_review",
+                    "approved",
+                    "rejected"
+                ],
+                "example": "on_review"
             },
             "ClosingStatus": {
                 "description": "Closing Status",
@@ -2169,6 +2191,9 @@
                     },
                     "adminNote": {
                         "$ref": "#/components/schemas/AdminNote"
+                    },
+                    "cancellationNote": {
+                        "$ref": "#/components/schemas/CancellationNote"
                     },
                     "cityName": {
                         "type": "string"
