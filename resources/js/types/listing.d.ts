@@ -11,7 +11,9 @@ export interface Listing {
   lotSize: number
   buildingSize: number
   bedroomCount: number
+  additionalBedroomCount: number
   bathroomCount: number
+  additionalBathroomCount: number
   electricPower: number
   floorCount: number
   carCount: number
@@ -27,6 +29,8 @@ export interface Listing {
   propertyType: string
   coordinate: Coordinate
   user?: User
+  isMultipleUnits: boolean
+  withRewardAgreement: boolean
 }
 
 export interface User {

@@ -166,7 +166,9 @@ export default function index ({
                                       lotSize,
                                       buildingSize,
                                       bedroomCount,
+                                      additionalBedroomCount,
                                       bathroomCount,
+                                      additionalBathroomCount,
                                       verifyStatus,
                                       activeStatus,
                                       createdAt
@@ -213,12 +215,16 @@ export default function index ({
                                             <Table.BodyItem className='text-neutral-600 font-normal'>
                                                 {`${buildingSize}`} m&sup2;
                                             </Table.BodyItem>
-                                            <Table.BodyItem>
-                                                {`${bedroomCount}`}
-                                            </Table.BodyItem>
-                                            <Table.BodyItem>
-                                                {`${bathroomCount}`}
-                                            </Table.BodyItem>
+                                            <Table.BodyItem>{
+                                              additionalBedroomCount > 0
+                                                ? `${bedroomCount}+${additionalBedroomCount}`
+                                                : `${bedroomCount}`
+                                            }</Table.BodyItem>
+                                             <Table.BodyItem>{
+                                              additionalBathroomCount > 0
+                                                ? `${bathroomCount}+${additionalBathroomCount}`
+                                                : `${bathroomCount}`
+                                            }</Table.BodyItem>
                                             <Table.BodyItem>
                                                 {`${String(createdAt)}`}
                                             </Table.BodyItem>

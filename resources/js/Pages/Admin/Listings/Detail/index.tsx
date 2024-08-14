@@ -239,18 +239,22 @@ export default function index ({
                                     <Fragment key={id}>
                                         {(() => {
                                           switch (item as keyof Listing) {
-                                            case 'bedroomCount':
+                                            case 'bedroomCount': {
+                                              const additionalBedrooms = listing.additionalBedroomCount > 0 ? `+${listing.additionalBedroomCount}` : ''
                                               return (
                                                 <ListingItem item={item}>
-                                                    {listItem} KT
+                                                    {listItem}{additionalBedrooms} KT
                                                 </ListingItem>
                                               )
-                                            case 'bathroomCount':
+                                            }
+                                            case 'bathroomCount':{
+                                              const additionalBathrooms = listing.additionalBathroomCount > 0 ? `+${listing.additionalBathroomCount}` : ''
                                               return (
                                                 <ListingItem item={item}>
-                                                    {listItem} KM
+                                                    {listItem}{additionalBathrooms} KM
                                                 </ListingItem>
                                               )
+                                            }
                                             case 'lotSize':
                                             case 'buildingSize':
                                               return (
@@ -325,6 +329,18 @@ export default function index ({
                                                           return (
                                                             <TableItem title="Kapasitas Mobil">
                                                                 {listItem}
+                                                            </TableItem>
+                                                          )
+                                                        case 'isMultipleUnits':
+                                                          return (
+                                                            <TableItem title="Multiple Unit">
+                                                                {listing.isMultipleUnits ? 'Ya' : 'Tidak'}
+                                                            </TableItem>
+                                                          )
+                                                        case 'withRewardAgreement':
+                                                          return (
+                                                            <TableItem title="Setuju Imbalan">
+                                                                {listing.withRewardAgreement ? 'Ya' : 'Tidak'}
                                                             </TableItem>
                                                           )
                                                         default:
