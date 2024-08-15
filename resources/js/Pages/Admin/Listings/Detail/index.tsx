@@ -1,4 +1,11 @@
-import React, { Fragment, useEffect, useState, type PropsWithChildren } from 'react'
+import React, {
+  type Dispatch,
+  type SetStateAction,
+  type PropsWithChildren,
+  Fragment,
+  useEffect,
+  useState
+} from 'react'
 import { Head, router } from '@inertiajs/react'
 import { Button, Carousel, Tooltip } from '@material-tailwind/react'
 import {
@@ -67,7 +74,7 @@ export default function index ({
   }
 }>): JSX.Element {
   const { listing, verifyStatusOptions, activeStatusOptions } = data
-  const [coord, setCoord] = useState<google.maps.LatLngLiteral>({
+  const [coord, setBaseCoord] = useState<google.maps.LatLngLiteral>({
     lat: listing.coordinate.latitude,
     lng: listing.coordinate.longitude
   })
@@ -76,6 +83,7 @@ export default function index ({
   const [showAdminNote, setShowAdminNote] = useState(false)
   const [note, setNote] = useState<string>(listing.adminNote?.message ?? '')
   const [showNoteForm, setShowNoteForm] = useState(false)
+  const [unsavedChanges, setUnsavedChanges] = useState(false)
 
   useEffect(() => {
     if (listing.description.length > 0) {
@@ -95,7 +103,38 @@ export default function index ({
         }
       }
     )
+    setUnsavedChanges(false)
   }
+
+  const setCoord: Dispatch<SetStateAction<google.maps.LatLngLiteral>> = (newCoord) => {
+    if (typeof newCoord === 'function') {
+      setBaseCoord((prevCoord) => {
+        const updatedCoord = newCoord(prevCoord)
+        setUnsavedChanges(true)
+        return updatedCoord
+      })
+    } else {
+      setBaseCoord(newCoord)
+      setUnsavedChanges(true)
+    }
+  }
+
+  useEffect(() => {
+    const handleBeforeUnload = (event: BeforeUnloadEvent): void => {
+      if (unsavedChanges) {
+        event.preventDefault()
+        event.returnValue = ''
+      }
+    }
+
+    if (unsavedChanges) {
+      window.addEventListener('beforeunload', handleBeforeUnload)
+    }
+
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload)
+    }
+  }, [unsavedChanges])
 
   const handleUpdateNote = (): void => {
     router.put(
