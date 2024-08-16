@@ -881,6 +881,56 @@
                 }
             }
         },
+        "/api/tele-app/listings/{id}/likely-connected": {
+            "post": {
+                "tags": [
+                    "Listings"
+                ],
+                "summary": "Get Likely Connected Listing",
+                "operationId": "listings.likely-connected",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Listing Id",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "connectedListings": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "string",
+                                                        "example": "listing-id-1"
+                                                    },
+                                                    "title": {
+                                                        "type": "string",
+                                                        "example": "title-1"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/photo/{fileId}/{fileName}": {
             "get": {
                 "tags": [

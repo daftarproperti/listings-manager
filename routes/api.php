@@ -41,6 +41,7 @@ Route::group(['prefix' => 'tele-app', 'middleware' => ['telegram-app']], functio
         Route::get('/{listing}', [ListingsController::class, 'show']);
         Route::post('/generate-from-text', [ListingsController::class, 'generateFromText']);
         Route::post('/get-generate-result', [ListingsController::class, 'getGenerateResult']);
+        Route::post('/{listing}/likely-connected', [ListingsController::class, 'getLikelyConnected']);
         Route::post('/{listing}', [ListingsController::class, 'update'])->middleware('listing-user');
         Route::delete('/{listing}', [ListingsController::class, 'delete'])->middleware('listing-user');
         Route::post('/{listing}/closings', [ClosingsController::class, 'closing'])->middleware('listing-user');

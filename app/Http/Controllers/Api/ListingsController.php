@@ -566,6 +566,79 @@ class ListingsController extends Controller
         return response()->json(['generatedListing' => $jobResult->generated_listing], 200);
     }
 
+    #[OA\Post(
+        path: "/api/tele-app/listings/{id}/likely-connected",
+        tags: ["Listings"],
+        summary: "Get Likely Connected Listing",
+        operationId: "listings.likely-connected",
+        parameters: [
+            new OA\Parameter(
+                name: "id",
+                in: "path",
+                required: true,
+                description: "Listing Id",
+                schema: new OA\Schema(type: "string")
+            )
+        ],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: "success",
+                content: new OA\JsonContent(
+                    type: "object",
+                    properties: [
+                        new OA\Property(
+                            property: "connectedListings",
+                            type: "array",
+                            items: new OA\Items(
+                                type: "object",
+                                properties: [
+                                    new OA\Property(
+                                        property: "id",
+                                        type: "string",
+                                        example: "listing-id-1"
+                                    ),
+                                    new OA\Property(
+                                        property: "title",
+                                        type: "string",
+                                        example: "title-1"
+                                    ),
+                                ]
+                            )
+                        ),
+                    ]
+                ),
+            ),
+        ],
+    )]
+    public function getLikelyConnected(Listing $listing): JsonResponse
+    {
+        $latitude = $listing->coordinate->latitude ?? 0;
+        $longitude = $listing->coordinate->longitude;
+
+        // latitude change for 100 meter
+        $latChange = 100 / 111320;
+
+        // longitude change for 100 meter
+        $lonChange = 100 / (111320 * cos(deg2rad($latitude)));
+
+        $result = Listing::whereBetween('coordinate.latitude', [$latitude - $latChange, $latitude + $latChange])
+                                    ->whereBetween('coordinate.longitude', [$longitude - $lonChange, $longitude + $lonChange])
+                                    ->where('_id', '!=', $listing->id)
+                                    ->where('verifyStatus', 'approved')
+                                    ->get();
+
+        $connectedListings = $result->map(function ($listing) {
+            /** @var Listing $listing */
+            return [
+                'id' => $listing->id,
+                'title' => $listing->title,
+            ];
+        })->toArray();
+
+        return response()->json(['connectedListings' => $connectedListings], 200);
+    }
+
 
     /**
      * @param array<string, mixed> $data
