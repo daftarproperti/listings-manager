@@ -93,11 +93,14 @@ class ListingsController extends Controller
      */
     private function getListingByIdOrListingId(string|int $listingId): ?Listing
     {
-        /** @var Listing|null $result */
-        $result = Listing::where('id', $listingId)
-            ->orWhere('listingId', intval($listingId))
-            ->first();
+        $result = null;
+        if (is_numeric($listingId)) {
+            $result = Listing::where('listingId', intval($listingId))->first();
+        } else {
+            $result = Listing::find($listingId);
+        }
 
+        /** @var Listing|null $result */
         return $result;
     }
 }
