@@ -1481,6 +1481,8 @@ components:
           example: Notes
         status:
           $ref: '#/components/schemas/ClosingStatus'
+        commissionStatus:
+          $ref: '#/components/schemas/CommissionStatus'
       type: object
     Listing:
       properties:

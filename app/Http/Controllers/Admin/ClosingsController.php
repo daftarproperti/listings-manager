@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Closing;
 use App\Models\Enums\ClosingStatus;
+use App\Models\Enums\CommissionStatus;
 use App\Models\Resources\ClosingCollection;
 use App\Models\Resources\ClosingResource;
 use App\Repositories\Admin\ClosingRepository;
@@ -52,9 +53,11 @@ class ClosingsController extends Controller
     {
         $validatedData = $request->validate([
             'status' => ['required', Rule::enum(ClosingStatus::class)],
+            'commissionStatus' => ['nullable', Rule::enum(CommissionStatus::class)],
             'notes' => 'nullable|string',
         ]);
 
+        $closing->commissionStatus = $validatedData['commissionStatus'] ?? null;
         $closing->status = $validatedData['status'];
         $closing->notes = $validatedData['notes'];
 

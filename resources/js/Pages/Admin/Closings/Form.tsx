@@ -86,6 +86,12 @@ const ClosingForm = ({
                                     </div>
                                 </div>
                                 <div className="col-span-2 md:col-span-2">
+                                    <InputLabel value="Commission Status" />
+                                    <div className="mt-1">
+                                        <SelectInput name="commissionStatus" options={[{value:'', label: '- Pilih Status -'}, {value: 'pending', label: 'Menunggu Komisi'}, {value: 'paid', label: 'Komisi Telah Dibayarkan'}, {value: 'unpaid', label: 'Komisi Belum Dibayarkan'}]} defaultValue={data.closing.commissionStatus ?? ''}/>
+                                    </div>
+                                </div>
+                                <div className="col-span-2 md:col-span-2">
                                     <InputLabel value="Notes" />
                                     <div className="mt-1">
                                         <TextArea name="notes" defaultValue={data.closing.notes ?? ''}  className="w-full"/>

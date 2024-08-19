@@ -16,6 +16,7 @@ use Carbon\Carbon;
  * @property Listing $listing
  * @property string $listing_id
  * @property string $status
+ * @property string $commissionStatus
  * @property string $notes
  * @property string $id
  */

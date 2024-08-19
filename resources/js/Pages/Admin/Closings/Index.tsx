@@ -28,7 +28,13 @@ const Closings = ({
         rejected: 'Ditolak',
     };
 
-    const TABLE_HEAD = ['Listing', 'Type', 'Client Name', 'Client Phone', 'Transaction', 'Date', 'Status', '']
+    const commissionStatusLabels: { [key: string]: string } = {
+        pending: 'Menunggu Komisi',
+        paid: 'Komisi Dibayarkan',
+        unpaid: 'Komisi Belum Dibayarkan',
+    };
+
+    const TABLE_HEAD = ['Listing', 'Type', 'Client Name', 'Client Phone', 'Transaction', 'Date', 'Status', 'Commission Status', '']
 
     const fetchData = (
         q?: string,
@@ -100,7 +106,14 @@ const Closings = ({
                             <Table.Body>
                                 {data.closings.map((closing, index) => (
                                     <tr key={index}>
-                                        <Table.BodyItem>
+                                        <Table.BodyItem className="cursor-pointer"
+                                            onClick={(event) => {
+                                              if (event.metaKey || event.ctrlKey) {
+                                                window.open(`/admin/listings/${closing.listingId}`, '_blank')
+                                              } else {
+                                                router.get(`/admin/listings/${closing.listingId}`)
+                                              }
+                                            }}>
                                             {closing.listingId}
                                         </Table.BodyItem>
                                         <Table.BodyItem>
@@ -126,6 +139,18 @@ const Closings = ({
                                               }`
                                               }>
                                                 {closing.status ? statusLabels[closing.status] : 'Sedang Ditinjau'}
+                                            </span>
+                                        </Table.BodyItem>
+                                        <Table.BodyItem>
+                                            <span
+                                            className={`truncate text-xs font-medium px-3 py-2 rounded-lg ${
+                                                closing.commissionStatus === 'paid' ? 'bg-green-100 text-green-800':
+                                                closing.commissionStatus === 'unpaid' ? 'bg-red-100 text-red-800':
+                                                closing.commissionStatus === 'pending' ? 'bg-yellow-100 text-yellow-800':
+                                                'bg-gray-100 text-gray-800'
+                                              }`
+                                              }>
+                                                {closing.commissionStatus ? commissionStatusLabels[closing.commissionStatus] : 'N/A'}
                                             </span>
                                         </Table.BodyItem>
                                         <Table.BodyItem>
