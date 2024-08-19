@@ -31,6 +31,7 @@ export interface Listing {
   user?: User
   isMultipleUnits: boolean
   withRewardAgreement: boolean
+  cancellationNote: CancellationNote
 }
 
 export interface User {
@@ -53,4 +54,9 @@ export interface AdminNote {
   message: string
   email: string
   date: ReactNode
+}
+
+export interface CancellationNote {
+  reason: string
+  status: string
 }

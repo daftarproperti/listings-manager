@@ -91,7 +91,7 @@ class ListingsController extends Controller
      * @param string|int $listingId
      * @return Listing|null
      */
-    private function getListingByIdOrListingId(string|int $listingId): ?Listing
+    public function getListingByIdOrListingId(string|int $listingId): ?Listing
     {
         $result = null;
         if (is_numeric($listingId)) {

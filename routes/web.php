@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\ListingsController as AdminListingsController;
 use App\Http\Controllers\Admin\MembersController;
 use App\Http\Controllers\Admin\TelegramController;
 use App\Http\Controllers\Admin\ClosingsController as AdminClosingsController;
+use App\Http\Controllers\Admin\CancelController as AdminCancelController;
 use App\Http\Controllers\QueueSizeController;
 use App\Http\Controllers\VersionController;
 use App\Http\Controllers\Web\Public\AgentsController;
@@ -51,6 +52,12 @@ Route::group(['prefix' => 'admin'], function () {
             Route::get('/', [AdminClosingsController::class, 'index'])->name('index');
             Route::get('/{closing}', [AdminClosingsController::class, 'show'])->name('show');
             Route::post('/{closing}', [AdminClosingsController::class, 'update'])->name('update');
+        });
+
+        Route::group(['prefix' => 'cancel', 'as' => 'cancel.'], function () {
+            Route::get('/', [AdminCancelController::class, 'index'])->name('index');
+            Route::get('/{listing}', [AdminCancelController::class, 'show'])->name('show');
+            Route::put('/{listing}', [AdminCancelController::class, 'update'])->name('update');
         });
     });
 
