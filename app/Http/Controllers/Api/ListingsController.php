@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\DTO\GeoJsonObject;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ListingRequest;
 use App\Http\Services\GoogleStorageService;
@@ -613,20 +614,23 @@ class ListingsController extends Controller
     )]
     public function getLikelyConnected(Listing $listing): JsonResponse
     {
-        $latitude = $listing->coordinate->latitude ?? 0;
+        $latitude = $listing->coordinate->latitude;
         $longitude = $listing->coordinate->longitude;
 
-        // latitude change for 100 meter
-        $latChange = 100 / 111320;
+        // Likely contained Listing should be near each other and often in the same housing complex
+        // Since the average housing complex size is 60-150m2, 100 meters radius is chosen
+        // 6371000 is estimated earth radius in meters
+        $radius = 100 / 6371000;
 
-        // longitude change for 100 meter
-        $lonChange = 100 / (111320 * cos(deg2rad($latitude)));
-
-        $result = Listing::whereBetween('coordinate.latitude', [$latitude - $latChange, $latitude + $latChange])
-                                    ->whereBetween('coordinate.longitude', [$longitude - $lonChange, $longitude + $lonChange])
-                                    ->where('_id', '!=', $listing->id)
-                                    ->where('verifyStatus', 'approved')
-                                    ->get();
+        $result = Listing::where('coordinate', '!=', null)
+                        ->where('_id', '!=', $listing->id)
+                        ->where('verifyStatus', 'approved')
+                        ->where('indexedCoordinate', 'geoWithin', [
+                            '$centerSphere' => [
+                                [$longitude, $latitude], $radius
+                            ]
+                        ])
+                        ->get();
 
         $connectedListings = $result->map(function ($listing) {
             /** @var Listing $listing */
@@ -669,7 +673,12 @@ class ListingsController extends Controller
                 }
 
                 if ($key == 'coordinate') {
+                    # Supports both coordinate and indexed coordinate for backward compatibility
                     $listing->coordinate = Coordinate::from($value);
+                    $listing->indexedCoordinate = GeoJsonObject::from([
+                        'type' => 'Point',
+                        'coordinates' => $listing->coordinate,
+                    ]);
                     continue;
                 }
 

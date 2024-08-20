@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\DTO\GeoJsonObject;
 use App\Helpers\Cast;
 use App\Helpers\NumFormatter;
 use App\Helpers\TelegramPhoto;
@@ -77,6 +78,7 @@ use MongoDB\BSON\UTCDateTime;
  * @property ListingUser|null $user
  * @property Carbon $updated_at
  * @property Carbon $created_at
+ * @property GeoJsonObject $indexedCoordinate
  */
 class Listing extends Model
 {
@@ -289,6 +291,16 @@ class Listing extends Model
         }
 
         $this->attributes['city'] = $value;
+    }
+
+    /**
+     * convert geo json object to array format
+     * @param GeoJsonObject $value
+     * @return void
+     */
+    public function setIndexedCoordinateAttribute(GeoJsonObject $value)
+    {
+        $this->attributes['indexedCoordinate'] = $value->toArray();
     }
 
     /**

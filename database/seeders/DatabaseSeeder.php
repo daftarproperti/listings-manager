@@ -16,7 +16,8 @@ class DatabaseSeeder extends Seeder
             AddVerifyStatusToListingTableSeeder::class,
             AddVerifyStatusToPropertyTableSeeder::class,
             CitySeeder::class,
-            AddActiveStatusToListingTableSeeder::class
+            AddActiveStatusToListingTableSeeder::class,
+            AddIndexedCoordinateToListingTableSeeder::class
         ]);
     }
 }
