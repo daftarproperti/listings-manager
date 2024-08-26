@@ -4,10 +4,8 @@ namespace App\Jobs;
 
 use Carbon\Carbon;
 use App\Helpers\Extractor;
-use App\Http\Services\ChatGptService;
 use App\Models\Coordinate;
 use App\Models\GeneratedListing;
-use App\Models\User;
 use App\Models\Resources\ListingResource;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -39,10 +37,8 @@ class GenerateListingFromText implements ShouldQueue
      *
      * @return void
      */
-    public function handle(ChatGptService $chatGptService)
+    public function handle(Extractor $extractor)
     {
-        $extractor = new Extractor($chatGptService);
-
         $extractedListing = $extractor->extractSingleListingFromMessage($this->text);
         
         $coordinate = new Coordinate();
@@ -59,6 +55,9 @@ class GenerateListingFromText implements ShouldQueue
         ];
         $extractedListing->updated_at = Carbon::now();
         $extractedListing->user_profile = null;
+        $extractedListing->adminNote = null;
+        $extractedListing->cancellationNote = null;
+        $extractedListing->closings = null;
 
         $listing = new ListingResource($extractedListing);
         Log::info('Broadcasting GenerateListingsFromTextResult', ['result' => $listing->toJson()]);
