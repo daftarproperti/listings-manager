@@ -38,6 +38,10 @@
                                             "description": "Timestamp of when the OTP was created",
                                             "type": "integer",
                                             "format": "int64"
+                                        },
+                                        "totp": {
+                                            "description": "If TOTP is enabled",
+                                            "type": "boolean"
                                         }
                                     },
                                     "type": "object"
@@ -187,6 +191,66 @@
                         }
                     }
                 ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "description": "Verify status",
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "accessToken": {
+                                            "description": "Access token",
+                                            "type": "string",
+                                            "example": "Akoasdk131o3ipIaskdlz"
+                                        },
+                                        "user": {
+                                            "$ref": "#/components/schemas/User"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/auth/verify-totp": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Verify TOTP",
+                "operationId": "auth.verify_totp",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "phoneNumber",
+                                    "totpCode"
+                                ],
+                                "properties": {
+                                    "phoneNumber": {
+                                        "description": "User's phone number",
+                                        "type": "string"
+                                    },
+                                    "totpCode": {
+                                        "description": "User's TOTP Code",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "200": {
                         "description": "Success response",

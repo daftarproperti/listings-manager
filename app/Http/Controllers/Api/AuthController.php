@@ -16,6 +16,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use OpenApi\Attributes as OA;
 use App\Models\Sanctum\PersonalAccessToken;
+use OTPHP\TOTP;
 
 class AuthController extends Controller
 {
@@ -61,6 +62,11 @@ class AuthController extends Controller
                             type: "integer",
                             format: "int64",
                             description: "Timestamp of when the OTP was created"
+                        ),
+                        new OA\Property(
+                            property: "totp",
+                            type: "boolean",
+                            description: "If TOTP is enabled"
                         )
                     ]
                 )
@@ -77,6 +83,18 @@ class AuthController extends Controller
         $phoneNumber = PhoneNumber::canonicalize($phoneNumber);
         logger()->debug("PHONEDEBUG: Executing sendOTP with phoneNumber canonicalized = $phoneNumber");
 
+        $forceSend = $request->query('forceSend') === 'true';
+
+        /** @var User|null $user */
+        $user = User::where('phoneNumber', $phoneNumber)->first();
+        if ($user && $user->secretKey && !$forceSend) {
+            return response()->json([
+                'token' => null,
+                'timestamp' => null,
+                'totp' => true
+            ]);
+        }
+
         $otpCode = sprintf("%06d", random_int(0, 999999));
 
         $this->otpService->sendOTP($phoneNumber, $otpCode);
@@ -86,7 +104,8 @@ class AuthController extends Controller
 
         return response()->json([
             'token' => $token,
-            'timestamp' => $timestamp
+            'timestamp' => $timestamp,
+            'totp' => false
         ]);
     }
 
@@ -265,6 +284,78 @@ class AuthController extends Controller
 
         $token = $user->createToken('loginToken', ['*'], $expiryDate)->plainTextToken;
 
+        return response()->json([
+            'success' => true,
+            'accessToken' => $token,
+            'user' => new UserResource($user)
+        ]);
+    }
+
+    #[OA\Post(
+        path: "/api/auth/verify-totp",
+        tags: ["Auth"],
+        summary: "Verify TOTP",
+        operationId: "auth.verify_totp",
+        requestBody: new OA\RequestBody(
+            required: true,
+            content: new OA\JsonContent(
+                required: ["phoneNumber", "totpCode"],
+                properties: [
+                    new OA\Property(property: "phoneNumber", type: "string", description: "User's phone number"),
+                    new OA\Property(property: "totpCode", type: "string", description: "User's TOTP Code")
+                ]
+            )
+        ),
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: "Success response",
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(property: "success", type: "boolean", example: true, description: "Verify status"),
+                        new OA\Property(property: "accessToken", type: "string", example: "Akoasdk131o3ipIaskdlz", description: "Access token"),
+                        new OA\Property(property: "user", ref: "#/components/schemas/User", description: "User information")
+                    ]
+                )
+            )
+        ]
+    )]
+    public function verifyTOTP(Request $request): JsonResponse
+    {
+        $validatedRequest = $request->validate([
+            'phoneNumber' => 'required', 'string', new IndonesiaPhoneFormat,
+            'totpCode' => 'required', 'string'
+        ]);
+        $phoneNumber = $validatedRequest['phoneNumber'];
+        $totpCode = $validatedRequest['totpCode'];
+        $phoneNumber = PhoneNumber::canonicalize($phoneNumber);
+
+        /** @var User|null $user */
+        $user = User::where('phoneNumber', $phoneNumber)->first();
+        if (!$user) {
+            return response()->json([
+                'message' => 'User not found'
+            ], 401);
+        }
+
+        $secret = $user->secretKey;
+        if (!$secret) {
+            return response()->json([
+                'message' => 'Secret key not found'
+            ], 401);
+        }
+
+        $timestamp = time();
+        $totp = TOTP::create($secret);
+        if (!$totp->verify($totpCode, $timestamp)) {
+            return response()->json([
+                'message' => 'Invalid TOTP code'
+            ], 401);
+        }
+
+        $expiryDate = new DateTime();
+        $expiryDate->modify('+1 month');
+        $token = $user->createToken('loginToken', ['*'], $expiryDate)->plainTextToken;
         return response()->json([
             'success' => true,
             'accessToken' => $token,

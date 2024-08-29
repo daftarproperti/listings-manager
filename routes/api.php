@@ -77,6 +77,8 @@ Route::prefix('auth')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->middleware('telegram-app');
 
     Route::post('/impersonate', [AuthController::class, 'impersonate'])->middleware('impersonate');
+
+    Route::post('/verify-totp', [AuthController::class, 'verifyTOTP'])->middleware('throttle-otp-request:phoneNumber');
 });
 
 Route::get('photo/{fileId}/{fileUniqueId}', [PhotoController::class, 'telegramPhoto'])->name('telegram-photo');
