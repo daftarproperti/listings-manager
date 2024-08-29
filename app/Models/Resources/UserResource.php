@@ -28,6 +28,7 @@ class UserResource extends JsonResource
     #[OA\Property(property: "picture", type: "string")]
     #[OA\Property(property: "company", type: "string")]
     #[OA\Property(property: "isPublicProfile", type: "bool")]
+    #[OA\Property(property: "secretKey", type: "string")]
 
     public static $wrap = null;
 
@@ -57,6 +58,7 @@ class UserResource extends JsonResource
             'company' => $prop->company,
             'picture' => $prop->picture ? TelegramPhoto::getGcsUrlFromFileName($prop->picture) : null,
             'isPublicProfile' => $prop->isPublicProfile,
+            'secretKey' => $prop->secretKey,
 
             // Deprecated
             'profile' => [

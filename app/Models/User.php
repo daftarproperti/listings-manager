@@ -2,9 +2,7 @@
 
 namespace App\Models;
 
-use App\Helpers\TelegramPhoto;
 use App\Models\Traits\CityAttributeTrait;
-use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use MongoDB\Laravel\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -26,6 +24,7 @@ use MongoDB\Laravel\Eloquent\Casts\ObjectId;
  * @property string $picture
  * @property string $company
  * @property bool $isPublicProfile
+ * @property string $secretKey
  */
 class User extends Authenticatable
 {
@@ -55,7 +54,8 @@ class User extends Authenticatable
         'description',
         'picture',
         'company',
-        'isPublicProfile'
+        'isPublicProfile',
+        'secretKey',
     ];
 
     /**
@@ -77,6 +77,7 @@ class User extends Authenticatable
         '_id' => ObjectId::class,
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
+        'secretKey' => 'encrypted',
     ];
 
     public function toListingUser(): ListingUser
@@ -110,6 +111,11 @@ class User extends Authenticatable
             type(env('USER_ID_KEY') ?? 'default-key')->asString(),
             $phoneNumber,
         );
+    }
+
+    public static function generateSecretKey(): string
+    {
+        return bin2hex(random_bytes(16));
     }
 
     protected static function boot()

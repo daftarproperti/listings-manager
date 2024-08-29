@@ -1609,6 +1609,27 @@
                     }
                 }
             }
+        },
+        "/api/tele-app/users/generate-secret-key": {
+            "post": {
+                "tags": [
+                    "Telegram Users"
+                ],
+                "summary": "Generate Secret Key for TOTP",
+                "operationId": "generateSecretKey",
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/User"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     },
     "components": {
@@ -2635,6 +2656,9 @@
                     },
                     "isPublicProfile": {
                         "type": "boolean"
+                    },
+                    "secretKey": {
+                        "type": "string"
                     }
                 },
                 "type": "object"

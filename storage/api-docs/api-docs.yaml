@@ -1112,6 +1112,19 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/User'
+  /api/tele-app/users/generate-secret-key:
+    post:
+      tags:
+        - 'Telegram Users'
+      summary: 'Generate Secret Key for TOTP'
+      operationId: generateSecretKey
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
 components:
   schemas:
     ClosingRequest:
@@ -1838,6 +1851,8 @@ components:
           type: string
         isPublicProfile:
           type: boolean
+        secretKey:
+          type: string
       type: object
     TelegramUserProfile:
       properties:

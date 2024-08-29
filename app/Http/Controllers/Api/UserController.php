@@ -72,4 +72,31 @@ class UserController extends Controller
 
         return new UserResource($currentUser);
     }
+
+    #[OA\Post(
+        path: "/api/tele-app/users/generate-secret-key",
+        tags: ["Telegram Users"],
+        summary: "Generate Secret Key for TOTP",
+        operationId: "generateSecretKey",
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: "success",
+                content: new OA\JsonContent(ref: "#/components/schemas/User")
+            )
+        ]
+    )]
+    public function generateSecretKey(): JsonResource
+    {
+        /** @var User $currentUser */
+        $currentUser = Auth::user();
+        if ($currentUser->secretKey) {
+            return new UserResource($currentUser);
+        }
+
+        $secretKey = User::generateSecretKey();
+        $currentUser->secretKey = $secretKey;
+        $currentUser->save();
+        return new UserResource($currentUser);
+    }
 }
