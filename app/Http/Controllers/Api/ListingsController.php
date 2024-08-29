@@ -637,6 +637,8 @@ class ListingsController extends Controller
             return [
                 'id' => $listing->id,
                 'title' => $listing->title,
+                'address' => $listing->address,
+                'pictureUrls' => $listing->pictureUrls,
             ];
         })->toArray();
 

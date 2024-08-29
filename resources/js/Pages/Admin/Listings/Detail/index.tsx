@@ -23,7 +23,7 @@ import {
   HouseIconSVG,
   LotIconSVG
 } from '@/Assets/Icons'
-import type { Listing, Option, PageProps } from '@/types'
+import type { Listing, LikelyConnectedListing, Option, PageProps } from '@/types'
 import StatusDialog from './StatusDialog'
 
 export const LISTING_ICON: Record<string, JSX.Element> = {
@@ -69,6 +69,7 @@ export default function index ({
 }: PageProps<{
   data: {
     listing: Listing
+    likelyConnectedListing: LikelyConnectedListing[]
     verifyStatusOptions: Option[]
     activeStatusOptions: Option[]
   }
@@ -234,6 +235,52 @@ export default function index ({
                   : null}
                 <div className="pt-4 md:pt-6">
                     <div className="px-4 md:px-6">
+                      {data.likelyConnectedListing.length > 0 && (
+                        <div className="bg-red-600 text-white p-3 rounded-lg mb-4">
+                          <h3 className="font-semibold">Sepertinya ada data yang mirip dengan Listing ini. Silahkan cek daftar berikut:</h3>
+                          <br />
+                          <table className="min-w-full text-sm md:text-base">
+                            <thead>
+                              <tr className="text-left">
+                                <th className="pb-2">Title</th>
+                                <th className="pb-2">Address</th>
+                                <th className="pb-2">Pictures</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {data.likelyConnectedListing.map((connectedListing) => (
+                                <tr key={connectedListing.id} className="border-t border-red-500">
+                                  <td className="py-2">
+                                    <a
+                                      href={`/admin/listings/${connectedListing.id}`}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      className="text-white hover:underline"
+                                    >
+                                      {connectedListing.title}
+                                    </a>
+                                  </td>
+                                  <td className="py-2">{connectedListing.address}</td>
+                                  <td className="py-2">
+                                    <div className="relative group">
+                                      <Carousel className="h-24 w-24">
+                                        {connectedListing.pictureUrls.slice(0, 3).map((url, index) => (
+                                          <img
+                                            src={url}
+                                            alt={`Image ${index + 1}`}
+                                            key={index}
+                                            className="h-full w-full object-cover rounded shadow"
+                                          />
+                                        ))}
+                                      </Carousel>
+                                    </div>
+                                  </td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        </div>
+                      )}
                         <div className="text-lg md:text-xl font-semibold text-slate-500">
                             {listing.title}
                         </div>

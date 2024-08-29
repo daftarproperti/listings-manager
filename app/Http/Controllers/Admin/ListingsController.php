@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Api\ListingsController as ApiListingsController;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\ListingRequest;
 use App\Models\AdminNote;
@@ -17,6 +18,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Log;
 use Inertia\Response;
 
 class ListingsController extends Controller
@@ -54,9 +56,19 @@ class ListingsController extends Controller
 
         $resourceData = new ListingResource($listing);
 
+        $listingController = new ApiListingsController();
+
+        $response = $listingController->getLikelyConnected($listing);
+
+        $responseData = (array) $response->getData(true);
+        $connectedListings = isset($responseData['connectedListings']) && is_array($responseData['connectedListings'])
+            ? $responseData['connectedListings']
+        : [];
+
         return Inertia::render('Admin/Listings/Detail/index', [
             'data' => [
                 'listing' => $resourceData->resolve(),
+                'likelyConnectedListing' => $connectedListings,
                 'verifyStatusOptions' => VerifyStatus::options(),
                 'activeStatusOptions' => ActiveStatus::options()
             ]

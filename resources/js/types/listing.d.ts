@@ -60,3 +60,10 @@ export interface CancellationNote {
   reason: string
   status: string
 }
+
+export interface LikelyConnectedListing {
+  id: string
+  title: string
+  address: string
+  pictureUrls: string[]
+}
