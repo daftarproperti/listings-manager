@@ -79,9 +79,7 @@ class AuthController extends Controller
             'phoneNumber' => 'required', 'string', new IndonesiaPhoneFormat,
         ]);
         $phoneNumber = $validatedRequest['phoneNumber'];
-        logger()->debug("PHONEDEBUG: Executing sendOTP with phoneNumber = $phoneNumber");
         $phoneNumber = PhoneNumber::canonicalize($phoneNumber);
-        logger()->debug("PHONEDEBUG: Executing sendOTP with phoneNumber canonicalized = $phoneNumber");
 
         $forceSend = $request->query('forceSend') === 'true';
 
@@ -150,9 +148,7 @@ class AuthController extends Controller
         ]);
 
         $phoneNumber = $validatedRequest['phoneNumber'];
-        logger()->debug("PHONEDEBUG: Executing verifyOTP with phoneNumber = $phoneNumber");
         $phoneNumber = PhoneNumber::canonicalize($phoneNumber);
-        logger()->debug("PHONEDEBUG: Executing verifyOTP with phoneNumber canonicalized = $phoneNumber");
         $token = $validatedRequest['token'];
         $timestamp = $validatedRequest['timestamp'];
         $otpCode = $validatedRequest['otpCode'];
@@ -172,7 +168,6 @@ class AuthController extends Controller
             $user = new User();
             $user->phoneNumber = $phoneNumber;
             $user->save();
-            logger()->debug("PHONEDEBUG: Created user with phone number $phoneNumber via verifyOTP");
         }
 
         $token = $user->createToken('loginToken', ['*'], $expiryDate)->plainTextToken;
@@ -279,7 +274,6 @@ class AuthController extends Controller
             $user = new User();
             $user->phoneNumber = $phoneNumber;
             $user->save();
-            logger()->debug("PHONEDEBUG: Created user with phone number $phoneNumber via impersonate");
         }
 
         $token = $user->createToken('loginToken', ['*'], $expiryDate)->plainTextToken;
