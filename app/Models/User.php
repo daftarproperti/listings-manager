@@ -25,7 +25,7 @@ use OTPHP\TOTP;
  * @property string $picture
  * @property string $company
  * @property bool $isPublicProfile
- * @property string $secretKey
+ * @property ?string $secretKey
  */
 class User extends Authenticatable
 {

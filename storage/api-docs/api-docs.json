@@ -1674,13 +1674,32 @@
                 }
             }
         },
-        "/api/tele-app/users/generate-secret-key": {
+        "/api/tele-app/users/secret-key": {
             "post": {
                 "tags": [
                     "Telegram Users"
                 ],
                 "summary": "Generate Secret Key for TOTP",
                 "operationId": "generateSecretKey",
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/User"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Telegram Users"
+                ],
+                "summary": "Delete Secret Key for TOTP",
+                "operationId": "deleteSecretKey",
                 "responses": {
                     "200": {
                         "description": "success",

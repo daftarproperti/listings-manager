@@ -60,7 +60,8 @@ Route::group(['prefix' => 'tele-app', 'middleware' => ['telegram-app']], functio
     Route::prefix('users')->group(function () {
         Route::get('/profile', [UserController::class, 'profile']);
         Route::post('/profile', [UserController::class, 'updateProfile']);
-        Route::post('/generate-secret-key', [UserController::class, 'generateSecretKey']);
+        Route::post('/secret-key', [UserController::class, 'generateSecretKey']);
+        Route::delete('/secret-key', [UserController::class, 'deleteSecretKey']);
     });
 
     Route::post('upload/image', [PhotoController::class, 'uploadImage']);

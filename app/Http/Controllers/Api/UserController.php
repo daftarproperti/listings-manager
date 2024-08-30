@@ -74,7 +74,7 @@ class UserController extends Controller
     }
 
     #[OA\Post(
-        path: "/api/tele-app/users/generate-secret-key",
+        path: "/api/tele-app/users/secret-key",
         tags: ["Telegram Users"],
         summary: "Generate Secret Key for TOTP",
         operationId: "generateSecretKey",
@@ -96,6 +96,28 @@ class UserController extends Controller
 
         $secretKey = User::generateSecretKey();
         $currentUser->secretKey = $secretKey;
+        $currentUser->save();
+        return new UserResource($currentUser);
+    }
+
+    #[OA\Delete(
+        path: "/api/tele-app/users/secret-key",
+        tags: ["Telegram Users"],
+        summary: "Delete Secret Key for TOTP",
+        operationId: "deleteSecretKey",
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: "success",
+                content: new OA\JsonContent(ref: "#/components/schemas/User")
+            )
+        ]
+    )]
+    public function deleteSecretKey(): JsonResource
+    {
+        /** @var User $currentUser */
+        $currentUser = Auth::user();
+        $currentUser->secretKey = null;
         $currentUser->save();
         return new UserResource($currentUser);
     }
