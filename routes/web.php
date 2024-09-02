@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AiReviewController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\GoogleLoginController;
 use App\Http\Controllers\Admin\ListingsController as AdminListingsController;
@@ -47,6 +48,11 @@ Route::group(['prefix' => 'admin'], function () {
             Route::get('/', [AdminListingsController::class, 'index'])->name('index');
             Route::get('/{listing}', [AdminListingsController::class, 'show'])->name('show');
             Route::put('/{listing}', [AdminListingsController::class, 'update'])->name('update');
+
+            Route::group(['prefix' => '{listing}/ai-review', 'as' => 'ai-review.'], function () {
+                Route::post('/', [AiReviewController::class, 'doReview'])->name('review');
+                Route::get('/', [AiReviewController::class, 'getReview'])->name('detail');
+            });
         });
 
         Route::group(['prefix' => 'closings', 'as' => 'closing.'], function () {

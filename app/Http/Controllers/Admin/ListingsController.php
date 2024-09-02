@@ -3,12 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Api\ListingsController as ApiListingsController;
+use App\Helpers\ListingHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\ListingRequest;
 use App\Models\AdminNote;
 use App\Models\Enums\VerifyStatus;
 use App\Models\Enums\ActiveStatus;
-use App\Models\Listing;
 use App\Models\Resources\ListingCollection;
 use App\Models\Resources\ListingResource;
 use App\Repositories\Admin\ListingRepository;
@@ -18,7 +18,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
-use Illuminate\Support\Facades\Log;
 use Inertia\Response;
 
 class ListingsController extends Controller
@@ -48,7 +47,7 @@ class ListingsController extends Controller
 
     public function show(string|int $listingId): Response
     {
-        $listing = $this->getListingByIdOrListingId($listingId);
+        $listing = ListingHelper::getListingByIdOrListingId($listingId);
 
         if (is_null($listing)) {
             abort(404);
@@ -77,7 +76,7 @@ class ListingsController extends Controller
 
     public function update(string|int $listingId, ListingRequest $request): RedirectResponse
     {
-        $listing = $this->getListingByIdOrListingId($listingId);
+        $listing = ListingHelper::getListingByIdOrListingId($listingId);
         if (is_null($listing)) {
             abort(404);
         }
@@ -97,22 +96,5 @@ class ListingsController extends Controller
         $listing->save();
 
         return Redirect::to($request->url());
-    }
-
-    /**
-     * @param string|int $listingId
-     * @return Listing|null
-     */
-    public function getListingByIdOrListingId(string|int $listingId): ?Listing
-    {
-        $result = null;
-        if (is_numeric($listingId)) {
-            $result = Listing::where('listingId', intval($listingId))->first();
-        } else {
-            $result = Listing::find($listingId);
-        }
-
-        /** @var Listing|null $result */
-        return $result;
     }
 }

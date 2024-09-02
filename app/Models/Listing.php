@@ -22,6 +22,7 @@ use MongoDB\Laravel\Eloquent\Model;
 use MongoDB\Laravel\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
@@ -130,6 +131,15 @@ class Listing extends Model
     public function closings(): HasMany
     {
         return $this->hasMany(Closing::class);
+    }
+
+    /**
+     * Retrieve the aiReview relationship.
+     *  @return \Illuminate\Database\Eloquent\Relations\HasOne<AiReview>.
+     */
+    public function aiReview(): HasOne
+    {
+        return $this->hasOne(AiReview::class);
     }
 
     public function getMatchFilterCountAttribute(): int

@@ -1,9 +1,10 @@
 <?php
 
 namespace App\Http\Controllers\Admin;
+
+use App\Helpers\ListingHelper;
 use App\Http\Requests\Admin\ListingRequest;
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\Admin\ListingsController;
 use App\Models\CancellationNote;
 use App\Models\Enums\CancellationStatus;
 use App\Models\Listing;
@@ -52,8 +53,7 @@ class CancelController extends Controller
 
     public function update(string|int $listingId, ListingRequest $request): RedirectResponse
     {
-        $listingsController = new ListingsController();
-        $listing = $listingsController->getListingByIdOrListingId($listingId);
+        $listing = ListingHelper::getListingByIdOrListingId($listingId);
         if (is_null($listing)) {
             abort(404);
         }
