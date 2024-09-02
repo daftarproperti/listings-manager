@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\MembersController;
 use App\Http\Controllers\Admin\TelegramController;
 use App\Http\Controllers\Admin\ClosingsController as AdminClosingsController;
 use App\Http\Controllers\Admin\CancelController as AdminCancelController;
+use App\Http\Controllers\Admin\ExpiredListingsController as AdminExpiredListingsController;
 use App\Http\Controllers\QueueSizeController;
 use App\Http\Controllers\VersionController;
 use App\Http\Controllers\Web\Public\AgentsController;
@@ -58,6 +59,10 @@ Route::group(['prefix' => 'admin'], function () {
             Route::get('/', [AdminCancelController::class, 'index'])->name('index');
             Route::get('/{listing}', [AdminCancelController::class, 'show'])->name('show');
             Route::put('/{listing}', [AdminCancelController::class, 'update'])->name('update');
+        });
+
+        Route::group(['prefix' => 'expired', 'as' => 'expired.'], function () {
+            Route::get('/', [AdminExpiredListingsController::class, 'index'])->name('index');
         });
     });
 

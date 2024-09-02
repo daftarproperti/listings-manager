@@ -19,6 +19,7 @@ use App\Models\Resources\ListingCollection;
 use App\Models\Resources\ListingResource;
 use App\Models\User;
 use App\Repositories\ListingRepository;
+use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -243,6 +244,17 @@ class ListingsController extends Controller
                 schema: new OA\Schema(
                     type: 'string',
                     enum: ['asc', 'desc']
+                )
+            ),
+            new OA\Parameter(
+                name: 'expiredAt',
+                in: 'query',
+                description: 'Filter or sort by expiration date',
+                required: false,
+                schema: new OA\Schema(
+                    type: 'string',
+                    format: 'date-time',
+                    example: '2021-12-15T00:00:00Z'
                 )
             ),
         ],
@@ -660,7 +672,19 @@ class ListingsController extends Controller
                     $listing->{$key} = (bool) $value;
                     continue;
                 }
-
+                
+                if ($key === 'expiredAt' && !empty($value)) {
+                    if (!is_string($value)) {
+                        throw new \InvalidArgumentException("Expected string for 'expiredAt', got: " . gettype($value));
+                    }
+                    $date = Carbon::createFromFormat('Y-m-d\TH:i:s\Z', $value);
+                    if ($date === false) {
+                        throw new \Exception("Invalid date format provided for 'expiredAt'.");
+                    }
+                    $listing->{$key} = $date; 
+                    continue;
+                }
+                
                 if (is_numeric($value)) {
                     $listing->{$key} = (int) $value;
                     continue;

@@ -589,6 +589,7 @@ export default function index ({
               activeStatusOptions={data.activeStatusOptions}
               currentVerifyStatus={listing.verifyStatus}
               currentActiveStatus={listing.activeStatus}
+              currentExpiredAt={listing.rawExpiredAt}
             />
         </AuthenticatedLayout>
   )

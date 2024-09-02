@@ -30,6 +30,7 @@ class ListingRequest extends FormRequest
             'adminNote' => 'nullable|string',
             'coordinate.latitude' => 'nullable|numeric',
             'coordinate.longitude' => 'nullable|numeric',
+            'expiredAt' => 'nullable|date',
         ];
     }
 }

@@ -677,6 +677,17 @@
                                 "desc"
                             ]
                         }
+                    },
+                    {
+                        "name": "expiredAt",
+                        "in": "query",
+                        "description": "Filter or sort by expiration date",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time",
+                            "example": "2021-12-15T00:00:00Z"
+                        }
                     }
                 ],
                 "responses": {
@@ -2443,6 +2454,10 @@
                         "format": "date-time"
                     },
                     "createdAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "expiredAt": {
                         "type": "string",
                         "format": "date-time"
                     }

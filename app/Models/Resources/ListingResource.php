@@ -4,6 +4,7 @@ namespace App\Models\Resources;
 
 use App\Helpers\TelegramPhoto;
 use App\Models\Resources\CancellationNoteResource;
+use Carbon\Carbon;
 use Illuminate\Http\Resources\Json\JsonResource;
 use OpenApi\Attributes as OA;
 
@@ -72,6 +73,7 @@ class ListingResource extends JsonResource
     #[OA\Property(property: "closings", type: "array", items: new OA\Items(ref: "#/components/schemas/Closing"))]
     #[OA\Property(property: "updatedAt", type: "string", format: "date-time")]
     #[OA\Property(property: "createdAt", type: "string", format: "date-time")]
+    #[OA\Property(property: "expiredAt", type: "string", format: "date-time")]
 
     public static $wrap = null;
 
@@ -143,6 +145,8 @@ class ListingResource extends JsonResource
             'closings' => $prop->closings ? ClosingCollection::make($prop->closings)->resolve() : null,
             'updatedAt' => $prop->updated_at->isoFormat('D MMMM YYYY'),
             'createdAt' => $prop->updated_at->isoFormat('D MMMM YYYY'),
+            'expiredAt' => isset($prop->expiredAt) && $prop->expiredAt instanceof Carbon ? $prop->expiredAt->isoFormat('D MMMM YYYY') : null,
+            'rawExpiredAt' => isset($prop->expiredAt) && $prop->expiredAt instanceof Carbon ? $prop->expiredAt->format('Y-m-d H:i') : null,
         ];
     }
 }

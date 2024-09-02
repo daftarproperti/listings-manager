@@ -78,6 +78,7 @@ use MongoDB\BSON\UTCDateTime;
  * @property ListingUser|null $user
  * @property Carbon $updated_at
  * @property Carbon $created_at
+ * @property Carbon $expiredAt
  * @property GeoJsonObject $indexedCoordinate
  */
 class Listing extends Model
@@ -118,7 +119,8 @@ class Listing extends Model
         'rentPrice' => 'int',
         'cityId' => 'int',
         'address' => 'string',
-        'description' => 'string'
+        'description' => 'string',
+        'expiredAt' => 'datetime',
     ];
 
     /**

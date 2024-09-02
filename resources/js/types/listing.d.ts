@@ -32,6 +32,8 @@ export interface Listing {
   isMultipleUnits: boolean
   withRewardAgreement: boolean
   cancellationNote: CancellationNote
+  expiredAt: Date
+  rawExpiredAt: Date
 }
 
 export interface User {

@@ -41,14 +41,6 @@ export default function Authenticated ({
                             </div>
                             <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                                 <NavLink
-                                    href={route('members')}
-                                    active={route().current('members')}
-                                >
-                                    Members
-                                </NavLink>
-                            </div>
-                            <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                                <NavLink
                                     href={route('closing.index')}
                                     active={route().current('closing.index')}
                                 >
@@ -61,6 +53,22 @@ export default function Authenticated ({
                                     active={route().current('cancel.index')}
                                 >
                                     Cancellation Report
+                                </NavLink>
+                            </div>
+                            <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                                <NavLink
+                                    href={route('expired.index')}
+                                    active={route().current('expired.index')}
+                                >
+                                    Expired Listings
+                                </NavLink>
+                            </div>
+                            <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                                <NavLink
+                                    href={route('members')}
+                                    active={route().current('members')}
+                                >
+                                    Members
                                 </NavLink>
                             </div>
                             <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
