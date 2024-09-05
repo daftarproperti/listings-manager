@@ -1722,6 +1722,9 @@ components:
         expiredAt:
           type: string
           format: date-time
+        rawExpiredAt:
+          type: string
+          format: date-time
       type: object
     Property:
       properties:
