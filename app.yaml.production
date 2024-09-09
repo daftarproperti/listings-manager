@@ -2,6 +2,9 @@ service: default
 runtime: php
 env: flex
 
+resources:
+  memory_gb: 4
+
 # For prod, start with 2 instances manual scaling first.
 manual_scaling:
   instances: 2
