@@ -3,7 +3,7 @@ runtime: php
 env: flex
 
 resources:
-  memory_gb: 4
+  memory_gb: 2
 
 # For prod, start with 2 instances manual scaling first.
 manual_scaling:
