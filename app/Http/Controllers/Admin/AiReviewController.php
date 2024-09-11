@@ -8,16 +8,17 @@ use App\Jobs\AiReviewJob;
 use App\Models\Enums\AiReviewStatus;
 use App\Models\Resources\AiReviewResource;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class AiReviewController extends Controller
 {
-    public function doReview(string|int $listingId): JsonResponse|JsonResource
+    public function doReview(string|int $listingId): RedirectResponse
     {
         $listing = ListingHelper::getListingByIdOrListingId($listingId);
 
         if (!$listing) {
-            return response()->json(['success' => false, 'message' => 'Listing not found.'], 404);
+            abort(404);
         }
 
         $aiReviewOperation = $listing->aiReview()->exists() ? 'update' : 'create';
@@ -28,7 +29,7 @@ class AiReviewController extends Controller
 
         AiReviewJob::dispatch($listing);
 
-        return new AiReviewResource($listing->aiReview);
+        return redirect()->back();
     }
 
     public function getReview(string|int $listingId): JsonResponse|JsonResource
