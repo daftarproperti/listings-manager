@@ -75,4 +75,6 @@ return [
     ],
 
     'root_users' => explode(',', env('ROOT_USERS', '')),
+
+    'max_listings_per_user' => env('MAX_LISTINGS_PER_USER', null)
 ];

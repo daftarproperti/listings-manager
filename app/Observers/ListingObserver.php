@@ -4,9 +4,11 @@ namespace App\Observers;
 
 use App\Helpers\Queue;
 use App\Jobs\SyncListingToGCS;
-use App\Jobs\Web3AddListing;
+use App\Models\Enums\VerifyStatus;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Listing;
 use App\Models\Property;
+use App\Models\User;
 use Illuminate\Support\Facades\Log;
 
 
@@ -61,6 +63,22 @@ class ListingObserver
 
     public function creating(Listing $listing): bool
     {
+        /** @var User $user */
+        $user = Auth::user();
+
+        $maxListings = config('services.max_listings_per_user', null);
+        if ($maxListings !== null && is_numeric($maxListings)) {
+            $maxListings = (int) $maxListings;
+            $count = Listing::where('user.userId', $user->user_id)->count();
+
+            if ($count >= $maxListings) {
+                throw new \Exception("Untuk sementara batas maksimum listing setiap user adalah $maxListings.");
+            }
+        }
+
+        $listing->verifyStatus = VerifyStatus::ON_REVIEW;
+        $listing->listingId = random_int(1, PHP_INT_MAX);
+
         $attributes = $listing->getAttributes();
         $minimumFill = 50;
 

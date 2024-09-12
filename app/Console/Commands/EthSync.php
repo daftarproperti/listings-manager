@@ -3,9 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Helpers\Queue;
-use App\Helpers\TelegramPhoto;
-use App\Jobs\SyncListingToGCS;
-use App\Jobs\Web3AddListing;
+use App\Jobs\Web3Listing;
 use App\Models\Enums\VerifyStatus;
 use App\Models\Listing;
 use Illuminate\Console\Command;
@@ -62,21 +60,9 @@ class EthSync extends Command
                 continue;
             }
 
-            $updatedAt = $listing->updated_at->toIso8601ZuluString();
-            $fileName = "listings/{$listingId}/{$listingId}-$updatedAt.json";
-
-            $offChainLink = TelegramPhoto::getGcsUrlFromFileName($fileName);
-            try {
-                file_get_contents($offChainLink);
-            } catch (\Exception) {
-                // Upload to GCS first if not yet uploaded.
-                SyncListingToGCS::dispatch($listingId)->onQueue(Queue::getQueueName('generic'));
-            }
-
-            Web3AddListing::dispatch(
-                $listingId,
-                $listing->cityId ?? 0,
-                TelegramPhoto::getGcsUrlFromFileName($fileName),
+            Web3Listing::dispatch(
+                $listing,
+                'ADD',
             )->onQueue(Queue::getQueueName('generic'));
         }
     }
