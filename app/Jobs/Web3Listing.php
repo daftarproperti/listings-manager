@@ -42,11 +42,11 @@ class Web3Listing implements ShouldQueue
         return $exists;
     }
 
-    private function executeListingContract(int $id, int $cityId, string $offChainLink, string $hash, string $operationType): void
+    private function executeListingContractV0(int $id, int $cityId, string $offChainLink, string $hash, string $operationType): void
     {
         $web3 = new Web3(type(env('ETH_NODE'))->asString());
 
-        $abi = type(file_get_contents(storage_path('blockchain/Listings.abi.json')))->asString();
+        $abi = type(file_get_contents(storage_path('blockchain/ListingsV0.abi.json')))->asString();
         $contractAddress = type(env('ETH_LISTINGS_CONTRACT_ADDRESS'))->asString();
 
         $contract = (new Contract($web3->getProvider(), $abi))->at($contractAddress);
@@ -77,6 +77,100 @@ class Web3Listing implements ShouldQueue
                 break;
             default:
                 logger()->error("Unhandled operation type: $operationType");
+                return;
+        }
+
+        /** @var string $contractData */
+        $contractData = $contract->at($contractAddress)->getData($operation, $id, $cityId, $offChainLink, $hash); // @phpstan-ignore-line
+        $tx = new Transaction(
+            $nonce, // nonce
+            $gasPrice, // gas price
+            '0x50000', // gas limit
+            $contractAddress, // to
+            '0x0', // value
+            $contractData,
+        );
+
+        $privateKey = type(env('ETH_PRIVATE_KEY'))->asString();
+        $raw = $tx->getRaw($privateKey, (int)type(env('ETH_CHAIN_ID'))->asString());
+
+        $txHash = null;
+        /** @phpstan-ignore-next-line */
+        $web3->getEth()->sendRawTransaction('0x' . $raw, function ($err, $hash) use (&$txHash) {
+            if ($err !== null) throw $err;
+            logger()->info("Sent Listing transaction, txHash = $hash");
+            $txHash = $hash;
+        });
+
+        $receipt = null;
+        $maxRetries = 100;
+        do {
+            /** @phpstan-ignore-next-line */
+            $web3->getEth()->getTransactionReceipt($txHash, function ($err, $rec) use (&$receipt) {
+                if ($err !== null) throw $err;
+                $receipt = $rec;
+            });
+            $maxRetries--;
+            sleep(1);
+        } while ($receipt === null && $maxRetries > 0);
+
+        if ($receipt && hexdec($receipt->status) == 1) {
+            logger()->info("Transaction successful: $txHash");
+        } else {
+            logger()->error("Transaction failed: $txHash, receipt = " . print_r($receipt, true));
+        }
+    }
+
+    private function executeListingContractV1(int $id, int $cityId, string $offChainLink, string $hash, string $operationType): void
+    {
+        $web3 = new Web3(type(env('ETH_NODE'))->asString());
+
+        $abi = type(file_get_contents(storage_path('blockchain/ListingsV1.abi.json')))->asString();
+        $contractAddress = type(env('ETH_LISTINGS_CONTRACT_ADDRESS'))->asString();
+
+        $contract = (new Contract($web3->getProvider(), $abi))->at($contractAddress);
+        $exists = $this->hasListing($contract, $id);
+
+        $gasPrice = '0x0';
+        /** @phpstan-ignore-next-line */
+        $web3->getEth()->gasPrice(function ($err, $ret) use (&$gasPrice) {
+            if ($err !== null) throw $err;
+            $gasPrice = $ret->toHex();
+        });
+
+        $nonce = '0x0';
+        /** @phpstan-ignore-next-line */
+        $web3->getEth()->getTransactionCount(env('ETH_ACCOUNT'), function ($err, $ret) use (&$nonce) {
+            if ($err !== null) throw $err;
+            $nonce = $ret->toHex();
+        });
+
+        $operation = '';
+        switch ($operationType) {
+            case "ADD":
+                $operation = 'addListing';
+                if ($exists) {
+                    logger()->info("Listing $id already exist. skipping addition");
+                    return;
+                }
+                break;
+            case "UPDATE":
+                $operation = 'updateListing';
+                if (!$exists) {
+                    logger()->info("Listing $id does not exist. adding it as new listing");
+                    $operation = 'addListing';
+                }
+                break;
+            case "DELETE":
+                $operation = 'deleteListing';
+                if (!$exists) {
+                    logger()->info("Listing $id does not exist. skipping deletion");
+                    return;
+                }
+                break;
+            default:
+                logger()->error("Unhandled operation type: $operationType");
+                return;
         }
 
         /** @var string $contractData */
@@ -156,12 +250,22 @@ class Web3Listing implements ShouldQueue
             return;
         }
 
+        $contractVersion = env('ETH_LISTINGS_CONTRACT_VERSION', '0');
+        $contractVersionMap = [
+            '0' => [$this, 'executeListingContractV0'],
+            '1' => [$this, 'executeListingContractV1'],
+        ];
+        if (!isset($contractVersionMap[$contractVersion])) {
+            logger()->error("Unhandled contract version");
+            return;
+        }
+
         // Lock for 120 seconds, migrate and seed should take no more than 1 minute.
         $lock = Cache::lock('execute-contract', 60);
 
         try {
             $lock->block(120);
-            $this->executeListingContract($listing->listingId, $listing->cityId, $offChainLink, $hash, $this->operationType);
+            $contractVersionMap[$contractVersion]($listing->listingId, $listing->cityId, $offChainLink, $hash, $this->operationType);
         } catch (LockTimeoutException) {
             logger()->error("Unable to acquire lock execute-contract");
         } finally {

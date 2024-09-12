@@ -4,6 +4,7 @@ namespace App\Observers;
 
 use App\Helpers\Queue;
 use App\Jobs\SyncListingToGCS;
+use App\Jobs\Web3Listing;
 use App\Models\Enums\VerifyStatus;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Listing;
@@ -53,6 +54,37 @@ class ListingObserver
         } catch (\Throwable $th) {
             Log::error('Error sync to property: ' . $th->getMessage());
         }
+
+        try {
+            $originalVerifyStatus = $listing->getOriginal('verifyStatus');
+
+            if ($originalVerifyStatus === VerifyStatus::APPROVED) {
+                // If the status is not approved anymore
+                // Publish the delete listing to web3
+                if ($listing->verifyStatus !== VerifyStatus::APPROVED) {
+                    $operationType = "DELETE";
+                } else {
+                    $operationType = "UPDATE";
+                }
+            }
+
+            if ($originalVerifyStatus !== VerifyStatus::APPROVED) {
+                // If verifyStatus not changed to approved
+                // Do nothing
+                if ($listing->verifyStatus !== VerifyStatus::APPROVED) {
+                    return;
+                }
+                
+                $operationType = "ADD";
+            }
+
+            Web3Listing::dispatch(
+                $listing,
+                $operationType,
+            )->onQueue(Queue::getQueueName('generic'));
+        } catch (\Throwable $th) {
+            Log::error('Error sync to blockchain: ' . $th->getMessage());
+        }
     }
 
     /**
@@ -99,6 +131,21 @@ class ListingObserver
      */
     public function deleted(Listing $listing): void
     {
+        try {
+            $originalVerifyStatus = $listing->getOriginal('verifyStatus');
+
+            // If an approved listing is deleted
+            // Delete it from web3
+            if ($originalVerifyStatus === VerifyStatus::APPROVED) {
+                Web3Listing::dispatch(
+                    $listing,
+                    `DELETE`,
+                )->onQueue(Queue::getQueueName('generic'));
+            }
+        } catch (\Throwable $th) {
+            Log::error('Error sync to blockchain: ' . $th->getMessage());
+        }
+
         $property = Property::where('listings', $listing->id)->first();
         if ($property) {
             $property->delete();
