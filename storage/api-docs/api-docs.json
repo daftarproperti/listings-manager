@@ -2686,29 +2686,6 @@
                 },
                 "type": "object"
             },
-            "TelegramAllowlistGroup": {
-                "properties": {
-                    "id": {
-                        "type": "string"
-                    },
-                    "chatId": {
-                        "type": "integer"
-                    },
-                    "groupName": {
-                        "type": "string"
-                    },
-                    "sampleMessage": {
-                        "type": "string"
-                    },
-                    "allowed": {
-                        "type": "boolean"
-                    },
-                    "createdAt": {
-                        "type": "string"
-                    }
-                },
-                "type": "object"
-            },
             "User": {
                 "properties": {
                     "id": {

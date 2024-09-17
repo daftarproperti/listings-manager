@@ -2,10 +2,8 @@
 
 namespace App\Http\Middleware;
 
-use App\DTO\Telegram\Message;
 use App\DTO\Telegram\Update;
 use App\Models\Enums\ChatType;
-use App\Models\TelegramAllowlistGroup;
 use Closure;
 use Illuminate\Http\Request;
 
@@ -33,28 +31,10 @@ class TelegramWebhook
         $chatType = $chat->type ?? ChatType::PRIVATE->value;
 
         if ($chatType === ChatType::GROUP->value && $requestMessage) {
-            return $this->isAllowedGroup($requestMessage) ?
-                $next($request) : response()->json(['error' => 'Group not allowed.'], 200);
+            return response()->json(['error' => 'Group not allowed.'], 200);
         }
 
 
         return $next($request);
-    }
-
-    private function isAllowedGroup(Message $message): bool
-    {
-        /** @var TelegramAllowlistGroup|null $allowlistGroup */
-        $allowlistGroup = TelegramAllowlistGroup::where('chatId', $message->chat->id)->first();
-
-        if (!$allowlistGroup) {
-            /** @var TelegramAllowlistGroup $allowlistGroup */
-            $allowlistGroup = TelegramAllowlistGroup::create([
-                'chatId' => $message->chat->id,
-                'allowed' => false,
-                'sampleMessage' => $message->text,
-            ]);
-        }
-
-        return $allowlistGroup->allowed;
     }
 }
