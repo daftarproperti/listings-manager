@@ -39,14 +39,34 @@ class AiReviewJob implements ShouldQueue
     {
         try {
             $listingReviewData = (new AiReviewListingGptResource($this->listing))->resolve();
-            $reviewPrompt = AiReviewPrompt::generatePrompt($listingReviewData);
-            $response = $chatGptService->seekAnswer($reviewPrompt, 'gpt-4');
+            $reviewPrompt = AiReviewPrompt::generatePrompt($listingReviewData, $this->listing->description);
 
-            Log::info('Ai Review Job dispatched: ', ['ai_review' => $response]);
-            $jsonResponse = (array) json_decode($response, true);
+            $promptMessage[] = [
+                'role' => 'user',
+                'content' => $reviewPrompt,
+            ];
+
+            $firstPromptResponse = $chatGptService->seekAnswerWihtCustomMessagesRole($promptMessage, 'gpt-4');
+
+            // Keep context from the first response
+            $promptMessage[] = [
+                'role' => 'assistant',
+                'content' => $firstPromptResponse,
+            ];
+
+            $validationPrompt = AiReviewPrompt::validationPrompt();
+            $promptMessage[] = [
+                'role' => 'user',
+                'content' => $validationPrompt
+            ];
+
+            $finalResponse = $chatGptService->seekAnswerWihtCustomMessagesRole($promptMessage, 'gpt-4');
+
+            /** @var array<array<string>> $finalJsonResponse */
+            $finalJsonResponse = json_decode($finalResponse, true);
 
             $this->listing->aiReview()->update([
-                'results' => $jsonResponse['results'] ?? [],
+                'results' => $finalJsonResponse['results'] ?? [],
                 'status' => (AiReviewStatus::DONE)->value,
             ]);
 

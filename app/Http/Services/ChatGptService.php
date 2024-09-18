@@ -64,4 +64,27 @@ class ChatGptService
         $responseData = $response->json();
         return $responseData['choices'][0]['message']['content'];
     }
+
+    /**
+     * @param array<array<mixed>> $messagesRole
+     */
+    public function seekAnswerWihtCustomMessagesRole(array $messagesRole, string $model = null): string
+    {
+        $response = Http::withHeaders([
+            'Authorization' => 'Bearer ' . $this->apiKey,
+            'Content-Type' => 'application/json',
+        ])
+            ->post($this->apiUrl, [
+                'model' => $model ?? $this->modelVersion,
+                'messages' => $messagesRole
+            ]);
+
+        if (!$response->successful()) {
+            throw new \ErrorException($response->body());
+        }
+
+        /** @var array<array<array<array<string>>>> $responseData */
+        $responseData = $response->json();
+        return $responseData['choices'][0]['message']['content'];
+    }
 }

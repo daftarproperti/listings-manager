@@ -142,6 +142,7 @@ export default function index ({
   const doAiReview = async (): Promise<void> => {
     try {
       setAiReviewStatus('processing');
+      setAiReviewResponse([]);
       await router.post(`/admin/listings/${listing.id}/ai-review`);
 
       getAiReview();
@@ -173,6 +174,8 @@ export default function index ({
             } else {
                 setAiReviewIsOutdated(false);
             }
+        } else if (data.status === 'processing') {
+            setTimeout(function() { getAiReview(); }, 5000);
         }
       }
     } catch (error) {
@@ -535,7 +538,7 @@ export default function index ({
                                     className="inline-flex items-center mb-3 text-xs"
                                     color="indigo"
                                     onClick={doAiReview}
-                                    disabled={aiReviewStatus === 'processing' || !aiReviewIsOutdated}
+                                    // disabled={aiReviewStatus === 'processing' || !aiReviewIsOutdated}
                                 >
                                     <SparklesIcon className='h-4 w-4 mr-2' />
                                     {aiReviewStatus === 'processing' ? 'Menunggu Ai Review...' : aiReviewIsOutdated ? '(Outdated) Jalankan Ai Review' : 'Ai Review UP-TO-DATE'}
