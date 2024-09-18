@@ -595,7 +595,12 @@ export default function index ({
                               listing.adminNote?.message !== '') &&
                               (
                                 <div className="text-sm pt-4">
-                                  <p>{listing.adminNote?.message}</p>
+                                  <p
+                                    dangerouslySetInnerHTML={{
+                                      __html: replaceWithBr(listing.adminNote?.message)
+                                    }}
+                                    className="text-sm text-slate-800 whitespace-pre-wrap"
+                                  />
                                   <p>{listing.adminNote?.email}</p>
                                 </div>
                               )}
