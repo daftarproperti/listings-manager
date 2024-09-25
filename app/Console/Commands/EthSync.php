@@ -42,7 +42,7 @@ class EthSync extends Command
      */
     public function handle(): void
     {
-        $abi = type(file_get_contents(storage_path('blockchain/Listings.abi.json')))->asString();
+        $abi = type(file_get_contents(storage_path('blockchain/ListingsV0.abi.json')))->asString();
         $contractAddress = type(env('ETH_LISTINGS_CONTRACT_ADDRESS'))->asString();
 
         $web3 = new Web3(type(env('ETH_NODE'))->asString());
