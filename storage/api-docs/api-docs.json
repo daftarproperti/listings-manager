@@ -1637,7 +1637,7 @@
         "/api/app/users/profile": {
             "get": {
                 "tags": [
-                    "Telegram Users"
+                    "Users"
                 ],
                 "summary": "Get profile",
                 "description": "Returns user profile",
@@ -1657,7 +1657,7 @@
             },
             "post": {
                 "tags": [
-                    "Telegram Users"
+                    "Users"
                 ],
                 "summary": "Update profile",
                 "operationId": "updateProfile",
@@ -1688,7 +1688,7 @@
         "/api/app/users/secret-key": {
             "post": {
                 "tags": [
-                    "Telegram Users"
+                    "Users"
                 ],
                 "summary": "Generate Secret Key for TOTP",
                 "operationId": "generateSecretKey",
@@ -1707,7 +1707,7 @@
             },
             "delete": {
                 "tags": [
-                    "Telegram Users"
+                    "Users"
                 ],
                 "summary": "Delete Secret Key for TOTP",
                 "operationId": "deleteSecretKey",

@@ -1135,7 +1135,7 @@ paths:
   /api/app/users/profile:
     get:
       tags:
-        - 'Telegram Users'
+        - Users
       summary: 'Get profile'
       description: 'Returns user profile'
       operationId: profile
@@ -1148,7 +1148,7 @@ paths:
                 $ref: '#/components/schemas/User'
     post:
       tags:
-        - 'Telegram Users'
+        - Users
       summary: 'Update profile'
       operationId: updateProfile
       requestBody:
@@ -1167,7 +1167,7 @@ paths:
   /api/app/users/secret-key:
     post:
       tags:
-        - 'Telegram Users'
+        - Users
       summary: 'Generate Secret Key for TOTP'
       operationId: generateSecretKey
       responses:
@@ -1179,7 +1179,7 @@ paths:
                 $ref: '#/components/schemas/User'
     delete:
       tags:
-        - 'Telegram Users'
+        - Users
       summary: 'Delete Secret Key for TOTP'
       operationId: deleteSecretKey
       responses:

@@ -14,7 +14,7 @@ class UserController extends Controller
 {
     #[OA\Get(
         path: "/api/app/users/profile",
-        tags: ["Telegram Users"],
+        tags: ["Users"],
         summary: "Get profile",
         description: "Returns user profile",
         operationId: "profile",
@@ -36,7 +36,7 @@ class UserController extends Controller
 
     #[OA\Post(
         path: "/api/app/users/profile",
-        tags: ["Telegram Users"],
+        tags: ["Users"],
         summary: "Update profile",
         operationId: "updateProfile",
         requestBody: new OA\RequestBody(
@@ -75,7 +75,7 @@ class UserController extends Controller
 
     #[OA\Post(
         path: "/api/app/users/secret-key",
-        tags: ["Telegram Users"],
+        tags: ["Users"],
         summary: "Generate Secret Key for TOTP",
         operationId: "generateSecretKey",
         responses: [
@@ -102,7 +102,7 @@ class UserController extends Controller
 
     #[OA\Delete(
         path: "/api/app/users/secret-key",
-        tags: ["Telegram Users"],
+        tags: ["Users"],
         summary: "Delete Secret Key for TOTP",
         operationId: "deleteSecretKey",
         responses: [
