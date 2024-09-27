@@ -695,35 +695,6 @@ paths:
                           example: title-1
                       type: object
                 type: object
-  '/api/photo/{fileId}/{fileName}':
-    get:
-      tags:
-        - Image
-      summary: 'Show image'
-      operationId: image.show
-      parameters:
-        -
-          name: fileId
-          in: path
-          description: 'File Id'
-          required: true
-          schema:
-            type: integer
-        -
-          name: fileName
-          in: path
-          description: Filename
-          required: true
-          schema:
-            type: string
-      responses:
-        200:
-          description: OK
-          content:
-            'image/*':
-              schema:
-                type: string
-                format: binary
   /api/app/upload/image:
     post:
       tags:
