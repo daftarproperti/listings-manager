@@ -3,7 +3,7 @@
 namespace App\Models\Resources;
 
 use App\Helpers\Ecies;
-use App\Helpers\TelegramPhoto;
+use App\Helpers\Photo;
 use App\Models\Enums\VerifyStatus;
 use App\Models\User;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -112,7 +112,7 @@ class PublicListingResource extends JsonResource
                     ) :
                     null,
                 'profilePictureURL' => $listing->user_profile?->picture ?
-                    TelegramPhoto::getGcsUrlFromFileName($listing->user_profile->picture) :
+                    Photo::getGcsUrlFromFileName($listing->user_profile->picture) :
                     null,
                 'company' => $listing->user_profile?->company,
             ],

@@ -4,7 +4,7 @@ namespace App\Helpers;
 
 use Illuminate\Support\Facades\Http;
 
-class TelegramPhoto
+class Photo
 {
     public static function getPhotoUrl(string $fileId, string $fileUniqueId): ?string
     {
@@ -40,8 +40,8 @@ class TelegramPhoto
                 $gcsUrls[] = $url;
                 continue;
             }
-            $fileName = TelegramPhoto::getFileNameFromUrl($url); // need this to handle old data
-            $gcsUrls[] = TelegramPhoto::getGcsUrlFromFileName($fileName);
+            $fileName = self::getFileNameFromUrl($url); // need this to handle old data
+            $gcsUrls[] = self::getGcsUrlFromFileName($fileName);
         }
         return $gcsUrls;
     }

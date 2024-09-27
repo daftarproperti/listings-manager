@@ -2,7 +2,7 @@
 
 namespace App\Models\Resources;
 
-use App\Helpers\TelegramPhoto;
+use App\Helpers\Photo;
 use Illuminate\Http\Resources\Json\JsonResource;
 use OpenApi\Attributes as OA;
 
@@ -56,7 +56,7 @@ class UserResource extends JsonResource
             'cityName' => $prop->cityName,
             'description' => $prop->description,
             'company' => $prop->company,
-            'picture' => $prop->picture ? TelegramPhoto::getGcsUrlFromFileName($prop->picture) : null,
+            'picture' => $prop->picture ? Photo::getGcsUrlFromFileName($prop->picture) : null,
             'isPublicProfile' => $prop->isPublicProfile,
             'secretKey' => $prop->secretKey,
 
@@ -66,7 +66,7 @@ class UserResource extends JsonResource
                 'publicId' => $prop->_id,
                 'city' => $prop->city,
                 'description' => $prop->description,
-                'picture' => $prop->picture ? TelegramPhoto::getGcsUrlFromFileName($prop->picture) : null,
+                'picture' => $prop->picture ? Photo::getGcsUrlFromFileName($prop->picture) : null,
                 'isPublicProfile' => $prop->isPublicProfile,
                 'company' => $prop->company,
             ]

@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Helpers\TelegramPhoto;
+use App\Helpers\Photo;
 use App\Models\Enums\VerifyStatus;
 use App\Models\Traits\CityAttributeTrait;
 use Carbon\Carbon;
@@ -81,7 +81,7 @@ class Property extends Model
         return Attribute::make(
             get: function ($value) {
                 if (is_array($value)) {
-                    return TelegramPhoto::reformatPictureUrlsIntoGcsUrls($value);
+                    return Photo::reformatPictureUrlsIntoGcsUrls($value);
                 } else {
                     return [];
                 }

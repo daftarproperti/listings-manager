@@ -3,7 +3,7 @@
 namespace App\Jobs;
 
 use App\Models\Listing;
-use App\Helpers\TelegramPhoto;
+use App\Helpers\Photo;
 use App\Jobs\SyncListingToGCS;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Cache\LockTimeoutException;
@@ -19,8 +19,6 @@ use kornrunner\Ethereum\Transaction;
 class Web3Listing implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
-
-    protected TelegramPhoto $telegramPhoto;
 
     /**
      * Create a new job instance.
@@ -235,7 +233,7 @@ class Web3Listing implements ShouldQueue
         $updatedAt = $listing->updated_at->toIso8601ZuluString();
         $fileName = "listings/{$listing->listingId}/{$listing->listingId}-$updatedAt.json";
 
-        $offChainLink = TelegramPhoto::getGcsUrlFromFileName($fileName);
+        $offChainLink = Photo::getGcsUrlFromFileName($fileName);
         try {
             file_get_contents($offChainLink);
         } catch (\Exception) {

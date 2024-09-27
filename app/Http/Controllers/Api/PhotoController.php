@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Helpers\TelegramPhoto;
+use App\Helpers\Photo;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ImageUploadRequest;
 use App\Http\Services\GoogleStorageService;
@@ -46,7 +46,7 @@ class PhotoController extends Controller
     )]
     public function telegramPhoto(string $fileId, string $fileUniqueId): \Illuminate\Http\Response|StreamedResponse
     {
-        $photoUrl = TelegramPhoto::getPhotoUrl($fileId, $fileUniqueId);
+        $photoUrl = Photo::getPhotoUrl($fileId, $fileUniqueId);
         $fileContent = $photoUrl ? file_get_contents($photoUrl) : null;
 
         return $fileContent ? Response::stream(function () use ($fileContent) {

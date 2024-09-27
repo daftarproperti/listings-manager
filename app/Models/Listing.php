@@ -5,7 +5,7 @@ namespace App\Models;
 use App\DTO\GeoJsonObject;
 use App\Helpers\Cast;
 use App\Helpers\NumFormatter;
-use App\Helpers\TelegramPhoto;
+use App\Helpers\Photo;
 use App\Models\Enums\ActiveStatus;
 use App\Models\Enums\VerifyStatus;
 use App\Models\FacingDirection;
@@ -261,7 +261,7 @@ class Listing extends Model
         return Attribute::make(
             get: function ($value) {
                 if (is_array($value)) {
-                    return TelegramPhoto::reformatPictureUrlsIntoGcsUrls($value);
+                    return Photo::reformatPictureUrlsIntoGcsUrls($value);
                 } else {
                     return [];
                 }
@@ -281,7 +281,7 @@ class Listing extends Model
 
         if (is_array($value)) {
             foreach ($value as $url) {
-                $pictureUrls[] = TelegramPhoto::getFileNameFromUrl($url);
+                $pictureUrls[] = Photo::getFileNameFromUrl($url);
             }
         }
 

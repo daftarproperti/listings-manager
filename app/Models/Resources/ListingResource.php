@@ -2,7 +2,7 @@
 
 namespace App\Models\Resources;
 
-use App\Helpers\TelegramPhoto;
+use App\Helpers\Photo;
 use App\Models\Resources\CancellationNoteResource;
 use Carbon\Carbon;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -133,7 +133,7 @@ class ListingResource extends JsonResource
                 'city' => $prop->user_profile?->city,
                 'cityId' => $prop->user_profile?->cityId,
                 'cityName' => $prop->user_profile?->cityName,
-                'profilePictureURL' => $prop->user_profile?->picture ? TelegramPhoto::getGcsUrlFromFileName($prop->user_profile->picture) : null,
+                'profilePictureURL' => $prop->user_profile?->picture ? Photo::getGcsUrlFromFileName($prop->user_profile->picture) : null,
                 'company' => $prop->user_profile?->company,
                 'description' => $prop->user_profile?->description,
             ],
