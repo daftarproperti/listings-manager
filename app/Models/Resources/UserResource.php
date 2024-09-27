@@ -7,28 +7,28 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use OpenApi\Attributes as OA;
 
 #[OA\Schema(
-    schema: "User",
-    type: "object"
+    schema: 'User',
+    type: 'object'
 )]
 class UserResource extends JsonResource
 {
-    #[OA\Property(property: "id", type: "string")]
-    #[OA\Property(property: "userId", type: "integer")]
-    #[OA\Property(property: "userIdStr", type: "string")]
-    #[OA\Property(property: "publicId", type: "string")]
-    #[OA\Property(property: "username", type: "string")]
-    #[OA\Property(property: "phoneNumber", type: "string")]
-    #[OA\Property(property: "accountType", ref: "#/components/schemas/AccountType")]
-    #[OA\Property(property: "email", type: "string")]
-    #[OA\Property(property: "name", type: "string")]
-    #[OA\Property(property: "city", type: "string")]
-    #[OA\Property(property: "cityId", type: "integer")]
-    #[OA\Property(property: "cityName", type: "string")]
-    #[OA\Property(property: "description", type: "string")]
-    #[OA\Property(property: "picture", type: "string")]
-    #[OA\Property(property: "company", type: "string")]
-    #[OA\Property(property: "isPublicProfile", type: "bool")]
-    #[OA\Property(property: "secretKey", type: "string")]
+    #[OA\Property(property: 'id', type: 'string')]
+    #[OA\Property(property: 'userId', type: 'integer')]
+    #[OA\Property(property: 'userIdStr', type: 'string')]
+    #[OA\Property(property: 'publicId', type: 'string')]
+    #[OA\Property(property: 'username', type: 'string')]
+    #[OA\Property(property: 'phoneNumber', type: 'string')]
+    #[OA\Property(property: 'accountType', ref: '#/components/schemas/AccountType')]
+    #[OA\Property(property: 'email', type: 'string')]
+    #[OA\Property(property: 'name', type: 'string')]
+    #[OA\Property(property: 'city', type: 'string')]
+    #[OA\Property(property: 'cityId', type: 'integer')]
+    #[OA\Property(property: 'cityName', type: 'string')]
+    #[OA\Property(property: 'description', type: 'string')]
+    #[OA\Property(property: 'picture', type: 'string')]
+    #[OA\Property(property: 'company', type: 'string')]
+    #[OA\Property(property: 'isPublicProfile', type: 'bool')]
+    #[OA\Property(property: 'secretKey', type: 'string')]
 
     public static $wrap = null;
 

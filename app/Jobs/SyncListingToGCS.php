@@ -39,7 +39,7 @@ class SyncListingToGCS implements ShouldQueue
 
         $resource = new PublicListingResource($listing);
         $json = type(json_encode($resource))->asString();
-        logger()->debug("syncing listing " . $json);
+        logger()->debug('syncing listing ' . $json);
 
         $googleStorageService = new GoogleStorageService();
         $updatedAt = $listing->updated_at->toIso8601ZuluString();

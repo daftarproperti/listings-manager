@@ -67,34 +67,34 @@ class CityController extends Controller
     }
 
     #[OA\Get(
-        path: "/api/app/cities/{id}",
-        tags: ["Cities"],
-        summary: "Get city by id",
-        operationId: "cities.getCityById",
+        path: '/api/app/cities/{id}',
+        tags: ['Cities'],
+        summary: 'Get city by id',
+        operationId: 'cities.getCityById',
         parameters: [
             new OA\Parameter(
-                name: "id",
-                in: "path",
+                name: 'id',
+                in: 'path',
                 required: true,
-                description: "City Id",
-                schema: new OA\Schema(type: "integer")
+                description: 'City Id',
+                schema: new OA\Schema(type: 'integer')
             )
         ],
         responses: [
             new OA\Response(
                 response: 200,
-                description: "success",
-                content: new OA\JsonContent(ref: "#/components/schemas/City")
+                description: 'success',
+                content: new OA\JsonContent(ref: '#/components/schemas/City')
             ),
             new OA\Response(
                 response: 404,
-                description: "City not found",
+                description: 'City not found',
                 content: new OA\JsonContent(
                     properties: [
                         new OA\Property(
-                            property: "error",
-                            type: "string",
-                            example: "City not found"
+                            property: 'error',
+                            type: 'string',
+                            example: 'City not found'
                         )
                     ]
                 )

@@ -74,7 +74,7 @@ class SavedSearch extends Model
     private static function checkExactMatch(int|string|null $listingValue, int|string|null $filterValue): void
     {
         if (!is_null($listingValue) && !is_null($filterValue) && $listingValue !== $filterValue) {
-            throw new FilterMismatchException("Exact match failed for value: " . $listingValue);
+            throw new FilterMismatchException('Exact match failed for value: ' . $listingValue);
         }
     }
 
@@ -86,19 +86,19 @@ class SavedSearch extends Model
                 || (!is_null($filterValue->max) && $listingValue > $filterValue->max)
             ) {
                 throw new FilterMismatchException(
-                    "Value" . $listingValue . " not in range " . $filterValue->min . "-" . $filterValue->max
+                    'Value' . $listingValue . ' not in range ' . $filterValue->min . '-' . $filterValue->max
                 );
             }
         }
         if (!is_null($listingValue) && is_numeric($filterValue) && $listingValue !== $filterValue) {
-            throw new FilterMismatchException("Exact match failed for value: " . $listingValue);
+            throw new FilterMismatchException('Exact match failed for value: ' . $listingValue);
         }
     }
 
     private static function checkEnumMatch(\BackedEnum|null $listingValue, \BackedEnum|null $filterValue): void
     {
         if (!is_null($listingValue) && !is_null($filterValue) && $listingValue != $filterValue) {
-            throw new FilterMismatchException("Enum match failed for value: " . $listingValue->value);
+            throw new FilterMismatchException('Enum match failed for value: ' . $listingValue->value);
         }
     }
 }

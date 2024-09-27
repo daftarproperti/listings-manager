@@ -5,8 +5,8 @@ namespace App\Models;
 use OpenApi\Attributes as OA;
 
 #[OA\Schema(
-    type: "string",
-    example: "house",
+    type: 'string',
+    example: 'house',
 )]
 /**
  * Property type

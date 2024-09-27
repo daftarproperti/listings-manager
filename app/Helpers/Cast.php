@@ -13,7 +13,7 @@ class Cast
         try {
             return strval($value); // @phpstan-ignore-line we are safely catching the error.
         } catch (\Error) {
-            return "not stringable";
+            return 'not stringable';
         }
     }
 }

@@ -60,7 +60,7 @@ class ParseBuyerRequestJob implements ShouldQueue
                 }
             }
         } catch (\Throwable $th) {
-            Log::error("Error caught when trying to extract buyer request data:");
+            Log::error('Error caught when trying to extract buyer request data:');
             Log::error($th);
             return;
         }

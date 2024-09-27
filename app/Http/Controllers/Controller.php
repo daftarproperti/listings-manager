@@ -7,7 +7,7 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
 use OpenApi\Attributes as OA;
 
-#[OA\Info(title: "Daftar Properti API", version: "1.0.0")]
+#[OA\Info(title: 'Daftar Properti API', version: '1.0.0')]
 class Controller extends BaseController
 {
     use AuthorizesRequests;

@@ -31,11 +31,11 @@ class GetListing extends Command
         /** @var Listing|null $listing */
         $listing = Listing::find($listingId);
         if (!$listing) {
-            $this->info("No listing found with id " . $listingId);
+            $this->info('No listing found with id ' . $listingId);
             return;
         }
 
-        $this->line("listing = " . print_r($listing, true));
-        $this->line("user = " . print_r($listing->user, true));
+        $this->line('listing = ' . print_r($listing, true));
+        $this->line('user = ' . print_r($listing->user, true));
     }
 }

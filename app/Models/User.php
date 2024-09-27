@@ -37,8 +37,8 @@ class User extends Authenticatable
 
     protected $connection = 'mongodb';
 
-    protected const INDIVIDUAL = "individual";
-    protected const PROFESSIONAL = "professional";
+    protected const INDIVIDUAL = 'individual';
+    protected const PROFESSIONAL = 'professional';
 
     /**
      * The attributes that are mass assignable.

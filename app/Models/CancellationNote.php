@@ -7,10 +7,10 @@ use OpenApi\Attributes as OA;
 use App\Models\Enums\CancellationStatus;
 
 #[OA\Schema(
-    type: "object",
+    type: 'object',
     properties: [
-        new OA\Property(property: "reason", type: "string", example: "Hello World"),
-        new OA\Property(property: "status", type: "string", example: "on_review"),
+        new OA\Property(property: 'reason', type: 'string', example: 'Hello World'),
+        new OA\Property(property: 'status', type: 'string', example: 'on_review'),
     ]
 )]
 class CancellationNote extends Data

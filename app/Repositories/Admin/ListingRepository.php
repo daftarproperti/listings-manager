@@ -74,7 +74,7 @@ class ListingRepository
         $sortOrder = $input['sortOrder'] ?? 'desc';
 
         if (!is_string($sortBy) || !is_string($sortOrder)) {
-            throw new \InvalidArgumentException("Sort parameters must be valid strings.");
+            throw new \InvalidArgumentException('Sort parameters must be valid strings.');
         }
 
         $query->orderBy($sortBy, $sortOrder);
@@ -118,7 +118,7 @@ class ListingRepository
         $sortOrder = $input['sortOrder'] ?? 'asc';
 
         if (!is_string($sortBy) || !is_string($sortOrder)) {
-            throw new \InvalidArgumentException("Sort parameters must be valid strings.");
+            throw new \InvalidArgumentException('Sort parameters must be valid strings.');
         }
 
         $query->orderBy($sortBy, $sortOrder);

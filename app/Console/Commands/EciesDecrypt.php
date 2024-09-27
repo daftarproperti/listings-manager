@@ -31,12 +31,12 @@ class EciesDecrypt extends Command
 
         $decrypted = Ecies::decryptToString(Ecies::privateKeyFromHex($privateKeyHex), $encryptedBlock);
         if ($decrypted === false) {
-            $this->error("failed decrypting");
+            $this->error('failed decrypting');
             return;
         }
 
         if (!mb_check_encoding($decrypted, 'ASCII')) {
-            $this->error("decrypted block is not ASCII");
+            $this->error('decrypted block is not ASCII');
             return;
         }
 

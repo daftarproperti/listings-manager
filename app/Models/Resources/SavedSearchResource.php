@@ -7,15 +7,15 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use OpenApi\Attributes as OA;
 
 #[OA\Schema(
-    schema: "SavedSearch",
-    type: "object"
+    schema: 'SavedSearch',
+    type: 'object'
 )]
 class SavedSearchResource extends JsonResource
 {
-    #[OA\Property(property: "id", type: "string")]
-    #[OA\Property(property: "userId", type: "integer")]
-    #[OA\Property(property: "title", type: "string")]
-    #[OA\Property(property: "filterSet", ref: "#/components/schemas/FilterSet")]
+    #[OA\Property(property: 'id', type: 'string')]
+    #[OA\Property(property: 'userId', type: 'integer')]
+    #[OA\Property(property: 'title', type: 'string')]
+    #[OA\Property(property: 'filterSet', ref: '#/components/schemas/FilterSet')]
 
     public static $wrap = null;
 

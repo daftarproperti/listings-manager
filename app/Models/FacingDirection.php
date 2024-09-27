@@ -5,8 +5,8 @@ namespace App\Models;
 use OpenApi\Attributes as OA;
 
 #[OA\Schema(
-    type: "string",
-    example: "east"
+    type: 'string',
+    example: 'east'
 )]
 /**
  * Facing Direction
@@ -25,7 +25,7 @@ enum FacingDirection: string
 
     public static function sanitize(string $value): string
     {
-        $lowercase = $value ? str_replace(' ', '', strtolower($value)) : "unknown";
+        $lowercase = $value ? str_replace(' ', '', strtolower($value)) : 'unknown';
         try {
             self::from($lowercase);
             return $lowercase;

@@ -8,76 +8,76 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use OpenApi\Attributes as OA;
 
 #[OA\Schema(
-    schema: "Listing",
-    type: "object"
+    schema: 'Listing',
+    type: 'object'
 )]
 class ListingResource extends JsonResource
 {
-    #[OA\Property(property: "id", type: "string")]
-    #[OA\Property(property: "listingId", type: "integer")]
-    #[OA\Property(property: "listingIdStr", type: "string")]
-    #[OA\Property(property: "sourceText", type: "string")]
-    #[OA\Property(property: "title", type: "string")]
-    #[OA\Property(property: "propertyType", ref: "#/components/schemas/PropertyType")]
-    #[OA\Property(property: "listingType", ref: "#/components/schemas/ListingType")]
-    #[OA\Property(property: "listingForSale", type: "boolean")]
-    #[OA\Property(property: "listingForRent", type: "boolean")]
-    #[OA\Property(property: "address", type: "string")]
-    #[OA\Property(property: "description", type: "string")]
-    #[OA\Property(property: "price", type: "integer")]
-    #[OA\Property(property: "rentPrice", type: "integer")]
-    #[OA\Property(property: "lotSize", type: "integer")]
-    #[OA\Property(property: "buildingSize", type: "integer")]
-    #[OA\Property(property: "carCount", type: "integer")]
-    #[OA\Property(property: "bedroomCount", type: "integer")]
-    #[OA\Property(property: "additionalBedroomCount", type: "integer")]
-    #[OA\Property(property: "bathroomCount", type: "integer")]
-    #[OA\Property(property: "additionalBathroomCount", type: "integer")]
-    #[OA\Property(property: "floorCount", type: "integer")]
-    #[OA\Property(property: "electricPower", type: "integer")]
-    #[OA\Property(property: "viewCount", type: "integer")]
-    #[OA\Property(property: "matchFilterCount", type: "integer")]
-    #[OA\Property(property: "facing", ref: "#/components/schemas/FacingDirection")]
-    #[OA\Property(property: "ownership", ref: "#/components/schemas/PropertyOwnership")]
-    #[OA\Property(property: "verifyStatus", ref: "#/components/schemas/VerifyStatus")]
-    #[OA\Property(property: "activeStatus", ref: "#/components/schemas/ActiveStatus")]
-    #[OA\Property(property: "adminNote", ref: "#/components/schemas/AdminNote")]
-    #[OA\Property(property: "cancellationNote", ref: "#/components/schemas/CancellationNote")]
-    #[OA\Property(property: "cityName", type: "string")]
-    #[OA\Property(property: "cityId", type: "integer")]
-    #[OA\Property(property: "city", type: "string")]
+    #[OA\Property(property: 'id', type: 'string')]
+    #[OA\Property(property: 'listingId', type: 'integer')]
+    #[OA\Property(property: 'listingIdStr', type: 'string')]
+    #[OA\Property(property: 'sourceText', type: 'string')]
+    #[OA\Property(property: 'title', type: 'string')]
+    #[OA\Property(property: 'propertyType', ref: '#/components/schemas/PropertyType')]
+    #[OA\Property(property: 'listingType', ref: '#/components/schemas/ListingType')]
+    #[OA\Property(property: 'listingForSale', type: 'boolean')]
+    #[OA\Property(property: 'listingForRent', type: 'boolean')]
+    #[OA\Property(property: 'address', type: 'string')]
+    #[OA\Property(property: 'description', type: 'string')]
+    #[OA\Property(property: 'price', type: 'integer')]
+    #[OA\Property(property: 'rentPrice', type: 'integer')]
+    #[OA\Property(property: 'lotSize', type: 'integer')]
+    #[OA\Property(property: 'buildingSize', type: 'integer')]
+    #[OA\Property(property: 'carCount', type: 'integer')]
+    #[OA\Property(property: 'bedroomCount', type: 'integer')]
+    #[OA\Property(property: 'additionalBedroomCount', type: 'integer')]
+    #[OA\Property(property: 'bathroomCount', type: 'integer')]
+    #[OA\Property(property: 'additionalBathroomCount', type: 'integer')]
+    #[OA\Property(property: 'floorCount', type: 'integer')]
+    #[OA\Property(property: 'electricPower', type: 'integer')]
+    #[OA\Property(property: 'viewCount', type: 'integer')]
+    #[OA\Property(property: 'matchFilterCount', type: 'integer')]
+    #[OA\Property(property: 'facing', ref: '#/components/schemas/FacingDirection')]
+    #[OA\Property(property: 'ownership', ref: '#/components/schemas/PropertyOwnership')]
+    #[OA\Property(property: 'verifyStatus', ref: '#/components/schemas/VerifyStatus')]
+    #[OA\Property(property: 'activeStatus', ref: '#/components/schemas/ActiveStatus')]
+    #[OA\Property(property: 'adminNote', ref: '#/components/schemas/AdminNote')]
+    #[OA\Property(property: 'cancellationNote', ref: '#/components/schemas/CancellationNote')]
+    #[OA\Property(property: 'cityName', type: 'string')]
+    #[OA\Property(property: 'cityId', type: 'integer')]
+    #[OA\Property(property: 'city', type: 'string')]
     #[OA\Property(
-        property: "pictureUrls",
-        type: "array",
-        items: new OA\Items(type: "string", format: "uri", example: "https://example.com/image.jpg")
+        property: 'pictureUrls',
+        type: 'array',
+        items: new OA\Items(type: 'string', format: 'uri', example: 'https://example.com/image.jpg')
     )]
-    #[OA\Property(property: "coordinate", type: "object", properties: [
-        new OA\Property(property: "latitude", type: "integer"),
-        new OA\Property(property: "longitude", type: "integer")
+    #[OA\Property(property: 'coordinate', type: 'object', properties: [
+        new OA\Property(property: 'latitude', type: 'integer'),
+        new OA\Property(property: 'longitude', type: 'integer')
     ])]
-    #[OA\Property(property: "contact", type: "object", properties: [
-        new OA\Property(property: "name", type: "string"),
-        new OA\Property(property: "company", type: "string")
+    #[OA\Property(property: 'contact', type: 'object', properties: [
+        new OA\Property(property: 'name', type: 'string'),
+        new OA\Property(property: 'company', type: 'string')
     ])]
-    #[OA\Property(property: "user", type: "object", properties: [
-        new OA\Property(property: "name", type: "string"),
-        new OA\Property(property: "phoneNumber", type: "string"),
-        new OA\Property(property: "profilePictureURL", type: "string"),
-        new OA\Property(property: "city", type: "string"),
-        new OA\Property(property: "cityId", type: "integer"),
-        new OA\Property(property: "cityName", type: "string"),
-        new OA\Property(property: "company", type: "string"),
-        new OA\Property(property: "description", type: "string"),
+    #[OA\Property(property: 'user', type: 'object', properties: [
+        new OA\Property(property: 'name', type: 'string'),
+        new OA\Property(property: 'phoneNumber', type: 'string'),
+        new OA\Property(property: 'profilePictureURL', type: 'string'),
+        new OA\Property(property: 'city', type: 'string'),
+        new OA\Property(property: 'cityId', type: 'integer'),
+        new OA\Property(property: 'cityName', type: 'string'),
+        new OA\Property(property: 'company', type: 'string'),
+        new OA\Property(property: 'description', type: 'string'),
     ])]
-    #[OA\Property(property: "userCanEdit", type: "boolean")]
-    #[OA\Property(property: "isPrivate", type: "boolean")]
-    #[OA\Property(property: "withRewardAgreement", type: "boolean")]
-    #[OA\Property(property: "isMultipleUnits", type: "boolean")]
-    #[OA\Property(property: "closings", type: "array", items: new OA\Items(ref: "#/components/schemas/Closing"))]
-    #[OA\Property(property: "updatedAt", type: "string", format: "date-time")]
-    #[OA\Property(property: "createdAt", type: "string", format: "date-time")]
-    #[OA\Property(property: "expiredAt", type: "string", format: "date-time")]
-    #[OA\Property(property: "rawExpiredAt", type: "string", format: "date-time")]
+    #[OA\Property(property: 'userCanEdit', type: 'boolean')]
+    #[OA\Property(property: 'isPrivate', type: 'boolean')]
+    #[OA\Property(property: 'withRewardAgreement', type: 'boolean')]
+    #[OA\Property(property: 'isMultipleUnits', type: 'boolean')]
+    #[OA\Property(property: 'closings', type: 'array', items: new OA\Items(ref: '#/components/schemas/Closing'))]
+    #[OA\Property(property: 'updatedAt', type: 'string', format: 'date-time')]
+    #[OA\Property(property: 'createdAt', type: 'string', format: 'date-time')]
+    #[OA\Property(property: 'expiredAt', type: 'string', format: 'date-time')]
+    #[OA\Property(property: 'rawExpiredAt', type: 'string', format: 'date-time')]
 
     public static $wrap = null;
 

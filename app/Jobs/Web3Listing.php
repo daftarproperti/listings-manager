@@ -79,7 +79,7 @@ class Web3Listing implements ShouldQueue
 
         $operation = '';
         switch ($operationType) {
-            case "ADD":
+            case 'ADD':
                 $operation = 'addListing';
                 if ($exists) {
                     logger()->info("Listing $id already exist. skipping addition");
@@ -177,21 +177,21 @@ class Web3Listing implements ShouldQueue
 
         $operation = '';
         switch ($operationType) {
-            case "ADD":
+            case 'ADD':
                 $operation = 'addListing';
                 if ($exists) {
                     logger()->info("Listing $id already exist. skipping addition");
                     return;
                 }
                 break;
-            case "UPDATE":
+            case 'UPDATE':
                 $operation = 'updateListing';
                 if (!$exists) {
                     logger()->info("Listing $id does not exist. adding it as new listing");
                     $operation = 'addListing';
                 }
                 break;
-            case "DELETE":
+            case 'DELETE':
                 $operation = 'deleteListing';
                 if (!$exists) {
                     logger()->info("Listing $id does not exist. skipping deletion");
@@ -299,7 +299,7 @@ class Web3Listing implements ShouldQueue
             '1' => [$this, 'executeListingContractV1'],
         ];
         if (!isset($contractVersionMap[$contractVersion])) {
-            logger()->error("Unhandled contract version");
+            logger()->error('Unhandled contract version');
             return;
         }
 
@@ -316,7 +316,7 @@ class Web3Listing implements ShouldQueue
                 $this->operationType
             );
         } catch (LockTimeoutException) {
-            logger()->error("Unable to acquire lock execute-contract");
+            logger()->error('Unable to acquire lock execute-contract');
         } finally {
             $lock->release();
         }

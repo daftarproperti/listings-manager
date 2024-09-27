@@ -60,9 +60,9 @@ class ListingObserver
                 // If the status is not approved anymore
                 // Publish the delete listing to web3
                 if ($listing->verifyStatus !== VerifyStatus::APPROVED) {
-                    $operationType = "DELETE";
+                    $operationType = 'DELETE';
                 } else {
-                    $operationType = "UPDATE";
+                    $operationType = 'UPDATE';
                 }
             }
 
@@ -73,7 +73,7 @@ class ListingObserver
                     return;
                 }
 
-                $operationType = "ADD";
+                $operationType = 'ADD';
             }
 
             Web3Listing::dispatch(
@@ -115,7 +115,7 @@ class ListingObserver
         $filled = count(array_filter($attributes)) / count($attributes) * 100;
 
         if ($filled < $minimumFill) {
-            Log::warning("Not creating Listing due to empty detected: " . print_r($listing->attributesToArray(), true));
+            Log::warning('Not creating Listing due to empty detected: ' . print_r($listing->attributesToArray(), true));
             return false;
         }
 

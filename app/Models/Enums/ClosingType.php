@@ -7,8 +7,8 @@ use App\Traits\EnumValues;
 use OpenApi\Attributes as OA;
 
 #[OA\Schema(
-    type: "string",
-    example: "sold"
+    type: 'string',
+    example: 'sold'
 )]
 /**
  * Closing Type

@@ -28,7 +28,7 @@ class TinkerWeb3 extends Command
     {
         $wrapper = new EthWrapper($contract);
         $ret = $wrapper->call('getListing', $id);
-        $this->line("ret = " . print_r($ret, true));
+        $this->line('ret = ' . print_r($ret, true));
     }
 
     /**

@@ -8,28 +8,28 @@ use Carbon\Carbon;
 use OpenApi\Attributes as OA;
 
 #[OA\Schema(
-    schema: "Closing",
-    type: "object",
+    schema: 'Closing',
+    type: 'object',
     properties: [
-        new OA\Property(property: "id", type: "string", example: '6asdasd'),
-        new OA\Property(property: "listingId", type: "string", example: "15000"),
-        new OA\Property(property: "closingType", ref: "#/components/schemas/ClosingType"),
-        new OA\Property(property: "clientName", type: "string", example: "John Doe"),
-        new OA\Property(property: "clientPhoneNumber", type: "string", example: "+6281234567890"),
-        new OA\Property(property: "transactionValue", type: "integer", example: 100000),
-        new OA\Property(property: "date", type: "string", format: "date-time", example: "2024-03-01T23:00:00+00:00"),
-        new OA\Property(property: "notes", type: "string", example: "Notes"),
+        new OA\Property(property: 'id', type: 'string', example: '6asdasd'),
+        new OA\Property(property: 'listingId', type: 'string', example: '15000'),
+        new OA\Property(property: 'closingType', ref: '#/components/schemas/ClosingType'),
+        new OA\Property(property: 'clientName', type: 'string', example: 'John Doe'),
+        new OA\Property(property: 'clientPhoneNumber', type: 'string', example: '+6281234567890'),
+        new OA\Property(property: 'transactionValue', type: 'integer', example: 100000),
+        new OA\Property(property: 'date', type: 'string', format: 'date-time', example: '2024-03-01T23:00:00+00:00'),
+        new OA\Property(property: 'notes', type: 'string', example: 'Notes'),
         new OA\Property(
-            property: "status",
-            type: "string",
-            example: "on_review",
-            ref: "#/components/schemas/ClosingStatus"
+            property: 'status',
+            type: 'string',
+            example: 'on_review',
+            ref: '#/components/schemas/ClosingStatus'
         ),
         new OA\Property(
-            property: "commissionStatus",
-            type: "string",
-            example: "pending",
-            ref: "#/components/schemas/CommissionStatus"
+            property: 'commissionStatus',
+            type: 'string',
+            example: 'pending',
+            ref: '#/components/schemas/CommissionStatus'
         ),
     ]
 )]

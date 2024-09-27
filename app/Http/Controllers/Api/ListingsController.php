@@ -318,34 +318,34 @@ class ListingsController extends Controller
     }
 
     #[OA\Get(
-        path: "/api/app/listings/{id}",
-        tags: ["Listings"],
-        summary: "Get listing by id",
-        operationId: "listings.show",
+        path: '/api/app/listings/{id}',
+        tags: ['Listings'],
+        summary: 'Get listing by id',
+        operationId: 'listings.show',
         parameters: [
             new OA\Parameter(
-                name: "id",
-                in: "path",
+                name: 'id',
+                in: 'path',
                 required: true,
-                description: "Listing Id",
-                schema: new OA\Schema(type: "string")
+                description: 'Listing Id',
+                schema: new OA\Schema(type: 'string')
             )
         ],
         responses: [
             new OA\Response(
                 response: 200,
-                description: "success",
-                content: new OA\JsonContent(ref: "#/components/schemas/Listing")
+                description: 'success',
+                content: new OA\JsonContent(ref: '#/components/schemas/Listing')
             ),
             new OA\Response(
                 response: 404,
-                description: "Listing not found",
+                description: 'Listing not found',
                 content: new OA\JsonContent(
                     properties: [
                         new OA\Property(
-                            property: "error",
-                            type: "string",
-                            example: "Listing not found"
+                            property: 'error',
+                            type: 'string',
+                            example: 'Listing not found'
                         )
                     ]
                 )
@@ -358,44 +358,44 @@ class ListingsController extends Controller
     }
 
     #[OA\Post(
-        path: "/api/app/listings/{id}",
-        tags: ["Listings"],
-        summary: "Update listing",
-        operationId: "listings.update",
+        path: '/api/app/listings/{id}',
+        tags: ['Listings'],
+        summary: 'Update listing',
+        operationId: 'listings.update',
         parameters: [
             new OA\Parameter(
-                name: "id",
-                in: "path",
+                name: 'id',
+                in: 'path',
                 required: true,
-                description: "Listing Id",
+                description: 'Listing Id',
                 schema: new OA\Schema(
-                    type: "string",
+                    type: 'string',
                 ),
             ),
         ],
         requestBody: new OA\RequestBody(
             content: new OA\MediaType(
-                mediaType: "multipart/form-data",
-                schema: new OA\Schema(type: "object", ref: "#/components/schemas/ListingRequest"),
+                mediaType: 'multipart/form-data',
+                schema: new OA\Schema(type: 'object', ref: '#/components/schemas/ListingRequest'),
             ),
             required: true,
         ),
         responses: [
             new OA\Response(
                 response: 200,
-                description: "success",
+                description: 'success',
                 content: new OA\JsonContent(
-                    ref: "#/components/schemas/Listing",
+                    ref: '#/components/schemas/Listing',
                 ),
             ),
             new OA\Response(
                 response: 404,
-                description: "Listing not found",
+                description: 'Listing not found',
                 content: new OA\JsonContent(
                     properties: [new OA\Property(
-                        property: "error",
-                        type: "string",
-                        example: "Listing not found",
+                        property: 'error',
+                        type: 'string',
+                        example: 'Listing not found',
                     )]
                 ),
             )
@@ -411,22 +411,22 @@ class ListingsController extends Controller
     }
 
     #[OA\Post(
-        path: "/api/app/listings",
-        tags: ["Listings"],
-        summary: "Create listing",
-        operationId: "listings.create",
+        path: '/api/app/listings',
+        tags: ['Listings'],
+        summary: 'Create listing',
+        operationId: 'listings.create',
         requestBody: new OA\RequestBody(
             required: true,
             content: new OA\MediaType(
-                mediaType: "multipart/form-data",
-                schema: new OA\Schema(type: "object", ref: "#/components/schemas/ListingRequest")
+                mediaType: 'multipart/form-data',
+                schema: new OA\Schema(type: 'object', ref: '#/components/schemas/ListingRequest')
             )
         ),
         responses: [
             new OA\Response(
                 response: 200,
-                description: "success",
-                content: new OA\JsonContent(ref: "#/components/schemas/Listing")
+                description: 'success',
+                content: new OA\JsonContent(ref: '#/components/schemas/Listing')
             )
         ]
     )]
@@ -442,29 +442,29 @@ class ListingsController extends Controller
     }
 
     #[OA\Delete(
-        path: "/api/app/listings/{id}",
-        tags: ["Listings"],
-        summary: "Delete listing",
-        operationId: "listings.delete",
+        path: '/api/app/listings/{id}',
+        tags: ['Listings'],
+        summary: 'Delete listing',
+        operationId: 'listings.delete',
         parameters: [
             new OA\Parameter(
-                name: "id",
-                in: "path",
+                name: 'id',
+                in: 'path',
                 required: true,
-                description: "Listing Id",
-                schema: new OA\Schema(type: "string")
+                description: 'Listing Id',
+                schema: new OA\Schema(type: 'string')
             )
         ],
         responses: [
             new OA\Response(
                 response: 200,
-                description: "success",
+                description: 'success',
                 content: new OA\JsonContent(
                     properties: [
                         new OA\Property(
-                            property: "message",
-                            type: "string",
-                            example: "Listing deleted successfully"
+                            property: 'message',
+                            type: 'string',
+                            example: 'Listing deleted successfully'
                         )
                     ]
                 )
@@ -478,29 +478,29 @@ class ListingsController extends Controller
     }
 
     #[OA\Post(
-        path: "/api/app/listings/generate-from-text",
-        tags: ["Listings"],
-        summary: "Generate Listing from Text",
-        operationId: "listings.generateFromText",
+        path: '/api/app/listings/generate-from-text',
+        tags: ['Listings'],
+        summary: 'Generate Listing from Text',
+        operationId: 'listings.generateFromText',
         parameters: [
             new OA\Parameter(
-                name: "text",
-                in: "path",
+                name: 'text',
+                in: 'path',
                 required: true,
-                description: "Listing Message",
-                schema: new OA\Schema(type: "string")
+                description: 'Listing Message',
+                schema: new OA\Schema(type: 'string')
             )
         ],
         responses: [
             new OA\Response(
                 response: 200,
-                description: "success",
+                description: 'success',
                 content: new OA\JsonContent(
                     properties: [
                         new OA\Property(
-                            property: "jobId",
-                            type: "string",
-                            example: "sample-result-id-1"
+                            property: 'jobId',
+                            type: 'string',
+                            example: 'sample-result-id-1'
                         )
                     ]
                 )
@@ -526,31 +526,31 @@ class ListingsController extends Controller
 
 
     #[OA\Post(
-        path: "/api/app/listings/getGenerateResult",
-        tags: ["Listings"],
-        summary: "Get Generate Listing Result",
-        operationId: "listings.getGenerateResult",
+        path: '/api/app/listings/getGenerateResult',
+        tags: ['Listings'],
+        summary: 'Get Generate Listing Result',
+        operationId: 'listings.getGenerateResult',
         parameters: [
             new OA\Parameter(
-                name: "jobId",
-                in: "path",
+                name: 'jobId',
+                in: 'path',
                 required: true,
-                description: "Generate Listing Id",
+                description: 'Generate Listing Id',
                 schema: new OA\Schema(
-                    type: "string",
+                    type: 'string',
                 ),
             ),
         ],
         responses: [
             new OA\Response(
                 response: 200,
-                description: "success",
+                description: 'success',
                 content: new OA\JsonContent(
-                    type: "object",
+                    type: 'object',
                     properties: [
                         new OA\Property(
-                            property: "generatedListing",
-                            ref: "#/components/schemas/Listing",
+                            property: 'generatedListing',
+                            ref: '#/components/schemas/Listing',
                         ),
                     ],
                 ),
@@ -575,41 +575,41 @@ class ListingsController extends Controller
     }
 
     #[OA\Post(
-        path: "/api/app/listings/{id}/likely-connected",
-        tags: ["Listings"],
-        summary: "Get Likely Connected Listing",
-        operationId: "listings.likely-connected",
+        path: '/api/app/listings/{id}/likely-connected',
+        tags: ['Listings'],
+        summary: 'Get Likely Connected Listing',
+        operationId: 'listings.likely-connected',
         parameters: [
             new OA\Parameter(
-                name: "id",
-                in: "path",
+                name: 'id',
+                in: 'path',
                 required: true,
-                description: "Listing Id",
-                schema: new OA\Schema(type: "string")
+                description: 'Listing Id',
+                schema: new OA\Schema(type: 'string')
             )
         ],
         responses: [
             new OA\Response(
                 response: 200,
-                description: "success",
+                description: 'success',
                 content: new OA\JsonContent(
-                    type: "object",
+                    type: 'object',
                     properties: [
                         new OA\Property(
-                            property: "connectedListings",
-                            type: "array",
+                            property: 'connectedListings',
+                            type: 'array',
                             items: new OA\Items(
-                                type: "object",
+                                type: 'object',
                                 properties: [
                                     new OA\Property(
-                                        property: "id",
-                                        type: "string",
-                                        example: "listing-id-1"
+                                        property: 'id',
+                                        type: 'string',
+                                        example: 'listing-id-1'
                                     ),
                                     new OA\Property(
-                                        property: "title",
-                                        type: "string",
-                                        example: "title-1"
+                                        property: 'title',
+                                        type: 'string',
+                                        example: 'title-1'
                                     ),
                                 ]
                             )

@@ -33,7 +33,7 @@ class MigrateAndSeed extends Command
         $lock = Cache::lock($lockKey, 120);
 
         $lock->get(function () {
-            $this->line("Lock acquired, running migrate and seed...");
+            $this->line('Lock acquired, running migrate and seed...');
 
             $migrateOptions = ['--force' => $this->option('force')];
 

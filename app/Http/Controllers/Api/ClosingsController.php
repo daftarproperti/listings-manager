@@ -16,30 +16,30 @@ use MongoDB\BSON\UTCDateTime;
 class ClosingsController extends Controller
 {
     #[OA\Post(
-        path: "/api/app/listings/{id}/closings",
-        tags: ["Listings"],
-        summary: "Add a closing to a listing",
-        operationId: "listings.closing",
+        path: '/api/app/listings/{id}/closings',
+        tags: ['Listings'],
+        summary: 'Add a closing to a listing',
+        operationId: 'listings.closing',
         parameters: [
             new OA\Parameter(
-                name: "id",
-                in: "path",
+                name: 'id',
+                in: 'path',
                 required: true,
-                description: "Listing Id",
+                description: 'Listing Id',
                 schema: new OA\Schema(
-                    type: "string",
+                    type: 'string',
                 ),
             ),
         ],
         requestBody: new OA\RequestBody(
-            ref: "#/components/schemas/ClosingRequest",
+            ref: '#/components/schemas/ClosingRequest',
         ),
         responses: [
             new OA\Response(
                 response: 200,
-                description: "success",
+                description: 'success',
                 content: new OA\JsonContent(
-                    ref: "#/components/schemas/Listing",
+                    ref: '#/components/schemas/Listing',
                 ),
             )
         ],

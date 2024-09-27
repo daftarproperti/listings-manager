@@ -13,17 +13,17 @@ use OpenApi\Attributes as OA;
 class UserController extends Controller
 {
     #[OA\Get(
-        path: "/api/app/users/profile",
-        tags: ["Users"],
-        summary: "Get profile",
-        description: "Returns user profile",
-        operationId: "profile",
+        path: '/api/app/users/profile',
+        tags: ['Users'],
+        summary: 'Get profile',
+        description: 'Returns user profile',
+        operationId: 'profile',
         responses: [
             new OA\Response(
                 response: 200,
-                description: "success",
+                description: 'success',
                 content: new OA\JsonContent(
-                    ref: "#/components/schemas/User"
+                    ref: '#/components/schemas/User'
                 )
             )
         ]
@@ -35,22 +35,22 @@ class UserController extends Controller
     }
 
     #[OA\Post(
-        path: "/api/app/users/profile",
-        tags: ["Users"],
-        summary: "Update profile",
-        operationId: "updateProfile",
+        path: '/api/app/users/profile',
+        tags: ['Users'],
+        summary: 'Update profile',
+        operationId: 'updateProfile',
         requestBody: new OA\RequestBody(
             required: true,
             content: new OA\MediaType(
-                mediaType: "multipart/form-data",
-                schema: new OA\Schema(ref: "#/components/schemas/UserProfileRequest")
+                mediaType: 'multipart/form-data',
+                schema: new OA\Schema(ref: '#/components/schemas/UserProfileRequest')
             )
         ),
         responses: [
             new OA\Response(
                 response: 200,
-                description: "success",
-                content: new OA\JsonContent(ref: "#/components/schemas/User")
+                description: 'success',
+                content: new OA\JsonContent(ref: '#/components/schemas/User')
             )
         ]
     )]
@@ -74,15 +74,15 @@ class UserController extends Controller
     }
 
     #[OA\Post(
-        path: "/api/app/users/secret-key",
-        tags: ["Users"],
-        summary: "Generate Secret Key for TOTP",
-        operationId: "generateSecretKey",
+        path: '/api/app/users/secret-key',
+        tags: ['Users'],
+        summary: 'Generate Secret Key for TOTP',
+        operationId: 'generateSecretKey',
         responses: [
             new OA\Response(
                 response: 200,
-                description: "success",
-                content: new OA\JsonContent(ref: "#/components/schemas/User")
+                description: 'success',
+                content: new OA\JsonContent(ref: '#/components/schemas/User')
             )
         ]
     )]
@@ -101,15 +101,15 @@ class UserController extends Controller
     }
 
     #[OA\Delete(
-        path: "/api/app/users/secret-key",
-        tags: ["Users"],
-        summary: "Delete Secret Key for TOTP",
-        operationId: "deleteSecretKey",
+        path: '/api/app/users/secret-key',
+        tags: ['Users'],
+        summary: 'Delete Secret Key for TOTP',
+        operationId: 'deleteSecretKey',
         responses: [
             new OA\Response(
                 response: 200,
-                description: "success",
-                content: new OA\JsonContent(ref: "#/components/schemas/User")
+                description: 'success',
+                content: new OA\JsonContent(ref: '#/components/schemas/User')
             )
         ]
     )]

@@ -7,8 +7,8 @@ use App\Traits\EnumValues;
 use OpenApi\Attributes as OA;
 
 #[OA\Schema(
-    type: "string",
-    example: "paid"
+    type: 'string',
+    example: 'paid'
 )]
 /**
  * Commission Status

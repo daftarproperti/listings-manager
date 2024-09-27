@@ -6,6 +6,6 @@ $finder = (new PhpCsFixer\Finder())
 return (new PhpCsFixer\Config())
     ->setRules([
         '@PSR12' => true,
-        'no_unused_imports' => true,
+        'single_quote' => true,
     ])
     ->setFinder($finder);

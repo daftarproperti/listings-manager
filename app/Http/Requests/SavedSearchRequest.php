@@ -11,13 +11,13 @@ use Illuminate\Validation\Rule;
 use OpenApi\Attributes as OA;
 
 #[OA\Schema(
-    schema: "SavedSearchRequest",
-    type: "object"
+    schema: 'SavedSearchRequest',
+    type: 'object'
 )]
 class SavedSearchRequest extends BaseApiRequest
 {
-    #[OA\Property(property: "title", type: "string", example: "Pak Eko")]
-    #[OA\Property(property: "filterSet", ref: "#/components/schemas/FilterSet")]
+    #[OA\Property(property: 'title', type: 'string', example: 'Pak Eko')]
+    #[OA\Property(property: 'filterSet', ref: '#/components/schemas/FilterSet')]
 
     public function authorize(): bool
     {

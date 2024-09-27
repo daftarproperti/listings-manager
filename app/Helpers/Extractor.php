@@ -142,7 +142,7 @@ EOD;
         // But once split, GPT-3.5 performs well enough for extraction.
         $answer = $this->chatGptService->seekAnswer(Extractor::generatePromptToSplit($message), 'gpt-4');
 
-        Log::debug("answer from split = " . $answer);
+        Log::debug('answer from split = ' . $answer);
 
         if (str_contains($answer, 'SINGLE_LISTING')) {
             return [$message];
@@ -155,7 +155,7 @@ EOD;
             // LLM sometimes doesn't get it right, it may return array of listings rather than the special
             // "SINGLE_LISTING" string. So if the array is only one length, we would rather process this specially
             // and not use the split return from LLM.
-            Log::debug("Split only contains 1 listing, use original message instead of split return from LLM");
+            Log::debug('Split only contains 1 listing, use original message instead of split return from LLM');
             return [$message];
         }
 
@@ -195,7 +195,7 @@ EOD;
 
         $answer = $this->chatGptService->seekAnswerWithRetry(Extractor::generatePrompt($message));
 
-        Log::debug("Answer from LLM = " . $answer);
+        Log::debug('Answer from LLM = ' . $answer);
 
         $extracted = json_decode(
             $answer,
@@ -205,7 +205,7 @@ EOD;
         );
 
         if (!$extracted) {
-            Log::error("Failed to parse JSON from LLM");
+            Log::error('Failed to parse JSON from LLM');
         }
 
         if (!is_array($extracted)) {
@@ -213,7 +213,7 @@ EOD;
         }
 
         if (!isset($extracted[0]) || !($extracted[0] instanceof stdClass)) {
-            Log::error("Unexpected JSON structure from LLM");
+            Log::error('Unexpected JSON structure from LLM');
             return new stdClass();
         }
 
@@ -230,7 +230,7 @@ EOD;
     {
         Log::debug("extracting buyer request , msg = $message");
         $answer = $this->chatGptService->seekAnswerWithRetry(Extractor::generateBuyerRequestPrompt($message));
-        Log::debug("Answer from LLM (BUYER REQUEST) = " . $answer);
+        Log::debug('Answer from LLM (BUYER REQUEST) = ' . $answer);
 
         $extracted = json_decode($answer, false);
 

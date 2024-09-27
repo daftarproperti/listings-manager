@@ -43,13 +43,13 @@ class LanguageProcessingEvaluator extends Command
             $this->line("Evaluating $dataFile");
             $rawMessage = file_get_contents($dataFile);
             if (!$rawMessage) {
-                $this->error("Can not read raw messages. Aborting...");
+                $this->error('Can not read raw messages. Aborting...');
                 return;
             }
 
             $listings = $extractor->extractListingFromMessage($rawMessage);
             if (empty($listings)) {
-                $this->error("Error extracting listings from raw message. Skipping...");
+                $this->error('Error extracting listings from raw message. Skipping...');
                 continue;
             }
 
@@ -96,7 +96,7 @@ class LanguageProcessingEvaluator extends Command
             'contact.name', 'contact.phoneNumber', 'contact.profilePictureURL',
             'contact.company',
             'price', 'lotSize', 'buildingSize', 'carCount', 'bedroomCount',
-            'additionalBedroomCount', 'bathroomCount', "additionalBathroomCount",
+            'additionalBedroomCount', 'bathroomCount', 'additionalBathroomCount',
             'floorCount', 'electricPower'
         ];
 
@@ -120,8 +120,8 @@ class LanguageProcessingEvaluator extends Command
 
                 $this->line("Accuracy for field <$field> is $accuracy%.");
                 if ($accuracy < 80) {
-                    $this->error("Extracted: " . Cast::toString($guessedValue));
-                    $this->error("Expected: " . Cast::toString($correctValue));
+                    $this->error('Extracted: ' . Cast::toString($guessedValue));
+                    $this->error('Expected: ' . Cast::toString($correctValue));
                 }
             }
             $iterationAccuracy += $totalAccuracy / count($fields);
@@ -136,7 +136,7 @@ class LanguageProcessingEvaluator extends Command
         $guessedValueString = Cast::toString($guessedValue);
         $correctValueString = Cast::toString($correctValue);
         if (empty($correctValueString)) {
-            if (empty($guessedValueString) || $guessedValueString == "unknown") {
+            if (empty($guessedValueString) || $guessedValueString == 'unknown') {
                 return 100;
             } else {
                 return 0;

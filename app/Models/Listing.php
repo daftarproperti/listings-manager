@@ -145,7 +145,7 @@ class Listing extends Model
             return 0;
         }
 
-        return Cache::remember("listing-" . $this->id . "-matchFilterCount", self::CACHE_LENGTH, function () {
+        return Cache::remember('listing-' . $this->id . '-matchFilterCount', self::CACHE_LENGTH, function () {
             return SavedSearch::countSavedSearchMatches($this->id);
         });
     }
@@ -375,12 +375,12 @@ class Listing extends Model
     {
         // TODO: Rather then repeating similar cases below, this can be generalized to $enumClass::sanitize()
         switch ($key) {
-            case "propertyType":
-            case "listingType":
-                return $value ? strtolower(Cast::toString($value)) : "unknown";
-            case "ownership":
+            case 'propertyType':
+            case 'listingType':
+                return $value ? strtolower(Cast::toString($value)) : 'unknown';
+            case 'ownership':
                 return PropertyOwnership::sanitize(Cast::toString($value));
-            case "facing":
+            case 'facing':
                 return FacingDirection::sanitize(Cast::toString($value));
             default:
                 return $value;

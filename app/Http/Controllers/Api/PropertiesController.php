@@ -258,31 +258,31 @@ class PropertiesController extends Controller
     }
 
     #[OA\Get(
-        path: "/api/app/properties/{id}",
-        tags: ["Properties"],
-        summary: "Get property by id",
-        operationId: "show",
+        path: '/api/app/properties/{id}',
+        tags: ['Properties'],
+        summary: 'Get property by id',
+        operationId: 'show',
         parameters: [
             new OA\Parameter(
-                name: "id",
-                in: "path",
+                name: 'id',
+                in: 'path',
                 required: true,
-                description: "Property Id",
-                schema: new OA\Schema(type: "string")
+                description: 'Property Id',
+                schema: new OA\Schema(type: 'string')
             )
         ],
         responses: [
             new OA\Response(
                 response: 200,
-                description: "success",
-                content: new OA\JsonContent(ref: "#/components/schemas/Property")
+                description: 'success',
+                content: new OA\JsonContent(ref: '#/components/schemas/Property')
             ),
             new OA\Response(
                 response: 404,
-                description: "Property not found",
+                description: 'Property not found',
                 content: new OA\JsonContent(
                     properties: [
-                        new OA\Property(property: "error", type: "string", example: "Property not found")
+                        new OA\Property(property: 'error', type: 'string', example: 'Property not found')
                     ]
                 )
             )

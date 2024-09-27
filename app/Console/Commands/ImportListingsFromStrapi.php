@@ -66,7 +66,7 @@ class ImportListingsFromStrapi extends Command
      */
     public function handle(): void
     {
-        $this->line("Hello");
+        $this->line('Hello');
 
         $connection = [
             'driver' => 'pgsql',
@@ -93,7 +93,7 @@ EOD;
         $listings = DB::connection('strapi_pgsql')->select($sql);
         foreach ($listings as $listingObj) {
             $strapiListing = StrapiListing::from($listingObj);
-            $this->line("Importing listing = " . $strapiListing->title);
+            $this->line('Importing listing = ' . $strapiListing->title);
             $this->createListingFromStrapi($strapiListing);
         }
     }

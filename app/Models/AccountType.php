@@ -5,8 +5,8 @@ namespace App\Models;
 use OpenApi\Attributes as OA;
 
 #[OA\Schema(
-    type: "string",
-    example: "professional"
+    type: 'string',
+    example: 'professional'
 )]
 /**
  * Account type

@@ -39,7 +39,7 @@ class TinkerEcies extends Command
 
         $encrypted = Ecies::encryptString($recipientPublicKey, $message);
         if ($encrypted === false) {
-            $this->error("error encrypting");
+            $this->error('error encrypting');
             return;
         }
 

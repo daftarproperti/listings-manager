@@ -30,10 +30,10 @@ class GetProperty extends Command
 
         $property = Property::find($propertyId);
         if (!$property) {
-            $this->info("No property found with id " . $propertyId);
+            $this->info('No property found with id ' . $propertyId);
             return;
         }
 
-        $this->line("property = " . print_r($property, true));
+        $this->line('property = ' . print_r($property, true));
     }
 }

@@ -29,43 +29,43 @@ class AuthController extends Controller
     }
 
     #[OA\Post(
-        path: "/api/auth/send-otp",
-        tags: ["Auth"],
-        summary: "Send OTP",
-        operationId: "auth.send_otp",
+        path: '/api/auth/send-otp',
+        tags: ['Auth'],
+        summary: 'Send OTP',
+        operationId: 'auth.send_otp',
         parameters: [
             new OA\Parameter(
-                name: "phoneNumber",
-                in: "path",
+                name: 'phoneNumber',
+                in: 'path',
                 required: true,
-                description: "Phone Number",
+                description: 'Phone Number',
                 schema: new OA\Schema(
-                    type: "string"
+                    type: 'string'
                 )
             )
         ],
         responses: [
             new OA\Response(
                 response: 200,
-                description: "success",
+                description: 'success',
                 content: new OA\JsonContent(
-                    type: "object",
+                    type: 'object',
                     properties: [
                         new OA\Property(
-                            property: "token",
-                            type: "string",
-                            description: "JWT Token used for authentication"
+                            property: 'token',
+                            type: 'string',
+                            description: 'JWT Token used for authentication'
                         ),
                         new OA\Property(
-                            property: "timestamp",
-                            type: "integer",
-                            format: "int64",
-                            description: "Timestamp of when the OTP was created"
+                            property: 'timestamp',
+                            type: 'integer',
+                            format: 'int64',
+                            description: 'Timestamp of when the OTP was created'
                         ),
                         new OA\Property(
-                            property: "totp",
-                            type: "boolean",
-                            description: "If TOTP is enabled"
+                            property: 'totp',
+                            type: 'boolean',
+                            description: 'If TOTP is enabled'
                         )
                     ]
                 )
@@ -92,7 +92,7 @@ class AuthController extends Controller
             ]);
         }
 
-        $otpCode = sprintf("%06d", random_int(0, 999999));
+        $otpCode = sprintf('%06d', random_int(0, 999999));
 
         $this->otpService->sendOTP($phoneNumber, $otpCode);
 
@@ -107,49 +107,49 @@ class AuthController extends Controller
     }
 
     #[OA\Post(
-        path: "/api/auth/verify-otp",
-        tags: ["Auth"],
-        summary: "Verify OTP",
-        operationId: "auth.verify_otp",
+        path: '/api/auth/verify-otp',
+        tags: ['Auth'],
+        summary: 'Verify OTP',
+        operationId: 'auth.verify_otp',
         requestBody: new OA\RequestBody(
             required: true,
             content: new OA\JsonContent(
-                required: ["phoneNumber", "token", "timestamp", "otpCode"],
+                required: ['phoneNumber', 'token', 'timestamp', 'otpCode'],
                 properties: [
-                    new OA\Property(property: "phoneNumber", type: "string", description: "User phone number"),
-                    new OA\Property(property: "token", type: "string", description: "Token to verify"),
+                    new OA\Property(property: 'phoneNumber', type: 'string', description: 'User phone number'),
+                    new OA\Property(property: 'token', type: 'string', description: 'Token to verify'),
                     new OA\Property(
-                        property: "timestamp",
-                        type: "integer",
-                        format: "int64",
-                        description: "Timestamp of when the OTP was created"
+                        property: 'timestamp',
+                        type: 'integer',
+                        format: 'int64',
+                        description: 'Timestamp of when the OTP was created'
                     ),
-                    new OA\Property(property: "otpCode", type: "string", description: "User's OTP Code")
+                    new OA\Property(property: 'otpCode', type: 'string', description: "User's OTP Code")
                 ]
             )
         ),
         responses: [
             new OA\Response(
                 response: 200,
-                description: "Success response",
+                description: 'Success response',
                 content: new OA\JsonContent(
                     properties: [
                         new OA\Property(
-                            property: "success",
-                            type: "boolean",
+                            property: 'success',
+                            type: 'boolean',
                             example: true,
-                            description: "Verify status"
+                            description: 'Verify status'
                         ),
                         new OA\Property(
-                            property: "accessToken",
-                            type: "string",
-                            example: "Akoasdk131o3ipIaskdlz",
-                            description: "Access token"
+                            property: 'accessToken',
+                            type: 'string',
+                            example: 'Akoasdk131o3ipIaskdlz',
+                            description: 'Access token'
                         ),
                         new OA\Property(
-                            property: "user",
-                            ref: "#/components/schemas/User",
-                            description: "User information"
+                            property: 'user',
+                            ref: '#/components/schemas/User',
+                            description: 'User information'
                         )
                     ]
                 )
@@ -201,38 +201,38 @@ class AuthController extends Controller
     }
 
     #[OA\Post(
-        path: "/api/auth/logout",
-        tags: ["Auth"],
-        summary: "Logout",
-        operationId: "auth.logout",
+        path: '/api/auth/logout',
+        tags: ['Auth'],
+        summary: 'Logout',
+        operationId: 'auth.logout',
         security: [
-            ["bearerAuth" => []]
+            ['bearerAuth' => []]
         ],
         responses: [
             new OA\Response(
                 response: 200,
-                description: "Success response",
+                description: 'Success response',
                 content: new OA\JsonContent(
                     properties: [
                         new OA\Property(
-                            property: "success",
-                            type: "boolean",
+                            property: 'success',
+                            type: 'boolean',
                             example: true,
-                            description: "Logout status"
+                            description: 'Logout status'
                         )
                     ]
                 )
             ),
             new OA\Response(
                 response: 404,
-                description: "Token not found response",
+                description: 'Token not found response',
                 content: new OA\JsonContent(
                     properties: [
                         new OA\Property(
-                            property: "success",
-                            type: "boolean",
+                            property: 'success',
+                            type: 'boolean',
                             example: false,
-                            description: "Logout status"
+                            description: 'Logout status'
                         ),
                     ]
                 )
@@ -259,43 +259,43 @@ class AuthController extends Controller
     }
 
     #[OA\Post(
-        path: "/api/auth/impersonate",
-        tags: ["Auth"],
-        summary: "Impersonate",
-        operationId: "auth.impersonate",
+        path: '/api/auth/impersonate',
+        tags: ['Auth'],
+        summary: 'Impersonate',
+        operationId: 'auth.impersonate',
         parameters: [
             new OA\Parameter(
-                name: "phoneNumber",
-                in: "path",
+                name: 'phoneNumber',
+                in: 'path',
                 required: true,
-                description: "Phone Number",
+                description: 'Phone Number',
                 schema: new OA\Schema(
-                    type: "string"
+                    type: 'string'
                 )
             )
         ],
         responses: [
             new OA\Response(
                 response: 200,
-                description: "Success response",
+                description: 'Success response',
                 content: new OA\JsonContent(
                     properties: [
                         new OA\Property(
-                            property: "success",
-                            type: "boolean",
+                            property: 'success',
+                            type: 'boolean',
                             example: true,
-                            description: "Verify status"
+                            description: 'Verify status'
                         ),
                         new OA\Property(
-                            property: "accessToken",
-                            type: "string",
-                            example: "Akoasdk131o3ipIaskdlz",
-                            description: "Access token"
+                            property: 'accessToken',
+                            type: 'string',
+                            example: 'Akoasdk131o3ipIaskdlz',
+                            description: 'Access token'
                         ),
                         new OA\Property(
-                            property: "user",
-                            ref: "#/components/schemas/User",
-                            description: "User information"
+                            property: 'user',
+                            ref: '#/components/schemas/User',
+                            description: 'User information'
                         )
                     ]
                 )
@@ -331,42 +331,42 @@ class AuthController extends Controller
     }
 
     #[OA\Post(
-        path: "/api/auth/verify-totp",
-        tags: ["Auth"],
-        summary: "Verify TOTP",
-        operationId: "auth.verify_totp",
+        path: '/api/auth/verify-totp',
+        tags: ['Auth'],
+        summary: 'Verify TOTP',
+        operationId: 'auth.verify_totp',
         requestBody: new OA\RequestBody(
             required: true,
             content: new OA\JsonContent(
-                required: ["phoneNumber", "totpCode"],
+                required: ['phoneNumber', 'totpCode'],
                 properties: [
-                    new OA\Property(property: "phoneNumber", type: "string", description: "User's phone number"),
-                    new OA\Property(property: "totpCode", type: "string", description: "User's TOTP Code")
+                    new OA\Property(property: 'phoneNumber', type: 'string', description: "User's phone number"),
+                    new OA\Property(property: 'totpCode', type: 'string', description: "User's TOTP Code")
                 ]
             )
         ),
         responses: [
             new OA\Response(
                 response: 200,
-                description: "Success response",
+                description: 'Success response',
                 content: new OA\JsonContent(
                     properties: [
                         new OA\Property(
-                            property: "success",
-                            type: "boolean",
+                            property: 'success',
+                            type: 'boolean',
                             example: true,
-                            description: "Verify status"
+                            description: 'Verify status'
                         ),
                         new OA\Property(
-                            property: "accessToken",
-                            type: "string",
-                            example: "Akoasdk131o3ipIaskdlz",
-                            description: "Access token"
+                            property: 'accessToken',
+                            type: 'string',
+                            example: 'Akoasdk131o3ipIaskdlz',
+                            description: 'Access token'
                         ),
                         new OA\Property(
-                            property: "user",
-                            ref: "#/components/schemas/User",
-                            description: "User information"
+                            property: 'user',
+                            ref: '#/components/schemas/User',
+                            description: 'User information'
                         )
                     ]
                 )

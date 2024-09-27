@@ -48,7 +48,7 @@ class LocationHelper
 
                 return $latLongData;
             } catch (\Throwable $th) {
-                logger()->error("Error when getting ip info: " . $th->getMessage());
+                logger()->error('Error when getting ip info: ' . $th->getMessage());
                 return null;
             }
         });

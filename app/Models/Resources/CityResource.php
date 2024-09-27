@@ -7,15 +7,15 @@ use App\Models\City;
 use OpenApi\Attributes as OA;
 
 #[OA\Schema(
-    schema: "City",
-    type: "object"
+    schema: 'City',
+    type: 'object'
 )]
 class CityResource extends JsonResource
 {
-    #[OA\Property(property: "id", type: "integer")]
-    #[OA\Property(property: "name", type: "string")]
-    #[OA\Property(property: "latitude", type: "integer")]
-    #[OA\Property(property: "longitude", type: "integer")]
+    #[OA\Property(property: 'id', type: 'integer')]
+    #[OA\Property(property: 'name', type: 'string')]
+    #[OA\Property(property: 'latitude', type: 'integer')]
+    #[OA\Property(property: 'longitude', type: 'integer')]
 
     public static $wrap = null;
 

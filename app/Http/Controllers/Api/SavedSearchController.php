@@ -18,22 +18,22 @@ use OpenApi\Attributes as OA;
 class SavedSearchController extends Controller
 {
     #[OA\Get(
-        path: "/api/app/saved-searches",
-        tags: ["Saved Searches"],
-        summary: "Get saved search items",
-        description: "Returns saved search items",
-        operationId: "saved_searches.index",
+        path: '/api/app/saved-searches',
+        tags: ['Saved Searches'],
+        summary: 'Get saved search items',
+        description: 'Returns saved search items',
+        operationId: 'saved_searches.index',
         responses: [
             new OA\Response(
                 response: 200,
-                description: "success",
+                description: 'success',
                 content: new OA\JsonContent(
                     properties: [
                         new OA\Property(
-                            property: "saved_searches",
-                            type: "array",
+                            property: 'saved_searches',
+                            type: 'array',
                             items: new OA\Items(
-                                ref: "#/components/schemas/SavedSearch"
+                                ref: '#/components/schemas/SavedSearch'
                             )
                         )
                     ]
@@ -54,34 +54,34 @@ class SavedSearchController extends Controller
     }
 
     #[OA\Get(
-        path: "/api/app/saved-searches/{id}",
-        tags: ["Saved Searches"],
-        summary: "Get saved search by id",
-        operationId: "saved_searches.show",
+        path: '/api/app/saved-searches/{id}',
+        tags: ['Saved Searches'],
+        summary: 'Get saved search by id',
+        operationId: 'saved_searches.show',
         parameters: [
             new OA\Parameter(
-                name: "id",
-                in: "path",
+                name: 'id',
+                in: 'path',
                 required: true,
-                description: "Saved Search Id",
-                schema: new OA\Schema(type: "string")
+                description: 'Saved Search Id',
+                schema: new OA\Schema(type: 'string')
             )
         ],
         responses: [
             new OA\Response(
                 response: 200,
-                description: "success",
-                content: new OA\JsonContent(ref: "#/components/schemas/SavedSearch")
+                description: 'success',
+                content: new OA\JsonContent(ref: '#/components/schemas/SavedSearch')
             ),
             new OA\Response(
                 response: 404,
-                description: "Saved search not found",
+                description: 'Saved search not found',
                 content: new OA\JsonContent(
                     properties: [
                         new OA\Property(
-                            property: "error",
-                            type: "string",
-                            example: "Saved search not found"
+                            property: 'error',
+                            type: 'string',
+                            example: 'Saved search not found'
                         )
                     ]
                 )
@@ -94,18 +94,18 @@ class SavedSearchController extends Controller
     }
 
     #[OA\Post(
-        path: "/api/app/saved-searches",
-        tags: ["Saved Searches"],
-        summary: "Create saved search",
-        operationId: "saved_searches.create",
+        path: '/api/app/saved-searches',
+        tags: ['Saved Searches'],
+        summary: 'Create saved search',
+        operationId: 'saved_searches.create',
         requestBody: new OA\RequestBody(
             required: true,
             content: [
-                "multipart/form-data" => new OA\MediaType(
-                    mediaType: "multipart/form-data",
+                'multipart/form-data' => new OA\MediaType(
+                    mediaType: 'multipart/form-data',
                     schema: new OA\Schema(
-                        type: "object",
-                        ref: "#/components/schemas/SavedSearchRequest"
+                        type: 'object',
+                        ref: '#/components/schemas/SavedSearchRequest'
                     )
                 )
             ]
@@ -113,13 +113,13 @@ class SavedSearchController extends Controller
         responses: [
             new OA\Response(
                 response: 200,
-                description: "success",
+                description: 'success',
                 content: new OA\JsonContent(
                     properties: [
-                        "message" => new OA\Property(
-                            property: "message",
-                            type: "string",
-                            example: "Saved search created successfully"
+                        'message' => new OA\Property(
+                            property: 'message',
+                            type: 'string',
+                            example: 'Saved search created successfully'
                         )
                     ]
                 )
@@ -141,18 +141,18 @@ class SavedSearchController extends Controller
     }
 
     #[OA\Post(
-        path: "/api/app/saved-searches/{id}",
-        tags: ["Saved Searches"],
-        summary: "Update saved searches",
-        operationId: "saved_searches.update",
+        path: '/api/app/saved-searches/{id}',
+        tags: ['Saved Searches'],
+        summary: 'Update saved searches',
+        operationId: 'saved_searches.update',
         parameters: [
             new OA\Parameter(
-                name: "id",
-                in: "path",
+                name: 'id',
+                in: 'path',
                 required: true,
-                description: "Saved Searches Id",
+                description: 'Saved Searches Id',
                 schema: new OA\Schema(
-                    type: "string"
+                    type: 'string'
                 )
             )
         ],
@@ -160,10 +160,10 @@ class SavedSearchController extends Controller
             required: true,
             content: [
                 new OA\MediaType(
-                    mediaType: "multipart/form-data",
+                    mediaType: 'multipart/form-data',
                     schema: new OA\Schema(
-                        type: "object",
-                        ref: "#/components/schemas/SavedSearchRequest"
+                        type: 'object',
+                        ref: '#/components/schemas/SavedSearchRequest'
                     )
                 )
             ]
@@ -171,26 +171,26 @@ class SavedSearchController extends Controller
         responses: [
             new OA\Response(
                 response: 200,
-                description: "success",
+                description: 'success',
                 content: new OA\JsonContent(
                     properties: [
                         new OA\Property(
-                            property: "message",
-                            type: "string",
-                            example: "Saved search updated successfully"
+                            property: 'message',
+                            type: 'string',
+                            example: 'Saved search updated successfully'
                         )
                     ]
                 )
             ),
             new OA\Response(
                 response: 404,
-                description: "Saved search not found",
+                description: 'Saved search not found',
                 content: new OA\JsonContent(
                     properties: [
                         new OA\Property(
-                            property: "error",
-                            type: "string",
-                            example: "Saved search not found"
+                            property: 'error',
+                            type: 'string',
+                            example: 'Saved search not found'
                         )
                     ]
                 )
@@ -207,42 +207,42 @@ class SavedSearchController extends Controller
     }
 
     #[OA\Delete(
-        path: "/api/app/saved-searches/{id}",
-        tags: ["Saved Searches"],
-        summary: "Delete saved searches",
-        operationId: "saved_searches.delete",
+        path: '/api/app/saved-searches/{id}',
+        tags: ['Saved Searches'],
+        summary: 'Delete saved searches',
+        operationId: 'saved_searches.delete',
         parameters: [
             new OA\Parameter(
-                name: "id",
-                in: "path",
+                name: 'id',
+                in: 'path',
                 required: true,
-                description: "Saved Searches Id",
-                schema: new OA\Schema(type: "string")
+                description: 'Saved Searches Id',
+                schema: new OA\Schema(type: 'string')
             )
         ],
         responses: [
             new OA\Response(
                 response: 200,
-                description: "success",
+                description: 'success',
                 content: new OA\JsonContent(
                     properties: [
                         new OA\Property(
-                            property: "message",
-                            type: "string",
-                            example: "Saved search deleted successfully"
+                            property: 'message',
+                            type: 'string',
+                            example: 'Saved search deleted successfully'
                         )
                     ]
                 )
             ),
             new OA\Response(
                 response: 404,
-                description: "Saved search not found",
+                description: 'Saved search not found',
                 content: new OA\JsonContent(
                     properties: [
                         new OA\Property(
-                            property: "error",
-                            type: "string",
-                            example: "Saved search not found"
+                            property: 'error',
+                            type: 'string',
+                            example: 'Saved search not found'
                         )
                     ]
                 )
