@@ -5,7 +5,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout'
 import TextInput from '@/Components/TextInput'
 import Table from '@/Components/Table'
 
-import { type TelegramUser, type PageProps } from '@/types'
+import { type DPUser, type PageProps } from '@/types'
 import { getSearchParams, paginationRange } from '@/utils'
 import SecondaryButton from '@/Components/SecondaryButton'
 
@@ -13,7 +13,7 @@ const Member = ({
     auth,
     data
 }: PageProps<{
-    data: { members: TelegramUser[], lastPage: number }
+    data: { members: DPUser[], lastPage: number }
 }>): JSX.Element => {
     const [keyword, setKeyword] = useState(getSearchParams('q') ?? '')
     const [pageNumber, setPageNumber] = useState(

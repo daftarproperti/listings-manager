@@ -14,6 +14,6 @@ export type PageProps<T extends Record<string, unknown> = Record<string, unknown
 export type { Option } from './option'
 export type { Listing, LikelyConnectedListing } from './listing'
 export type { Agent, Profile } from './agent'
-export type { TelegramUser } from './user'
+export type { DPUser } from './user'
 export type { Closing } from './closing'
 export type { CancellationNote } from './listing'

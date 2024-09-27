@@ -5,7 +5,7 @@ namespace App\Repositories\Admin;
 use App\Models\User;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
-class TelegramUserRepository
+class UserRepository
 {
     /**
      * @param array<mixed> $input
