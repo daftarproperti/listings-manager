@@ -49,7 +49,7 @@ class PropertyApiTest extends TestCase
         $this->token = $this->user->createToken('Test Token', ['*'], $expiryDate)->plainTextToken;
     }
 
-    private function testWithBothAuth($testFunction)
+    private function testWithAuth($testFunction)
     {
         // Test using access token
         $testFunction($this->withHeaders([
@@ -78,7 +78,7 @@ class PropertyApiTest extends TestCase
             'listingType' => 'sale',
         ]);
 
-        $this->testWithBothAuth(function (self $makesHttpRequests) {
+        $this->testWithAuth(function (self $makesHttpRequests) {
             $response = $makesHttpRequests->get('/api/app/properties');
 
             $response->assertStatus(200);
@@ -105,7 +105,7 @@ class PropertyApiTest extends TestCase
     {
         $property = $this->addProperty("Dijual Rumah", $this->fakeUserId);
 
-        $this->testWithBothAuth(function (self $makesHttpRequests) use ($property) {
+        $this->testWithAuth(function (self $makesHttpRequests) use ($property) {
             $response = $makesHttpRequests->get("/api/app/properties/{$property->id}");
 
             $response->assertStatus(200);

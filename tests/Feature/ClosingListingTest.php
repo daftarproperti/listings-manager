@@ -58,7 +58,7 @@ class ClosingListingTest extends TestCase
         $this->token = $this->user->createToken('Test Token', ['*'], $expiryDate)->plainTextToken;
     }
 
-    private function testWithBothAuth($testFunction)
+    private function testWithAuth($testFunction)
     {
         // Test using access token
         $testFunction($this->withHeaders([
@@ -90,7 +90,7 @@ class ClosingListingTest extends TestCase
             'date' => $testDate->toIso8601ZuluString(),
         ];
 
-        $this->testWithBothAuth(function (self $makesHttpRequests) use($listing, $closingData) {
+        $this->testWithAuth(function (self $makesHttpRequests) use($listing, $closingData) {
             $response = $makesHttpRequests->post(
                 sprintf('/api/app/listings/%s/closings', $listing->id),
                 $closingData

@@ -55,7 +55,7 @@ class ListingApiTest extends TestCase
         $this->token = $this->user->createToken('Test Token', ['*'], $expiryDate)->plainTextToken;
     }
 
-    private function testWithBothAuth($testFunction)
+    private function testWithAuth($testFunction)
     {
         // Test using access token
         $testFunction($this->withHeaders([
@@ -81,7 +81,7 @@ class ListingApiTest extends TestCase
             'listingType' => 'sale',
         ]);
 
-        $this->testWithBothAuth(function (self $makesHttpRequests) {
+        $this->testWithAuth(function (self $makesHttpRequests) {
             $response = $makesHttpRequests->get('/api/app/listings');
 
             $response->assertStatus(200);
@@ -109,7 +109,7 @@ class ListingApiTest extends TestCase
         $this->addListing("Dijual Rumah", $this->fakeUserId);
         $this->addListing("Dijual Gedung", $this->fakeUserId);
 
-        $this->testWithBothAuth(function (self $makesHttpRequests) {
+        $this->testWithAuth(function (self $makesHttpRequests) {
             $response = $makesHttpRequests->get('/api/app/listings?q=rumah');
 
             $response->assertStatus(200);
@@ -129,7 +129,7 @@ class ListingApiTest extends TestCase
         $this->addListing("Dijual Rumah 1M", $this->fakeUserId, ['price' => 1000000000]);
         $this->addListing("Dijual Gedung 2M", $this->fakeUserId, ['price' => 2000000000]);
 
-        $this->testWithBothAuth(function (self $makesHttpRequests) {
+        $this->testWithAuth(function (self $makesHttpRequests) {
             $response = $makesHttpRequests->get('/api/app/listings?price[min]=1500000000');
 
             $response->assertStatus(200);
@@ -148,7 +148,7 @@ class ListingApiTest extends TestCase
     {
         $listing = $this->addListing("Dijual Rumah", $this->fakeUserId);
 
-        $this->testWithBothAuth(function (self $makesHttpRequests) use ($listing) {
+        $this->testWithAuth(function (self $makesHttpRequests) use ($listing) {
             $response = $makesHttpRequests->get("/api/app/listings/{$listing->id}");
 
             $response->assertStatus(200);
@@ -172,7 +172,7 @@ class ListingApiTest extends TestCase
     {
         $listing = $this->addListing("Dijual Rumah", $this->fakeUserId);
 
-        $this->testWithBothAuth(function (self $makesHttpRequests) use ($listing) {
+        $this->testWithAuth(function (self $makesHttpRequests) use ($listing) {
             $response = $makesHttpRequests->get("/api/app/listings/{$listing->id}");
 
             $response->assertStatus(200);
@@ -196,7 +196,7 @@ class ListingApiTest extends TestCase
     {
         $listing = $this->addListing("Dijual Rumah", $this->fakeUserId);
 
-        $this->testWithBothAuth(function (self $makesHttpRequests) use ($listing) {
+        $this->testWithAuth(function (self $makesHttpRequests) use ($listing) {
             $response = $makesHttpRequests->post("/api/app/listings/{$listing->id}", [
                 'title' => 'Lagi Dijual',
                 'address' => 'Jl. itu',
@@ -237,7 +237,7 @@ class ListingApiTest extends TestCase
 
     public function test_can_create_Listing(): void
     {
-        $this->testWithBothAuth(function (self $makesHttpRequests) {
+        $this->testWithAuth(function (self $makesHttpRequests) {
             $response = $makesHttpRequests->post("/api/app/listings", [
                 'title' => 'Lagi Dijual',
                 'address' => 'Jl. itu',
@@ -270,7 +270,7 @@ class ListingApiTest extends TestCase
 
     public function test_create_listing_fail_params(): void
     {
-        $this->testWithBothAuth(function (self $makesHttpRequests) {
+        $this->testWithAuth(function (self $makesHttpRequests) {
             $response = $makesHttpRequests->post("/api/app/listings", [
                 'address' => 'Jl. itu',
                 'description' => 'Dijual rumah bagus',
