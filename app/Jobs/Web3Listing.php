@@ -18,15 +18,18 @@ use kornrunner\Ethereum\Transaction;
 
 class Web3Listing implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Dispatchable;
+    use InteractsWithQueue;
+    use Queueable;
+    use SerializesModels;
 
     /**
      * Create a new job instance.
      */
     public function __construct(
         public Listing $listing,
-        public string $operationType)
-    {
+        public string $operationType
+    ) {
         //
     }
 
@@ -34,14 +37,21 @@ class Web3Listing implements ShouldQueue
     {
         $exists = false;
         $contract->call('getListing', $id, function ($err, $ret) use (&$exists) {
-            if ($err !== null) return;
+            if ($err !== null) {
+                return;
+            }
             $exists = true;
         });
         return $exists;
     }
 
-    private function executeListingContractV0(int $id, int $cityId, string $offChainLink, string $hash, string $operationType): void
-    {
+    private function executeListingContractV0(
+        int $id,
+        int $cityId,
+        string $offChainLink,
+        string $hash,
+        string $operationType
+    ): void {
         $web3 = new Web3(type(env('ETH_NODE'))->asString());
 
         $abi = type(file_get_contents(storage_path('blockchain/ListingsV0.abi.json')))->asString();
@@ -53,14 +63,18 @@ class Web3Listing implements ShouldQueue
         $gasPrice = '0x0';
         /** @phpstan-ignore-next-line */
         $web3->getEth()->gasPrice(function ($err, $ret) use (&$gasPrice) {
-            if ($err !== null) throw $err;
+            if ($err !== null) {
+                throw $err;
+            }
             $gasPrice = $ret->toHex();
         });
 
         $nonce = '0x0';
         /** @phpstan-ignore-next-line */
         $web3->getEth()->getTransactionCount(env('ETH_ACCOUNT'), function ($err, $ret) use (&$nonce) {
-            if ($err !== null) throw $err;
+            if ($err !== null) {
+                throw $err;
+            }
             $nonce = $ret->toHex();
         });
 
@@ -79,7 +93,13 @@ class Web3Listing implements ShouldQueue
         }
 
         /** @var string $contractData */
-        $contractData = $contract->at($contractAddress)->getData($operation, $id, $cityId, $offChainLink, $hash); // @phpstan-ignore-line
+        $contractData = $contract->at($contractAddress)->getData( // @phpstan-ignore-line
+            $operation,
+            $id,
+            $cityId,
+            $offChainLink,
+            $hash
+        );
         $tx = new Transaction(
             $nonce, // nonce
             $gasPrice, // gas price
@@ -95,7 +115,9 @@ class Web3Listing implements ShouldQueue
         $txHash = null;
         /** @phpstan-ignore-next-line */
         $web3->getEth()->sendRawTransaction('0x' . $raw, function ($err, $hash) use (&$txHash) {
-            if ($err !== null) throw $err;
+            if ($err !== null) {
+                throw $err;
+            }
             logger()->info("Sent Listing transaction, txHash = $hash");
             $txHash = $hash;
         });
@@ -105,7 +127,9 @@ class Web3Listing implements ShouldQueue
         do {
             /** @phpstan-ignore-next-line */
             $web3->getEth()->getTransactionReceipt($txHash, function ($err, $rec) use (&$receipt) {
-                if ($err !== null) throw $err;
+                if ($err !== null) {
+                    throw $err;
+                }
                 $receipt = $rec;
             });
             $maxRetries--;
@@ -119,8 +143,13 @@ class Web3Listing implements ShouldQueue
         }
     }
 
-    private function executeListingContractV1(int $id, int $cityId, string $offChainLink, string $hash, string $operationType): void
-    {
+    private function executeListingContractV1(
+        int $id,
+        int $cityId,
+        string $offChainLink,
+        string $hash,
+        string $operationType
+    ): void {
         $web3 = new Web3(type(env('ETH_NODE'))->asString());
 
         $abi = type(file_get_contents(storage_path('blockchain/ListingsV1.abi.json')))->asString();
@@ -132,14 +161,18 @@ class Web3Listing implements ShouldQueue
         $gasPrice = '0x0';
         /** @phpstan-ignore-next-line */
         $web3->getEth()->gasPrice(function ($err, $ret) use (&$gasPrice) {
-            if ($err !== null) throw $err;
+            if ($err !== null) {
+                throw $err;
+            }
             $gasPrice = $ret->toHex();
         });
 
         $nonce = '0x0';
         /** @phpstan-ignore-next-line */
         $web3->getEth()->getTransactionCount(env('ETH_ACCOUNT'), function ($err, $ret) use (&$nonce) {
-            if ($err !== null) throw $err;
+            if ($err !== null) {
+                throw $err;
+            }
             $nonce = $ret->toHex();
         });
 
@@ -172,7 +205,13 @@ class Web3Listing implements ShouldQueue
         }
 
         /** @var string $contractData */
-        $contractData = $contract->at($contractAddress)->getData($operation, $id, $cityId, $offChainLink, $hash); // @phpstan-ignore-line
+        $contractData = $contract->at($contractAddress)->getData( // @phpstan-ignore-line
+            $operation,
+            $id,
+            $cityId,
+            $offChainLink,
+            $hash
+        );
         $tx = new Transaction(
             $nonce, // nonce
             $gasPrice, // gas price
@@ -188,7 +227,9 @@ class Web3Listing implements ShouldQueue
         $txHash = null;
         /** @phpstan-ignore-next-line */
         $web3->getEth()->sendRawTransaction('0x' . $raw, function ($err, $hash) use (&$txHash) {
-            if ($err !== null) throw $err;
+            if ($err !== null) {
+                throw $err;
+            }
             logger()->info("Sent Listing transaction, txHash = $hash");
             $txHash = $hash;
         });
@@ -198,7 +239,9 @@ class Web3Listing implements ShouldQueue
         do {
             /** @phpstan-ignore-next-line */
             $web3->getEth()->getTransactionReceipt($txHash, function ($err, $rec) use (&$receipt) {
-                if ($err !== null) throw $err;
+                if ($err !== null) {
+                    throw $err;
+                }
                 $receipt = $rec;
             });
             $maxRetries--;
@@ -212,10 +255,13 @@ class Web3Listing implements ShouldQueue
         }
     }
 
-    protected function getHash(string $offChainLink): string|null {
+    protected function getHash(string $offChainLink): string|null
+    {
         usleep(200000); // In case just uploaded.
         $content = file_get_contents($offChainLink);
-        if (!$content) return null;
+        if (!$content) {
+            return null;
+        }
         return hash('sha256', $content);
     }
 
@@ -263,7 +309,13 @@ class Web3Listing implements ShouldQueue
 
         try {
             $lock->block(120);
-            $contractVersionMap[$contractVersion]($listing->listingId, $listing->cityId, $offChainLink, $hash, $this->operationType);
+            $contractVersionMap[$contractVersion](
+                $listing->listingId,
+                $listing->cityId,
+                $offChainLink,
+                $hash,
+                $this->operationType
+            );
         } catch (LockTimeoutException) {
             logger()->error("Unable to acquire lock execute-contract");
         } finally {

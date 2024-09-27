@@ -76,7 +76,7 @@ class AuthController extends Controller
     public function sendOTP(Request $request): JsonResponse
     {
         $validatedRequest = $request->validate([
-            'phoneNumber' => 'required', 'string', new IndonesiaPhoneFormat,
+            'phoneNumber' => 'required', 'string', new IndonesiaPhoneFormat(),
         ]);
         $phoneNumber = $validatedRequest['phoneNumber'];
         $phoneNumber = PhoneNumber::canonicalize($phoneNumber);
@@ -119,7 +119,12 @@ class AuthController extends Controller
                 properties: [
                     new OA\Property(property: "phoneNumber", type: "string", description: "User phone number"),
                     new OA\Property(property: "token", type: "string", description: "Token to verify"),
-                    new OA\Property(property: "timestamp", type: "integer", format: "int64", description: "Timestamp of when the OTP was created"),
+                    new OA\Property(
+                        property: "timestamp",
+                        type: "integer",
+                        format: "int64",
+                        description: "Timestamp of when the OTP was created"
+                    ),
                     new OA\Property(property: "otpCode", type: "string", description: "User's OTP Code")
                 ]
             )
@@ -130,9 +135,23 @@ class AuthController extends Controller
                 description: "Success response",
                 content: new OA\JsonContent(
                     properties: [
-                        new OA\Property(property: "success", type: "boolean", example: true, description: "Verify status"),
-                        new OA\Property(property: "accessToken", type: "string", example: "Akoasdk131o3ipIaskdlz", description: "Access token"),
-                        new OA\Property(property: "user", ref: "#/components/schemas/User", description: "User information")
+                        new OA\Property(
+                            property: "success",
+                            type: "boolean",
+                            example: true,
+                            description: "Verify status"
+                        ),
+                        new OA\Property(
+                            property: "accessToken",
+                            type: "string",
+                            example: "Akoasdk131o3ipIaskdlz",
+                            description: "Access token"
+                        ),
+                        new OA\Property(
+                            property: "user",
+                            ref: "#/components/schemas/User",
+                            description: "User information"
+                        )
                     ]
                 )
             )
@@ -141,7 +160,7 @@ class AuthController extends Controller
     public function verifyOTP(Request $request): JsonResponse
     {
         $validatedRequest = $request->validate([
-            'phoneNumber' => 'required', 'string', new IndonesiaPhoneFormat,
+            'phoneNumber' => 'required', 'string', new IndonesiaPhoneFormat(),
             'token' => ['required', 'string'],
             'timestamp' => ['required', 'numeric'],
             'otpCode' => ['required', 'string']
@@ -153,7 +172,10 @@ class AuthController extends Controller
         $timestamp = $validatedRequest['timestamp'];
         $otpCode = $validatedRequest['otpCode'];
 
-        if (!(Hash::check($phoneNumber . $otpCode . $timestamp . $this->salt, $token) && (Carbon::now()->timestamp - $timestamp < 120))) {
+        if (
+            !(Hash::check($phoneNumber . $otpCode . $timestamp . $this->salt, $token)
+                && (Carbon::now()->timestamp - $timestamp < 120))
+        ) {
             return response()->json([
                 'success' => false
             ], 401);
@@ -193,7 +215,12 @@ class AuthController extends Controller
                 description: "Success response",
                 content: new OA\JsonContent(
                     properties: [
-                        new OA\Property(property: "success", type: "boolean", example: true, description: "Logout status")
+                        new OA\Property(
+                            property: "success",
+                            type: "boolean",
+                            example: true,
+                            description: "Logout status"
+                        )
                     ]
                 )
             ),
@@ -202,7 +229,12 @@ class AuthController extends Controller
                 description: "Token not found response",
                 content: new OA\JsonContent(
                     properties: [
-                        new OA\Property(property: "success", type: "boolean", example: false, description: "Logout status"),
+                        new OA\Property(
+                            property: "success",
+                            type: "boolean",
+                            example: false,
+                            description: "Logout status"
+                        ),
                     ]
                 )
             )
@@ -249,9 +281,23 @@ class AuthController extends Controller
                 description: "Success response",
                 content: new OA\JsonContent(
                     properties: [
-                        new OA\Property(property: "success", type: "boolean", example: true, description: "Verify status"),
-                        new OA\Property(property: "accessToken", type: "string", example: "Akoasdk131o3ipIaskdlz", description: "Access token"),
-                        new OA\Property(property: "user", ref: "#/components/schemas/User", description: "User information")
+                        new OA\Property(
+                            property: "success",
+                            type: "boolean",
+                            example: true,
+                            description: "Verify status"
+                        ),
+                        new OA\Property(
+                            property: "accessToken",
+                            type: "string",
+                            example: "Akoasdk131o3ipIaskdlz",
+                            description: "Access token"
+                        ),
+                        new OA\Property(
+                            property: "user",
+                            ref: "#/components/schemas/User",
+                            description: "User information"
+                        )
                     ]
                 )
             )
@@ -260,7 +306,7 @@ class AuthController extends Controller
     public function impersonate(Request $request): JsonResponse
     {
         $validatedRequest = $request->validate([
-            'phoneNumber' => 'required', 'string', new IndonesiaPhoneFormat,
+            'phoneNumber' => 'required', 'string', new IndonesiaPhoneFormat(),
         ]);
         $phoneNumber = $validatedRequest['phoneNumber'];
         $phoneNumber = PhoneNumber::canonicalize($phoneNumber);
@@ -306,9 +352,23 @@ class AuthController extends Controller
                 description: "Success response",
                 content: new OA\JsonContent(
                     properties: [
-                        new OA\Property(property: "success", type: "boolean", example: true, description: "Verify status"),
-                        new OA\Property(property: "accessToken", type: "string", example: "Akoasdk131o3ipIaskdlz", description: "Access token"),
-                        new OA\Property(property: "user", ref: "#/components/schemas/User", description: "User information")
+                        new OA\Property(
+                            property: "success",
+                            type: "boolean",
+                            example: true,
+                            description: "Verify status"
+                        ),
+                        new OA\Property(
+                            property: "accessToken",
+                            type: "string",
+                            example: "Akoasdk131o3ipIaskdlz",
+                            description: "Access token"
+                        ),
+                        new OA\Property(
+                            property: "user",
+                            ref: "#/components/schemas/User",
+                            description: "User information"
+                        )
                     ]
                 )
             )
@@ -317,7 +377,7 @@ class AuthController extends Controller
     public function verifyTOTP(Request $request): JsonResponse
     {
         $validatedRequest = $request->validate([
-            'phoneNumber' => 'required', 'string', new IndonesiaPhoneFormat,
+            'phoneNumber' => 'required', 'string', new IndonesiaPhoneFormat(),
             'totpCode' => 'required', 'string'
         ]);
         $phoneNumber = $validatedRequest['phoneNumber'];

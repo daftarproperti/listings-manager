@@ -73,7 +73,12 @@ class CityIdFiller extends Command
         $notFoundMessages = [];
 
         // Process records in chunks
-        $modelClass::query()->chunkById(500, function ($collection) use ($cityCollection, $cityField, $progressBar, &$notFoundMessages) {
+        $modelClass::query()->chunkById(500, function ($collection) use (
+            $cityCollection,
+            $cityField,
+            $progressBar,
+            &$notFoundMessages
+        ) {
             foreach ($collection as $item) {
                 $cityName = $item->$cityField;
 

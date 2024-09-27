@@ -41,7 +41,7 @@ class OTPService
         $phoneNumber = PhoneNumber::canonicalize($phoneNumber);
 
         if (App::environment('local', 'development')) {
-            Log::info('OTP Code: '.$otpCode.' sent to: '.$phoneNumber);
+            Log::info('OTP Code: ' . $otpCode . ' sent to: ' . $phoneNumber);
         }
 
         switch ($this->method) {
@@ -112,7 +112,7 @@ class OTPService
             ->post($this->twilioAPIURL . $this->twilioAccountSID . '/Messages.json', [
                 'To' => $phoneNumber,
                 'From' => $this->twilioPhoneNumber,
-                'Body' => 'Your OTP code is '.$otpCode.'. Do not share this code with anyone.',
+                'Body' => 'Your OTP code is ' . $otpCode . '. Do not share this code with anyone.',
             ]);
 
         if (!$response->successful()) {

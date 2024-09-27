@@ -40,7 +40,11 @@ class PublicListingResource extends JsonResource
     #[OA\Property(property: "isVerified", type: "boolean")]
     #[OA\Property(property: "cityName", type: "string")]
     #[OA\Property(property: "cityId", type: "integer")]
-    #[OA\Property(property: "pictureUrls", type: "array", items: new OA\Items(type: "string", format: "uri", example: "https://example.com/image.jpg"))]
+    #[OA\Property(
+        property: "pictureUrls",
+        type: "array",
+        items: new OA\Items(type: "string", format: "uri", example: "https://example.com/image.jpg")
+    )]
     #[OA\Property(property: "coordinate", type: "object", properties: [
         new OA\Property(property: "latitude", type: "integer"),
         new OA\Property(property: "longitude", type: "integer")

@@ -17,9 +17,14 @@ class ListingRepository
      *
      * @return Builder<Listing>
      */
-    private function buildFilterQuery(Builder $query, \BackedEnum|string|int|FilterMinMax|null|bool $filter, string $column): Builder
-    {
-        if (is_null($filter)) return $query;
+    private function buildFilterQuery(
+        Builder $query,
+        \BackedEnum|string|int|FilterMinMax|null|bool $filter,
+        string $column
+    ): Builder {
+        if (is_null($filter)) {
+            return $query;
+        }
 
         if (is_scalar($filter) || $filter instanceof \BackedEnum) {
             // Exact filter if it's a scalar (single value like e.g. string, int, enum).
@@ -74,7 +79,9 @@ class ListingRepository
         $query->when(isset($filterSet->sort), function ($query) use ($filterSet) {
             assert(is_string($filterSet->sort));
             $order = isset($filterSet->order) ? Str::lower($filterSet->order) : 'asc';
-            $sort = !in_array($filterSet->sort, ['created_at', 'updated_at']) ? Str::camel($filterSet->sort) : $filterSet->sort;
+            $sort = !in_array($filterSet->sort, ['created_at', 'updated_at'])
+                ? Str::camel($filterSet->sort)
+                : $filterSet->sort;
 
             $query->orderBy($sort, $order);
         });

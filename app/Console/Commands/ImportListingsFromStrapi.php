@@ -7,37 +7,6 @@ use App\Models\PropertyOwnership;
 use App\Models\Listing;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
-use Spatie\LaravelData\Data;
-
-class StrapiListing extends Data
-{
-    public ?int $id = null;
-    public ?string $title = null;
-    public ?string $address = null;
-    public ?string $description = null;
-    public ?float $price = null;
-    public ?float $lot_size = null;
-    public ?float $building_size = null;
-    public ?string $facing = null;
-    public ?int $floor_count = null;
-    public ?int $bedroom_count = null;
-    public ?int $bathroom_count = null;
-    public ?int $car_count = null;
-    public ?string $ownership = null;
-    public ?string $condition = null;
-    public ?string $seller_name = null;
-    public ?string $seller_phone = null;
-    public ?string $latitude = null;
-    public ?string $longitude = null;
-    public ?string $place_id = null;
-    public ?string $created_at = null;
-    public ?string $updated_at = null;
-    public ?string $published_at = null;
-    public ?string $created_by_id = null;
-    public ?string $updated_by_id = null;
-    public ?string $picture_url = null;
-    public ?int $osm_id = null;
-}
 
 class ImportListingsFromStrapi extends Command
 {
@@ -59,7 +28,9 @@ class ImportListingsFromStrapi extends Command
     {
         /** @var Listing|null $listing */
         $listing = Listing::where('strapiId', $strapiListing->id)->first();
-        if (is_null($listing)) $listing = new Listing();
+        if (is_null($listing)) {
+            $listing = new Listing();
+        }
 
         $listing->strapiId = $strapiListing->id;
         $listing->title = $strapiListing->title ?? '';
@@ -74,7 +45,9 @@ class ImportListingsFromStrapi extends Command
         $listing->bathroomCount = (int)$strapiListing->bathroom_count;
         $listing->carCount = (int)$strapiListing->car_count;
         $listing->ownership = PropertyOwnership::tryFrom($strapiListing->ownership ?? '') ?? PropertyOwnership::Unknown;
-        if ($strapiListing->picture_url) $listing->pictureUrls = [$strapiListing->picture_url];
+        if ($strapiListing->picture_url) {
+            $listing->pictureUrls = [$strapiListing->picture_url];
+        }
         $listing->cityId = $strapiListing->osm_id ?? 0;
 
         // TODO: Import these fields

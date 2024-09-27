@@ -19,8 +19,18 @@ use OpenApi\Attributes as OA;
         new OA\Property(property: "transactionValue", type: "integer", example: 100000),
         new OA\Property(property: "date", type: "string", format: "date-time", example: "2024-03-01T23:00:00+00:00"),
         new OA\Property(property: "notes", type: "string", example: "Notes"),
-        new OA\Property(property: "status", type: "string", example: "on_review", ref: "#/components/schemas/ClosingStatus"),
-        new OA\Property(property: "commissionStatus", type: "string", example: "pending", ref: "#/components/schemas/CommissionStatus"),
+        new OA\Property(
+            property: "status",
+            type: "string",
+            example: "on_review",
+            ref: "#/components/schemas/ClosingStatus"
+        ),
+        new OA\Property(
+            property: "commissionStatus",
+            type: "string",
+            example: "pending",
+            ref: "#/components/schemas/CommissionStatus"
+        ),
     ]
 )]
 class ClosingResource extends JsonResource

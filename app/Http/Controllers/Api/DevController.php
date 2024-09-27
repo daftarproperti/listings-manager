@@ -17,10 +17,10 @@ class DevController extends Controller
     // Tests how queue jobs are handled.
     public function queue(Request $request): JsonResponse
     {
-        $start = hrtime(TRUE);
+        $start = hrtime(true);
         DevQueueJob::dispatch(type($request->input('name', 'Default'))->asString())
             ->onQueue(Queue::getQueueName('generic'));
-        $end = hrtime(TRUE);
+        $end = hrtime(true);
         $durationMs = ($end - $start) / 1000000;
 
         // Return the duration taken to dispatch the job.

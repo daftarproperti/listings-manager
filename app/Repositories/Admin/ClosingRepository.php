@@ -16,8 +16,8 @@ class ClosingRepository
         $query = Closing::query();
 
         if (isset($input['q'])) {
-            $query->where('clientPhoneNumber', 'like', '%' . $input['q']. '%')
-                ->orWhere('clientName', 'like', '%' . $input['q']. '%');
+            $query->where('clientPhoneNumber', 'like', '%' . $input['q'] . '%')
+                ->orWhere('clientName', 'like', '%' . $input['q'] . '%');
         }
 
         if (isset($input['sortBy']) && isset($input['sortOrder'])) {

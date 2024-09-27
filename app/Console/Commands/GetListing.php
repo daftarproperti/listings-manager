@@ -35,7 +35,7 @@ class GetListing extends Command
             return;
         }
 
-        $this->line("listing = " . print_r($listing, TRUE));
-        $this->line("user = " . print_r($listing->user, TRUE));
+        $this->line("listing = " . print_r($listing, true));
+        $this->line("user = " . print_r($listing->user, true));
     }
 }

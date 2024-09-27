@@ -10,5 +10,6 @@ use OpenApi\Attributes as OA;
 #[OA\Info(title: "Daftar Properti API", version: "1.0.0")]
 class Controller extends BaseController
 {
-    use AuthorizesRequests, ValidatesRequests;
+    use AuthorizesRequests;
+    use ValidatesRequests;
 }

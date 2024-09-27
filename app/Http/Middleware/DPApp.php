@@ -25,7 +25,7 @@ class DPApp
         }
 
         $authHeader = $request->header('Authorization');
-        if(!$authHeader) {
+        if (!$authHeader) {
             return response()->json(['error' => 'Unauthorized'], 403);
         }
 

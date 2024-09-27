@@ -75,5 +75,4 @@ class CancelController extends Controller
 
         return Redirect::to($request->url());
     }
-
 }

@@ -36,7 +36,9 @@ class EthWrapper
         /** @phpstan-ignore-next-line We know that $this->eth receives all methods via __call */
         call_user_func_array([$this->eth, $method], $arguments);
 
-        if ($error) throw new \Exception($error);
+        if ($error) {
+            throw new \Exception($error);
+        }
 
         return $result;
     }

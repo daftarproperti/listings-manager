@@ -46,6 +46,6 @@ class ClassificationService
             sleep($delay);
         }
 
-        throw new \ErrorException('Failed to get response after '.$retryAttempts.' attempts.');
+        throw new \ErrorException('Failed to get response after ' . $retryAttempts . ' attempts.');
     }
 }

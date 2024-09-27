@@ -42,6 +42,4 @@ class Closing extends Model
     {
         $this->attributes['clientPhoneNumber'] = PhoneNumber::canonicalize($value);
     }
-
-
 }

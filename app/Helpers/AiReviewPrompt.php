@@ -2,19 +2,19 @@
 
 namespace App\Helpers;
 
-
 class AiReviewPrompt
 {
     /**
-    * @return string
-    */
+     * @return string
+     */
     public static function validationPrompt(): string
     {
         $prompt = <<<EOD
 I need you to do more validation of the free-text description with this rules:
 
 - Description cannot contain personal information.
-- Sometimes, phone numbers are hidden in the description as text (e.g., 'Kosong Delapan Satu Tiga' with the number spelled out). This is not allowed, and you should return an error if you find it.
+- Sometimes, phone numbers are hidden in the description as text (e.g., 'Kosong Delapan Satu Tiga' with the number
+   spelled out). This is not allowed, and you should return an error if you find it.
 
 title: Use your judgement for a suitable short one-line summary for this listing.
 
@@ -32,10 +32,12 @@ address:
 - Examples of non-exact address:
   - Jl. Wiyung Surabaya Barat (not exact because there is no house number)
   - Jalan Sulaiman VI (not exact because there is no house number, only street number)
-- Note a common mistake is that 'nol jalan' is a specific term in Indonesian listing text, this does not indicate the number of the street or house.
+- Note a common mistake is that 'nol jalan' is a specific term in Indonesian listing text, this does not indicate the
+  number of the street or house.
 - Please check if the address is correct.
 
-price: In Indonesian numerical notation, \"M\" indeed represents \"Milyar,\" which is equivalent to \"billion\" in English.
+price: In Indonesian numerical notation, \"M\" indeed represents \"Milyar,\" which is equivalent to \"billion\" in
+    English.
     Sometimes the value is in decimal format.
     The input pattern is "{number} {notation}"
     Examples:
@@ -47,28 +49,33 @@ price: In Indonesian numerical notation, \"M\" indeed represents \"Milyar,\" whi
     - 2 Juta or 2JT is 2000000
     - 40.3 Juta or 40.3JT is 40300000
     Please pay attention to the price format especialy: 1.7 M or 1,7 M is not 1.7 but 1700000000
-    Remember that in Indonesian locale, sometimes comma is used for decimal point, e.g. 1,050 Milyar is 1.05 billion and not 1050 billion
+    Remember that in Indonesian locale, sometimes comma is used for decimal point, e.g. 1,050 Milyar is 1.05 billion and
+    not 1050 billion
     Please extract this to be the canonical integer number representation, not containing letter suffixes anymore
 
 rentPrice: Only fill this if the property is rented; otherwise, enter 0.
 
 lotSize: Extract as a number. Ignore the unit. Usually written as Luas tanah.
 
-buildingSize: Extract as a number. Ignore the unit. Usually written as Luas bangunan. Save only the number in the data (e.g., X m² will be saved as X in the data).
+buildingSize: Extract as a number. Ignore the unit. Usually written as Luas bangunan. Save only the number in the data
+(e.g., X m² will be saved as X in the data).
 
 carCount: Extract the number of parking spaces.
 
 bedroomCount: Extract the number of bedrooms. Usually written as X kamar tidur or X KT.
 
-additionalBedroomCount: Extract the number of additional bedrooms. Usually written as X kamar tidur tambahan or X KT tambahan.
+additionalBedroomCount: Extract the number of additional bedrooms. Usually written as X kamar tidur tambahan or X KT
+tambahan.
 
 bathroomCount: Extract the number of bathrooms. Usually written as X kamar mandi or X KM.
 
-additionalBathroomCount: Extract the number of additional bathrooms. Usually written as X kamar mandi tambahan or X KM tambahan.
+additionalBathroomCount: Extract the number of additional bathrooms. Usually written as X kamar mandi tambahan or X KM
+tambahan.
 
 floorCount: Extract as a number.
 
-electricPower: Extract as a number. Ignore the unit. Usually written as X watt. Save only the number in the data (X only).
+electricPower: Extract as a number. Ignore the unit. Usually written as X watt. Save only the number in the data
+(X only).
 
 facing: Use enum for directions: north, east, south, west, etc.
 
@@ -93,18 +100,20 @@ EOD;
     public static function generatePrompt(array $dataToReview, string $description): string
     {
 
-        $prompt = 'I need to compare a JSON structured data and its corresponding free-text description.'."\n".
-            'I need you to highlight inaccuracies in the text description that does not match the JSON data.'."\n".
-            'It is okay for the description to be missing some of the structured data information and vice versa.'."\n".
-            'I need you to reply with the following format in Bahasa Indonesia, for example:'."\n".
-            '{"results":["Jumlah kamar tidak sesuai di deskripsi tertera X kamar tetapi di data ada Y kamar","Jumlah kamar mandi tidak sesuai di deskripsi tertera X kamar mandi tetapi di data ada Y kamar mandi"]}'."\n".
-            'Here is the JSON data (we call it as detail listing) to analyze:'."\n".
-            json_encode($dataToReview, JSON_PRETTY_PRINT).
-            "\n\n".
-            'Here is the free-text description:'."\n".
+        $prompt = 'I need to compare a JSON structured data and its corresponding free-text description.' . "\n" .
+            'I need you to highlight inaccuracies in the text description that does not match the JSON data.' . "\n" .
+            'It is okay for the description to be missing some of the structured data information and vice versa.'
+            . "\n" .
+            'I need you to reply with the following format in Bahasa Indonesia, for example:' . "\n" .
+            '{"results":["Jumlah kamar tidak sesuai di deskripsi tertera X kamar tetapi di data ada Y kamar",' .
+            '"Jumlah kamar mandi tidak sesuai di deskripsi tertera X kamar mandi tetapi di data ada Y kamar mandi"]}'
+            . "\n" .
+            'Here is the JSON data (we call it as detail listing) to analyze:' . "\n" .
+            json_encode($dataToReview, JSON_PRETTY_PRINT) .
+            "\n\n" .
+            'Here is the free-text description:' . "\n" .
             $description;
 
         return $prompt;
-
     }
 }

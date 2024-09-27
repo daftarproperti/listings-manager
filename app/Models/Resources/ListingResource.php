@@ -47,7 +47,11 @@ class ListingResource extends JsonResource
     #[OA\Property(property: "cityName", type: "string")]
     #[OA\Property(property: "cityId", type: "integer")]
     #[OA\Property(property: "city", type: "string")]
-    #[OA\Property(property: "pictureUrls", type: "array", items: new OA\Items(type: "string", format: "uri", example: "https://example.com/image.jpg"))]
+    #[OA\Property(
+        property: "pictureUrls",
+        type: "array",
+        items: new OA\Items(type: "string", format: "uri", example: "https://example.com/image.jpg")
+    )]
     #[OA\Property(property: "coordinate", type: "object", properties: [
         new OA\Property(property: "latitude", type: "integer"),
         new OA\Property(property: "longitude", type: "integer")
@@ -133,7 +137,9 @@ class ListingResource extends JsonResource
                 'city' => $prop->user_profile?->city,
                 'cityId' => $prop->user_profile?->cityId,
                 'cityName' => $prop->user_profile?->cityName,
-                'profilePictureURL' => $prop->user_profile?->picture ? Photo::getGcsUrlFromFileName($prop->user_profile->picture) : null,
+                'profilePictureURL' => $prop->user_profile?->picture
+                    ? Photo::getGcsUrlFromFileName($prop->user_profile->picture)
+                    : null,
                 'company' => $prop->user_profile?->company,
                 'description' => $prop->user_profile?->description,
             ],
@@ -142,12 +148,18 @@ class ListingResource extends JsonResource
             'withRewardAgreement' => $prop->withRewardAgreement ?? false,
             'isMultipleUnits' => $prop->isMultipleUnits ?? false,
             'adminNote' => $prop->adminNote ? AdminNoteResource::make($prop->adminNote)->resolve() : null,
-            'cancellationNote' => $prop->cancellationNote ? CancellationNoteResource::make($prop->cancellationNote)->resolve() : null,
+            'cancellationNote' => $prop->cancellationNote
+                ? CancellationNoteResource::make($prop->cancellationNote)->resolve()
+                : null,
             'closings' => $prop->closings ? ClosingCollection::make($prop->closings)->resolve() : null,
             'updatedAt' => $prop->updated_at->isoFormat('D MMMM YYYY'),
             'createdAt' => $prop->updated_at->isoFormat('D MMMM YYYY'),
-            'expiredAt' => isset($prop->expiredAt) && $prop->expiredAt instanceof Carbon ? $prop->expiredAt->isoFormat('D MMMM YYYY') : null,
-            'rawExpiredAt' => isset($prop->expiredAt) && $prop->expiredAt instanceof Carbon ? $prop->expiredAt->format('Y-m-d H:i') : null,
+            'expiredAt' => isset($prop->expiredAt) && $prop->expiredAt instanceof Carbon
+                ? $prop->expiredAt->isoFormat('D MMMM YYYY')
+                : null,
+            'rawExpiredAt' => isset($prop->expiredAt) && $prop->expiredAt instanceof Carbon
+                ? $prop->expiredAt->format('Y-m-d H:i')
+                : null,
         ];
     }
 }

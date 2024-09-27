@@ -34,6 +34,6 @@ class GetProperty extends Command
             return;
         }
 
-        $this->line("property = " . print_r($property, TRUE));
+        $this->line("property = " . print_r($property, true));
     }
 }

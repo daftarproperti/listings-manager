@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models\Traits;
 
 use App\Models\City;
@@ -9,9 +10,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property City|null $administrativeCity
  * @property string|null $cityName
  */
-trait CityAttributeTrait {
-
-
+trait CityAttributeTrait
+{
      /**
      * Retrieve the administrative city relationship for this model.
      *
@@ -40,5 +40,4 @@ trait CityAttributeTrait {
     {
         $this->attributes['cityId'] = (int) $value;
     }
-
 }

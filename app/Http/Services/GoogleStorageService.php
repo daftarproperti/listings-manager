@@ -12,12 +12,12 @@ class GoogleStorageService
 
     public function __construct()
     {
-        /**
+        /*
          * on local machine please login in terminal with `gcloud auth application-default login`
          * if get error "Anonymous caller does not have storage.objects.get access.." when accessing this service,
-         * please set your GOOGLE_APPLICATION_CREDENTIALS with $HOME/.config/gcloud/application_default_credentials.json in `.env` file
-         * replace $HOME with your home path
-        **/
+         * please set your GOOGLE_APPLICATION_CREDENTIALS with $HOME/.config/gcloud/application_default_credentials.json
+         * in `.env` file replace $HOME with your home path
+         */
 
         $storageClient = new StorageClient([
             'projectId' => config('services.google.project_id')

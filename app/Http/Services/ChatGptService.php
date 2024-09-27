@@ -40,7 +40,7 @@ class ChatGptService
             sleep($delay);
         }
 
-        throw new \ErrorException('Failed to get response after '.$retryAttempts.' attempts.');
+        throw new \ErrorException('Failed to get response after ' . $retryAttempts . ' attempts.');
     }
 
     public function seekAnswer(string $question, string $model = null): string

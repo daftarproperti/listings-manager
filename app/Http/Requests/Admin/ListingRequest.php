@@ -4,9 +4,9 @@ namespace App\Http\Requests\Admin;
 
 use App\Models\Enums\ActiveStatus;
 use App\Models\Enums\VerifyStatus;
-
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+
 class ListingRequest extends FormRequest
 {
     /**

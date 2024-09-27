@@ -162,12 +162,10 @@ class ListingsController extends Controller
                 in: 'query',
                 description: 'Minimum lot size',
                 required: false,
-
                 schema: new OA\Schema(type: 'integer')
             ),
             new OA\Parameter(
                 name: 'lotSize[max]',
-
                 in: 'query',
                 description: 'Maximum lot size',
                 required: false,

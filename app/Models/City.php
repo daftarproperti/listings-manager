@@ -32,8 +32,13 @@ class City extends Model
                 if ($value instanceof BSONDocument || is_array($value)) {
                     $locationValue = $value instanceof BSONDocument ? $value->getArrayCopy() : $value;
 
-                    if (isset($locationValue['coordinates']) && ($locationValue['coordinates'] instanceof BSONArray || is_array($locationValue['coordinates']))) {
-                        $locationValue['coordinates'] = is_array($locationValue['coordinates']) ? $locationValue['coordinates'] : $locationValue['coordinates']->getArrayCopy();
+                    if (
+                        isset($locationValue['coordinates']) && ($locationValue['coordinates'] instanceof BSONArray
+                            || is_array($locationValue['coordinates']))
+                    ) {
+                        $locationValue['coordinates'] = is_array($locationValue['coordinates'])
+                            ? $locationValue['coordinates']
+                            : $locationValue['coordinates']->getArrayCopy();
                     }
                 }
 

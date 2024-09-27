@@ -16,11 +16,11 @@ use MongoDB\Laravel\Eloquent\SoftDeletes;
  */
 class SavedSearch extends Model
 {
-    use HasFactory,
-        SoftDeletes;
+    use HasFactory;
+    use SoftDeletes;
 
     protected $casts = [
-        'filterSet' => AttributeCaster::class.':'.FilterSet::class,
+        'filterSet' => AttributeCaster::class . ':' . FilterSet::class,
     ];
 
     protected $fillable = [
@@ -81,8 +81,13 @@ class SavedSearch extends Model
     private static function checkMinMaxMatch(int|float|null $listingValue, int|FilterMinMax|null $filterValue): void
     {
         if (!is_null($listingValue) && $filterValue instanceof FilterMinMax) {
-            if ((!is_null($filterValue->min) && $listingValue < $filterValue->min) || (!is_null($filterValue->max) && $listingValue > $filterValue->max)) {
-                throw new FilterMismatchException("Value" . $listingValue . " not in range " . $filterValue->min . "-" . $filterValue->max);
+            if (
+                (!is_null($filterValue->min) && $listingValue < $filterValue->min)
+                || (!is_null($filterValue->max) && $listingValue > $filterValue->max)
+            ) {
+                throw new FilterMismatchException(
+                    "Value" . $listingValue . " not in range " . $filterValue->min . "-" . $filterValue->max
+                );
             }
         }
         if (!is_null($listingValue) && is_numeric($filterValue) && $listingValue !== $filterValue) {

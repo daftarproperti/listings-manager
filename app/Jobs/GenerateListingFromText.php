@@ -16,7 +16,10 @@ use Illuminate\Support\Facades\Log;
 
 class GenerateListingFromText implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Dispatchable;
+    use InteractsWithQueue;
+    use Queueable;
+    use SerializesModels;
 
     protected string $jobId;
     protected string $text;
@@ -40,7 +43,7 @@ class GenerateListingFromText implements ShouldQueue
     public function handle(Extractor $extractor)
     {
         $extractedListing = $extractor->extractSingleListingFromMessage($this->text);
-        
+
         $coordinate = new Coordinate();
         $coordinate->latitude = 0;
         $coordinate->longitude = 0;
@@ -50,8 +53,8 @@ class GenerateListingFromText implements ShouldQueue
         $extractedListing->sourceText = $this->text;
         $extractedListing->coordinate = $coordinate;
         $extractedListing->contact = [
-            'name'=> $extractedListing->contact->name,
-            'company'=> $extractedListing->contact->company,
+            'name' => $extractedListing->contact->name,
+            'company' => $extractedListing->contact->company,
         ];
         $extractedListing->updated_at = Carbon::now();
         $extractedListing->user_profile = null;

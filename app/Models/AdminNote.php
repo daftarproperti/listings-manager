@@ -18,7 +18,7 @@ class AdminNote extends Data
 {
     public function __construct(
         public ?string $email = null,
-        public string $message='',
+        public string $message = '',
         public Carbon $date = new Carbon()
     ) {
     }

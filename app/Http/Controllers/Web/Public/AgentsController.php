@@ -1,9 +1,8 @@
 <?php
 
 namespace App\Http\Controllers\Web\Public;
+
 use Illuminate\Http\Request;
-
-
 use App\Http\Controllers\Controller;
 use App\Models\FilterSet;
 use App\Models\User;
@@ -15,7 +14,7 @@ class AgentsController extends Controller
 {
     public function detail(User $user, Request $request): View
     {
-        if(!isset($user->isPublicProfile) || !$user->isPublicProfile) {
+        if (!isset($user->isPublicProfile) || !$user->isPublicProfile) {
             abort(404, 'User not found');
         }
 

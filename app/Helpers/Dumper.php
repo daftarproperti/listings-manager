@@ -11,10 +11,10 @@ class Dumper
      * Use VarDumper to dump variable into a string.
      * https://symfony.com/doc/current/components/var_dumper.html#dumpers
      */
-    static function dumpToString(mixed $variable): string
+    public static function dumpToString(mixed $variable): string
     {
         $cloner = new VarCloner();
         $dumper = new CliDumper();
-        return type($dumper->dump($cloner->cloneVar($variable), TRUE))->asString();
+        return type($dumper->dump($cloner->cloneVar($variable), true))->asString();
     }
 }

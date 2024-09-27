@@ -12,7 +12,6 @@ use App\Models\Property;
 use App\Models\User;
 use Illuminate\Support\Facades\Log;
 
-
 class ListingObserver
 {
     /**
@@ -21,7 +20,6 @@ class ListingObserver
     public function created(Listing $listing): void
     {
         try {
-
             $property = new Property();
             $this->fillPropertyFromListing($listing, $property);
 
@@ -74,7 +72,7 @@ class ListingObserver
                 if ($listing->verifyStatus !== VerifyStatus::APPROVED) {
                     return;
                 }
-                
+
                 $operationType = "ADD";
             }
 

@@ -15,7 +15,8 @@ class AttributeCaster implements CastsAttributes
     // The class of the data must have ::from() method, i.e. extends Spatie\LaravelData\Data.
     private string $dataClass;
 
-    public function __construct(string $dataClass) {
+    public function __construct(string $dataClass)
+    {
         $this->dataClass = $dataClass;
     }
 

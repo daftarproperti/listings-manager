@@ -29,7 +29,9 @@ use OTPHP\TOTP;
  */
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens;
+    use HasFactory;
+    use Notifiable;
     /** @use CityAttributeTrait<User> */
     use CityAttributeTrait;
 

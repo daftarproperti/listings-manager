@@ -22,7 +22,7 @@ class IndonesiaPhoneFormat implements ValidationRule
         if (!$phoneNumber) {
             $fail('Phone number can not be empty');
         }
-    
+
         // Check if the number starts with 08 and has 10 to 13 digits
         /** @var string $phoneNumber */
         if (!preg_match('/^08\d{8,11}$/', $phoneNumber)) {

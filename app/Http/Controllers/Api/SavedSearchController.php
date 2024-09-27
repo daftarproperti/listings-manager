@@ -129,7 +129,7 @@ class SavedSearchController extends Controller
     public function create(SavedSearchRequest $request): JsonResponse
     {
         $data = $request->validated();
-        $savedSearch = new SavedSearch;
+        $savedSearch = new SavedSearch();
         $this->setSavedSearchAttribute($data, $savedSearch);
         /** @var User $user */
         $user = Auth::user();

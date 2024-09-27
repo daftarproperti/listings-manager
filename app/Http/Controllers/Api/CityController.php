@@ -105,6 +105,6 @@ class CityController extends Controller
     {
         $city = $cityRepository->getCityById($id);
 
-        return $city? new CityResource($city) : abort(404, 'City not found');
+        return $city ? new CityResource($city) : abort(404, 'City not found');
     }
 }

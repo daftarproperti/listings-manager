@@ -16,7 +16,10 @@ use Illuminate\Support\Facades\Log;
 
 class AiReviewJob implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Dispatchable;
+    use InteractsWithQueue;
+    use Queueable;
+    use SerializesModels;
 
     protected Listing $listing;
 
@@ -69,7 +72,6 @@ class AiReviewJob implements ShouldQueue
                 'results' => $finalJsonResponse['results'] ?? [],
                 'status' => (AiReviewStatus::DONE)->value,
             ]);
-
         } catch (\Throwable $th) {
             Log::error('Ai Review Job error: ', ['error' => $th->getMessage()]);
             //Rollback aiReview status to processable state ("done")

@@ -84,13 +84,12 @@ use MongoDB\BSON\UTCDateTime;
  */
 class Listing extends Model
 {
-    const CACHE_LENGTH = 60 * 60 * 24;
-
     use SoftDeletes;
     use HasFactory;
-
     /** @use CityAttributeTrait<Listing> */
     use CityAttributeTrait;
+
+    private const CACHE_LENGTH = 60 * 60 * 24;
 
     protected $connection = 'mongodb';
     protected $collection = 'listings';
@@ -161,7 +160,8 @@ class Listing extends Model
         return 0;
     }
 
-    public function disabled_getViewCountAttribute(): int
+    // TODO: Finalize this
+    public function disabledGetViewCountAttribute(): int
     {
         if (!env('PHASE1')) {
             return 0;
@@ -323,7 +323,9 @@ class Listing extends Model
     {
         return Attribute::make(
             get: function (mixed $val): ?AdminNote {
-                if (!is_array($val)) return null;
+                if (!is_array($val)) {
+                    return null;
+                }
 
                 if (isset($val['date'])) {
                     $val['date'] = Carbon::createFromTimestamp($val['date']->toDateTime()->getTimestamp());
@@ -347,7 +349,9 @@ class Listing extends Model
     {
         return Attribute::make(
             get: function (mixed $val): ?CancellationNote {
-                if (!is_array($val)) return null;
+                if (!is_array($val)) {
+                    return null;
+                }
                 return CancellationNote::from($val);
             },
             set: function (CancellationNote $val) {

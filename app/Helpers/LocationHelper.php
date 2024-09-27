@@ -28,13 +28,17 @@ class LocationHelper
 
                 // Send a GET request to the ipinfo.io API with the determined IP
                 $token = env('IPINFO_TOKEN');
-                if (!is_string($token)) return null;
+                if (!is_string($token)) {
+                    return null;
+                }
 
                 $locationResponse = $client->request('GET', "https://ipinfo.io/{$ipAddress}/json?token=$token");
                 $data = type(json_decode($locationResponse->getBody(), true))->asArray();
 
                 // Extract the latitude and longitude from the 'loc' field
-                if (!isset($data['loc'])) return null;
+                if (!isset($data['loc'])) {
+                    return null;
+                }
                 $location = explode(',', $data['loc']);
 
                 $latLongData = [
@@ -43,7 +47,6 @@ class LocationHelper
                 ];
 
                 return $latLongData;
-
             } catch (\Throwable $th) {
                 logger()->error("Error when getting ip info: " . $th->getMessage());
                 return null;

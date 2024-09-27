@@ -27,7 +27,7 @@ class Impersonate
         $rootUsers = type(config('services.root_users'))->asArray();
 
         $authHeader = $request->header('Authorization');
-        if(!$authHeader) {
+        if (!$authHeader) {
             return response()->json(['error' => 'Unauthorized'], 403);
         }
 

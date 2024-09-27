@@ -211,14 +211,14 @@ EOD;
         if (!is_array($extracted)) {
             $extracted = [$extracted];
         }
-    
+
         if (!isset($extracted[0]) || !($extracted[0] instanceof stdClass)) {
             Log::error("Unexpected JSON structure from LLM");
             return new stdClass();
         }
 
         $extracted[0]->description = $message;
-    
+
         return $extracted[0];
     }
 

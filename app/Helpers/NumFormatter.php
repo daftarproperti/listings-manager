@@ -10,15 +10,15 @@ class NumFormatter
             // 0 - 900
             $divisor = 1;
             $suffix = '';
-        } else if ($n < 900000) {
+        } elseif ($n < 900000) {
             // 0.9k-850k
             $divisor = 1000;
             $suffix = __('compact.thousand',);
-        } else if ($n < 900000000) {
+        } elseif ($n < 900000000) {
             // 0.9m-850m
             $divisor = 1000000;
             $suffix = __('compact.million');
-        } else if ($n < 900000000000) {
+        } elseif ($n < 900000000000) {
             // 0.9b-850b
             $divisor = 1000000000;
             $suffix = __('compact.billion');

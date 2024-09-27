@@ -50,7 +50,13 @@ class TinkerWeb3 extends Command
         $nonce = $ethWrapper->getTransactionCount(env('ETH_ACCOUNT'))->toHex();
 
         /** @var string $contractData */
-        $contractData = $contract->at($contractAddress)->getData('addListing', 19, 'Salatiga', 'http://xxx', 'zzz'); // @phpstan-ignore-line
+        $contractData = $contract->at($contractAddress)->getData( // @phpstan-ignore-line
+            'addListing',
+            19,
+            'Salatiga',
+            'http://xxx',
+            'zzz'
+        );
         $tx = new Transaction(
             $nonce, // nonce
             $gasPrice, // gas price

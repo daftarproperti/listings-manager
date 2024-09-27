@@ -7,7 +7,7 @@ use MongoDB\Laravel\Eloquent\Model;
 
 /**
  * Class GeneratedListing
- * 
+ *
  * @property string $job_id
  * @property array $generated_listing
  */

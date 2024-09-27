@@ -24,7 +24,7 @@ class ListingRepository
             $query->where('title', 'like', '%' . $input['q'] . '%')
                   ->orWhere('_id', $input['q']);
 
-            if ($user) {                
+            if ($user) {
                 $query->orWhere('user.userId', $user->user_id);
             }
         }
@@ -59,7 +59,7 @@ class ListingRepository
                 /** @var User|null $user */
                 $user = User::where('phoneNumber', $input['q'])
                             ->orWhere('name', 'like', '%' . $input['q'] . '%')->first();
-                $q->where(function($subQuery) use ($input, $user) {
+                $q->where(function ($subQuery) use ($input, $user) {
                     $subQuery->where('title', 'like', '%' . $input['q'] . '%')
                             ->orWhere('_id', $input['q']);
 
@@ -70,8 +70,8 @@ class ListingRepository
             }
         });
 
-        $sortBy = $input['sortBy'] ?? 'updated_at'; 
-        $sortOrder = $input['sortOrder'] ?? 'desc'; 
+        $sortBy = $input['sortBy'] ?? 'updated_at';
+        $sortOrder = $input['sortOrder'] ?? 'desc';
 
         if (!is_string($sortBy) || !is_string($sortOrder)) {
             throw new \InvalidArgumentException("Sort parameters must be valid strings.");
@@ -93,17 +93,17 @@ class ListingRepository
      */
     public function listWithExpiredDate(array $input = [], int $itemsPerPage = 10): LengthAwarePaginator
     {
-        $now = Carbon::now(); 
+        $now = Carbon::now();
 
         $query = Listing::where(function ($q) use ($input, $now) {
             $q->whereNotNull('expiredAt')
-            ->where('expiredAt', '<', $now);  
+            ->where('expiredAt', '<', $now);
 
             if (isset($input['q'])) {
                 /** @var User|null $user */
                 $user = User::where('phoneNumber', $input['q'])
                             ->orWhere('name', 'like', '%' . $input['q'] . '%')->first();
-                $q->where(function($subQuery) use ($input, $user) {
+                $q->where(function ($subQuery) use ($input, $user) {
                     $subQuery->where('title', 'like', '%' . $input['q'] . '%')
                             ->orWhere('_id', $input['q']);
 
@@ -114,8 +114,8 @@ class ListingRepository
             }
         });
 
-        $sortBy = $input['sortBy'] ?? 'expiredAt'; 
-        $sortOrder = $input['sortOrder'] ?? 'asc'; 
+        $sortBy = $input['sortBy'] ?? 'expiredAt';
+        $sortOrder = $input['sortOrder'] ?? 'asc';
 
         if (!is_string($sortBy) || !is_string($sortOrder)) {
             throw new \InvalidArgumentException("Sort parameters must be valid strings.");
@@ -127,5 +127,4 @@ class ListingRepository
         $paginator = $query->paginate($itemsPerPage);
         return $paginator;
     }
-
 }

@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Admin;
+
 use App\Http\Controllers\Controller;
 use App\Models\Resources\ListingCollection;
 use App\Repositories\Admin\ListingRepository;
@@ -29,5 +30,4 @@ class ExpiredListingsController extends Controller
             ]
         ]);
     }
-
 }

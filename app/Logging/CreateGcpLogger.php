@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Logging;
 
 use Google\Cloud\Logging\LoggingClient;

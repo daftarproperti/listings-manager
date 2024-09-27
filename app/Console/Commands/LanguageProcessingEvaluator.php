@@ -104,7 +104,7 @@ class LanguageProcessingEvaluator extends Command
 
         // Iterate through smallest number of objects to avoid out of index
         $iteration = min(count($listings), count($expectedListings));
-        for($idx = 0; $idx < $iteration; $idx++) {
+        for ($idx = 0; $idx < $iteration; $idx++) {
             $totalAccuracy = 0;
 
             foreach ($fields as $field) {
@@ -138,16 +138,14 @@ class LanguageProcessingEvaluator extends Command
         if (empty($correctValueString)) {
             if (empty($guessedValueString) || $guessedValueString == "unknown") {
                 return 100;
-            }
-            else {
+            } else {
                 return 0;
             }
         }
 
         if (is_string($guessedValue) && is_string($correctValue)) {
             return $this->calculateStringAcc($guessedValue, $correctValue);
-        }
-        elseif (is_numeric($guessedValue) && is_numeric($correctValue)) {
+        } elseif (is_numeric($guessedValue) && is_numeric($correctValue)) {
             return $this->calculateNumberAcc($guessedValue, $correctValue);
         }
 

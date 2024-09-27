@@ -3,9 +3,9 @@
 namespace App\Models\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+
 class AiReviewListingGptResource extends JsonResource
 {
-
     public static $wrap = null;
 
     /**

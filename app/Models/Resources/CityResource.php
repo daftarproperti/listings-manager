@@ -4,7 +4,6 @@ namespace App\Models\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Models\City;
-
 use OpenApi\Attributes as OA;
 
 #[OA\Schema(

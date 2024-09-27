@@ -65,5 +65,4 @@ class ClosingsController extends Controller
 
         return Redirect::route('closing.index');
     }
-
 }

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models\Enums;
 
 enum ChatType: string

@@ -15,7 +15,10 @@ use Illuminate\Support\Facades\Log;
  */
 class DevQueueJob implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Dispatchable;
+    use InteractsWithQueue;
+    use Queueable;
+    use SerializesModels;
 
     private string $name;
 

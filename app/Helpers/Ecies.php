@@ -70,7 +70,9 @@ class Ecies
         $compressedSerializer = new CompressedPointSerializer(EccFactory::getAdapter());
         $generator = EccFactory::getSecgCurves()->generator256k1();
 
-        if (strlen($message) > 16) return false;
+        if (strlen($message) > 16) {
+            return false;
+        }
 
         // ECDH get symmetric key
         $ephemeralPrivateKey = $generator->createPrivateKey();
@@ -85,7 +87,9 @@ class Ecies
             OPENSSL_RAW_DATA | OPENSSL_DONT_ZERO_PAD_KEY | OPENSSL_ZERO_PADDING,
         );
 
-        if ($result === false) return false;
+        if ($result === false) {
+            return false;
+        }
 
         return bin2hex($result) . $compressedSerializer->serialize($ephemeralPrivateKey->getPublicKey()->getPoint());
     }
@@ -99,7 +103,9 @@ class Ecies
         $curve = EccFactory::getSecgCurves()->curve256k1();
 
         $ciphertext = hex2bin(substr($encrypted, 0, 32));
-        if ($ciphertext === false) return false;
+        if ($ciphertext === false) {
+            return false;
+        }
         $compressedPubKeyHex = substr($encrypted, 32);
 
         // ECDH get symmetric key
@@ -115,7 +121,9 @@ class Ecies
             OPENSSL_RAW_DATA | OPENSSL_DONT_ZERO_PAD_KEY | OPENSSL_ZERO_PADDING,
         );
 
-        if ($result === false) return false;
+        if ($result === false) {
+            return false;
+        }
 
         return rtrim($result, "\0");
     }

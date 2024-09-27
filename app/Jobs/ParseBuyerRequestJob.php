@@ -15,7 +15,10 @@ use App\Models\SavedSearch;
 
 class ParseBuyerRequestJob implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Dispatchable;
+    use InteractsWithQueue;
+    use Queueable;
+    use SerializesModels;
 
     private ?string $sourceText;
     private ?ListingUser $user;
@@ -26,7 +29,6 @@ class ParseBuyerRequestJob implements ShouldQueue
     public function __construct(
         ?string $sourceText,
         ?ListingUser $user
-
     ) {
         $this->sourceText = $sourceText;
         $this->user = $user;
@@ -58,7 +60,6 @@ class ParseBuyerRequestJob implements ShouldQueue
                 }
             }
         } catch (\Throwable $th) {
-
             Log::error("Error caught when trying to extract buyer request data:");
             Log::error($th);
             return;
