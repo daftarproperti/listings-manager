@@ -12,6 +12,7 @@ pipeline {
             steps {
                 sh 'composer install'
                 sh 'vendor/bin/phpstan analyse'
+                sh 'vendor/bin/phpcs --standard=PSR12 app'
             }
         }
         stage('Test') {
