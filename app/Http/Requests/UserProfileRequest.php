@@ -6,10 +6,10 @@ use App\Http\Requests\BaseApiRequest;
 use OpenApi\Attributes as OA;
 
 #[OA\Schema(
-    schema: "TelegramUserProfileRequest",
+    schema: "UserProfileRequest",
     type: "object",
 )]
-class TelegramUserProfileRequest extends BaseApiRequest
+class UserProfileRequest extends BaseApiRequest
 {
     #[OA\Property(property: "name", type: "string", example: "Jono Doe")]
     #[OA\Property(property: "phoneNumber", type: "string", example: "081111111111")]

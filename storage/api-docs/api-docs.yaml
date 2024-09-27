@@ -1156,7 +1156,7 @@ paths:
         content:
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/TelegramUserProfileRequest'
+              $ref: '#/components/schemas/UserProfileRequest'
       responses:
         200:
           description: success
@@ -1314,7 +1314,7 @@ components:
         filterSet:
           $ref: '#/components/schemas/FilterSet'
       type: object
-    TelegramUserProfileRequest:
+    UserProfileRequest:
       properties:
         name:
           type: string
@@ -1916,7 +1916,7 @@ components:
         secretKey:
           type: string
       type: object
-    TelegramUserProfile:
+    UserProfile:
       properties:
         name:
           type: string

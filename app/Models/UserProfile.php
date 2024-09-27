@@ -19,7 +19,7 @@ use Spatie\LaravelData\Data;
         new OA\Property(property: "isPublicProfile",  type: "boolean", example: true, nullable: true),
     ]
 )]
-class TelegramUserProfile extends Data
+class UserProfile extends Data
 {
     public ?string $name = null;
     public ?string $phoneNumber = null;

@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Resources\UserResource;
-use App\Http\Requests\TelegramUserProfileRequest;
+use App\Http\Requests\UserProfileRequest;
 use App\Models\User;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Auth;
@@ -43,7 +43,7 @@ class UserController extends Controller
             required: true,
             content: new OA\MediaType(
                 mediaType: "multipart/form-data",
-                schema: new OA\Schema(ref: "#/components/schemas/TelegramUserProfileRequest")
+                schema: new OA\Schema(ref: "#/components/schemas/UserProfileRequest")
             )
         ),
         responses: [
@@ -54,7 +54,7 @@ class UserController extends Controller
             )
         ]
     )]
-    public function updateProfile(TelegramUserProfileRequest $request): JsonResource
+    public function updateProfile(UserProfileRequest $request): JsonResource
     {
         /** @var User $currentUser */
         $currentUser = Auth::user();

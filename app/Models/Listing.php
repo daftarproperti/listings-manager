@@ -75,7 +75,7 @@ use MongoDB\BSON\UTCDateTime;
  * @property bool $isPrivate
  * @property bool $withRewardAgreement
  * @property bool $isMultipleUnits
- * @property TelegramUserProfile $user_profile
+ * @property UserProfile $user_profile
  * @property ListingUser|null $user
  * @property Carbon $updated_at
  * @property Carbon $created_at
@@ -218,7 +218,7 @@ class Listing extends Model
         return $currentUserId == ($listingUser->userId ?? null);
     }
 
-    public function getUserProfileAttribute(): ?TelegramUserProfile
+    public function getUserProfileAttribute(): ?UserProfile
     {
         $user = $this->user;
         $userSource = $user?->source;
@@ -235,7 +235,7 @@ class Listing extends Model
                     return null;
                 }
 
-                $profile = new TelegramUserProfile();
+                $profile = new UserProfile();
 
                 $profile->name = $appUser->name;
                 $profile->phoneNumber = $appUser->phoneNumber;
