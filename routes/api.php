@@ -81,5 +81,3 @@ Route::prefix('auth')->group(function () {
 
     Route::post('/verify-totp', [AuthController::class, 'verifyTOTP'])->middleware('throttle-otp-request:phoneNumber');
 });
-
-Route::get('photo/{fileId}/{fileUniqueId}', [PhotoController::class, 'telegramPhoto'])->name('telegram-photo');

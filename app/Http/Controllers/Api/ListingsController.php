@@ -693,8 +693,7 @@ class ListingsController extends Controller
                 $listing->{$key} = $value;
             } else {
                 if ($key == 'pictureUrls') {
-                    $uploadedImages = $this->uploadImages($value);
-                    $listing->pictureUrls = $uploadedImages;
+                    $listing->pictureUrls = $value;
                     continue;
                 }
 
@@ -725,33 +724,6 @@ class ListingsController extends Controller
         /** @var User $user */
         $user = Auth::user();
         return $user->toListingUser();
-    }
-
-    /**
-     * @param array<mixed> $images
-     *
-     * @return array<string>
-     */
-    private function uploadImages(array $images): array
-    {
-        $googleStorageService = app()->make(GoogleStorageService::class);
-
-        $uploadedImages = [];
-        foreach ($images as $image) {
-            if (is_object($image) && is_a($image, \Illuminate\Http\UploadedFile::class)) {
-                $fileName = sprintf('%s.%s', md5($image->getClientOriginalName()), $image->getClientOriginalExtension());
-                $fileId = time();
-                $googleStorageService->uploadFile(
-                    type(file_get_contents($image->getRealPath()))->asString(),
-                    sprintf('%s_%s', $fileId, $fileName)
-                );
-                $uploadedImages[] = route('telegram-photo', [$fileId, $fileName], false);
-            } else {
-                $uploadedImages[] = type($image)->asString();
-            }
-        }
-
-        return $uploadedImages;
     }
 
     /**
