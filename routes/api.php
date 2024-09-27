@@ -29,7 +29,7 @@ if (App::environment('development')) {
     });
 }
 
-Route::group(['prefix' => 'app', 'middleware' => ['telegram-app']], function () {
+Route::group(['prefix' => 'app', 'middleware' => ['dp-app']], function () {
     Route::prefix('properties')->group(function () {
         Route::get('/', [PropertiesController::class, 'index']);
         Route::get('/{property}', [PropertiesController::class, 'show']);
@@ -75,7 +75,7 @@ Route::group(['prefix' => 'app', 'middleware' => ['telegram-app']], function () 
 Route::prefix('auth')->group(function () {
     Route::post('/send-otp', [AuthController::class, 'sendOTP'])->middleware('throttle-otp-request:phoneNumber');
     Route::post('/verify-otp', [AuthController::class, 'verifyOTP'])->middleware('throttle-otp-request:token');
-    Route::post('/logout', [AuthController::class, 'logout'])->middleware('telegram-app');
+    Route::post('/logout', [AuthController::class, 'logout'])->middleware('dp-app');
 
     Route::post('/impersonate', [AuthController::class, 'impersonate'])->middleware('impersonate');
 

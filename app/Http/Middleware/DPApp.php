@@ -7,7 +7,7 @@ use App\Traits\TokenValidation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class TelegramApp
+class DPApp
 {
     use TokenValidation;
 
