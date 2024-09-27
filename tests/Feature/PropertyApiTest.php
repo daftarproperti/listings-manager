@@ -31,7 +31,6 @@ class PropertyApiTest extends TestCase
     {
         parent::setUp();
 
-        Config::set('services.telegram.bot_token', $this->fakeBotToken);
         Config::set('services.google.bucket_name', 'some-bucket');
 
         // Ensure each test case starts with empty database.

@@ -66,7 +66,6 @@ class Kernel extends HttpKernel
         'signed' => \App\Http\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
-        'telegram-webhook' => \App\Http\Middleware\TelegramWebhook::class,
         'telegram-app' => \App\Http\Middleware\TelegramApp::class,
         'listing-user' => \App\Http\Middleware\ListingUser::class,
         'auth-dev' => \App\Http\Middleware\AuthDev::class,

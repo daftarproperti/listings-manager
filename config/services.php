@@ -31,11 +31,6 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
-    'telegram' => [
-        'webhook_access_secret' => env('TELEGRAM_WEBHOOK_SECRET'),
-        'bot_token' => env('TELEGRAM_BOT_TOKEN'),
-    ],
-
     'chatgpt' => [
         'key' => env('CHATGPT_KEY'),
         'endpoint' => env('CHATGPT_ENDPOINT', 'https://api.openai.com/v1/chat/completions'),

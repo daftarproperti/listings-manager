@@ -4,7 +4,6 @@
 
 This is the backend system of Daftar Properti:
 
-* Telegram webhook
 * Web API
 * Public web pages
 

@@ -36,8 +36,6 @@ env_variables:
   SESSION_DRIVER: cookie
   MONGODB_SRV: "mongodb+srv://usernam:password@host/"
   MONGODB_DATABASE: "daftarproperti-dev-2"
-  TELEGRAM_WEBHOOK_SECRET: "secret"
-  TELEGRAM_BOT_TOKEN: "123:abc"
   GOOGLE_PROJECT_ID: "daftar-properti-dev-2"
   GOOGLE_QUEUE_NAME: "dp-noretry"
   GOOGLE_QUEUE_LOCATION: "asia-southeast2"

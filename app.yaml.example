@@ -26,8 +26,6 @@ env_variables:
   SESSION_DRIVER: file
   MONGODB_SRV : "mongodb+srv://usernam:password@host/"
   MONGODB_DATABASE : "dbname"
-  TELEGRAM_WEBHOOK_SECRET: "secret"
-  TELEGRAM_BOT_TOKEN: "123:abc"
   GOOGLE_PROJECT_ID: "someproject-399607"
   GOOGLE_QUEUE_NAME: "queuename"
   GOOGLE_QUEUE_LOCATION: "asia-southeast2"
