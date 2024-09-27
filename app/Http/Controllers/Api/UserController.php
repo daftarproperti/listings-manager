@@ -13,7 +13,7 @@ use OpenApi\Attributes as OA;
 class UserController extends Controller
 {
     #[OA\Get(
-        path: "/api/tele-app/users/profile",
+        path: "/api/app/users/profile",
         tags: ["Telegram Users"],
         summary: "Get profile",
         description: "Returns user profile",
@@ -35,7 +35,7 @@ class UserController extends Controller
     }
 
     #[OA\Post(
-        path: "/api/tele-app/users/profile",
+        path: "/api/app/users/profile",
         tags: ["Telegram Users"],
         summary: "Update profile",
         operationId: "updateProfile",
@@ -74,7 +74,7 @@ class UserController extends Controller
     }
 
     #[OA\Post(
-        path: "/api/tele-app/users/secret-key",
+        path: "/api/app/users/secret-key",
         tags: ["Telegram Users"],
         summary: "Generate Secret Key for TOTP",
         operationId: "generateSecretKey",
@@ -101,7 +101,7 @@ class UserController extends Controller
     }
 
     #[OA\Delete(
-        path: "/api/tele-app/users/secret-key",
+        path: "/api/app/users/secret-key",
         tags: ["Telegram Users"],
         summary: "Delete Secret Key for TOTP",
         operationId: "deleteSecretKey",

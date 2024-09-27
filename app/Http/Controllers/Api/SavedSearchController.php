@@ -18,7 +18,7 @@ use OpenApi\Attributes as OA;
 class SavedSearchController extends Controller
 {
     #[OA\Get(
-        path: "/api/tele-app/saved-searches",
+        path: "/api/app/saved-searches",
         tags: ["Saved Searches"],
         summary: "Get saved search items",
         description: "Returns saved search items",
@@ -54,7 +54,7 @@ class SavedSearchController extends Controller
     }
 
     #[OA\Get(
-        path: "/api/tele-app/saved-searches/{id}",
+        path: "/api/app/saved-searches/{id}",
         tags: ["Saved Searches"],
         summary: "Get saved search by id",
         operationId: "saved_searches.show",
@@ -94,7 +94,7 @@ class SavedSearchController extends Controller
     }
 
     #[OA\Post(
-        path: "/api/tele-app/saved-searches",
+        path: "/api/app/saved-searches",
         tags: ["Saved Searches"],
         summary: "Create saved search",
         operationId: "saved_searches.create",
@@ -141,7 +141,7 @@ class SavedSearchController extends Controller
     }
 
     #[OA\Post(
-        path: "/api/tele-app/saved-searches/{id}",
+        path: "/api/app/saved-searches/{id}",
         tags: ["Saved Searches"],
         summary: "Update saved searches",
         operationId: "saved_searches.update",
@@ -207,7 +207,7 @@ class SavedSearchController extends Controller
     }
 
     #[OA\Delete(
-        path: "/api/tele-app/saved-searches/{id}",
+        path: "/api/app/saved-searches/{id}",
         tags: ["Saved Searches"],
         summary: "Delete saved searches",
         operationId: "saved_searches.delete",

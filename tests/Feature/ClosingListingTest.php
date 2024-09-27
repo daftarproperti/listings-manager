@@ -69,7 +69,7 @@ class ClosingListingTest extends TestCase
     public function test_without_authentication(): void
     {
         $listing = $this->addListing('Dijual Rumah', $this->fakeUserId);
-        $response = $this->post(sprintf('/api/tele-app/listings/%s/closings', $listing->id));
+        $response = $this->post(sprintf('/api/app/listings/%s/closings', $listing->id));
         $response->assertStatus(403);
     }
 
@@ -92,7 +92,7 @@ class ClosingListingTest extends TestCase
 
         $this->testWithBothAuth(function (self $makesHttpRequests) use($listing, $closingData) {
             $response = $makesHttpRequests->post(
-                sprintf('/api/tele-app/listings/%s/closings', $listing->id),
+                sprintf('/api/app/listings/%s/closings', $listing->id),
                 $closingData
             );
             $response->assertStatus(200);

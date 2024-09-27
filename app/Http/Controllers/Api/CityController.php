@@ -15,7 +15,7 @@ use OpenApi\Attributes as OA;
 class CityController extends Controller
 {
     #[OA\Get(
-        path: '/api/tele-app/cities',
+        path: '/api/app/cities',
         tags: ['Cities'],
         summary: 'Get cities',
         description: 'Returns city items',
@@ -67,7 +67,7 @@ class CityController extends Controller
     }
 
     #[OA\Get(
-        path: "/api/tele-app/cities/{id}",
+        path: "/api/app/cities/{id}",
         tags: ["Cities"],
         summary: "Get city by id",
         operationId: "cities.getCityById",

@@ -32,7 +32,7 @@ use OpenApi\Attributes as OA;
 class ListingsController extends Controller
 {
     #[OA\Get(
-        path: '/api/tele-app/listings',
+        path: '/api/app/listings',
         tags: ['Listings'],
         summary: 'Get listing items',
         description: 'Returns listing items',
@@ -323,7 +323,7 @@ class ListingsController extends Controller
     }
 
     #[OA\Get(
-        path: "/api/tele-app/listings/{id}",
+        path: "/api/app/listings/{id}",
         tags: ["Listings"],
         summary: "Get listing by id",
         operationId: "listings.show",
@@ -363,7 +363,7 @@ class ListingsController extends Controller
     }
 
     #[OA\Post(
-        path: "/api/tele-app/listings/{id}",
+        path: "/api/app/listings/{id}",
         tags: ["Listings"],
         summary: "Update listing",
         operationId: "listings.update",
@@ -416,7 +416,7 @@ class ListingsController extends Controller
     }
 
     #[OA\Post(
-        path: "/api/tele-app/listings",
+        path: "/api/app/listings",
         tags: ["Listings"],
         summary: "Create listing",
         operationId: "listings.create",
@@ -447,7 +447,7 @@ class ListingsController extends Controller
     }
 
     #[OA\Delete(
-        path: "/api/tele-app/listings/{id}",
+        path: "/api/app/listings/{id}",
         tags: ["Listings"],
         summary: "Delete listing",
         operationId: "listings.delete",
@@ -483,7 +483,7 @@ class ListingsController extends Controller
     }
 
     #[OA\Post(
-        path: "/api/tele-app/listings/generate-from-text",
+        path: "/api/app/listings/generate-from-text",
         tags: ["Listings"],
         summary: "Generate Listing from Text",
         operationId: "listings.generateFromText",
@@ -531,7 +531,7 @@ class ListingsController extends Controller
 
 
     #[OA\Post(
-        path: "/api/tele-app/listings/getGenerateResult",
+        path: "/api/app/listings/getGenerateResult",
         tags: ["Listings"],
         summary: "Get Generate Listing Result",
         operationId: "listings.getGenerateResult",
@@ -580,7 +580,7 @@ class ListingsController extends Controller
     }
 
     #[OA\Post(
-        path: "/api/tele-app/listings/{id}/likely-connected",
+        path: "/api/app/listings/{id}/likely-connected",
         tags: ["Listings"],
         summary: "Get Likely Connected Listing",
         operationId: "listings.likely-connected",
@@ -672,7 +672,7 @@ class ListingsController extends Controller
                     $listing->{$key} = (bool) $value;
                     continue;
                 }
-                
+
                 if ($key === 'expiredAt' && !empty($value)) {
                     if (!is_string($value)) {
                         throw new \InvalidArgumentException("Expected string for 'expiredAt', got: " . gettype($value));
@@ -681,10 +681,10 @@ class ListingsController extends Controller
                     if ($date === false) {
                         throw new \Exception("Invalid date format provided for 'expiredAt'.");
                     }
-                    $listing->{$key} = $date; 
+                    $listing->{$key} = $date;
                     continue;
                 }
-                
+
                 if (is_numeric($value)) {
                     $listing->{$key} = (int) $value;
                     continue;
@@ -756,7 +756,7 @@ class ListingsController extends Controller
 
     /**
      * Update the cancellation note for a listing.
-     * 
+     *
      * @param Request $request
      * @param Listing $listing
      * @return JsonResponse
@@ -769,7 +769,7 @@ class ListingsController extends Controller
 
         $listing->cancellationNote = new CancellationNote(
             reason: $validated['reason'],
-            status: CancellationStatus::ON_REVIEW 
+            status: CancellationStatus::ON_REVIEW
         );
 
         $listing->save();
@@ -777,6 +777,6 @@ class ListingsController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Cancellation note updated successfully.',
-        ]); 
+        ]);
     }
 }

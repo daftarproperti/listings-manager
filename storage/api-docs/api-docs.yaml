@@ -188,7 +188,7 @@ paths:
                   user:
                     $ref: '#/components/schemas/User'
                 type: object
-  /api/tele-app/cities:
+  /api/app/cities:
     get:
       tags:
         - Cities
@@ -215,7 +215,7 @@ paths:
                     items:
                       $ref: '#/components/schemas/City'
                 type: object
-  '/api/tele-app/cities/{id}':
+  '/api/app/cities/{id}':
     get:
       tags:
         - Cities
@@ -246,7 +246,7 @@ paths:
                     type: string
                     example: 'City not found'
                 type: object
-  '/api/tele-app/listings/{id}/closings':
+  '/api/app/listings/{id}/closings':
     post:
       tags:
         - Listings
@@ -269,7 +269,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Listing'
-  /api/tele-app/listings:
+  /api/app/listings:
     get:
       tags:
         - Listings
@@ -522,7 +522,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Listing'
-  '/api/tele-app/listings/{id}':
+  '/api/app/listings/{id}':
     get:
       tags:
         - Listings
@@ -613,7 +613,7 @@ paths:
                     type: string
                     example: 'Listing deleted successfully'
                 type: object
-  /api/tele-app/listings/generate-from-text:
+  /api/app/listings/generate-from-text:
     post:
       tags:
         - Listings
@@ -638,7 +638,7 @@ paths:
                     type: string
                     example: sample-result-id-1
                 type: object
-  /api/tele-app/listings/getGenerateResult:
+  /api/app/listings/getGenerateResult:
     post:
       tags:
         - Listings
@@ -662,7 +662,7 @@ paths:
                   generatedListing:
                     $ref: '#/components/schemas/Listing'
                 type: object
-  '/api/tele-app/listings/{id}/likely-connected':
+  '/api/app/listings/{id}/likely-connected':
     post:
       tags:
         - Listings
@@ -724,7 +724,7 @@ paths:
               schema:
                 type: string
                 format: binary
-  /api/tele-app/upload/image:
+  /api/app/upload/image:
     post:
       tags:
         - Image
@@ -750,7 +750,7 @@ paths:
                     type: string
                     example: image.jpg
                 type: object
-  /api/tele-app/properties:
+  /api/app/properties:
     get:
       tags:
         - Properties
@@ -955,7 +955,7 @@ paths:
                     items:
                       $ref: '#/components/schemas/Property'
                 type: object
-  '/api/tele-app/properties/{id}':
+  '/api/app/properties/{id}':
     get:
       tags:
         - Properties
@@ -986,7 +986,7 @@ paths:
                     type: string
                     example: 'Property not found'
                 type: object
-  /api/tele-app/saved-searches:
+  /api/app/saved-searches:
     get:
       tags:
         - 'Saved Searches'
@@ -1027,7 +1027,7 @@ paths:
                     type: string
                     example: 'Saved search created successfully'
                 type: object
-  '/api/tele-app/saved-searches/{id}':
+  '/api/app/saved-searches/{id}':
     get:
       tags:
         - 'Saved Searches'
@@ -1132,7 +1132,7 @@ paths:
                     type: string
                     example: 'Saved search not found'
                 type: object
-  /api/tele-app/users/profile:
+  /api/app/users/profile:
     get:
       tags:
         - 'Telegram Users'
@@ -1164,7 +1164,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/User'
-  /api/tele-app/users/secret-key:
+  /api/app/users/secret-key:
     post:
       tags:
         - 'Telegram Users'

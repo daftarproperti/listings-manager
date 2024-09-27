@@ -55,7 +55,7 @@ class PhotoController extends Controller
     }
 
     #[OA\Post(
-        path: '/api/tele-app/upload/image',
+        path: '/api/app/upload/image',
         tags: ['Image'],
         summary: 'Upload Image',
         operationId: 'image.upload',

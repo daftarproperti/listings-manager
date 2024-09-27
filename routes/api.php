@@ -29,7 +29,7 @@ if (App::environment('development')) {
     });
 }
 
-Route::group(['prefix' => 'tele-app', 'middleware' => ['telegram-app']], function () {
+Route::group(['prefix' => 'app', 'middleware' => ['telegram-app']], function () {
     Route::prefix('properties')->group(function () {
         Route::get('/', [PropertiesController::class, 'index']);
         Route::get('/{property}', [PropertiesController::class, 'show']);

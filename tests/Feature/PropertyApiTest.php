@@ -59,7 +59,7 @@ class PropertyApiTest extends TestCase
 
     public function test_without_authentication(): void
     {
-        $response = $this->get('/api/tele-app/properties');
+        $response = $this->get('/api/app/properties');
 
         $response->assertStatus(403);
     }
@@ -79,7 +79,7 @@ class PropertyApiTest extends TestCase
         ]);
 
         $this->testWithBothAuth(function (self $makesHttpRequests) {
-            $response = $makesHttpRequests->get('/api/tele-app/properties');
+            $response = $makesHttpRequests->get('/api/app/properties');
 
             $response->assertStatus(200);
 
@@ -106,7 +106,7 @@ class PropertyApiTest extends TestCase
         $property = $this->addProperty("Dijual Rumah", $this->fakeUserId);
 
         $this->testWithBothAuth(function (self $makesHttpRequests) use ($property) {
-            $response = $makesHttpRequests->get("/api/tele-app/properties/{$property->id}");
+            $response = $makesHttpRequests->get("/api/app/properties/{$property->id}");
 
             $response->assertStatus(200);
 
@@ -122,7 +122,7 @@ class PropertyApiTest extends TestCase
     {
         $response = $this->withHeaders([
             'Authorization' => 'Bearer ' . $this->token,
-        ])->get('/api/tele-app/users/profile');
+        ])->get('/api/app/users/profile');
 
         $response->assertStatus(200);
         $response->assertJsonStructure([
@@ -142,7 +142,7 @@ class PropertyApiTest extends TestCase
     {
         $response = $this->withHeaders([
             'Authorization' => 'Bearer ' . $this->token,
-        ])->post('/api/tele-app/users/profile', [
+        ])->post('/api/app/users/profile', [
             'name' => 'John No',
             'city' => 'Jakarta',
             'cityId' => 123,

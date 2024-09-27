@@ -16,7 +16,7 @@ use MongoDB\BSON\UTCDateTime;
 class ClosingsController extends Controller
 {
     #[OA\Post(
-        path: "/api/tele-app/listings/{id}/closings",
+        path: "/api/app/listings/{id}/closings",
         tags: ["Listings"],
         summary: "Add a closing to a listing",
         operationId: "listings.closing",

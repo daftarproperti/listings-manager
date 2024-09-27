@@ -15,7 +15,7 @@ use OpenApi\Attributes as OA;
 class PropertiesController extends Controller
 {
     #[OA\Get(
-        path: '/api/tele-app/properties',
+        path: '/api/app/properties',
         tags: ['Properties'],
         summary: 'Get list of property',
         description: 'Returns list of property',
@@ -258,7 +258,7 @@ class PropertiesController extends Controller
     }
 
     #[OA\Get(
-        path: "/api/tele-app/properties/{id}",
+        path: "/api/app/properties/{id}",
         tags: ["Properties"],
         summary: "Get property by id",
         operationId: "show",
