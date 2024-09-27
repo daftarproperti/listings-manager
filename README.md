@@ -1,11 +1,12 @@
 [![Coverage](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fartifacts.jlrm.net%2Fpublic%2Fcoverage.json&query=coverage&label=Coverage)](https://artifacts.jlrm.net/coverage)
 
-## Daftar Properti
+## Daftar Properti Listings Manager
 
-This is the backend system of Daftar Properti:
+This is the Listings Manager of Daftar Properti:
 
-* Web API
 * Public web pages
+* API backend for Listings Manager frontend
+* Admin Panel for listings review
 
 ### Development
 
@@ -32,6 +33,31 @@ Running tests:
 * Prepare test environment (see test-utils/)
 * Run `php artisan test`
 
+### Admin Panel
+
+Environment variables need to be set before building JS:
+```
+VITE_GOOGLE_MAPS_API_KEY
+VITE_GOOGLE_MAP_ID
+```
+
+The admin panel requires JS to be built:
+```
+$ npm run build
+```
+
+Or for quick development, run vite with watch mode:
+```
+npx vite
+```
+
+Some useful environment variables when running vite behind reverse proxy:
+```
+VITE_HMR_PROTOCOL=wss            # if the reverse proxy uses HTTPS
+VITE_HMR_HOST=<proxy-host-name>  # the name on which the proxy is accessible at
+VITE_HMR_CLIENT_PORT=443         # port of the proxy, 443 if using default HTTPS port
+```
+
 ### Running tests in a container
 
 To make it easy to run tests in an isolated environment, e.g. in a CI, a
@@ -49,18 +75,18 @@ $ docker-compose -f test-env/docker-compose.yml run test-app
 ```
 
 ### Viewing Logs
-Log destination can be configured by setting LOG_CHANNEL environment variable.
+Log destination can be configured by setting `LOG_CHANNEL` environment variable.
 
-For local development, it's simplest to use LOG_CHANNEL=single or leave it unset. This will write logs to
+For local development, it's simplest to use `LOG_CHANNEL=single` or leave it unset. This will write logs to
 `storage/logs/laravel.log`.
 
-For GCP deployment, set LOG_CHANNEL=gcp to utilize Google Cloud Logging as the log output. To view the logs in GCP
+For GCP deployment, set `LOG_CHANNEL=gcp` to utilize Google Cloud Logging as the log output. To view the logs in GCP
 console, go to Logs Explorer (https://console.cloud.google.com/logs), and filter the logs by the log name:
 ```
 logName="projects/{project-name}/logs/app"
 ```
 
-### Laravel Queue Usage
+### Laravel Queue
 
 Daftar Properti uses Laravel Queues (https://laravel.com/docs/10.x/queues) to execute time-consuming tasks so that
 the main request handler does not block user requests, for example LLM execution, upload to cloud storage, etc.
@@ -70,13 +96,9 @@ so that each deployment version operates on the queue jobs that were posted by t
 code between jobs and queue workers.
 
 For now, we only operate one named queue for each version which is called `generic-<version>`. Due to the dynamic name
-of the queue, one can use `App\Helpers\Queue::getQueueName()` to generate the queue name with the correct version.
+of the queue, use `App\Helpers\Queue::getQueueName()` to generate the queue name with the correct version.
 For code reference, see [additional-supervisord.conf.template](additional-supervisord.conf.template).
 
 ### Production Deployment
 
-TODO
-
-### Database set up
-
-TODO
+Production is deployed to Google App Engine, automated in a separate repo.
