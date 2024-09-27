@@ -1,4 +1,4 @@
-service: tele-webhook
+service: default
 runtime: php
 env: flex
 
