@@ -1991,6 +1991,15 @@
                 ],
                 "example": "waitlisted"
             },
+            "AiReviewStatus": {
+                "description": "AiReview Status",
+                "type": "string",
+                "enum": [
+                    "processing",
+                    "done"
+                ],
+                "example": "done"
+            },
             "CancellationStatus": {
                 "type": "string",
                 "enum": [
