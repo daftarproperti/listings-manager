@@ -30,7 +30,7 @@ Running static analyzer:
 
 Running code style checker and fixer:
 * `/vendor/bin/phpcs --standard=PSR12 app`
-* `/vendor/bin/php-cs-fixer fix app`
+* `/vendor/bin/php-cs-fixer fix`
 
 Running tests:
 
