@@ -4,7 +4,6 @@ namespace App\Jobs;
 
 use App\Models\Listing;
 use App\Helpers\Photo;
-use App\Jobs\SyncListingToGCS;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Cache\LockTimeoutException;
 use Illuminate\Contracts\Queue\ShouldQueue;

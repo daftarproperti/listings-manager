@@ -2,12 +2,9 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Helpers\Photo;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ImageUploadRequest;
 use App\Http\Services\GoogleStorageService;
-use Illuminate\Support\Facades\Response;
-use Symfony\Component\HttpFoundation\StreamedResponse;
 use OpenApi\Attributes as OA;
 
 class PhotoController extends Controller

@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests;
 
-use App\Http\Requests\BaseApiRequest;
 use App\Models\FacingDirection;
 use App\Models\ListingSort;
 use App\Models\ListingType;

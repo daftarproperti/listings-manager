@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 trait CityAttributeTrait
 {
-     /**
+    /**
      * Retrieve the administrative city relationship for this model.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<City, ModelT> The administrative city relationship.

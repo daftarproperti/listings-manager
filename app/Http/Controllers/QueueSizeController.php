@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\Queue;
-use App\Http\Controllers\Controller;
 use Illuminate\Contracts\Queue\Factory as QueueManager;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;

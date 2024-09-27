@@ -8,8 +8,6 @@ use App\Models\Enums\VerifyStatus;
 use App\Models\Listing;
 use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\Collection;
-use Web3\Contract;
-use Web3\Web3;
 
 class EthSync extends Command
 {

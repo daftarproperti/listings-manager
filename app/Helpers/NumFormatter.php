@@ -13,7 +13,7 @@ class NumFormatter
         } elseif ($n < 900000) {
             // 0.9k-850k
             $divisor = 1000;
-            $suffix = __('compact.thousand',);
+            $suffix = __('compact.thousand');
         } elseif ($n < 900000000) {
             // 0.9m-850m
             $divisor = 1000000;

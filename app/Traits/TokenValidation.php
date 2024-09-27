@@ -4,7 +4,6 @@ namespace App\Traits;
 
 use Carbon\Carbon;
 use App\Models\Sanctum\PersonalAccessToken;
-use Illuminate\Support\Facades\App;
 use App\Models\User;
 
 trait TokenValidation

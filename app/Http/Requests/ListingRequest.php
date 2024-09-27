@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests;
 
-use App\Http\Requests\BaseApiRequest;
 use App\Models\ListingType;
 use App\Models\PropertyType;
 use Illuminate\Validation\Rule;

@@ -7,7 +7,6 @@ use DateTime;
 use Carbon\Carbon;
 use App\Http\Controllers\Controller;
 use App\Http\Services\OTPService;
-use App\Http\Services\WhatsAppService;
 use App\Models\Resources\UserResource;
 use App\Models\User;
 use App\Rules\IndonesiaPhoneFormat;

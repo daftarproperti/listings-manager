@@ -89,8 +89,8 @@ class Property extends Model
         );
     }
 
-     /**
-     * @return \Illuminate\Database\Eloquent\Casts\Attribute<array<string>, array<string>>
+    /**
+    * @return \Illuminate\Database\Eloquent\Casts\Attribute<array<string>, array<string>>
     */
     protected function listings(): Attribute
     {

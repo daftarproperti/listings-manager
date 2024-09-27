@@ -2,10 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\FacingDirection;
-use App\Models\ListingType;
-use App\Models\PropertyOwnership;
-use App\Models\PropertyType;
 use Spatie\LaravelData\Data;
 use OpenApi\Attributes as OA;
 

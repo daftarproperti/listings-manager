@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests;
 
-use App\Http\Requests\BaseApiRequest;
 use App\Models\Enums\ClosingType;
 use Illuminate\Validation\Rule;
 use OpenApi\Attributes as OA;

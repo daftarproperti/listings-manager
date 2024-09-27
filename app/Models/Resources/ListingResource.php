@@ -3,7 +3,6 @@
 namespace App\Models\Resources;
 
 use App\Helpers\Photo;
-use App\Models\Resources\CancellationNoteResource;
 use Carbon\Carbon;
 use Illuminate\Http\Resources\Json\JsonResource;
 use OpenApi\Attributes as OA;
@@ -128,7 +127,7 @@ class ListingResource extends JsonResource
                 'longitude' => $prop->coordinate->longitude,
             ],
             'contact' => [
-                'name' => $prop->contact ? ($prop->contact['name'] ?? null) :  null,
+                'name' => $prop->contact ? ($prop->contact['name'] ?? null) : null,
                 'company' =>  $prop->contact ? ($prop->contact['company'] ?? null) : null,
             ],
             'user' => [

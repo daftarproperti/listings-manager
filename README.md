@@ -28,6 +28,10 @@ Running static analyzer:
 
 * Run `vendor/bin/phpstan analyse`
 
+Running code style checker and fixer:
+* `/vendor/bin/phpcs --standard=PSR12 app`
+* `/vendor/bin/php-cs-fixer fix app`
+
 Running tests:
 
 * Prepare test environment (see test-utils/)
