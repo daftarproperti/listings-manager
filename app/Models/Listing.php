@@ -10,11 +10,6 @@ use App\Models\Enums\ActiveStatus;
 use App\Models\Enums\VerifyStatus;
 use App\Models\Traits\CityAttributeTrait;
 use Carbon\Carbon;
-use Exception;
-use Google\Analytics\Data\V1alpha\Filter\StringFilter\MatchType;
-use Google\Analytics\Data\V1beta\Filter;
-use Google\Analytics\Data\V1beta\Filter\StringFilter;
-use Google\Analytics\Data\V1beta\FilterExpression;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use MongoDB\Laravel\Eloquent\Model;
 use MongoDB\Laravel\Eloquent\SoftDeletes;
@@ -22,9 +17,6 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
-use Spatie\Analytics\Facades\Analytics;
-use Spatie\Analytics\Period;
 use MongoDB\BSON\UTCDateTime;
 
 /**
@@ -54,7 +46,6 @@ use MongoDB\BSON\UTCDateTime;
  * @property int $additionalBathroomCount
  * @property int $floorCount
  * @property int $electricPower
- * @property int $viewCount
  * @property FacingDirection $facing
  * @property PropertyOwnership $ownership
  * @property VerifyStatus $verifyStatus
@@ -133,54 +124,6 @@ class Listing extends Model
     public function aiReview(): HasOne
     {
         return $this->hasOne(AiReview::class);
-    }
-
-    public function getViewCountAttribute(): int
-    {
-        // Temporarily disable calling Google Analytics API since it turns out to be blocking very long.
-        // TODO: Optimize this by not directly fetching here, but dispatching the fetch job in a queue.
-        // Re-enable the function below when this is done.
-        return 0;
-    }
-
-    // TODO: Finalize this
-    public function disabledGetViewCountAttribute(): int
-    {
-        if (!env('PHASE1')) {
-            return 0;
-        }
-
-        try {
-            $startDate = Carbon::createFromDate(2024, 1, 1);
-            $endDate = Carbon::now();
-            $periode = Period::create($startDate, $endDate);
-
-            $metrics = ['eventCount'];
-            $dimension = ['customEvent:listing_id'];
-            $dimensionFilter = new FilterExpression([
-                'filter' => new Filter([
-                    'field_name' => 'customEvent:listing_id',
-                    'string_filter' => new StringFilter([
-                        'match_type' => MatchType::EXACT,
-                        'value' => $this->id,
-                    ]),
-                ]),
-            ]);
-
-            $analyticsData = Analytics::get($periode, $metrics, $dimension, 10, [], 0, $dimensionFilter)->first();
-
-            if (is_array($analyticsData)) {
-                return (int) $analyticsData['eventCount'];
-            } else {
-                return 0;
-            }
-        } catch (Exception $e) {
-            // Logging the error here. The failure can occur for a couple of reasons:
-            // 1. The 'property_id' doesn't exist or is invalid.
-            // 2. Missing or incorrect Google Analytics service account credentials.
-            Log::error($e);
-            return 0;
-        }
     }
 
     public function getFormattedPriceAttribute(): string

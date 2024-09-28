@@ -3,7 +3,7 @@
 
 <head>
     <!-- Google tag (gtag.js) -->
-    @if(env('ANALYTICS_MEASUREMENT_ID') && env('PHASE1'))
+    @if(env('ANALYTICS_MEASUREMENT_ID') && env('ENABLE_ANALYTICS'))
     <script async src="https://www.googletagmanager.com/gtag/js?id={{ env('ANALYTICS_MEASUREMENT_ID') }}"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
@@ -142,17 +142,6 @@
             </div>
         </nav>
     </div>
-
-    @if(env('ANALYTICS_MEASUREMENT_ID') && env('PHASE1'))
-    <script>
-        /**
-         * The following event is sent when the page loads.
-         */
-        gtag("event", "listing_view", {
-            "listing_id": "{{ $listing->id }}",
-        });
-    </script>
-    @endif
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
 </body>
 
