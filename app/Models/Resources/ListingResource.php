@@ -36,7 +36,6 @@ class ListingResource extends JsonResource
     #[OA\Property(property: 'floorCount', type: 'integer')]
     #[OA\Property(property: 'electricPower', type: 'integer')]
     #[OA\Property(property: 'viewCount', type: 'integer')]
-    #[OA\Property(property: 'matchFilterCount', type: 'integer')]
     #[OA\Property(property: 'facing', ref: '#/components/schemas/FacingDirection')]
     #[OA\Property(property: 'ownership', ref: '#/components/schemas/PropertyOwnership')]
     #[OA\Property(property: 'verifyStatus', ref: '#/components/schemas/VerifyStatus')]
@@ -113,7 +112,6 @@ class ListingResource extends JsonResource
             'floorCount' => $prop->floorCount ? (int) $prop->floorCount : null,
             'electricPower' => $prop->electricPower ? (int) $prop->electricPower : null,
             'viewCount' => $prop->viewCount ?? 0,
-            'matchFilterCount' => $prop->matchFilterCount ?? 0,
             'facing' => $prop->facing,
             'ownership' => $prop->ownership,
             'verifyStatus' => $prop->verifyStatus ?? '',

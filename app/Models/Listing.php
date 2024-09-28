@@ -22,7 +22,6 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use Spatie\Analytics\Facades\Analytics;
 use Spatie\Analytics\Period;
@@ -56,7 +55,6 @@ use MongoDB\BSON\UTCDateTime;
  * @property int $floorCount
  * @property int $electricPower
  * @property int $viewCount
- * @property int $matchFilterCount
  * @property FacingDirection $facing
  * @property PropertyOwnership $ownership
  * @property VerifyStatus $verifyStatus
@@ -86,8 +84,6 @@ class Listing extends Model
     use HasFactory;
     /** @use CityAttributeTrait<Listing> */
     use CityAttributeTrait;
-
-    private const CACHE_LENGTH = 60 * 60 * 24;
 
     protected $connection = 'mongodb';
     protected $collection = 'listings';
@@ -137,17 +133,6 @@ class Listing extends Model
     public function aiReview(): HasOne
     {
         return $this->hasOne(AiReview::class);
-    }
-
-    public function getMatchFilterCountAttribute(): int
-    {
-        if (!env('FEATURE_FILTER_COUNT_MATCHES')) {
-            return 0;
-        }
-
-        return Cache::remember('listing-' . $this->id . '-matchFilterCount', self::CACHE_LENGTH, function () {
-            return SavedSearch::countSavedSearchMatches($this->id);
-        });
     }
 
     public function getViewCountAttribute(): int

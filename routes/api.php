@@ -8,7 +8,6 @@ use App\Http\Controllers\Api\CityController;
 use App\Http\Controllers\Api\ClosingsController;
 use App\Http\Controllers\Api\DevController;
 use App\Http\Controllers\Api\PhotoController;
-use App\Http\Controllers\Api\SavedSearchController;
 use App\Http\Controllers\Api\UserController;
 
 /*
@@ -41,14 +40,6 @@ Route::group(['prefix' => 'app', 'middleware' => ['dp-app']], function () {
         Route::post('/{listing}/closings', [ClosingsController::class, 'closing'])->middleware('listing-user');
         Route::put('/{listing}/cancel', [ListingsController::class, 'updateCancellationNote'])->middleware('listing-user');
 
-    });
-
-    Route::prefix('saved-searches')->group(function () {
-        Route::get('/', [SavedSearchController::class, 'index']);
-        Route::post('/', [SavedSearchController::class, 'create']);
-        Route::get('/{savedSearch}', [SavedSearchController::class, 'show']);
-        Route::post('/{savedSearch}', [SavedSearchController::class, 'update']);
-        Route::delete('/{savedSearch}', [SavedSearchController::class, 'delete']);
     });
 
     Route::prefix('users')->group(function () {
