@@ -14,7 +14,6 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             AddVerifyStatusToListingTableSeeder::class,
-            AddVerifyStatusToPropertyTableSeeder::class,
             CitySeeder::class,
             AddActiveStatusToListingTableSeeder::class,
             AddIndexedCoordinateToListingTableSeeder::class

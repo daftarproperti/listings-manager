@@ -8,7 +8,6 @@ use App\Http\Controllers\Api\CityController;
 use App\Http\Controllers\Api\ClosingsController;
 use App\Http\Controllers\Api\DevController;
 use App\Http\Controllers\Api\PhotoController;
-use App\Http\Controllers\Api\PropertiesController;
 use App\Http\Controllers\Api\SavedSearchController;
 use App\Http\Controllers\Api\UserController;
 
@@ -30,11 +29,6 @@ if (App::environment('development')) {
 }
 
 Route::group(['prefix' => 'app', 'middleware' => ['dp-app']], function () {
-    Route::prefix('properties')->group(function () {
-        Route::get('/', [PropertiesController::class, 'index']);
-        Route::get('/{property}', [PropertiesController::class, 'show']);
-    });
-
     Route::prefix('listings')->group(function () {
         Route::get('/', [ListingsController::class, 'index']);
         Route::post('/', [ListingsController::class, 'create']);

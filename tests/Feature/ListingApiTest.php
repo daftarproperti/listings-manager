@@ -289,4 +289,39 @@ class ListingApiTest extends TestCase
             $response->assertStatus(422);
         });
     }
+
+    // TODO: Find another home for this test.
+    public function test_set_profile_with_access_token(): void
+    {
+        $response = $this->withHeaders([
+            'Authorization' => 'Bearer ' . $this->token,
+        ])->post('/api/app/users/profile', [
+            'name' => 'John No',
+            'city' => 'Jakarta',
+            'cityId' => 123,
+            'picture' => 'some_picture.jpg',
+        ]);
+
+        $response->assertStatus(200);
+        $response->assertJson([
+            'name' => 'John No',
+            'city' => 'Jakarta',
+            'cityId' => 123,
+            'description' => 'About the user.',
+            'picture' => 'https://storage.googleapis.com/some-bucket/some_picture.jpg',
+            'phoneNumber' => '081239129321',
+            'isPublicProfile' => false,
+        ]);
+
+        $this->assertEquals('John No', $response->json('name'));
+        $this->assertEquals('Jakarta', $response->json('city'));
+
+        $this->assertDatabaseHas('users', [
+            'name' => 'John No',
+            'phoneNumber' => '081239129321',
+            'city' => 'Jakarta',
+            'picture' => 'some_picture.jpg',
+            'isPublicProfile' => false,
+        ]);
+    }
 }

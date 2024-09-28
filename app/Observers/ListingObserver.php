@@ -8,7 +8,6 @@ use App\Jobs\Web3Listing;
 use App\Models\Enums\VerifyStatus;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Listing;
-use App\Models\Property;
 use App\Models\User;
 use Illuminate\Support\Facades\Log;
 
@@ -20,15 +19,6 @@ class ListingObserver
     public function created(Listing $listing): void
     {
         try {
-            $property = new Property();
-            $this->fillPropertyFromListing($listing, $property);
-
-            /**
-             * in next iteration 1 property will have more than 1 listing, so we use array for listings attribute
-             */
-            $property->listings = [$listing->id];
-            $property->save();
-
             // Sync to web3 of this Listing created event.
             $listingId = $listing->listingId;
 
@@ -44,10 +34,6 @@ class ListingObserver
     public function updated(Listing $listing): void
     {
         try {
-            $property = Property::where('listings', $listing->id)->first();
-            $this->fillPropertyFromListing($listing, $property);
-            $property->save();
-
             SyncListingToGCS::dispatch($listing->listingId)->onQueue(Queue::getQueueName('generic'));
         } catch (\Throwable $th) {
             Log::error('Error sync to property: ' . $th->getMessage());
@@ -143,31 +129,5 @@ class ListingObserver
         } catch (\Throwable $th) {
             Log::error('Error sync to blockchain: ' . $th->getMessage());
         }
-
-        $property = Property::where('listings', $listing->id)->first();
-        if ($property) {
-            $property->delete();
-        }
-    }
-
-    /**
-     * @param Listing $listing
-     * @param Property $property
-     * @return void
-     */
-    private function fillPropertyFromListing(Listing $listing, Property &$property): void
-    {
-        $dataToSync = collect($listing->toArray())->except(['_id', 'user', 'created_at', 'updated_at']);
-
-        $convertObjectKey = ['contact', 'coordinate'];
-
-        $dataToSync->map(function ($value, $key) use ($convertObjectKey, &$property) {
-            if (in_array($key, $convertObjectKey)) {
-                $property->{$key} = (object) $value;
-                return;
-            }
-            $property->{$key} = $value;
-            return;
-        });
     }
 }

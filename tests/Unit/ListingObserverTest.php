@@ -4,7 +4,6 @@ namespace Tests\Unit;
 
 use App\Models\Listing;
 use App\Models\Enums\VerifyStatus;
-use App\Models\Property;
 use App\Models\User;
 use Tests\TestCase;
 use Illuminate\Support\Facades\Auth;
@@ -53,47 +52,6 @@ class ListingObserverTest extends TestCase
         ]);
 
         $this->assertNotNull($listing->id);
-    }
-
-    public function test_listing_creation_should_create_property(): void
-    {
-        $listing = Listing::factory()->create([
-            'title' => 'Rumah Apik',
-            'description' => 'Rumah Luas dan sangat bagus'
-        ]);
-
-        $property = Property::where('listings', $listing->id)->first();
-
-        $this->assertNotNull($property->id);
-    }
-
-    public function test_listing_update_should_update_property(): void
-    {
-        $listing = Listing::factory()->create([
-            'title' => 'Rumah Apik',
-            'description' => 'Rumah Luas dan sangat bagus'
-        ]);
-
-        $listing->title = 'Rumah Bagus';
-        $listing->save();
-
-        $property = Property::where('listings', $listing->id)->first();
-
-        $this->assertEquals($property->title, 'Rumah Bagus');
-    }
-
-    public function test_delete_listing_also_delete_property(): void
-    {
-        $listing = Listing::factory()->create([
-            'title' => 'Rumah Apik',
-            'description' => 'Rumah Luas dan sangat bagus'
-        ]);
-
-        $listing->delete();
-
-        $property = Property::where('listings', $listing->id)->first();
-
-        $this->assertNull($property);
     }
 
     public function test_listing_creation_max_listings_per_user(): void
