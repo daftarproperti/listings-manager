@@ -106,32 +106,6 @@ $message
 EOD;
     }
 
-    public function generateBuyerRequestPrompt(string $message): string
-    {
-        $template = storage_path('BuyerRequestGptTemplate.txt');
-        $templateString = file_get_contents($template);
-
-        return <<<EOD
-I will give you unstructured message about a real estate property buyer request.
-The message can be in indonesian or in english or any language.
-I need your help to extract the unstructured information into structured fields, which I will tell you the detail below.
-
---- BEGIN REAL ESTATE BUYER REQUEST TEXT ---
-$message
---- END REAL ESTATE BUYER REQUEST TEXT
-
-Here are the fields that you need to extract:
---- BEGIN FIELDS IN JSON ---
-$templateString
---- END FIELDS ---
-
-Your extraction should be robust enough to handle variations in formatting and wording commonly found in such messages,
-because the buyer request text is written using natural language in Bahasa Indonesia.
-
-I will feed your response directly into a program, so make sure to return a proper JSON without any additional text.
-EOD;
-    }
-
     /**
      * @return array<string>
      */
@@ -220,24 +194,5 @@ EOD;
         $extracted[0]->description = $message;
 
         return $extracted[0];
-    }
-
-    /**
-     * @param string $message
-     * @return array<object>
-     */
-    public function extractBuyerRequestFromMessage($message): array
-    {
-        Log::debug("extracting buyer request , msg = $message");
-        $answer = $this->chatGptService->seekAnswerWithRetry(Extractor::generateBuyerRequestPrompt($message));
-        Log::debug('Answer from LLM (BUYER REQUEST) = ' . $answer);
-
-        $extracted = json_decode($answer, false);
-
-        if (!is_array($extracted)) {
-            $extracted = [$extracted];
-        }
-
-        return $extracted;
     }
 }
