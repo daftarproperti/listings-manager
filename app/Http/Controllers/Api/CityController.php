@@ -26,8 +26,8 @@ class CityController extends Controller
                 in: 'query',
                 description: 'Search city by keyword',
                 required: false,
-                schema: new OA\Schema(type: 'string')
-            )
+                schema: new OA\Schema(type: 'string'),
+            ),
         ],
         responses: [
             new OA\Response(
@@ -38,12 +38,12 @@ class CityController extends Controller
                         new OA\Property(
                             property: 'cities',
                             type: 'array',
-                            items: new OA\Items(ref: '#/components/schemas/City')
-                        )
-                    ]
-                )
-            )
-        ]
+                            items: new OA\Items(ref: '#/components/schemas/City'),
+                        ),
+                    ],
+                ),
+            ),
+        ],
     )]
 
     public function index(Request $request, CityRepository $cityRepository): JsonResource
@@ -77,14 +77,14 @@ class CityController extends Controller
                 in: 'path',
                 required: true,
                 description: 'City Id',
-                schema: new OA\Schema(type: 'integer')
-            )
+                schema: new OA\Schema(type: 'integer'),
+            ),
         ],
         responses: [
             new OA\Response(
                 response: 200,
                 description: 'success',
-                content: new OA\JsonContent(ref: '#/components/schemas/City')
+                content: new OA\JsonContent(ref: '#/components/schemas/City'),
             ),
             new OA\Response(
                 response: 404,
@@ -94,12 +94,12 @@ class CityController extends Controller
                         new OA\Property(
                             property: 'error',
                             type: 'string',
-                            example: 'City not found'
-                        )
-                    ]
-                )
-            )
-        ]
+                            example: 'City not found',
+                        ),
+                    ],
+                ),
+            ),
+        ],
     )]
     public function getCityById(int $id, CityRepository $cityRepository): JsonResource
     {

@@ -60,7 +60,7 @@ class AiReviewJob implements ShouldQueue
             $validationPrompt = AiReviewPrompt::validationPrompt();
             $promptMessage[] = [
                 'role' => 'user',
-                'content' => $validationPrompt
+                'content' => $validationPrompt,
             ];
 
             $finalResponse = $chatGptService->seekAnswerWihtCustomMessagesRole($promptMessage, 'gpt-4');

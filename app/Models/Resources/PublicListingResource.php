@@ -11,7 +11,7 @@ use OpenApi\Attributes as OA;
 
 #[OA\Schema(
     schema: 'PublicListing',
-    type: 'object'
+    type: 'object',
 )]
 /**
  * Representation of a Listing which is available publicly.
@@ -43,11 +43,11 @@ class PublicListingResource extends JsonResource
     #[OA\Property(
         property: 'pictureUrls',
         type: 'array',
-        items: new OA\Items(type: 'string', format: 'uri', example: 'https://example.com/image.jpg')
+        items: new OA\Items(type: 'string', format: 'uri', example: 'https://example.com/image.jpg'),
     )]
     #[OA\Property(property: 'coordinate', type: 'object', properties: [
         new OA\Property(property: 'latitude', type: 'integer'),
-        new OA\Property(property: 'longitude', type: 'integer')
+        new OA\Property(property: 'longitude', type: 'integer'),
     ])]
     #[OA\Property(property: 'updatedAt', type: 'string', format: 'date-time')]
 
@@ -112,7 +112,7 @@ class PublicListingResource extends JsonResource
                     hash(
                         'sha256',
                         User::generateUserId($listing->user_profile->phoneNumber) . ':' .
-                            $listing->user_profile->phoneNumber
+                            $listing->user_profile->phoneNumber,
                     ) :
                     null,
                 'profilePictureURL' => $listing->user_profile?->picture ?

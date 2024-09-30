@@ -55,7 +55,7 @@ class TinkerWeb3 extends Command
             19,
             'Salatiga',
             'http://xxx',
-            'zzz'
+            'zzz',
         );
         $tx = new Transaction(
             $nonce, // nonce

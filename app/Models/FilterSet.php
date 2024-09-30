@@ -8,7 +8,7 @@ use OpenApi\Attributes as OA;
 #[OA\Schema(
     schema: 'FilterSet',
     type: 'object',
-    description: 'Filter Set'
+    description: 'Filter Set',
 )]
 class FilterSet extends Data
 {

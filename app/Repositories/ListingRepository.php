@@ -20,7 +20,7 @@ class ListingRepository
     private function buildFilterQuery(
         Builder $query,
         \BackedEnum|string|int|FilterMinMax|null|bool $filter,
-        string $column
+        string $column,
     ): Builder {
         if (is_null($filter)) {
             return $query;

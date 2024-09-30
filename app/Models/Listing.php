@@ -191,7 +191,7 @@ class Listing extends Model
                 } else {
                     return [];
                 }
-            }
+            },
         );
     }
 
@@ -264,7 +264,7 @@ class Listing extends Model
                 $obj = (object)(array)$val;
                 $obj->date = new UTCDateTime($val->date->getTimestampMs());
                 return $obj;
-            }
+            },
         );
     }
 
@@ -283,7 +283,7 @@ class Listing extends Model
             set: function (CancellationNote $val) {
                 $obj = (object)(array)$val;
                 return $obj;
-            }
+            },
         );
     }
 

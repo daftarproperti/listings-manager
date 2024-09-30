@@ -29,7 +29,7 @@ class ListingsController extends Controller
             'verifyStatus',
             'activeStatus',
             'sortBy',
-            'sortOrder'
+            'sortOrder',
         ]);
 
         $listing = $repository->list($input);
@@ -40,8 +40,8 @@ class ListingsController extends Controller
                 'listings' => $listingCollection->collection,
                 'lastPage' => $listing->lastPage(),
                 'verifyStatusOptions' => VerifyStatus::options(),
-                'activeStatusOptions' => ActiveStatus::options()
-            ]
+                'activeStatusOptions' => ActiveStatus::options(),
+            ],
         ]);
     }
 
@@ -69,8 +69,8 @@ class ListingsController extends Controller
                 'listing' => $resourceData->resolve(),
                 'likelyConnectedListing' => $connectedListings,
                 'verifyStatusOptions' => VerifyStatus::options(),
-                'activeStatusOptions' => ActiveStatus::options()
-            ]
+                'activeStatusOptions' => ActiveStatus::options(),
+            ],
         ]);
     }
 

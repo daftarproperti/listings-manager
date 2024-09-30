@@ -41,7 +41,7 @@ class ClosingsController extends Controller
                 content: new OA\JsonContent(
                     ref: '#/components/schemas/Listing',
                 ),
-            )
+            ),
         ],
     )]
     public function closing(Listing $listing, ClosingRequest $request): JsonResource

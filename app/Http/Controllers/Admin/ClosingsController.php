@@ -23,7 +23,7 @@ class ClosingsController extends Controller
         $input = $request->only([
             'q',
             'sortBy',
-            'sortOrder'
+            'sortOrder',
         ]);
 
         $closings = $repository->list($input);
@@ -33,8 +33,8 @@ class ClosingsController extends Controller
         return Inertia::render('Admin/Closings/Index', [
             'data' => [
                 'closings' => $closingsCollection->collection,
-                'lastPage' => $closings->lastPage()
-            ]
+                'lastPage' => $closings->lastPage(),
+            ],
         ]);
     }
 
@@ -45,7 +45,7 @@ class ClosingsController extends Controller
         return Inertia::render('Admin/Closings/Form', [
             'data' => [
                 'closing' => $resourceData->resolve(),
-            ]
+            ],
         ]);
     }
 

@@ -8,7 +8,7 @@ use OpenApi\Attributes as OA;
 
 #[OA\Schema(
     schema: 'User',
-    type: 'object'
+    type: 'object',
 )]
 class UserResource extends JsonResource
 {
@@ -69,7 +69,7 @@ class UserResource extends JsonResource
                 'picture' => $prop->picture ? Photo::getGcsUrlFromFileName($prop->picture) : null,
                 'isPublicProfile' => $prop->isPublicProfile,
                 'company' => $prop->company,
-            ]
+            ],
         ];
     }
 }

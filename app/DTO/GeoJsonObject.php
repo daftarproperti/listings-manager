@@ -17,7 +17,7 @@ class GeoJsonObject extends Data
             'coordinates' => [
                 $this->coordinates->longitude,
                 $this->coordinates->latitude,
-            ]
+            ],
         ];
     }
 }

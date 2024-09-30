@@ -8,7 +8,7 @@ use OpenApi\Attributes as OA;
 
 #[OA\Schema(
     schema: 'City',
-    type: 'object'
+    type: 'object',
 )]
 class CityResource extends JsonResource
 {
@@ -31,7 +31,7 @@ class CityResource extends JsonResource
             'id' => $city->osmId,
             'name' => $city->displayName,
             'latitude' => $city->latitude,
-            'longitude' => $city->longitude
+            'longitude' => $city->longitude,
         ];
     }
 }

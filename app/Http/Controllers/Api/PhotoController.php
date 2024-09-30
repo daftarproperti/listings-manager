@@ -20,9 +20,9 @@ class PhotoController extends Controller
                 mediaType: 'multipart/form-data',
                 schema: new OA\Schema(
                     type: 'object',
-                    ref: '#/components/schemas/ImageUploadRequest'
-                )
-            )
+                    ref: '#/components/schemas/ImageUploadRequest',
+                ),
+            ),
         ),
         responses: [
             new OA\Response(
@@ -33,21 +33,21 @@ class PhotoController extends Controller
                         new OA\Property(
                             property: 'fileId',
                             type: 'integer',
-                            example: 123
+                            example: 123,
                         ),
                         new OA\Property(
                             property: 'fileName',
                             type: 'string',
-                            example: 'image.jpg'
-                        )
-                    ]
-                )
-            )
-        ]
+                            example: 'image.jpg',
+                        ),
+                    ],
+                ),
+            ),
+        ],
     )]
     public function uploadImage(
         ImageUploadRequest $request,
-        GoogleStorageService $googleStorageService
+        GoogleStorageService $googleStorageService,
     ): \Illuminate\Http\JsonResponse {
         $validated = $request->validated();
 
@@ -59,12 +59,12 @@ class PhotoController extends Controller
 
         $googleStorageService->uploadFile(
             type(file_get_contents($image->getRealPath()))->asString(),
-            sprintf('%s_%s', $fileId, $fileName)
+            sprintf('%s_%s', $fileId, $fileName),
         );
 
         return response()->json([
             'fileId' => $fileId,
-            'fileName' => $fileName
+            'fileName' => $fileName,
         ]);
     }
 }

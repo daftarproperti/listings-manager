@@ -8,7 +8,7 @@ use OpenApi\Attributes as OA;
 
 #[OA\Schema(
     schema: 'ClosingRequest',
-    type: 'object'
+    type: 'object',
 )]
 class ClosingRequest extends BaseApiRequest
 {

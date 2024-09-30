@@ -21,7 +21,7 @@ class AiReviewResource extends JsonResource
             'listingId' => $prop->listing->listingId,
             'results' => $prop->results,
             'status' => $prop->status,
-            'updatedAt' => $prop->updated_at->toIso8601ZuluString()
+            'updatedAt' => $prop->updated_at->toIso8601ZuluString(),
         ];
     }
 }

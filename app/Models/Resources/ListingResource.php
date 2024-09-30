@@ -9,7 +9,7 @@ use OpenApi\Attributes as OA;
 
 #[OA\Schema(
     schema: 'Listing',
-    type: 'object'
+    type: 'object',
 )]
 class ListingResource extends JsonResource
 {
@@ -47,15 +47,15 @@ class ListingResource extends JsonResource
     #[OA\Property(
         property: 'pictureUrls',
         type: 'array',
-        items: new OA\Items(type: 'string', format: 'uri', example: 'https://example.com/image.jpg')
+        items: new OA\Items(type: 'string', format: 'uri', example: 'https://example.com/image.jpg'),
     )]
     #[OA\Property(property: 'coordinate', type: 'object', properties: [
         new OA\Property(property: 'latitude', type: 'integer'),
-        new OA\Property(property: 'longitude', type: 'integer')
+        new OA\Property(property: 'longitude', type: 'integer'),
     ])]
     #[OA\Property(property: 'contact', type: 'object', properties: [
         new OA\Property(property: 'name', type: 'string'),
-        new OA\Property(property: 'company', type: 'string')
+        new OA\Property(property: 'company', type: 'string'),
     ])]
     #[OA\Property(property: 'user', type: 'object', properties: [
         new OA\Property(property: 'name', type: 'string'),

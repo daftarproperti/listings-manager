@@ -17,7 +17,7 @@ use Spatie\LaravelData\Data;
         new OA\Property(property: 'company', type: 'string', example: 'Company Name', nullable: true),
         new OA\Property(property: 'picture', type: 'string', example: 'https://example.com/image.jpg', nullable: true),
         new OA\Property(property: 'isPublicProfile', type: 'boolean', example: true, nullable: true),
-    ]
+    ],
 )]
 class UserProfile extends Data
 {

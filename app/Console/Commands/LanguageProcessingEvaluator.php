@@ -35,7 +35,7 @@ class LanguageProcessingEvaluator extends Command
         $case = $this->argument('case');
         if ($case) {
             $dataFiles = [
-                storage_path('language-processing-evaluator') . "/$case.txt"
+                storage_path('language-processing-evaluator') . "/$case.txt",
             ];
         }
 
@@ -97,7 +97,7 @@ class LanguageProcessingEvaluator extends Command
             'contact.company',
             'price', 'lotSize', 'buildingSize', 'carCount', 'bedroomCount',
             'additionalBedroomCount', 'bathroomCount', 'additionalBathroomCount',
-            'floorCount', 'electricPower'
+            'floorCount', 'electricPower',
         ];
 
         $iterationAccuracy = 0;

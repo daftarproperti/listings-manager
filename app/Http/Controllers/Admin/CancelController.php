@@ -24,7 +24,7 @@ class CancelController extends Controller
         $input = $request->only([
             'q',
             'sortBy',
-            'sortOrder'
+            'sortOrder',
         ]);
 
         $listing = $repository->listWithCancellationNote($input);
@@ -35,7 +35,7 @@ class CancelController extends Controller
                 'listings' => $listingCollection->collection,
                 'cancellationStatusOptions' => CancellationStatus::options(),
                 'lastPage' => $listing->lastPage(),
-            ]
+            ],
         ]);
     }
 
@@ -47,7 +47,7 @@ class CancelController extends Controller
             'data' => [
                 'listing' => $resourceData->resolve(),
                 'cancellationStatusOptions' => CancellationStatus::options(),
-            ]
+            ],
         ]);
     }
 
@@ -60,7 +60,7 @@ class CancelController extends Controller
 
         $data = $request->validate([
             'reason' => 'required|string',
-            'status' => 'required|string'
+            'status' => 'required|string',
         ]);
 
         $cancellationNote = [

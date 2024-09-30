@@ -17,7 +17,7 @@ class ExpiredListingsController extends Controller
         $input = $request->only([
             'q',
             'sortBy',
-            'sortOrder'
+            'sortOrder',
         ]);
 
         $listing = $repository->listWithExpiredDate($input);
@@ -27,7 +27,7 @@ class ExpiredListingsController extends Controller
             'data' => [
                 'listings' => $listingCollection->collection,
                 'lastPage' => $listing->lastPage(),
-            ]
+            ],
         ]);
     }
 }

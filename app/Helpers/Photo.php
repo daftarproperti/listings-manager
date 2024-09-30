@@ -14,7 +14,7 @@ class Photo
         $gcsPublicUrl = sprintf(
             'https://storage.googleapis.com/%s/%s',
             type(config('services.google.bucket_name'))->asString(),
-            $fileName
+            $fileName,
         );
 
         $getFileFromGcs = Http::get($gcsPublicUrl);

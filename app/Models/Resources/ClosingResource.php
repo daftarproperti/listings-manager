@@ -23,15 +23,15 @@ use OpenApi\Attributes as OA;
             property: 'status',
             type: 'string',
             example: 'on_review',
-            ref: '#/components/schemas/ClosingStatus'
+            ref: '#/components/schemas/ClosingStatus',
         ),
         new OA\Property(
             property: 'commissionStatus',
             type: 'string',
             example: 'pending',
-            ref: '#/components/schemas/CommissionStatus'
+            ref: '#/components/schemas/CommissionStatus',
         ),
-    ]
+    ],
 )]
 class ClosingResource extends JsonResource
 {
@@ -56,7 +56,7 @@ class ClosingResource extends JsonResource
             'date' => $date->toIso8601ZuluString(),
             'status' => $closing->status,
             'commissionStatus' => $closing->commissionStatus,
-            'notes' => $closing->notes
+            'notes' => $closing->notes,
         ];
     }
 }

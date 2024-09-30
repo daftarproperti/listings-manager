@@ -57,7 +57,7 @@ class CityRepository
                     'spherical' => true,
                     'distanceField' => 'distance',
                     'distanceMultiplier' => 6371, // Earth's radius in kilometers
-                    'query' => ['name' => ['$regex' => $keyword ?? '', '$options' => 'i']]
+                    'query' => ['name' => ['$regex' => $keyword ?? '', '$options' => 'i']],
                 ]],
                 ['$limit' => $limit],
                 ['$sort' => ['distance' => 1]],

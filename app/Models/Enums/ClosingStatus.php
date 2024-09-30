@@ -8,7 +8,7 @@ use OpenApi\Attributes as OA;
 
 #[OA\Schema(
     type: 'string',
-    example: 'approved'
+    example: 'approved',
 )]
 /**
  * Closing Status
@@ -27,7 +27,7 @@ enum ClosingStatus: string
         return match ($this) {
             self::ON_REVIEW => 'Sedang Ditinjau',
             self::APPROVED => 'Disetujui',
-            self::REJECTED => 'Ditolak'
+            self::REJECTED => 'Ditolak',
         };
     }
 }

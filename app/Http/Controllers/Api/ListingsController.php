@@ -40,196 +40,196 @@ class ListingsController extends Controller
                 in: 'query',
                 description: 'Search listing by keyword',
                 required: false,
-                schema: new OA\Schema(type: 'string')
+                schema: new OA\Schema(type: 'string'),
             ),
             new OA\Parameter(
                 name: 'collection',
                 in: 'query',
                 description: "If set to true, it will only return user's collection",
                 required: false,
-                schema: new OA\Schema(type: 'boolean')
+                schema: new OA\Schema(type: 'boolean'),
             ),
             new OA\Parameter(
                 name: 'price[min]',
                 in: 'query',
                 description: 'Minimum price',
                 required: false,
-                schema: new OA\Schema(type: 'integer')
+                schema: new OA\Schema(type: 'integer'),
             ),
             new OA\Parameter(
                 name: 'price[max]',
                 in: 'query',
                 description: 'Maximum price',
                 required: false,
-                schema: new OA\Schema(type: 'integer')
+                schema: new OA\Schema(type: 'integer'),
             ),
             new OA\Parameter(
                 name: 'rentPrice[min]',
                 in: 'query',
                 description: 'Minimum rent price',
                 required: false,
-                schema: new OA\Schema(type: 'integer')
+                schema: new OA\Schema(type: 'integer'),
             ),
             new OA\Parameter(
                 name: 'rentPrice[max]',
                 in: 'query',
                 description: 'Maximum rent price',
                 required: false,
-                schema: new OA\Schema(type: 'integer')
+                schema: new OA\Schema(type: 'integer'),
             ),
             new OA\Parameter(
                 name: 'propertyType',
                 in: 'query',
                 description: 'Property type',
                 required: false,
-                schema: new OA\Schema(ref: '#/components/schemas/PropertyType')
+                schema: new OA\Schema(ref: '#/components/schemas/PropertyType'),
             ),
             new OA\Parameter(
                 name: 'listingForSale',
                 in: 'query',
                 description: 'Listing for sale',
                 required: false,
-                schema: new OA\Schema(type: 'boolean')
+                schema: new OA\Schema(type: 'boolean'),
             ),
             new OA\Parameter(
                 name: 'listingForRent',
                 in: 'query',
                 description: 'Listing for rent',
                 required: false,
-                schema: new OA\Schema(type: 'boolean')
+                schema: new OA\Schema(type: 'boolean'),
             ),
             new OA\Parameter(
                 name: 'bedroomCount',
                 in: 'query',
                 description: 'Bedroom count',
                 required: false,
-                schema: new OA\Schema(type: 'integer')
+                schema: new OA\Schema(type: 'integer'),
             ),
             new OA\Parameter(
                 name: 'bedroomCount[min]',
                 in: 'query',
                 description: 'Minimum Bedroom count',
                 required: false,
-                schema: new OA\Schema(type: 'integer')
+                schema: new OA\Schema(type: 'integer'),
             ),
             new OA\Parameter(
                 name: 'bedroomCount[max]',
                 in: 'query',
                 description: 'Maximum Bedroom count',
                 required: false,
-                schema: new OA\Schema(type: 'integer')
+                schema: new OA\Schema(type: 'integer'),
             ),
             new OA\Parameter(
                 name: 'additionalBedroomCount',
                 in: 'query',
                 description: 'Additional Bedroom count',
                 required: false,
-                schema: new OA\Schema(type: 'integer')
+                schema: new OA\Schema(type: 'integer'),
             ),
             new OA\Parameter(
                 name: 'bathroomCount',
                 in: 'query',
                 description: 'Bathroom count',
                 required: false,
-                schema: new OA\Schema(type: 'integer')
+                schema: new OA\Schema(type: 'integer'),
             ),
             new OA\Parameter(
                 name: 'bathroomCount[min]',
                 in: 'query',
                 description: 'Minimum Bathroom count',
                 required: false,
-                schema: new OA\Schema(type: 'integer')
+                schema: new OA\Schema(type: 'integer'),
             ),
             new OA\Parameter(
                 name: 'bathroomCount[max]',
                 in: 'query',
                 description: 'Maximum Bathroom count',
                 required: false,
-                schema: new OA\Schema(type: 'integer')
+                schema: new OA\Schema(type: 'integer'),
             ),
             new OA\Parameter(
                 name: 'additionalBathroomCount',
                 in: 'query',
                 description: 'Additional Bathroom count',
                 required: false,
-                schema: new OA\Schema(type: 'integer')
+                schema: new OA\Schema(type: 'integer'),
             ),
             new OA\Parameter(
                 name: 'lotSize[min]',
                 in: 'query',
                 description: 'Minimum lot size',
                 required: false,
-                schema: new OA\Schema(type: 'integer')
+                schema: new OA\Schema(type: 'integer'),
             ),
             new OA\Parameter(
                 name: 'lotSize[max]',
                 in: 'query',
                 description: 'Maximum lot size',
                 required: false,
-                schema: new OA\Schema(type: 'integer')
+                schema: new OA\Schema(type: 'integer'),
             ),
             new OA\Parameter(
                 name: 'buildingSize[min]',
                 in: 'query',
                 description: 'Minimum building size',
                 required: false,
-                schema: new OA\Schema(type: 'integer')
+                schema: new OA\Schema(type: 'integer'),
             ),
             new OA\Parameter(
                 name: 'buildingSize[max]',
                 in: 'query',
                 description: 'Maximum building size',
                 required: false,
-                schema: new OA\Schema(type: 'integer')
+                schema: new OA\Schema(type: 'integer'),
             ),
             new OA\Parameter(
                 name: 'ownership',
                 in: 'query',
                 description: 'Ownership',
                 required: false,
-                schema: new OA\Schema(ref: '#/components/schemas/PropertyOwnership')
+                schema: new OA\Schema(ref: '#/components/schemas/PropertyOwnership'),
             ),
             new OA\Parameter(
                 name: 'carCount',
                 in: 'query',
                 description: 'Car count',
                 required: false,
-                schema: new OA\Schema(type: 'integer')
+                schema: new OA\Schema(type: 'integer'),
             ),
             new OA\Parameter(
                 name: 'carCount[min]',
                 in: 'query',
                 description: 'Minimum Car count',
                 required: false,
-                schema: new OA\Schema(type: 'integer')
+                schema: new OA\Schema(type: 'integer'),
             ),
             new OA\Parameter(
                 name: 'carCount[max]',
                 in: 'query',
                 description: 'Maximum Car count',
                 required: false,
-                schema: new OA\Schema(type: 'integer')
+                schema: new OA\Schema(type: 'integer'),
             ),
             new OA\Parameter(
                 name: 'electricPower',
                 in: 'query',
                 description: 'Electric Power',
                 required: false,
-                schema: new OA\Schema(type: 'integer')
+                schema: new OA\Schema(type: 'integer'),
             ),
             new OA\Parameter(
                 name: 'cityId',
                 in: 'query',
                 description: 'City Id',
                 required: false,
-                schema: new OA\Schema(type: 'integer')
+                schema: new OA\Schema(type: 'integer'),
             ),
             new OA\Parameter(
                 name: 'sort',
                 in: 'query',
                 description: 'Sort By',
                 required: false,
-                schema: new OA\Schema(ref: '#/components/schemas/ListingSort')
+                schema: new OA\Schema(ref: '#/components/schemas/ListingSort'),
             ),
             new OA\Parameter(
                 name: 'order',
@@ -238,8 +238,8 @@ class ListingsController extends Controller
                 required: false,
                 schema: new OA\Schema(
                     type: 'string',
-                    enum: ['asc', 'desc']
-                )
+                    enum: ['asc', 'desc'],
+                ),
             ),
             new OA\Parameter(
                 name: 'expiredAt',
@@ -249,8 +249,8 @@ class ListingsController extends Controller
                 schema: new OA\Schema(
                     type: 'string',
                     format: 'date-time',
-                    example: '2021-12-15T00:00:00Z'
-                )
+                    example: '2021-12-15T00:00:00Z',
+                ),
             ),
         ],
         responses: [
@@ -262,12 +262,12 @@ class ListingsController extends Controller
                         new OA\Property(
                             property: 'listings',
                             type: 'array',
-                            items: new OA\Items(ref: '#/components/schemas/Listing')
-                        )
-                    ]
-                )
-            )
-        ]
+                            items: new OA\Items(ref: '#/components/schemas/Listing'),
+                        ),
+                    ],
+                ),
+            ),
+        ],
     )]
     public function index(Request $request, ListingRepository $repository): JsonResource
     {
@@ -287,7 +287,7 @@ class ListingsController extends Controller
             'city',
             'cityId',
             'sort',
-            'order'
+            'order',
         ]));
 
         if ($request->has('listingForSale')) {
@@ -328,14 +328,14 @@ class ListingsController extends Controller
                 in: 'path',
                 required: true,
                 description: 'Listing Id',
-                schema: new OA\Schema(type: 'string')
-            )
+                schema: new OA\Schema(type: 'string'),
+            ),
         ],
         responses: [
             new OA\Response(
                 response: 200,
                 description: 'success',
-                content: new OA\JsonContent(ref: '#/components/schemas/Listing')
+                content: new OA\JsonContent(ref: '#/components/schemas/Listing'),
             ),
             new OA\Response(
                 response: 404,
@@ -345,12 +345,12 @@ class ListingsController extends Controller
                         new OA\Property(
                             property: 'error',
                             type: 'string',
-                            example: 'Listing not found'
-                        )
-                    ]
-                )
-            )
-        ]
+                            example: 'Listing not found',
+                        ),
+                    ],
+                ),
+            ),
+        ],
     )]
     public function show(Listing $listing): JsonResource
     {
@@ -396,9 +396,9 @@ class ListingsController extends Controller
                         property: 'error',
                         type: 'string',
                         example: 'Listing not found',
-                    )]
+                    )],
                 ),
-            )
+            ),
         ],
     )]
     public function update(Listing $listing, ListingRequest $request): JsonResource
@@ -419,16 +419,16 @@ class ListingsController extends Controller
             required: true,
             content: new OA\MediaType(
                 mediaType: 'multipart/form-data',
-                schema: new OA\Schema(type: 'object', ref: '#/components/schemas/ListingRequest')
-            )
+                schema: new OA\Schema(type: 'object', ref: '#/components/schemas/ListingRequest'),
+            ),
         ),
         responses: [
             new OA\Response(
                 response: 200,
                 description: 'success',
-                content: new OA\JsonContent(ref: '#/components/schemas/Listing')
-            )
-        ]
+                content: new OA\JsonContent(ref: '#/components/schemas/Listing'),
+            ),
+        ],
     )]
     public function create(ListingRequest $request): JsonResource
     {
@@ -452,8 +452,8 @@ class ListingsController extends Controller
                 in: 'path',
                 required: true,
                 description: 'Listing Id',
-                schema: new OA\Schema(type: 'string')
-            )
+                schema: new OA\Schema(type: 'string'),
+            ),
         ],
         responses: [
             new OA\Response(
@@ -464,12 +464,12 @@ class ListingsController extends Controller
                         new OA\Property(
                             property: 'message',
                             type: 'string',
-                            example: 'Listing deleted successfully'
-                        )
-                    ]
-                )
-            )
-        ]
+                            example: 'Listing deleted successfully',
+                        ),
+                    ],
+                ),
+            ),
+        ],
     )]
     public function delete(Listing $listing): JsonResponse
     {
@@ -488,8 +488,8 @@ class ListingsController extends Controller
                 in: 'path',
                 required: true,
                 description: 'Listing Message',
-                schema: new OA\Schema(type: 'string')
-            )
+                schema: new OA\Schema(type: 'string'),
+            ),
         ],
         responses: [
             new OA\Response(
@@ -500,12 +500,12 @@ class ListingsController extends Controller
                         new OA\Property(
                             property: 'jobId',
                             type: 'string',
-                            example: 'sample-result-id-1'
-                        )
-                    ]
-                )
-            )
-        ]
+                            example: 'sample-result-id-1',
+                        ),
+                    ],
+                ),
+            ),
+        ],
     )]
     public function generateFromText(Request $request): JsonResponse
     {
@@ -585,8 +585,8 @@ class ListingsController extends Controller
                 in: 'path',
                 required: true,
                 description: 'Listing Id',
-                schema: new OA\Schema(type: 'string')
-            )
+                schema: new OA\Schema(type: 'string'),
+            ),
         ],
         responses: [
             new OA\Response(
@@ -604,17 +604,17 @@ class ListingsController extends Controller
                                     new OA\Property(
                                         property: 'id',
                                         type: 'string',
-                                        example: 'listing-id-1'
+                                        example: 'listing-id-1',
                                     ),
                                     new OA\Property(
                                         property: 'title',
                                         type: 'string',
-                                        example: 'title-1'
+                                        example: 'title-1',
                                     ),
-                                ]
-                            )
+                                ],
+                            ),
                         ),
-                    ]
+                    ],
                 ),
             ),
         ],
@@ -634,8 +634,8 @@ class ListingsController extends Controller
                         ->where('verifyStatus', 'approved')
                         ->where('indexedCoordinate', 'geoWithin', [
                             '$centerSphere' => [
-                                [$longitude, $latitude], $radius
-                            ]
+                                [$longitude, $latitude], $radius,
+                            ],
                         ])
                         ->get();
 
@@ -736,7 +736,7 @@ class ListingsController extends Controller
 
         $listing->cancellationNote = new CancellationNote(
             reason: $validated['reason'],
-            status: CancellationStatus::ON_REVIEW
+            status: CancellationStatus::ON_REVIEW,
         );
 
         $listing->save();

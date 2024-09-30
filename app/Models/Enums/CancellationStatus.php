@@ -8,7 +8,7 @@ use OpenApi\Attributes as OA;
 
 #[OA\Schema(
     type: 'string',
-    example: 'on_review'
+    example: 'on_review',
 )]
 enum CancellationStatus: string
 {

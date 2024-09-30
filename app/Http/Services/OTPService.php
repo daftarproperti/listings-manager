@@ -65,7 +65,7 @@ class OTPService
             'template' => [
                 'name' => 'send_otp',
                 'language' => [
-                    'code' => 'id'
+                    'code' => 'id',
                 ],
                 'components' => [
                     [
@@ -73,9 +73,9 @@ class OTPService
                         'parameters' => [
                             [
                                 'type' => 'text',
-                                'text' => $otpCode
-                            ]
-                        ]
+                                'text' => $otpCode,
+                            ],
+                        ],
                     ],
                     [
                         'type' => 'button',
@@ -84,12 +84,12 @@ class OTPService
                         'parameters' => [
                             [
                                 'type' => 'text',
-                                'text' => $otpCode
-                            ]
-                        ]
-                    ]
-                ]
-            ]
+                                'text' => $otpCode,
+                            ],
+                        ],
+                    ],
+                ],
+            ],
         ];
 
         $response = Http::withHeaders([

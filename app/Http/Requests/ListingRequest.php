@@ -9,7 +9,7 @@ use OpenApi\Attributes as OA;
 
 #[OA\Schema(
     schema: 'ListingRequest',
-    type: 'object'
+    type: 'object',
 )]
 class ListingRequest extends BaseApiRequest
 {
@@ -39,11 +39,11 @@ class ListingRequest extends BaseApiRequest
         oneOf: [
             new OA\Schema(type: 'string', format: 'binary', example: "\x00\x00\x00\x04\x00\x00\x00\x04"),
             new OA\Schema(type: 'string', format: 'url', example: 'https://example.com/image.jpg'),
-        ]
+        ],
     ))]
     #[OA\Property(property: 'coordinate', type: 'object', properties: [
         new OA\Property(property: 'latitude', type: 'integer'),
-        new OA\Property(property: 'longitude', type: 'integer')
+        new OA\Property(property: 'longitude', type: 'integer'),
     ])]
     #[OA\Property(property: 'isPrivate', type: 'boolean', example: false)]
     #[OA\Property(property: 'withRewardAgreement', type: 'boolean', example: true)]

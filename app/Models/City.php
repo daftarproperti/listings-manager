@@ -49,7 +49,7 @@ class City extends Model
                 }
 
                 return GeoJsonObject::from($locationValue);
-            }
+            },
         );
     }
 

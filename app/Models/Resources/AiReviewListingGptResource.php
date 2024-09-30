@@ -32,7 +32,7 @@ class AiReviewListingGptResource extends JsonResource
             'electricPower' => $prop->electricPower ?? null,
             'facing' => $prop->facing,
             'ownership' => $prop->ownership,
-            'city' => $prop->city ?? ''
+            'city' => $prop->city ?? '',
         ];
     }
 }

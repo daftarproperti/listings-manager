@@ -12,14 +12,14 @@ use OpenApi\Attributes as OA;
         new OA\Property(property: 'email', type: 'string', example: 'john@doe.web'),
         new OA\Property(property: 'message', type: 'string', example: 'Hello World'),
         new OA\Property(property: 'date', type: 'string', format: 'date-time'),
-    ]
+    ],
 )]
 class AdminNote extends Data
 {
     public function __construct(
         public ?string $email = null,
         public string $message = '',
-        public Carbon $date = new Carbon()
+        public Carbon $date = new Carbon(),
     ) {
     }
 }

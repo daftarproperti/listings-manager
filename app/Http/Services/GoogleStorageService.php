@@ -20,7 +20,7 @@ class GoogleStorageService
          */
 
         $storageClient = new StorageClient([
-            'projectId' => config('services.google.project_id')
+            'projectId' => config('services.google.project_id'),
         ]);
 
         $this->bucket = $storageClient->bucket(type(config('services.google.bucket_name'))->asString());
@@ -29,7 +29,7 @@ class GoogleStorageService
     public function uploadFile(string $fileContent, string $fileName): ?StorageObject
     {
         $object = $this->bucket->upload($fileContent, [
-            'name' => $fileName
+            'name' => $fileName,
         ]);
 
         return $object;

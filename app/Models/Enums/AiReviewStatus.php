@@ -8,7 +8,7 @@ use OpenApi\Attributes as OA;
 
 #[OA\Schema(
     type: 'string',
-    example: 'done'
+    example: 'done',
 )]
 /**
  * AiReview Status

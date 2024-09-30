@@ -53,7 +53,7 @@ class ChatGptService
                 'model' => $model ?? $this->modelVersion,
                 'messages' => [
                     ['role' => 'user', 'content' => $question],
-                ]
+                ],
             ]);
 
         if (!$response->successful()) {
@@ -76,7 +76,7 @@ class ChatGptService
         ])
             ->post($this->apiUrl, [
                 'model' => $model ?? $this->modelVersion,
-                'messages' => $messagesRole
+                'messages' => $messagesRole,
             ]);
 
         if (!$response->successful()) {

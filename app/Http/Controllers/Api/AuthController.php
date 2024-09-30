@@ -40,9 +40,9 @@ class AuthController extends Controller
                 required: true,
                 description: 'Phone Number',
                 schema: new OA\Schema(
-                    type: 'string'
-                )
-            )
+                    type: 'string',
+                ),
+            ),
         ],
         responses: [
             new OA\Response(
@@ -54,23 +54,23 @@ class AuthController extends Controller
                         new OA\Property(
                             property: 'token',
                             type: 'string',
-                            description: 'JWT Token used for authentication'
+                            description: 'JWT Token used for authentication',
                         ),
                         new OA\Property(
                             property: 'timestamp',
                             type: 'integer',
                             format: 'int64',
-                            description: 'Timestamp of when the OTP was created'
+                            description: 'Timestamp of when the OTP was created',
                         ),
                         new OA\Property(
                             property: 'totp',
                             type: 'boolean',
-                            description: 'If TOTP is enabled'
-                        )
-                    ]
-                )
-            )
-        ]
+                            description: 'If TOTP is enabled',
+                        ),
+                    ],
+                ),
+            ),
+        ],
     )]
     public function sendOTP(Request $request): JsonResponse
     {
@@ -88,7 +88,7 @@ class AuthController extends Controller
             return response()->json([
                 'token' => null,
                 'timestamp' => null,
-                'totp' => true
+                'totp' => true,
             ]);
         }
 
@@ -102,7 +102,7 @@ class AuthController extends Controller
         return response()->json([
             'token' => $token,
             'timestamp' => $timestamp,
-            'totp' => false
+            'totp' => false,
         ]);
     }
 
@@ -122,11 +122,11 @@ class AuthController extends Controller
                         property: 'timestamp',
                         type: 'integer',
                         format: 'int64',
-                        description: 'Timestamp of when the OTP was created'
+                        description: 'Timestamp of when the OTP was created',
                     ),
-                    new OA\Property(property: 'otpCode', type: 'string', description: "User's OTP Code")
-                ]
-            )
+                    new OA\Property(property: 'otpCode', type: 'string', description: "User's OTP Code"),
+                ],
+            ),
         ),
         responses: [
             new OA\Response(
@@ -138,23 +138,23 @@ class AuthController extends Controller
                             property: 'success',
                             type: 'boolean',
                             example: true,
-                            description: 'Verify status'
+                            description: 'Verify status',
                         ),
                         new OA\Property(
                             property: 'accessToken',
                             type: 'string',
                             example: 'Akoasdk131o3ipIaskdlz',
-                            description: 'Access token'
+                            description: 'Access token',
                         ),
                         new OA\Property(
                             property: 'user',
                             ref: '#/components/schemas/User',
-                            description: 'User information'
-                        )
-                    ]
-                )
-            )
-        ]
+                            description: 'User information',
+                        ),
+                    ],
+                ),
+            ),
+        ],
     )]
     public function verifyOTP(Request $request): JsonResponse
     {
@@ -162,7 +162,7 @@ class AuthController extends Controller
             'phoneNumber' => 'required', 'string', new IndonesiaPhoneFormat(),
             'token' => ['required', 'string'],
             'timestamp' => ['required', 'numeric'],
-            'otpCode' => ['required', 'string']
+            'otpCode' => ['required', 'string'],
         ]);
 
         $phoneNumber = $validatedRequest['phoneNumber'];
@@ -176,7 +176,7 @@ class AuthController extends Controller
                 && (Carbon::now()->timestamp - $timestamp < 120))
         ) {
             return response()->json([
-                'success' => false
+                'success' => false,
             ], 401);
         }
 
@@ -196,7 +196,7 @@ class AuthController extends Controller
         return response()->json([
             'success' => true,
             'accessToken' => $token,
-            'user' => new UserResource($user)
+            'user' => new UserResource($user),
         ]);
     }
 
@@ -206,7 +206,7 @@ class AuthController extends Controller
         summary: 'Logout',
         operationId: 'auth.logout',
         security: [
-            ['bearerAuth' => []]
+            ['bearerAuth' => []],
         ],
         responses: [
             new OA\Response(
@@ -218,10 +218,10 @@ class AuthController extends Controller
                             property: 'success',
                             type: 'boolean',
                             example: true,
-                            description: 'Logout status'
-                        )
-                    ]
-                )
+                            description: 'Logout status',
+                        ),
+                    ],
+                ),
             ),
             new OA\Response(
                 response: 404,
@@ -232,12 +232,12 @@ class AuthController extends Controller
                             property: 'success',
                             type: 'boolean',
                             example: false,
-                            description: 'Logout status'
+                            description: 'Logout status',
                         ),
-                    ]
-                )
-            )
-        ]
+                    ],
+                ),
+            ),
+        ],
     )]
     public function logout(Request $request): JsonResponse
     {
@@ -248,13 +248,13 @@ class AuthController extends Controller
             if ($accessToken) {
                 $accessToken->delete();
                 return response()->json([
-                    'success' => true
+                    'success' => true,
                 ]);
             }
         }
 
         return response()->json([
-            'success' => false
+            'success' => false,
         ], 404);
     }
 
@@ -270,9 +270,9 @@ class AuthController extends Controller
                 required: true,
                 description: 'Phone Number',
                 schema: new OA\Schema(
-                    type: 'string'
-                )
-            )
+                    type: 'string',
+                ),
+            ),
         ],
         responses: [
             new OA\Response(
@@ -284,23 +284,23 @@ class AuthController extends Controller
                             property: 'success',
                             type: 'boolean',
                             example: true,
-                            description: 'Verify status'
+                            description: 'Verify status',
                         ),
                         new OA\Property(
                             property: 'accessToken',
                             type: 'string',
                             example: 'Akoasdk131o3ipIaskdlz',
-                            description: 'Access token'
+                            description: 'Access token',
                         ),
                         new OA\Property(
                             property: 'user',
                             ref: '#/components/schemas/User',
-                            description: 'User information'
-                        )
-                    ]
-                )
-            )
-        ]
+                            description: 'User information',
+                        ),
+                    ],
+                ),
+            ),
+        ],
     )]
     public function impersonate(Request $request): JsonResponse
     {
@@ -326,7 +326,7 @@ class AuthController extends Controller
         return response()->json([
             'success' => true,
             'accessToken' => $token,
-            'user' => new UserResource($user)
+            'user' => new UserResource($user),
         ]);
     }
 
@@ -341,9 +341,9 @@ class AuthController extends Controller
                 required: ['phoneNumber', 'totpCode'],
                 properties: [
                     new OA\Property(property: 'phoneNumber', type: 'string', description: "User's phone number"),
-                    new OA\Property(property: 'totpCode', type: 'string', description: "User's TOTP Code")
-                ]
-            )
+                    new OA\Property(property: 'totpCode', type: 'string', description: "User's TOTP Code"),
+                ],
+            ),
         ),
         responses: [
             new OA\Response(
@@ -355,29 +355,29 @@ class AuthController extends Controller
                             property: 'success',
                             type: 'boolean',
                             example: true,
-                            description: 'Verify status'
+                            description: 'Verify status',
                         ),
                         new OA\Property(
                             property: 'accessToken',
                             type: 'string',
                             example: 'Akoasdk131o3ipIaskdlz',
-                            description: 'Access token'
+                            description: 'Access token',
                         ),
                         new OA\Property(
                             property: 'user',
                             ref: '#/components/schemas/User',
-                            description: 'User information'
-                        )
-                    ]
-                )
-            )
-        ]
+                            description: 'User information',
+                        ),
+                    ],
+                ),
+            ),
+        ],
     )]
     public function verifyTOTP(Request $request): JsonResponse
     {
         $validatedRequest = $request->validate([
             'phoneNumber' => 'required', 'string', new IndonesiaPhoneFormat(),
-            'totpCode' => 'required', 'string'
+            'totpCode' => 'required', 'string',
         ]);
         $phoneNumber = $validatedRequest['phoneNumber'];
         $totpCode = $validatedRequest['totpCode'];
@@ -387,14 +387,14 @@ class AuthController extends Controller
         $user = User::where('phoneNumber', $phoneNumber)->first();
         if (!$user) {
             return response()->json([
-                'message' => 'User not found'
+                'message' => 'User not found',
             ], 401);
         }
 
         $secret = $user->secretKey;
         if (!$secret) {
             return response()->json([
-                'message' => 'Secret key not found'
+                'message' => 'Secret key not found',
             ], 401);
         }
 
@@ -402,7 +402,7 @@ class AuthController extends Controller
         $totp = TOTP::create($secret);
         if (!$totp->verify($totpCode, $timestamp)) {
             return response()->json([
-                'message' => 'Invalid TOTP code'
+                'message' => 'Invalid TOTP code',
             ], 401);
         }
 
@@ -412,7 +412,7 @@ class AuthController extends Controller
         return response()->json([
             'success' => true,
             'accessToken' => $token,
-            'user' => new UserResource($user)
+            'user' => new UserResource($user),
         ]);
     }
 }

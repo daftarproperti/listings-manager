@@ -28,8 +28,8 @@ class DashboardController extends Controller
         return Inertia::render('Admin/Dashboard', [
             'data' => [
                 'listings' => $listingCollection->collection,
-                'lastPage' => $listing->lastPage()
-            ]
+                'lastPage' => $listing->lastPage(),
+            ],
         ]);
     }
 }

@@ -6,7 +6,7 @@ use OpenApi\Attributes as OA;
 
 #[OA\Schema(
     type: 'string',
-    example: 'price'
+    example: 'price',
 )]
 /**
  * Sort Listing By

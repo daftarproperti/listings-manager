@@ -6,7 +6,7 @@ use OpenApi\Attributes as OA;
 
 #[OA\Schema(
     type: 'string',
-    example: 'east'
+    example: 'east',
 )]
 /**
  * Facing Direction

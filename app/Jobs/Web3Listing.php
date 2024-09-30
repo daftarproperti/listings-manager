@@ -27,7 +27,7 @@ class Web3Listing implements ShouldQueue
      */
     public function __construct(
         public Listing $listing,
-        public string $operationType
+        public string $operationType,
     ) {
         //
     }
@@ -49,7 +49,7 @@ class Web3Listing implements ShouldQueue
         int $cityId,
         string $offChainLink,
         string $hash,
-        string $operationType
+        string $operationType,
     ): void {
         $web3 = new Web3(type(env('ETH_NODE'))->asString());
 
@@ -97,7 +97,7 @@ class Web3Listing implements ShouldQueue
             $id,
             $cityId,
             $offChainLink,
-            $hash
+            $hash,
         );
         $tx = new Transaction(
             $nonce, // nonce
@@ -147,7 +147,7 @@ class Web3Listing implements ShouldQueue
         int $cityId,
         string $offChainLink,
         string $hash,
-        string $operationType
+        string $operationType,
     ): void {
         $web3 = new Web3(type(env('ETH_NODE'))->asString());
 
@@ -209,7 +209,7 @@ class Web3Listing implements ShouldQueue
             $id,
             $cityId,
             $offChainLink,
-            $hash
+            $hash,
         );
         $tx = new Transaction(
             $nonce, // nonce
@@ -313,7 +313,7 @@ class Web3Listing implements ShouldQueue
                 $listing->cityId,
                 $offChainLink,
                 $hash,
-                $this->operationType
+                $this->operationType,
             );
         } catch (LockTimeoutException) {
             logger()->error('Unable to acquire lock execute-contract');

@@ -39,7 +39,7 @@ class GoogleLoginController extends Controller
                     'name' => $user->name,
                     'email' => $user->email,
                     'google_id' => $user->id,
-                    'password' => bcrypt(Str::random())
+                    'password' => bcrypt(Str::random()),
                 ]);
 
                 // Log in the new user.

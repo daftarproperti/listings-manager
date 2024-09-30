@@ -8,7 +8,7 @@ use OpenApi\Attributes as OA;
 #[OA\Schema(
     schema: 'FilterMinMax',
     type: 'object',
-    description: 'Filter Min Max'
+    description: 'Filter Min Max',
 )]
 class FilterMinMax extends Data
 {

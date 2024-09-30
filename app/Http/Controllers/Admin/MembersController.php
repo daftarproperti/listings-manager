@@ -23,8 +23,8 @@ class MembersController extends Controller
         return Inertia::render('Admin/Members', [
             'data' => [
                 'members' => $memberCollection->collection,
-                'lastPage' => $member->lastPage()
-            ]
+                'lastPage' => $member->lastPage(),
+            ],
         ]);
     }
 }
