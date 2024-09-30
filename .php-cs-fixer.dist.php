@@ -8,5 +8,6 @@ return (new PhpCsFixer\Config())
         '@PSR12' => true,
         'single_quote' => true,
         'no_unused_imports' => true,
+        'align_multiline_comment' => true,
     ])
     ->setFinder($finder);

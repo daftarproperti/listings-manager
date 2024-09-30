@@ -29,11 +29,11 @@ class GeneratedListing extends Model
     ];
 
     /**
-    * Get the generated listing attribute.
-    *
-    * @param string|null $value
-    * @return mixed
-    */
+     * Get the generated listing attribute.
+     *
+     * @param string|null $value
+     * @return mixed
+     */
     public function getGeneratedListingAttribute($value)
     {
         if (is_null($value)) {

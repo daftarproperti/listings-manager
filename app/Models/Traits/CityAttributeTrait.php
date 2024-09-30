@@ -35,7 +35,7 @@ trait CityAttributeTrait
     /** Make sure cityId is always an integer.
      * @param int $value
      * @return void
-    */
+     */
     public function setCityIdAttribute($value): void
     {
         $this->attributes['cityId'] = (int) $value;
