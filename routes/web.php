@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\MembersController;
 use App\Http\Controllers\Admin\ClosingsController as AdminClosingsController;
 use App\Http\Controllers\Admin\CancelController as AdminCancelController;
 use App\Http\Controllers\Admin\ExpiredListingsController as AdminExpiredListingsController;
+use App\Http\Controllers\BlockchainInfoController;
 use App\Http\Controllers\QueueSizeController;
 use App\Http\Controllers\VersionController;
 use App\Http\Controllers\Web\Public\AgentsController;
@@ -30,6 +31,10 @@ use Illuminate\Support\Facades\Route;
 // Useful to confirm whether it's okay to stop the current version.
 // (Versions with non-empty queue should not be stopped yet even if they stop receiving traffic).
 Route::get('/_qs', [QueueSizeController::class, 'index']);
+
+// While the blockchain contract is still in alpha stage, we move to different contract addresses frequently.
+// This endpoint shows the current blockchain contract address and version that is synced from Daftar Properti data.
+Route::get('/_blockchain', [BlockchainInfoController::class, 'index']);
 
 Route::group(['prefix' => 'admin'], function () {
     Route::group(['middleware' => ['auth:admin']], function () {
