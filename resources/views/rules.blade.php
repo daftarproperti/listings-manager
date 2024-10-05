@@ -61,7 +61,9 @@ Sebuah Listing disebut terverifikasi jika memenuhi syarat-syarat di bawah ini:
    verifikasi.
 
 Syarat-syarat di atas diperlukan untuk memastikan kualitas Listing-listing di Daftar Properti sehingga pemasar dapat
-memberikan informasi yang memuaskan untuk calon pembeli.
+memberikan informasi yang memuaskan untuk calon pembeli/penyewa.
+
+Untuk lebih detil, silahkan kunjungi halaman [*checklist*](/checklist).
 
 ## Persetujuan Imbalan
 

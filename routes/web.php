@@ -100,6 +100,9 @@ Route::get('/syarat-ketentuan', function () {
 Route::get('/peraturan', function () {
     return view('rules');
 });
+Route::get('/checklist', function () {
+    return view('checklist');
+});
 Route::get('/whitepaper', function () {
     return view('whitepaper');
 });
