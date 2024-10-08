@@ -23,7 +23,7 @@ class GenerateListingFromTextTest extends TestCase
     public function testGenerateListing(): void
     {
         $text = 'JUAL BARU Modern Rumah Asri Taman 1 Menit ke Supermarket Oasis 5 Menit ke Rumah Sakit Sejahtera Dimensi: 6 x 22LT: 132m²LB: 180m²2 Lantai KT: 4+1 (bisa jadi 5+1) KM: 4Full MarmerListrik 2500 watt Row jalan 3 mobil leluasa SHM, bisa KPR Harga: 3,2M (nego) Hubungi: Developer Property 081234567890 (WhatsApp)';
-        
+
         $extractedListing = (object) [
             'id' => 'temp-id',
             'listingId' => 1234,
@@ -40,6 +40,7 @@ class GenerateListingFromTextTest extends TestCase
                 'company' => null
             ],
             'updated_at' => now(),
+            'created_at' => now(),
             'user_profile' => null,
             'adminNote' => null,
             'cancellationNote' => null,
