@@ -378,6 +378,9 @@ export default function index ({
                               <div className="text-[11px] text-slate-500">
                                 Diposting pada: {listing.createdAt}
                               </div>
+                              <div className="text-[11px] text-slate-500">
+                                Diperbarui pada: {listing.updatedAt}
+                              </div>
                             </div>
                             <div className="text-sm">
                             <table>

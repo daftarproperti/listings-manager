@@ -148,7 +148,7 @@ class ListingResource extends JsonResource
                 : null,
             'closings' => $prop->closings ? ClosingCollection::make($prop->closings)->resolve() : null,
             'updatedAt' => $prop->updated_at->isoFormat('D MMMM YYYY'),
-            'createdAt' => $prop->updated_at->isoFormat('D MMMM YYYY'),
+            'createdAt' => $prop->created_at->isoFormat('D MMMM YYYY'),
             'expiredAt' => isset($prop->expiredAt) && $prop->expiredAt instanceof Carbon
                 ? $prop->expiredAt->isoFormat('D MMMM YYYY')
                 : null,
