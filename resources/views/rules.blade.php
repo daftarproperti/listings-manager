@@ -67,7 +67,7 @@ Untuk lebih detil, silahkan kunjungi halaman [*checklist*](/checklist).
 
 ## Persetujuan Imbalan
 
-Setiap Listing dianjurkan untuk menyetujui akan memberikan imbalan 0,5% (jual) atau 2% (sewa) untuk
+Setiap Listing dianjurkan untuk menyetujui akan memberikan imbalan 0,5% (jual) atau 1% (sewa) untuk
 Pemasar Daftar Properti yang berhasil merujuk pembeli/penyewa. Walaupun Listing boleh didaftarkan
 tanpa persetujuan komisi, Pemasar akan lebih terpacu untuk merujuk pembeli untuk Listing-listing
 yang menyetujui imbalan.
@@ -84,7 +84,7 @@ data Listing dari Daftar Properti dan memasarkan Listing-listing tersebut dengan
 Untuk mendapat keuntungan "*referral tracking*" Daftar Properti, pemasar wajib mengikuti protokol
 "*verifiable referral logging*" sehingga di setiap closing/deal, Daftar Properti dapat dengan adil menentukan Pemasar
 mana yang adalah perujuk dari sebuah closing. Pemasar yang telah ditentukan adalah perujuk dari pembeli/penyewa berhak
-mendapatkan imbalan sesuai yang disetujui oleh Pendaftar Listing (0,5% transaksi untuk jual, 2% untuk transaksi sewa).
+mendapatkan imbalan sesuai yang disetujui oleh Pendaftar Listing (0,5% transaksi untuk jual, 1% untuk transaksi sewa).
 
 Jika ada lebih dari 1 Pemasar yang menjadi perujuk, maka imbalan akan dibagi rata untuk masing-masing Pemasar.
 

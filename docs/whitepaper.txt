@@ -90,7 +90,7 @@ The listing registry alone is not useful without entities who look them up and d
 in finding matching buyers/renters. These entities are called Marketers.
 
 Marketers are incentivized by the reward agreement that the Listing representatives explicitly state
-in the Listing Registry. We propose the standard compensation of 0.5% for sale and 2% for rent.
+in the Listing Registry. We propose the standard compensation of 0.5% for sale and 1% for rent.
 
 Unlike the traditional ecosystem where marketers have to prove their involvement by becoming an intermediary
 (forcing them to hide information rather than be transparent),

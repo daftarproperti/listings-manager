@@ -61,7 +61,7 @@ The choice of blockchain technology over traditional databases and APIs offers s
 
 ### 2.2 Marketers
 
-Marketers are entities that actively seek matching buyers/renters for the listings in the Listing Registry. They are incentivized by the reward agreements explicitly stated by the Listing representatives in the Listing Registry. We propose a standard compensation of 0.5% for sales and 2% for rentals.
+Marketers are entities that actively seek matching buyers/renters for the listings in the Listing Registry. They are incentivized by the reward agreements explicitly stated by the Listing representatives in the Listing Registry. We propose a standard compensation of 0.5% for sales and 1% for rentals.
 
 In the proposed system, Marketers' involvement is determined by their role as referrers, maintaining high transparency for potential buyers. This is achieved through the Referral Tracking System, which is transparent, verifiable, and privacy-protected.
 
