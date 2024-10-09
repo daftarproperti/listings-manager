@@ -10,7 +10,7 @@ class ThrottleOTPRequest
 {
     protected RateLimiter $limiter;
     protected int $decayMinutes = 1;
-    protected int $maxAttempts = 3;
+    protected int $maxAttempts = 10;
 
     public function __construct(RateLimiter $limiter)
     {
