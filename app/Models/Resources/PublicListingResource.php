@@ -20,7 +20,6 @@ class PublicListingResource extends JsonResource
 {
     #[OA\Property(property: 'listingId', type: 'integer')]
     #[OA\Property(property: 'listingIdStr', type: 'string')]
-    #[OA\Property(property: 'title', type: 'string')]
     #[OA\Property(property: 'propertyType', ref: '#/components/schemas/PropertyType')]
     #[OA\Property(property: 'listingForSale', type: 'boolean')]
     #[OA\Property(property: 'listingForRent', type: 'boolean')]
@@ -67,7 +66,6 @@ class PublicListingResource extends JsonResource
         return [
             'listingId' => $listing->listingId,
             'listingIdStr' => (string)$listing->listingId,
-            'title' => $listing->title,
             'propertyType' => $listing->propertyType,
             'listingForSale' => $listing->listingForSale ?? false,
             'listingForRent' => $listing->listingForRent ?? false,

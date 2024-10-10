@@ -36,7 +36,7 @@ export default function index ({
   const [currentSortBy, setSortBy] = useState(sortByParam)
   const [currentSortOrder, setSortOrder] = useState(sortOrderParam)
 
-  const TABLE_HEAD = ['Judul', 'Agen', 'No HP', 'Harga', 'LT', 'LB', 'KT', 'KM', 'Tanggal', 'Verifikasi', 'Aktifasi']
+  const TABLE_HEAD = ['Alamat', 'Agen', 'No HP', 'Harga', 'LT', 'LB', 'KT', 'KM', 'Tanggal', 'Verifikasi', 'Aktifasi']
 
   const fetchData = (
     q?: string,
@@ -130,7 +130,7 @@ export default function index ({
                             <div className="col-span-3 md:col-span-1">
                               <TextInput
                                 value={keyword}
-                                placeholder="Cari berdasarkan judul, id atau no HP"
+                                placeholder="Cari berdasarkan alamat, id atau no HP"
                                 className="w-full"
                                 onKeyDown={(e) => {
                                   if (e.key === 'Enter') {
@@ -160,7 +160,7 @@ export default function index ({
                                   (
                                     {
                                       id,
-                                      title,
+                                      address,
                                       user,
                                       price,
                                       lotSize,
@@ -187,9 +187,9 @@ export default function index ({
                                             }}
                                         >
                                             <Table.BodyItem>
-                                              {title != null && (
-                                                <Tooltip content={title}>
-                                                  <span>{title.length > 10 ? `${title.substring(0, 10)}...` : title}</span>
+                                              {address != null && (
+                                                <Tooltip content={address}>
+                                                  <span>{address.length > 10 ? `${address.substring(0, 15)}...` : address}</span>
                                                 </Tooltip>
                                               )}
                                             </Table.BodyItem>

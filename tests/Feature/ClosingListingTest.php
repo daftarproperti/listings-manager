@@ -19,14 +19,14 @@ class ClosingListingTest extends TestCase
     private User $user;
     private string $token;
 
-    private function addListing(string $title, int $userId, array $fields = []): Listing
+    private function addListing(string $address, int $userId, array $fields = []): Listing
     {
         return Listing::factory()->create([
             'user' => [
                 'userId' => $userId,
                 'source' => 'app',
             ],
-            'title' => $title,
+            'address' => $address,
         ] + $fields);
     }
 
@@ -68,14 +68,14 @@ class ClosingListingTest extends TestCase
 
     public function test_without_authentication(): void
     {
-        $listing = $this->addListing('Dijual Rumah', $this->fakeUserId);
+        $listing = $this->addListing('Jln. Rumah Baru', $this->fakeUserId);
         $response = $this->post(sprintf('/api/app/listings/%s/closings', $listing->id));
         $response->assertStatus(403);
     }
 
     public function test_can_add_closings(): void
     {
-        $listing = $this->addListing('Dijual Rumah', $this->fakeUserId, [
+        $listing = $this->addListing('Jln. Rumah Baru', $this->fakeUserId, [
             'propertyType' => 'house',
             'listingType' => 'rent',
         ]);

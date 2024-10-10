@@ -16,8 +16,6 @@ I need you to do more validation of the free-text description with this rules:
 - Sometimes, phone numbers are hidden in the description as text (e.g., 'Kosong Delapan Satu Tiga' with the number
    spelled out). This is not allowed, and you should return an error if you find it.
 
-title: Use your judgement for a suitable short one-line summary for this listing.
-
 propertyType: Use enum for property types: house, apartment, warehouse, etc.
 
 listingType: Use enum for listing types: sale, rent.

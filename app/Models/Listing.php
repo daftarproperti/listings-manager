@@ -27,7 +27,6 @@ use MongoDB\BSON\UTCDateTime;
  *                          May be deleted once strapi migration is done completely.
  * @property int $listingId The unique canonical ID known by external
  * @property string $sourceText
- * @property string $title
  * @property PropertyType $propertyType
  * @property ListingType $listingType
  * @property bool $listingForSale

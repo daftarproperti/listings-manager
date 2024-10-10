@@ -1,10 +1,5 @@
 [
     {
-        // For "title" field, use your judgement for a suitable short one-line summary for this listing that can identify this listing easily.
-        // Avoid generic words like "Dijual", "Murah", etc, because these words often appear in many listings and cannot easily identify the listing.
-        // If the text contains multiple listings, there is a global title and a title for the specific listing. In this case choose the specific title (if exists) rather than the global.
-        "title": "[Title or main topic]",
-
         // The "propertyType" field below is an enum, so please choose only from the exact strings below:
         // for rumah, use enum "house"
         // for apartemen, use enum "apartment"

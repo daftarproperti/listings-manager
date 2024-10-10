@@ -16,14 +16,14 @@ class ListingApiTest extends TestCase
     private User $user;
     private string $token;
 
-    private function addListing(string $title, int $userId, array $fields = []): Listing
+    private function addListing(string $address, int $userId, array $fields = []): Listing
     {
         return Listing::factory()->create([
             'user' => [
                 'userId' => $userId,
                 'source' => 'app',
             ],
-            'title' => $title,
+            'address' => $address,
         ] + $fields);
     }
 
@@ -72,11 +72,11 @@ class ListingApiTest extends TestCase
 
     public function test_can_list_listings(): void
     {
-        $this->addListing("Dijual Rumah", $this->fakeUserId, [
+        $this->addListing("Jl. Rumah Baru", $this->fakeUserId, [
             'propertyType' => 'house',
             'listingType' => 'rent',
         ]);
-        $this->addListing("Dijual Gedung", $this->fakeUserId, [
+        $this->addListing("Jl.Gedung Baru", $this->fakeUserId, [
             'propertyType' => 'warehouse',
             'listingType' => 'sale',
         ]);
@@ -86,16 +86,16 @@ class ListingApiTest extends TestCase
 
             $response->assertStatus(200);
 
-            // TODO: Test more fields other than title.
+            // TODO: Test more fields other than address.
             $response->assertJson([
                 "listings" => [
                     [
-                        "title" => "Dijual Gedung",
+                        "address" => "Jl.Gedung Baru",
                         "propertyType" => "warehouse",
                         "listingType" => "sale",
                     ],
                     [
-                        "title" => "Dijual Rumah",
+                        "address" => "Jl. Rumah Baru",
                         "propertyType" => "house",
                         "listingType" => "rent",
                     ],
@@ -106,8 +106,8 @@ class ListingApiTest extends TestCase
 
     public function test_can_list_listings_with_filter_q(): void
     {
-        $this->addListing("Dijual Rumah", $this->fakeUserId);
-        $this->addListing("Dijual Gedung", $this->fakeUserId);
+        $this->addListing("Jl. Rumah Baru", $this->fakeUserId);
+        $this->addListing("Jl. Gedung Baru", $this->fakeUserId);
 
         $this->testWithAuth(function (self $makesHttpRequests) {
             $response = $makesHttpRequests->get('/api/app/listings?q=rumah');
@@ -117,7 +117,7 @@ class ListingApiTest extends TestCase
             $response->assertJson([
                 "listings" => [
                     [
-                        "title" => "Dijual Rumah",
+                        "address" => "Jl. Rumah Baru",
                     ],
                 ],
             ]);
@@ -126,8 +126,8 @@ class ListingApiTest extends TestCase
 
     public function test_can_list_listings_with_filter_price(): void
     {
-        $this->addListing("Dijual Rumah 1M", $this->fakeUserId, ['price' => 1000000000]);
-        $this->addListing("Dijual Gedung 2M", $this->fakeUserId, ['price' => 2000000000]);
+        $this->addListing("Jl. Rumah Baru 1M", $this->fakeUserId, ['price' => 1000000000]);
+        $this->addListing("Jl. Gedung Baru 2M", $this->fakeUserId, ['price' => 2000000000]);
 
         $this->testWithAuth(function (self $makesHttpRequests) {
             $response = $makesHttpRequests->get('/api/app/listings?price[min]=1500000000');
@@ -137,7 +137,7 @@ class ListingApiTest extends TestCase
             $response->assertJson([
                 "listings" => [
                     [
-                        "title" => "Dijual Gedung 2M",
+                        "address" => "Jl. Gedung Baru 2M",
                     ],
                 ],
             ]);
@@ -146,17 +146,17 @@ class ListingApiTest extends TestCase
 
     public function test_can_show_Listing(): void
     {
-        $listing = $this->addListing("Dijual Rumah", $this->fakeUserId);
+        $listing = $this->addListing("Jl. Rumah Baru", $this->fakeUserId);
 
         $this->testWithAuth(function (self $makesHttpRequests) use ($listing) {
             $response = $makesHttpRequests->get("/api/app/listings/{$listing->id}");
 
             $response->assertStatus(200);
 
-            // TODO: Test more fields other than title.
+            // TODO: Test more fields other than address.
             $response->assertJson([
                 'id' => $listing->id,
-                'title' => $listing->title,
+                'address' => $listing->address,
                 'user' => [
                     'name' => 'John Smith',
                     'city' => 'Some City',
@@ -170,17 +170,17 @@ class ListingApiTest extends TestCase
 
     public function test_can_show_Listing_user_does_not_exist(): void
     {
-        $listing = $this->addListing("Dijual Rumah", $this->fakeUserId);
+        $listing = $this->addListing("Jl. Rumah Baru", $this->fakeUserId);
 
         $this->testWithAuth(function (self $makesHttpRequests) use ($listing) {
             $response = $makesHttpRequests->get("/api/app/listings/{$listing->id}");
 
             $response->assertStatus(200);
 
-            // TODO: Test more fields other than title.
+            // TODO: Test more fields other than address.
             $response->assertJson([
                 'id' => $listing->id,
-                'title' => $listing->title,
+                'address' => $listing->address,
                 'user' => [
                     'name' => 'John Smith',
                     'city' => 'Some City',
@@ -194,11 +194,10 @@ class ListingApiTest extends TestCase
 
     public function test_can_update_Listing(): void
     {
-        $listing = $this->addListing("Dijual Rumah", $this->fakeUserId);
+        $listing = $this->addListing("Jl. itu", $this->fakeUserId);
 
         $this->testWithAuth(function (self $makesHttpRequests) use ($listing) {
             $response = $makesHttpRequests->post("/api/app/listings/{$listing->id}", [
-                'title' => 'Lagi Dijual',
                 'address' => 'Jl. itu',
                 'description' => 'Dijual rumah bagus',
                 'price' => '1000000000',
@@ -220,7 +219,6 @@ class ListingApiTest extends TestCase
 
             $updatedListing = Listing::find($listing->id);
             // Assert that the listing properties have been updated
-            $this->assertEquals('Lagi Dijual', $updatedListing->title);
             $this->assertEquals('Jl. itu', $updatedListing->address);
             $this->assertEquals('Dijual rumah bagus', $updatedListing->description);
             $this->assertEquals('1000000000', $updatedListing->price);
@@ -239,7 +237,6 @@ class ListingApiTest extends TestCase
     {
         $this->testWithAuth(function (self $makesHttpRequests) {
             $response = $makesHttpRequests->post("/api/app/listings", [
-                'title' => 'Lagi Dijual',
                 'address' => 'Jl. itu',
                 'description' => 'Dijual rumah bagus',
                 'price' => '1000000000',
@@ -261,7 +258,6 @@ class ListingApiTest extends TestCase
             $response->assertStatus(201);
 
             $this->assertDatabaseHas('listings', [
-                'title' => 'Lagi Dijual',
                 'address' => 'Jl. itu',
                 'verifyStatus' => 'on_review',
             ]);

@@ -17,14 +17,14 @@ class PublicListingsTest extends TestCase
     private User $user;
     private string $token;
 
-    private function addListing(string $title, int $userId, array $fields = []): Listing
+    private function addListing(string $address, int $userId, array $fields = []): Listing
     {
         return Listing::factory()->create([
             'user' => [
                 'userId' => $userId,
                 'source' => 'app',
             ],
-            'title' => $title,
+            'address' => $address,
         ] + $fields);
     }
 
@@ -53,7 +53,7 @@ class PublicListingsTest extends TestCase
 
     public function test_can_show_Listing_json(): void
     {
-        $listing = $this->addListing("Dijual Rumah", $this->fakeUserId, [
+        $listing = $this->addListing("Jln. Rumah", $this->fakeUserId, [
             'propertyType' => 'house',
             'listingType' => 'rent',
         ]);
@@ -66,7 +66,7 @@ class PublicListingsTest extends TestCase
 
         $response->assertJson([
             'listingId' => $listing->listingId,
-            'title' => 'Dijual Rumah',
+            'address' => 'Jln. Rumah',
         ], true);
 
         $this->assertEquals('John Smith', $response->json('registrant.name'));

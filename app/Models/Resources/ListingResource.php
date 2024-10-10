@@ -17,7 +17,6 @@ class ListingResource extends JsonResource
     #[OA\Property(property: 'listingId', type: 'integer')]
     #[OA\Property(property: 'listingIdStr', type: 'string')]
     #[OA\Property(property: 'sourceText', type: 'string')]
-    #[OA\Property(property: 'title', type: 'string')]
     #[OA\Property(property: 'propertyType', ref: '#/components/schemas/PropertyType')]
     #[OA\Property(property: 'listingType', ref: '#/components/schemas/ListingType')]
     #[OA\Property(property: 'listingForSale', type: 'boolean')]
@@ -92,7 +91,6 @@ class ListingResource extends JsonResource
             'listingId' => $prop->listingId,
             'listingIdStr' => (string)$prop->listingId,
             'sourceText' => $prop->sourceText,
-            'title' => $prop->title,
             'propertyType' => $prop->propertyType,
             'listingType' => $prop->listingType,
             'listingForSale' => $prop->listingForSale ?? false,

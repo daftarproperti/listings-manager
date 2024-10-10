@@ -53,7 +53,7 @@ class ListingRepository
 
         $query->when(isset($filterSet->q), function ($query) use ($filterSet) {
             $query->where(function ($q) use ($filterSet) {
-                $q->where('title', 'ilike', '%' . $filterSet->q . '%')
+                $q->where('address', 'ilike', '%' . $filterSet->q . '%')
                     ->orWhere(function ($q) use ($filterSet) {
                         // Explicitly define regexp and options to filter text with newline
                         $q->where('description', 'regexp', new Regex('^.*' . $filterSet->q . '.*', 'is'));

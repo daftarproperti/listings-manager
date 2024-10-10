@@ -482,12 +482,12 @@ class ListingRepositoryTest extends TestCase
     public function test_listing_get_by_keyword(): void
     {
         Listing::factory()->create([
-            'title' => 'Rumah Apik',
+            'address' => 'Jln. Rumah Apik',
             'description' => 'Rumah Luas dan sangat bagus'
         ]);
 
         Listing::factory()->create([
-            'title' => 'Rumah Bagus',
+            'address' => 'Jln. Rumah Bagus',
             'description' => 'Rumah yang sangat apik dan bagus'
         ]);
 
@@ -505,12 +505,12 @@ class ListingRepositoryTest extends TestCase
     public function test_listing_get_by_keyword_not_found(): void
     {
         Listing::factory()->create([
-            'title' => 'Rumah Apik',
+            'address' => 'Jln. Rumah Apik',
             'description' => 'Rumah Luas dan sangat bagus'
         ]);
 
         Listing::factory()->create([
-            'title' => 'Rumah Bagus',
+            'address' => 'Jln. Rumah Bagus',
             'description' => 'Rumah yang sangat apik dan bagus'
         ]);
 

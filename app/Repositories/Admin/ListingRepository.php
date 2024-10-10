@@ -21,7 +21,7 @@ class ListingRepository
         if (isset($input['q'])) {
             /** @var User|null $user */
             $user = User::where('phoneNumber', $input['q'])->first();
-            $query->where('title', 'like', '%' . $input['q'] . '%')
+            $query->where('address', 'like', '%' . $input['q'] . '%')
                   ->orWhere('_id', $input['q']);
 
             if ($user) {
@@ -60,7 +60,7 @@ class ListingRepository
                 $user = User::where('phoneNumber', $input['q'])
                             ->orWhere('name', 'like', '%' . $input['q'] . '%')->first();
                 $q->where(function ($subQuery) use ($input, $user) {
-                    $subQuery->where('title', 'like', '%' . $input['q'] . '%')
+                    $subQuery->where('address', 'like', '%' . $input['q'] . '%')
                             ->orWhere('_id', $input['q']);
 
                     if ($user) {
@@ -104,7 +104,7 @@ class ListingRepository
                 $user = User::where('phoneNumber', $input['q'])
                             ->orWhere('name', 'like', '%' . $input['q'] . '%')->first();
                 $q->where(function ($subQuery) use ($input, $user) {
-                    $subQuery->where('title', 'like', '%' . $input['q'] . '%')
+                    $subQuery->where('address', 'like', '%' . $input['q'] . '%')
                             ->orWhere('_id', $input['q']);
 
                     if ($user) {

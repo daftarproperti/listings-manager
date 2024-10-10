@@ -17,7 +17,6 @@ class AiReviewListingGptResource extends JsonResource
         $prop = $this->resource;
 
         return [
-            'title' => $prop->title,
             'address' => $prop->address,
             'price' => $prop->price ??  null,
             'rentPrice' => $prop->rentPrice ?? null,

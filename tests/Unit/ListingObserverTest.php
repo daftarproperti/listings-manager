@@ -35,7 +35,7 @@ class ListingObserverTest extends TestCase
     public function test_empty_listing_creation(): void
     {
         $listing = new Listing();
-        $listing->title = '';
+        $listing->address = '';
         $listing->price = '';
         $listing->description = '';
 
@@ -47,7 +47,7 @@ class ListingObserverTest extends TestCase
     public function test_filled_listing_creation(): void
     {
         $listing = Listing::factory()->create([
-            'title' => 'Rumah Apik',
+            'address' => 'Jln. Baru',
             'description' => 'Rumah Luas dan sangat bagus'
         ]);
 
@@ -64,7 +64,6 @@ class ListingObserverTest extends TestCase
                 'userId' => $this->user->user_id,
                 'source' => 'app',
             ],
-            'title' => 'Rumah Apik',
             'description' => 'Rumah Luas dan sangat bagus'
         ]);
 
@@ -76,7 +75,6 @@ class ListingObserverTest extends TestCase
                 'userId' => $this->user->user_id,
                 'source' => 'app',
             ],
-            'title' => 'Rumah Kedua',
             'description' => 'Rumah kedua yang bagus'
         ]);
     }
@@ -84,7 +82,6 @@ class ListingObserverTest extends TestCase
     public function test_listing_creation_sets_verify_status_and_listing_id(): void
     {
         $listing = Listing::factory()->make([
-            'title' => 'Rumah Apik',
             'description' => 'Rumah Luas dan sangat bagus'
         ]);
 

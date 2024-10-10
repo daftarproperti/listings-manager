@@ -323,7 +323,6 @@ export default function index ({
                           <table className="min-w-full text-sm md:text-base">
                             <thead>
                               <tr className="text-left">
-                                <th className="pb-2">Title</th>
                                 <th className="pb-2">Address</th>
                                 <th className="pb-2">Pictures</th>
                               </tr>
@@ -331,16 +330,6 @@ export default function index ({
                             <tbody>
                               {data.likelyConnectedListing.map((connectedListing) => (
                                 <tr key={connectedListing.id} className="border-t border-red-500">
-                                  <td className="py-2">
-                                    <a
-                                      href={`/admin/listings/${connectedListing.id}`}
-                                      target="_blank"
-                                      rel="noopener noreferrer"
-                                      className="text-white hover:underline"
-                                    >
-                                      {connectedListing.title}
-                                    </a>
-                                  </td>
                                   <td className="py-2">{connectedListing.address}</td>
                                   <td className="py-2">
                                     <div className="relative group">
@@ -363,7 +352,7 @@ export default function index ({
                         </div>
                       )}
                         <div className="text-lg md:text-xl font-semibold text-slate-500">
-                            {listing.title}
+                            {listing.address}
                         </div>
                         <div className="mt-1 text-2xl md:text-3xl font-semibold leading-8 text-slate-800">
                             {new Intl.NumberFormat('id-ID', {
@@ -374,7 +363,6 @@ export default function index ({
                         </div>
                         <div className="flex justify-between mt-1.5 line-clamp-3 text-xs md:text-sm leading-4 text-slate-500">
                             <div>
-                              {listing.address}
                               <div className="text-[11px] text-slate-500">
                                 Diposting pada: {listing.createdAt}
                               </div>

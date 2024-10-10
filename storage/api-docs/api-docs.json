@@ -989,9 +989,9 @@
                                                         "type": "string",
                                                         "example": "listing-id-1"
                                                     },
-                                                    "title": {
+                                                    "address": {
                                                         "type": "string",
-                                                        "example": "title-1"
+                                                        "example": "address"
                                                     }
                                                 },
                                                 "type": "object"
@@ -1173,10 +1173,6 @@
             },
             "ListingRequest": {
                 "properties": {
-                    "title": {
-                        "type": "string",
-                        "example": "Rumah dijual di daerah pasteur"
-                    },
                     "address": {
                         "type": "string",
                         "example": "Jl. Pendidikan No. 1"
@@ -1695,9 +1691,6 @@
                     "sourceText": {
                         "type": "string"
                     },
-                    "title": {
-                        "type": "string"
-                    },
                     "propertyType": {
                         "$ref": "#/components/schemas/PropertyType"
                     },
@@ -1879,9 +1872,6 @@
                         "type": "integer"
                     },
                     "listingIdStr": {
-                        "type": "string"
-                    },
-                    "title": {
                         "type": "string"
                     },
                     "propertyType": {

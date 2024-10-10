@@ -104,7 +104,7 @@ export default function index ({
                             <div className="col-span-3 md:col-span-1">
                               <TextInput
                                 value={keyword}
-                                placeholder="Cari berdasarkan listing id, judul atau no HP"
+                                placeholder="Cari berdasarkan listing id, alamat atau no HP"
                                 className="w-full"
                                 onKeyDown={(e) => {
                                   if (e.key === 'Enter') {

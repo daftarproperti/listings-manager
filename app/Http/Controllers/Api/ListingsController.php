@@ -607,9 +607,9 @@ class ListingsController extends Controller
                                         example: 'listing-id-1',
                                     ),
                                     new OA\Property(
-                                        property: 'title',
+                                        property: 'address',
                                         type: 'string',
-                                        example: 'title-1',
+                                        example: 'address',
                                     ),
                                 ],
                             ),
@@ -643,7 +643,6 @@ class ListingsController extends Controller
             /** @var Listing $listing */
             return [
                 'id' => $listing->id,
-                'title' => $listing->title,
                 'address' => $listing->address,
                 'pictureUrls' => $listing->pictureUrls,
             ];

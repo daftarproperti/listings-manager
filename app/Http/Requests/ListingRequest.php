@@ -13,7 +13,6 @@ use OpenApi\Attributes as OA;
 )]
 class ListingRequest extends BaseApiRequest
 {
-    #[OA\Property(property: 'title', type: 'string', example: 'Rumah dijual di daerah pasteur')]
     #[OA\Property(property: 'address', type: 'string', example: 'Jl. Pendidikan No. 1')]
     #[OA\Property(property: 'description', type: 'string', example: 'Rumah bagus')]
     #[OA\Property(property: 'price', type: 'integer', example: 100000)]
@@ -60,7 +59,6 @@ class ListingRequest extends BaseApiRequest
     public function rules()
     {
         return [
-            'title' => 'required|string',
             'address' => 'required|string',
             'description' => 'required|string',
             'price' => 'required_if:listingForSale,true|numeric',

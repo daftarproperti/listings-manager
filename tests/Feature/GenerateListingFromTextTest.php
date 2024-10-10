@@ -27,7 +27,6 @@ class GenerateListingFromTextTest extends TestCase
         $extractedListing = (object) [
             'id' => 'temp-id',
             'listingId' => 1234,
-            'title' => 'Rumah Asri Taman 1',
             'propertyType' => 'house',
             'listingType' => 'sale',
             'address' => '',

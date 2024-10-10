@@ -53,7 +53,7 @@
                     @else
                     @foreach($listing->pictureUrls as $pictureUrl)
                     <div class="hidden duration-700 ease-in-out" data-carousel-item>
-                        <img src="{{ $pictureUrl }}" class="absolute block h-full w-full object-contain -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="{{ $listing->title }}" onerror="this.src='/images/placeholder.png'" />
+                        <img src="{{ $pictureUrl }}" class="absolute block h-full w-full object-contain -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="{{ $listing->address }}" onerror="this.src='/images/placeholder.png'" />
                     </div>
                     @endforeach
                     @endif
@@ -80,12 +80,9 @@
             </div>
             <div class="pt-4 md:pt-6">
                 <div class="px-4 md:px-6">
-                    <div class="text-lg md:text-xl font-semibold text-slate-500">{{ $listing->title }}</div>
+                    <div class="text-lg md:text-xl font-semibold text-slate-500">{{ $listing->address }}</div>
                     <div class="mt-1 text-2xl md:text-3xl font-semibold leading-8 text-slate-800">
                         {{ $listing->formatted_price }}
-                    </div>
-                    <div class="mt-1.5 line-clamp-3 text-xs md:text-sm leading-4 text-slate-500">
-                        {{ $listing->address }}
                     </div>
                 </div>
                 <div class="mt-1 px-4 md:px-6 flex flex-col flex-wrap content-start border-y border-solid border-y-slate-200 py-2">
