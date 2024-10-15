@@ -1,6 +1,6 @@
 # Container for daftarproperti feature tests.
 
-FROM php:8.3.7-cli-bullseye
+FROM php:8.3-cli-bookworm
 
 RUN apt-get update
 RUN apt-get install -y git zip unzip curl
@@ -13,7 +13,7 @@ RUN pecl install mongodb && docker-php-ext-enable mongodb
 RUN docker-php-ext-configure pcntl --enable-pcntl && docker-php-ext-install pcntl
 
 # Needs `nc` to probe mongodb readiness
-RUN apt-get install -y netcat
+RUN apt-get install -y netcat-traditional
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer --version=2.6.5
 

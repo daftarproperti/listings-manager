@@ -18,7 +18,7 @@
         "google/cloud-storage": "^1.36",
         "guzzlehttp/guzzle": "^7.2",
         "inertiajs/inertia-laravel": "^0.6.3",
-        "kornrunner/ethereum-offline-raw-tx": "^0.6.0",
+        "kornrunner/ethereum-offline-raw-tx": "^0.8.0",
         "laravel/framework": "^10.10",
         "laravel/passport": "^12.2",
         "laravel/sanctum": "^3.2",
