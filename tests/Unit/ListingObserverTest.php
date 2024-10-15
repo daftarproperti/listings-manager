@@ -4,6 +4,7 @@ namespace Tests\Unit;
 
 use App\Models\Listing;
 use App\Models\Enums\VerifyStatus;
+use App\Models\ListingHistory;
 use App\Models\User;
 use Tests\TestCase;
 use Illuminate\Support\Facades\Auth;
@@ -90,5 +91,46 @@ class ListingObserverTest extends TestCase
         $this->assertEquals(VerifyStatus::ON_REVIEW, $listing->verifyStatus);
         $this->assertNotNull($listing->listingId);
         $this->assertGreaterThan(0, $listing->listingId);
+    }
+
+    public function test_listing_creation_with_history(): void
+    {
+        $listing = Listing::factory()->make([
+            'description' => 'Rumah Luas dan sangat bagus'
+        ]);
+
+        $listing->save();
+        $rawListingHistory = ListingHistory::where('listingId', $listing->id)->first();
+
+        $this->assertEquals($listing->id, $rawListingHistory->listingId);
+
+    }
+
+    public function test_listing_update_with_history(): void
+    {
+        $listing = Listing::factory()->make([
+            'description' => 'Rumah Luas dan sangat bagus',
+            'price' => 1000000000
+        ]);
+
+        $listing->save();
+
+        $listing->description = 'Rumah Modern dengan desain minimalis';
+        $listing->price = 1200000000;
+        $listing->save();
+
+        $rawListingHistory = ListingHistory::where('listingId', $listing->id)
+            ->orderBy('created_at', 'desc')
+            ->first();
+
+        $this->assertNotNull($rawListingHistory);
+        $this->assertEquals($listing->id, $rawListingHistory->listingId);
+
+        $changes = json_decode($rawListingHistory->changes, true);
+        $expectedChanges = [
+            'description' => ['before' => 'Rumah Luas dan sangat bagus', 'after' => 'Rumah Modern dengan desain minimalis'],
+            'price' => ['before' => 1000000000, 'after' => 1200000000]
+        ];
+        $this->assertEquals($expectedChanges, $changes);
     }
 }

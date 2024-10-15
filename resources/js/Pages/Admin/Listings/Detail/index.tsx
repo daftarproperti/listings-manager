@@ -25,6 +25,7 @@ import {
 } from '@/Assets/Icons'
 import type { Listing, LikelyConnectedListing, Option, PageProps } from '@/types'
 import StatusDialog from './StatusDialog'
+import { type ListingHistory } from '@/types/listing'
 
 export const LISTING_ICON: Record<string, JSX.Element> = {
   buildingSize: <HouseIconSVG />,
@@ -63,6 +64,7 @@ export default function index ({
 }: PageProps<{
   data: {
     listing: Listing
+    listingHistory: ListingHistory[]
     likelyConnectedListing: LikelyConnectedListing[]
     verifyStatusOptions: Option[]
     activeStatusOptions: Option[]
@@ -658,6 +660,84 @@ export default function index ({
               <GoogleMaps coord={coord} setCoord={setCoord} />
             </div>
           </div>
+        </div>
+        <div className="px-4 md:px-6 py-6">
+          <h1 className="font-semibold leading-7 text-slate-500 mb-4">
+            Riwayat Perubahan
+          </h1>
+
+          {data.listingHistory.length > 0
+            ? (
+                data.listingHistory.map((history, index) => (
+                <div key={index} className="mb-6">
+                  <h2 className="text-md font-semibold text-slate-800 mb-2">
+                    Perubahan pada {new Date(history.created_at).toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit'
+                  })}
+                  </h2>
+                  {Object.keys(history.changes).length > 0
+                    ? (
+                    <div className="overflow-x-auto">
+                      <table className="min-w-full table-auto text-sm text-left text-gray-500">
+                        <thead>
+                          <tr className="text-xs text-gray-700 uppercase bg-gray-100">
+                            <th className="px-6 py-3">Atribut</th>
+                            <th className="px-6 py-3">Sebelum</th>
+                            <th className="px-6 py-3">Sesudah</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {Object.keys(history.changes).length > 0 &&
+                            Object.values(history.changes).some(change => (change.before !== null || change.after !== null))
+                            ? (
+                                Object.keys(history.changes).map((field, fieldIndex) => {
+                                  const before = history.changes[field]?.before
+                                  const after = history.changes[field]?.after
+                                  if (typeof before === 'object' || typeof after === 'object') {
+                                    return (
+                                      <tr key={fieldIndex} className="border-b">
+                                        <td className="px-6 py-4 text-gray-900">{field}</td>
+                                        <td className="px-6 py-4">{JSON.stringify(before) ?? '-'}</td>
+                                        <td className="px-6 py-4">{JSON.stringify(after) ?? '-'}</td>
+                                      </tr>
+                                    )
+                                  }
+
+                                  if (before !== null && after !== null) {
+                                    return (
+                                      <tr key={fieldIndex} className="border-b">
+                                        <td className="px-6 py-4 text-gray-900">{field}</td>
+                                        <td className="px-6 py-4">{before ?? '-'}</td>
+                                        <td className="px-6 py-4">{after ?? '-'}</td>
+                                      </tr>
+                                    )
+                                  }
+                                  return null
+                                })
+                              )
+                            : (
+                            <tr>
+                              <td className="text-center py-4">Tidak ada perubahan</td>
+                            </tr>
+                              )}
+                        </tbody>
+                      </table>
+                    </div>
+                      )
+                    : (
+                    <p className="text-sm text-gray-500">Tidak ada perubahan</p>
+                      )}
+                </div>
+                ))
+              )
+            : (
+            <p className="text-sm text-gray-500">Tidak ada riwayat</p>
+              )}
         </div>
       </div>
       {listing?.user?.name != null && (

@@ -5,6 +5,7 @@ namespace App\Observers;
 use App\Helpers\Queue;
 use App\Jobs\SyncListingToGCS;
 use App\Jobs\Web3Listing;
+use App\Models\ListingHistory;
 use App\Models\Enums\VerifyStatus;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Listing;
@@ -26,6 +27,22 @@ class ListingObserver
         } catch (\Throwable $th) {
             Log::error('Error copy to property: ' . $th->getMessage());
         }
+
+        try {
+            ListingHistory::create([
+                'listingId' => $listing->id,
+                'before' => json_encode([]),
+                'after' => json_encode($listing->attributesToArray()),
+                'changes' => json_encode([
+                    'status' => [
+                        'before' => null,
+                        'after' => 'created',
+                    ],
+                ]),
+            ]);
+        } catch (\Throwable $th) {
+            Log::error('Error writing histories: ' . $th->getMessage());
+        }
     }
 
     /**
@@ -37,6 +54,34 @@ class ListingObserver
             SyncListingToGCS::dispatch($listing->listingId)->onQueue(Queue::getQueueName('generic'));
         } catch (\Throwable $th) {
             Log::error('Error sync to property: ' . $th->getMessage());
+        }
+
+        try {
+            $originalAttributes = $listing->getOriginal();
+            $updatedAttributes = $listing->getAttributes();
+
+            // Include all changes to changelog except for excluded fields
+            $excludedFields = ['updated_at', 'user', 'source'];
+            $rawChanges = array_diff_key($listing->getChanges(), array_flip($excludedFields));
+
+            $changes = [];
+            foreach ($rawChanges as $field => $newValue) {
+                $originalValue = $listing->getOriginal($field);
+
+                $changes[$field] = [
+                    'before' => $originalValue,
+                    'after' => $newValue,
+                ];
+            }
+
+            ListingHistory::create([
+                'listingId' => $listing->id,
+                'before' => json_encode($originalAttributes),
+                'after' => json_encode($updatedAttributes),
+                'changes' => json_encode($changes),
+            ]);
+        } catch (\Throwable $th) {
+            Log::error('Error writing histories: ' . $th->getMessage());
         }
 
         try {
@@ -106,6 +151,30 @@ class ListingObserver
         }
 
         return true;
+    }
+
+    /**
+     * Handle the Listing "deleting" event.
+     * @param Listing $listing
+     * @return void
+     */
+    public function deleting(Listing $listing): void
+    {
+        try {
+            ListingHistory::create([
+                'listingId' => $listing->id,
+                'before' => json_encode($listing->attributesToArray()),
+                'after' => json_encode([]),
+                'changes' => json_encode([
+                    'status' => [
+                        'before' => null,
+                        'after' => 'deleted',
+                    ],
+                ]),
+            ]);
+        } catch (\Throwable $th) {
+            Log::error('Error writing histories: ' . $th->getMessage());
+        }
     }
 
     /**

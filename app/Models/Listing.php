@@ -108,6 +108,16 @@ class Listing extends Model
     ];
 
     /**
+     * Get all the listing histories for this listing.
+     *
+     * @return HasMany<ListingHistory>
+     */
+    public function listingHistories()
+    {
+        return $this->hasMany(ListingHistory::class, 'listingId');
+    }
+
+    /**
      * Retrieve the closings relationship.
      *  @return \Illuminate\Database\Eloquent\Relations\HasMany<Closing>.
      */

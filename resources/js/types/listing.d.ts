@@ -69,3 +69,15 @@ export interface LikelyConnectedListing {
   address: string
   pictureUrls: string[]
 }
+
+export interface ListingChange {
+  before: string | null
+  after: string | null
+}
+
+export interface ListingHistory {
+  listingId: string
+  changes: Record<string, ListingChange>
+  created_at: string
+  updated_at: string
+}

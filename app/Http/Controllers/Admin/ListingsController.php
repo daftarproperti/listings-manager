@@ -10,6 +10,7 @@ use App\Models\AdminNote;
 use App\Models\Enums\VerifyStatus;
 use App\Models\Enums\ActiveStatus;
 use App\Models\Resources\ListingCollection;
+use App\Models\Resources\ListingHistoryResource;
 use App\Models\Resources\ListingResource;
 use App\Repositories\Admin\ListingRepository;
 use Carbon\Carbon;
@@ -64,9 +65,13 @@ class ListingsController extends Controller
             ? $responseData['connectedListings']
         : [];
 
+        $rawListingHistory = $listing->listingHistories()->get();
+        $listingHistories = ListingHistoryResource::collection($rawListingHistory);
+
         return Inertia::render('Admin/Listings/Detail/index', [
             'data' => [
                 'listing' => $resourceData->resolve(),
+                'listingHistory' => $listingHistories->resolve(),
                 'likelyConnectedListing' => $connectedListings,
                 'verifyStatusOptions' => VerifyStatus::options(),
                 'activeStatusOptions' => ActiveStatus::options(),
