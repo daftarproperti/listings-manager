@@ -10,35 +10,35 @@ import { getSearchParams, paginationRange } from '@/utils'
 import SecondaryButton from '@/Components/SecondaryButton'
 
 const Member = ({
-    auth,
-    data
+  auth,
+  data
 }: PageProps<{
-    data: { members: DPUser[], lastPage: number }
+  data: { members: DPUser[], lastPage: number }
 }>): JSX.Element => {
-    const [keyword, setKeyword] = useState(getSearchParams('q') ?? '')
-    const [pageNumber, setPageNumber] = useState(
-        parseInt(getSearchParams('page') ?? '1')
+  const [keyword, setKeyword] = useState(getSearchParams('q') ?? '')
+  const [pageNumber, setPageNumber] = useState(
+    parseInt(getSearchParams('page') ?? '1')
+  )
+
+  const [startPage, endPage] = paginationRange(pageNumber, data.lastPage)
+
+  const TABLE_HEAD = ['Member', 'Nomor HP', 'Kota', 'Perusahaan']
+
+  const fetchData = (q?: string, page?: number): void => {
+    router.get(
+      '/admin/members',
+      {
+        ...(q !== '' ? { q } : {}),
+        ...(page !== 1 ? { page } : {})
+      },
+      {
+        preserveState: true,
+        preserveScroll: true
+      }
     )
+  }
 
-    const [startPage, endPage] = paginationRange(pageNumber, data.lastPage)
-
-    const TABLE_HEAD = ['Member', 'Nomor HP', 'Kota', 'Perusahaan']
-
-    const fetchData = (q?: string, page?: number): void => {
-        router.get(
-            '/admin/members',
-            {
-                ...(q !== '' ? { q } : {}),
-                ...(page !== 1 ? { page } : {})
-            },
-            {
-                preserveState: true,
-                preserveScroll: true
-            }
-        )
-    }
-
-    return (
+  return (
         <AuthenticatedLayout
             user={auth.user}
             header={
@@ -64,13 +64,13 @@ const Member = ({
                                     placeholder="Search"
                                     className="w-full"
                                     onKeyDown={(e) => {
-                                        if (e.key === 'Enter') {
-                                            fetchData(keyword, 1)
-                                            setPageNumber(1)
-                                        }
+                                      if (e.key === 'Enter') {
+                                        fetchData(keyword, 1)
+                                        setPageNumber(1)
+                                      }
                                     }}
                                     onChange={(e) => {
-                                        setKeyword(e.target.value)
+                                      setKeyword(e.target.value)
                                     }}
                                 />
                             </div>
@@ -90,7 +90,7 @@ const Member = ({
                                             <div className="flex items-center gap-3">
                                                 <img
                                                     className="inline-block h-10 w-10 rounded-full ring-2 ring-white"
-                                                    src={"/images/logo_icon.svg" /* TODO: Wire picture URL here */}
+                                                    src={'/images/logo_icon.svg' /* TODO: Wire picture URL here */}
                                                     alt={member.name}
                                                 />
                                                 <div className="flex flex-col space-y-1">
@@ -132,11 +132,11 @@ const Member = ({
                         <div className="grid grid-cols-3 items-center justify-stretch p-4">
                             <SecondaryButton
                                 onClick={() => {
-                                    setPageNumber((prev) => {
-                                        const page = prev - 1
-                                        fetchData(keyword, page)
-                                        return page
-                                    })
+                                  setPageNumber((prev) => {
+                                    const page = prev - 1
+                                    fetchData(keyword, page)
+                                    return page
+                                  })
                                 }}
                                 disabled={pageNumber === 1}
                                 className='w-fit justify-self-start'
@@ -145,33 +145,33 @@ const Member = ({
                             </SecondaryButton>
                             <div className="flex justify-self-center items-center gap-2">
                                 {Array.from(Array(data.lastPage).keys())
-                                    .slice(startPage, endPage)
-                                    .map((item) => (
+                                  .slice(startPage, endPage)
+                                  .map((item) => (
                                         <SecondaryButton
                                             key={item}
                                             className={
                                                 pageNumber === item + 1
-                                                    ? 'bg-stone-200'
-                                                    : ''
+                                                  ? 'bg-stone-200'
+                                                  : ''
                                             }
                                             onClick={() => {
-                                                const page = item + 1
-                                                fetchData(keyword, page)
-                                                setPageNumber(page)
+                                              const page = item + 1
+                                              fetchData(keyword, page)
+                                              setPageNumber(page)
                                             }}
                                         >
                                             {item + 1}
                                         </SecondaryButton>
-                                    )
-                                    )}
+                                  )
+                                  )}
                             </div>
                             <SecondaryButton
                                 onClick={() => {
-                                    setPageNumber((prev) => {
-                                        const page = prev + 1
-                                        fetchData(keyword, page)
-                                        return page
-                                    })
+                                  setPageNumber((prev) => {
+                                    const page = prev + 1
+                                    fetchData(keyword, page)
+                                    return page
+                                  })
                                 }}
                                 disabled={pageNumber === data.lastPage}
                                 className='w-fit justify-self-end'
@@ -183,7 +183,7 @@ const Member = ({
                 </div>
             </div>
         </AuthenticatedLayout>
-    )
+  )
 }
 
 export default Member

@@ -1,22 +1,22 @@
-import { forwardRef, useEffect, useImperativeHandle, useRef, TextareaHTMLAttributes } from 'react';
+import { forwardRef, useEffect, useImperativeHandle, useRef, type TextareaHTMLAttributes } from 'react'
 
-export default forwardRef(function TextareaInput(
-    { className = '', isFocused = false, ...props }: TextareaHTMLAttributes<HTMLTextAreaElement> & { isFocused?: boolean },
-    ref
+export default forwardRef(function TextareaInput (
+  { className = '', isFocused = false, ...props }: TextareaHTMLAttributes<HTMLTextAreaElement> & { isFocused?: boolean },
+  ref
 ) {
-    const localRef = useRef<HTMLTextAreaElement>(null);
+  const localRef = useRef<HTMLTextAreaElement>(null)
 
-    useImperativeHandle(ref, () => ({
-        focus: () => localRef.current?.focus(),
-    }));
+  useImperativeHandle(ref, () => ({
+    focus: () => localRef.current?.focus()
+  }))
 
-    useEffect(() => {
-        if (isFocused) {
-            localRef.current?.focus();
-        }
-    }, [isFocused]);
+  useEffect(() => {
+    if (isFocused) {
+      localRef.current?.focus()
+    }
+  }, [isFocused])
 
-    return (
+  return (
         <textarea
             {...props}
             className={
@@ -25,5 +25,5 @@ export default forwardRef(function TextareaInput(
             }
             ref={localRef}
         />
-    );
-});
+  )
+})

@@ -5,6 +5,7 @@
         "dev": "vite",
         "build": "tsc && vite build && vite build --ssr",
         "lint": "npx eslint resources --ext .js,.jsx,.ts,.tsx",
+        "lint:fix": "npx eslint resources --ext .js,.jsx,.ts,.tsx --fix",
         "knip": "knip"
     },
     "devDependencies": {

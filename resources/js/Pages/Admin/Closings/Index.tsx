@@ -15,43 +15,43 @@ const Closings = ({
 }: PageProps<{
   data: { closings: Closing[], lastPage: number }
 }>): JSX.Element => {
-    const q = getSearchParams('q') ?? ''
-    const [keyword, setKeyword] = useState(q)
-    const [pageNumber, setPageNumber] = useState(
-        parseInt(getSearchParams('page') ?? '1')
+  const q = getSearchParams('q') ?? ''
+  const [keyword, setKeyword] = useState(q)
+  const [pageNumber, setPageNumber] = useState(
+    parseInt(getSearchParams('page') ?? '1')
+  )
+  const [startPage, endPage] = paginationRange(pageNumber, data.lastPage)
+
+  const statusLabels: Record<string, string> = {
+    on_review: 'Sedang Ditinjau',
+    approved: 'Disetujui',
+    rejected: 'Ditolak'
+  }
+
+  const commissionStatusLabels: Record<string, string> = {
+    pending: 'Menunggu Komisi',
+    paid: 'Komisi Dibayarkan',
+    unpaid: 'Komisi Belum Dibayarkan'
+  }
+
+  const TABLE_HEAD = ['Listing', 'Type', 'Client Name', 'Client Phone', 'Transaction', 'Date', 'Status', 'Commission Status', '']
+
+  const fetchData = (
+    q?: string,
+    page?: number
+  ): void => {
+    router.get(
+      '/admin/closings',
+      {
+        ...(q !== '' ? { q } : {}),
+        ...(page !== 1 ? { page } : {})
+      },
+      {
+        preserveState: true,
+        preserveScroll: true
+      }
     )
-    const [startPage, endPage] = paginationRange(pageNumber, data.lastPage)
-
-    const statusLabels: { [key: string]: string } = {
-        on_review: 'Sedang Ditinjau',
-        approved: 'Disetujui',
-        rejected: 'Ditolak',
-    };
-
-    const commissionStatusLabels: { [key: string]: string } = {
-        pending: 'Menunggu Komisi',
-        paid: 'Komisi Dibayarkan',
-        unpaid: 'Komisi Belum Dibayarkan',
-    };
-
-    const TABLE_HEAD = ['Listing', 'Type', 'Client Name', 'Client Phone', 'Transaction', 'Date', 'Status', 'Commission Status', '']
-
-    const fetchData = (
-        q?: string,
-        page?: number
-    ): void => {
-        router.get(
-            '/admin/closings',
-            {
-                ...(q !== '' ? { q } : {}),
-                ...(page !== 1 ? { page } : {})
-            },
-            {
-                preserveState: true,
-                preserveScroll: true
-            }
-        )
-    }
+  }
 
   return (
         <AuthenticatedLayout
@@ -96,8 +96,9 @@ const Closings = ({
                                     <Table.HeaderItem
                                         key={head}
                                         className={
-                                            head === 'Listing' ? 'w-[220px]' :
-                                            head === 'Type' ? 'w-[70px]' : ''
+                                            head === 'Listing'
+                                              ? 'w-[220px]'
+                                              : head === 'Type' ? 'w-[70px]' : ''
                                         }>
                                             {head}
                                     </Table.HeaderItem>
@@ -134,8 +135,9 @@ const Closings = ({
                                         <Table.BodyItem>
                                             <span
                                             className={`truncate text-xs font-medium px-3 py-2 rounded-lg ${
-                                                closing.status === 'approved' ? 'bg-green-100 text-green-800':
-                                                closing.status === 'rejected' ? 'bg-red-100 text-red-800': 'bg-yellow-100 text-yellow-800'
+                                                closing.status === 'approved'
+? 'bg-green-100 text-green-800'
+                                                : closing.status === 'rejected' ? 'bg-red-100 text-red-800' : 'bg-yellow-100 text-yellow-800'
                                               }`
                                               }>
                                                 {closing.status ? statusLabels[closing.status] : 'Sedang Ditinjau'}
@@ -144,10 +146,13 @@ const Closings = ({
                                         <Table.BodyItem>
                                             <span
                                             className={`truncate text-xs font-medium px-3 py-2 rounded-lg ${
-                                                closing.commissionStatus === 'paid' ? 'bg-green-100 text-green-800':
-                                                closing.commissionStatus === 'unpaid' ? 'bg-red-100 text-red-800':
-                                                closing.commissionStatus === 'pending' ? 'bg-yellow-100 text-yellow-800':
-                                                'bg-gray-100 text-gray-800'
+                                                closing.commissionStatus === 'paid'
+? 'bg-green-100 text-green-800'
+                                                : closing.commissionStatus === 'unpaid'
+? 'bg-red-100 text-red-800'
+                                                : closing.commissionStatus === 'pending'
+? 'bg-yellow-100 text-yellow-800'
+                                                : 'bg-gray-100 text-gray-800'
                                               }`
                                               }>
                                                 {closing.commissionStatus ? commissionStatusLabels[closing.commissionStatus] : 'N/A'}

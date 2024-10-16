@@ -85,46 +85,46 @@ export default function index ({
   const [note, setNote] = useState<string>(listing.adminNote?.message ?? '')
   const [showNoteForm, setShowNoteForm] = useState(false)
   const [unsavedChanges, setUnsavedChanges] = useState(false)
-  const [aiReviewResponse, setAiReviewResponse] = useState<Array<string>>([]);
-  const [aiReviewStatus, setAiReviewStatus] = useState<string>('');
-  const [aiReviewIsOutdated, setAiReviewIsOutdated] = useState(true);
+  const [aiReviewResponse, setAiReviewResponse] = useState<string[]>([])
+  const [aiReviewStatus, setAiReviewStatus] = useState<string>('')
+  const [aiReviewIsOutdated, setAiReviewIsOutdated] = useState(true)
 
   const handleDate = (dateInput: string): Date => {
     const months: Record<string, string> = {
-      "Januari": "January",
-      "Februari": "February",
-      "Maret": "March",
-      "April": "April",
-      "Mei": "May",
-      "Juni": "June",
-      "Juli": "July",
-      "Agustus": "August",
-      "September": "September",
-      "Oktober": "October",
-      "November": "November",
-      "Desember": "December"
-    };
+      Januari: 'January',
+      Februari: 'February',
+      Maret: 'March',
+      April: 'April',
+      Mei: 'May',
+      Juni: 'June',
+      Juli: 'July',
+      Agustus: 'August',
+      September: 'September',
+      Oktober: 'October',
+      November: 'November',
+      Desember: 'December'
+    }
 
     // Check if the input contains an Indonesian month and convert it
     for (const [indonesianMonth, englishMonth] of Object.entries(months)) {
       if (dateInput.includes(indonesianMonth)) {
-        dateInput = dateInput.replace(indonesianMonth, englishMonth);
-        break;
+        dateInput = dateInput.replace(indonesianMonth, englishMonth)
+        break
       }
     }
 
-    const date = new Date(dateInput);
+    const date = new Date(dateInput)
 
     // Check if the resulting date is valid
-    return isNaN(date.getTime()) ? new Date() : date;
-  };
+    return isNaN(date.getTime()) ? new Date() : date
+  }
 
   const handleDateInput = (input: React.ReactNode): string => {
     if (typeof input === 'string' || typeof input === 'number') {
-      return String(input); // Safely convert to a string
+      return String(input) // Safely convert to a string
     }
-    return '';
-  };
+    return ''
+  }
 
   const updateData = (): void => {
     router.put(
@@ -141,47 +141,47 @@ export default function index ({
 
   const doAiReview = async (): Promise<void> => {
     try {
-      setAiReviewStatus('processing');
-      setAiReviewResponse([]);
-      await router.post(`/admin/listings/${listing.id}/ai-review`);
+      setAiReviewStatus('processing')
+      setAiReviewResponse([])
+      await router.post(`/admin/listings/${listing.id}/ai-review`)
 
-      getAiReview();
+      getAiReview()
     } catch (error) {
-      console.error('Error during AI Review:', error);
+      console.error('Error during AI Review:', error)
       // Handle error (e.g., show an error message to the user)
     }
-  };
+  }
 
   const getAiReview = async (): Promise<void> => {
     try {
       const response = await fetch(`/admin/listings/${listing.id}/ai-review`, {
         method: 'GET',
         headers: {
-          'Accept': 'application/json',
-        },
-      });
+          Accept: 'application/json'
+        }
+      })
 
       if (response.ok) {
-        const data = await response.json();
+        const data = await response.json()
 
-        setAiReviewResponse(data.results || []);
-        setAiReviewStatus(data.status || 'processing');
+        setAiReviewResponse(data.results || [])
+        setAiReviewStatus(data.status || 'processing')
 
         if (data.status === 'done') {
-            const listingDate = handleDateInput(listing.updatedAt);
-            if (handleDate(data.updatedAt) < handleDate(listingDate)) {
-                setAiReviewIsOutdated(true);
-            } else {
-                setAiReviewIsOutdated(false);
-            }
+          const listingDate = handleDateInput(listing.updatedAt)
+          if (handleDate(data.updatedAt) < handleDate(listingDate)) {
+            setAiReviewIsOutdated(true)
+          } else {
+            setAiReviewIsOutdated(false)
+          }
         } else if (data.status === 'processing') {
-            setTimeout(function() { getAiReview(); }, 5000);
+          setTimeout(function () { getAiReview() }, 5000)
         }
       }
     } catch (error) {
-      console.error('Error during AI Review request:', error);
+      console.error('Error during AI Review request:', error)
     }
-  };
+  }
 
   const setCoord: Dispatch<SetStateAction<google.maps.LatLngLiteral>> = (newCoord) => {
     if (typeof newCoord === 'function') {
@@ -198,9 +198,9 @@ export default function index ({
 
   useEffect(() => {
     const fetchAiReview = async () => {
-        await getAiReview(); // Call your async function
-    };
-    fetchAiReview();
+      await getAiReview() // Call your async function
+    }
+    fetchAiReview()
 
     const handleBeforeUnload = (event: BeforeUnloadEvent): void => {
       if (unsavedChanges) {
