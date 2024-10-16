@@ -3,8 +3,8 @@ import { type Status, Wrapper } from '@googlemaps/react-wrapper'
 
 import { useIsVisible } from '@/utils'
 
-export const DEFAULT_MAP_ZOOM = 14
-export const DEFAULT_MAP_CENTER = { lat: -6.175403, lng: 106.824584 }
+const DEFAULT_MAP_ZOOM = 14
+const DEFAULT_MAP_CENTER = { lat: -6.175403, lng: 106.824584 }
 
 interface GoogleMapsProps {
   coord?: google.maps.LatLngLiteral
