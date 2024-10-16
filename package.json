@@ -4,7 +4,8 @@
     "scripts": {
         "dev": "vite",
         "build": "tsc && vite build && vite build --ssr",
-        "lint": "npx eslint resources --ext .js,.jsx,.ts,.tsx"
+        "lint": "npx eslint resources --ext .js,.jsx,.ts,.tsx",
+        "knip": "knip"
     },
     "devDependencies": {
         "@headlessui/react": "^1.4.2",
@@ -27,6 +28,7 @@
         "eslint-plugin-n": "^16.6.2",
         "eslint-plugin-promise": "^6.1.1",
         "eslint-plugin-react": "^7.34.0",
+        "knip": "^5.33.3",
         "laravel-vite-plugin": "^0.8.0",
         "postcss": "^8.4.31",
         "react": "^18.2.0",

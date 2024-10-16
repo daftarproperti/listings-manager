@@ -1,0 +1,4 @@
+{
+  "entry": ["resources/js/{app,ssr}.tsx", "resources/js/Pages/**/*.{js,ts,jsx,tsx}"],
+  "project": ["**/*.{js,ts,jsx,tsx}"]
+}
