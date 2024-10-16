@@ -2,7 +2,7 @@ import React, {
   type HTMLAttributes,
   type TableHTMLAttributes,
   type TdHTMLAttributes,
-  type ThHTMLAttributes
+  type ThHTMLAttributes,
 } from 'react'
 
 const Table = ({
@@ -11,12 +11,12 @@ const Table = ({
   ...props
 }: TableHTMLAttributes<HTMLTableElement>): JSX.Element => {
   return (
-        <table
-            className={`w-full min-w-max table-auto text-left table-fixed ${className}`}
-            {...props}
-        >
-            {children}
-        </table>
+    <table
+      className={`w-full min-w-max table-fixed text-left ${className}`}
+      {...props}
+    >
+      {children}
+    </table>
   )
 }
 
@@ -26,9 +26,9 @@ const TableHeader = ({
   ...props
 }: HTMLAttributes<HTMLTableSectionElement>): JSX.Element => {
   return (
-        <thead className={className} {...props}>
-            <tr>{children}</tr>
-        </thead>
+    <thead className={className} {...props}>
+      <tr>{children}</tr>
+    </thead>
   )
 }
 
@@ -38,20 +38,16 @@ const TableHeaderItem = ({
   ...props
 }: ThHTMLAttributes<HTMLTableHeaderCellElement>): JSX.Element => {
   return (
-        <th
-            className={`border-y border-blue-gray-100 bg-stone-50 px-4 py-4 ${className}`}
-            {...props}
-        >
-            {typeof children === 'string'
-              ? (
-                <p className="font-normal leading-none text-neutral-500">
-                    {children}
-                </p>
-                )
-              : (
-                  children
-                )}
-        </th>
+    <th
+      className={`border-y border-blue-gray-100 bg-stone-50 p-4 ${className}`}
+      {...props}
+    >
+      {typeof children === 'string' ? (
+        <p className="font-normal leading-none text-neutral-500">{children}</p>
+      ) : (
+        children
+      )}
+    </th>
   )
 }
 
@@ -61,9 +57,9 @@ const TableBody = ({
   ...props
 }: HTMLAttributes<HTMLTableSectionElement>): JSX.Element => {
   return (
-        <tbody className={className} {...props}>
-            {children}
-        </tbody>
+    <tbody className={className} {...props}>
+      {children}
+    </tbody>
   )
 }
 
@@ -73,17 +69,13 @@ const TableBodyItem = ({
   ...props
 }: TdHTMLAttributes<HTMLTableDataCellElement>): JSX.Element => {
   return (
-        <td className={`p-4 border-b ${className}`} {...props}>
-            {typeof children === 'string'
-              ? (
-                <p className="truncate text-neutral-600 font-normal">
-                    {children}
-                </p>
-                )
-              : (
-                  children
-                )}
-        </td>
+    <td className={`border-b p-4 ${className}`} {...props}>
+      {typeof children === 'string' ? (
+        <p className="truncate font-normal text-neutral-600">{children}</p>
+      ) : (
+        children
+      )}
+    </td>
   )
 }
 

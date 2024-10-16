@@ -1,6 +1,9 @@
 import { useState, useEffect, useRef } from 'react'
 
-export default function useIsVisible<T extends HTMLElement> (): [React.RefObject<T>, boolean] {
+export default function useIsVisible<T extends HTMLElement>(): [
+  React.RefObject<T>,
+  boolean,
+] {
   const [isIntersecting, setIntersecting] = useState<boolean>(false)
   const ref = useRef<T>(null)
 
@@ -12,8 +15,8 @@ export default function useIsVisible<T extends HTMLElement> (): [React.RefObject
         setIntersecting(entry.isIntersecting)
       },
       {
-        threshold: 0.1
-      }
+        threshold: 0.1,
+      },
     )
 
     observer.observe(ref.current)

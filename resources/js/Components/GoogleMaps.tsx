@@ -11,7 +11,10 @@ interface GoogleMapsProps {
   setCoord: Dispatch<SetStateAction<google.maps.LatLngLiteral>>
 }
 
-export default function GoogleMaps ({ coord, setCoord }: GoogleMapsProps): JSX.Element {
+export default function GoogleMaps({
+  coord,
+  setCoord,
+}: GoogleMapsProps): JSX.Element {
   const [mapRef] = useIsVisible<HTMLDivElement>()
   const [panoRef] = useIsVisible<HTMLDivElement>()
   const [inputRef] = useIsVisible<HTMLInputElement>()
@@ -19,16 +22,24 @@ export default function GoogleMaps ({ coord, setCoord }: GoogleMapsProps): JSX.E
   const initMap = async (
     mapElement: HTMLElement,
     panoElement: HTMLElement,
-    inputElement: HTMLInputElement
+    inputElement: HTMLInputElement,
   ): Promise<void> => {
-    const { Map } = (await google.maps.importLibrary('maps')) as google.maps.MapsLibrary
-    const { SearchBox } = (await google.maps.importLibrary('places')) as google.maps.PlacesLibrary
-    const { StreetViewPanorama } = (await google.maps.importLibrary('streetView')) as google.maps.StreetViewLibrary
-    const { AdvancedMarkerElement } = (await google.maps.importLibrary('marker')) as google.maps.MarkerLibrary
+    const { Map } = (await google.maps.importLibrary(
+      'maps',
+    )) as google.maps.MapsLibrary
+    const { SearchBox } = (await google.maps.importLibrary(
+      'places',
+    )) as google.maps.PlacesLibrary
+    const { StreetViewPanorama } = (await google.maps.importLibrary(
+      'streetView',
+    )) as google.maps.StreetViewLibrary
+    const { AdvancedMarkerElement } = (await google.maps.importLibrary(
+      'marker',
+    )) as google.maps.MarkerLibrary
 
     const defaultCenter = {
       lat: coord?.lat ?? DEFAULT_MAP_CENTER.lat,
-      lng: coord?.lng ?? DEFAULT_MAP_CENTER.lng
+      lng: coord?.lng ?? DEFAULT_MAP_CENTER.lng,
     }
 
     const maps = new Map(mapElement, {
@@ -36,16 +47,16 @@ export default function GoogleMaps ({ coord, setCoord }: GoogleMapsProps): JSX.E
       center: defaultCenter,
       mapId: import.meta.env.VITE_GOOGLE_MAP_ID,
       disableDefaultUI: true,
-      streetViewControl: true
+      streetViewControl: true,
     })
     const searchBox = new SearchBox(inputElement)
     const panorama = new StreetViewPanorama(panoElement, {
-      position: defaultCenter
+      position: defaultCenter,
     })
     const marker = new AdvancedMarkerElement({
       map: maps,
       position: defaultCenter,
-      gmpDraggable: true
+      gmpDraggable: true,
     })
 
     maps.setStreetView(panorama)
@@ -58,7 +69,7 @@ export default function GoogleMaps ({ coord, setCoord }: GoogleMapsProps): JSX.E
       if (e.latLng !== null) {
         setCoord({
           lat: parseFloat(e.latLng.lat().toFixed(7)),
-          lng: parseFloat(e.latLng.lng().toFixed(7))
+          lng: parseFloat(e.latLng.lng().toFixed(7)),
         })
       }
     })
@@ -71,7 +82,7 @@ export default function GoogleMaps ({ coord, setCoord }: GoogleMapsProps): JSX.E
 
       const bounds = new google.maps.LatLngBounds()
       places?.forEach((place) => {
-        if ((place.geometry?.location) == null) {
+        if (place.geometry?.location == null) {
           console.log('Returned place contains no geometry')
           return
         }
@@ -91,7 +102,7 @@ export default function GoogleMaps ({ coord, setCoord }: GoogleMapsProps): JSX.E
       const position = marker.position as google.maps.LatLngLiteral
       setCoord({
         lat: parseFloat(position.lat.toFixed(7)),
-        lng: parseFloat(position.lng.toFixed(7))
+        lng: parseFloat(position.lng.toFixed(7)),
       })
     })
   }
@@ -107,17 +118,20 @@ export default function GoogleMaps ({ coord, setCoord }: GoogleMapsProps): JSX.E
   }, [mapRef.current, panoRef.current, inputRef.current])
 
   return (
-    <div className='space-y-1'>
-        <input
-            type="text"
-            ref={inputRef}
-            placeholder="Masukkan alamat disini..."
-            className="w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
-        />
-        <Wrapper apiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY as string} render={(status: Status) => <h1>{status}</h1>}>
-            <div ref={mapRef} className='bg-neutral-300 h-96' />
-            <div ref={panoRef} className='bg-neutral-300 h-96' />
-        </Wrapper>
+    <div className="space-y-1">
+      <input
+        type="text"
+        ref={inputRef}
+        placeholder="Masukkan alamat disini..."
+        className="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+      />
+      <Wrapper
+        apiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY as string}
+        render={(status: Status) => <h1>{status}</h1>}
+      >
+        <div ref={mapRef} className="h-96 bg-neutral-300" />
+        <div ref={panoRef} className="h-96 bg-neutral-300" />
+      </Wrapper>
     </div>
   )
 }

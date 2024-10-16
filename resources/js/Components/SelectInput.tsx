@@ -3,7 +3,7 @@ import React, {
   useEffect,
   useImperativeHandle,
   useRef,
-  type SelectHTMLAttributes
+  type SelectHTMLAttributes,
 } from 'react'
 
 interface Option {
@@ -16,14 +16,14 @@ interface SelectInputProps extends SelectHTMLAttributes<HTMLSelectElement> {
   isFocused?: boolean
 }
 
-export default forwardRef(function SelectInput (
+export default forwardRef(function SelectInput(
   { options, className = '', isFocused = false, ...props }: SelectInputProps,
-  ref
+  ref,
 ) {
   const localRef = useRef<HTMLSelectElement>(null)
 
   useImperativeHandle(ref, () => ({
-    focus: () => localRef.current?.focus()
+    focus: () => localRef.current?.focus(),
   }))
 
   useEffect(() => {
@@ -34,22 +34,22 @@ export default forwardRef(function SelectInput (
 
   return (
     <select
-        {...props}
-        className={
-            'border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm ' +
-            className
-        }
-        ref={localRef}
+      {...props}
+      className={
+        'border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm ' +
+        className
+      }
+      ref={localRef}
     >
-        {options.map((option) => (
-            <option
-                key={option.value}
-                value={option.value}
-                className="text-neutral-600"
-            >
-                {option.label}
-            </option>
-        ))}
+      {options.map((option) => (
+        <option
+          key={option.value}
+          value={option.value}
+          className="text-neutral-600"
+        >
+          {option.label}
+        </option>
+      ))}
     </select>
   )
 })

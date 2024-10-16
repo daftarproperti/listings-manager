@@ -1,7 +1,7 @@
-export default function paginationRange (
+export default function paginationRange(
   page: number,
   lastPage: number,
-  displayCount: number = 5
+  displayCount: number = 5,
 ): [number, number] {
   const halfDisplay = Math.ceil(displayCount / 2)
 
