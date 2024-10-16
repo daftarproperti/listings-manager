@@ -140,7 +140,7 @@ const Closings = ({
                                                 : closing.status === 'rejected' ? 'bg-red-100 text-red-800' : 'bg-yellow-100 text-yellow-800'
                                               }`
                                               }>
-                                                {closing.status ? statusLabels[closing.status] : 'Sedang Ditinjau'}
+                                                {closing.status !== '' ? statusLabels[closing.status] : 'Sedang Ditinjau'}
                                             </span>
                                         </Table.BodyItem>
                                         <Table.BodyItem>
@@ -155,7 +155,7 @@ const Closings = ({
                                                 : 'bg-gray-100 text-gray-800'
                                               }`
                                               }>
-                                                {closing.commissionStatus ? commissionStatusLabels[closing.commissionStatus] : 'N/A'}
+                                                {closing.commissionStatus != null ? commissionStatusLabels[closing.commissionStatus] : 'N/A'}
                                             </span>
                                         </Table.BodyItem>
                                         <Table.BodyItem>

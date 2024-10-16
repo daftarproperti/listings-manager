@@ -1,4 +1,4 @@
-import { useState, createContext, useContext, Fragment, type PropsWithChildren, type Dispatch, type SetStateAction } from 'react'
+import React, { useState, createContext, useContext, Fragment, type PropsWithChildren, type Dispatch, type SetStateAction } from 'react'
 import { Link, type InertiaLinkProps } from '@inertiajs/react'
 import { Transition } from '@headlessui/react'
 
@@ -12,10 +12,10 @@ const DropDownContext = createContext<{
       toggleOpen: () => {}
     })
 
-const Dropdown = ({ children }: PropsWithChildren) => {
+const Dropdown = ({ children }: PropsWithChildren): JSX.Element => {
   const [open, setOpen] = useState(false)
 
-  const toggleOpen = () => {
+  const toggleOpen = (): void => {
     setOpen((previousState) => !previousState)
   }
 
@@ -26,7 +26,7 @@ const Dropdown = ({ children }: PropsWithChildren) => {
   )
 }
 
-const Trigger = ({ children }: PropsWithChildren) => {
+const Trigger = ({ children }: PropsWithChildren): JSX.Element => {
   const { open, setOpen, toggleOpen } = useContext(DropDownContext)
 
   return (
@@ -38,7 +38,7 @@ const Trigger = ({ children }: PropsWithChildren) => {
   )
 }
 
-const Content = ({ align = 'right', width = '48', contentClasses = 'py-1 bg-white', children }: PropsWithChildren<{ align?: 'left' | 'right', width?: '48', contentClasses?: string }>) => {
+const Content = ({ align = 'right', width = '48', contentClasses = 'py-1 bg-white', children }: PropsWithChildren<{ align?: 'left' | 'right', width?: '48', contentClasses?: string }>): JSX.Element => {
   const { open, setOpen } = useContext(DropDownContext)
 
   let alignmentClasses = 'origin-top'
@@ -78,7 +78,7 @@ const Content = ({ align = 'right', width = '48', contentClasses = 'py-1 bg-whit
   )
 }
 
-const DropdownLink = ({ className = '', children, ...props }: InertiaLinkProps) => {
+const DropdownLink = ({ className = '', children, ...props }: InertiaLinkProps): JSX.Element => {
   return (
         <Link
             {...props}

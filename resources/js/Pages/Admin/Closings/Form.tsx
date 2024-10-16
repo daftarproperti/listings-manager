@@ -2,6 +2,7 @@ import { Head, router } from '@inertiajs/react'
 
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout'
 
+import React from 'react'
 import { type PageProps, type Closing } from '@/types'
 import TextInput from '@/Components/TextInput'
 import InputLabel from '@/Components/InputLabel'
@@ -16,7 +17,7 @@ const ClosingForm = ({
 }: PageProps<{
   data: { closing: Closing }
 }>): JSX.Element => {
-  const closingUpdate = (e: React.FormEvent<HTMLFormElement>) => {
+  const closingUpdate = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault()
     const formData = new FormData(e.target as HTMLFormElement)
     router.post('/admin/closings/' + data.closing.id, formData)

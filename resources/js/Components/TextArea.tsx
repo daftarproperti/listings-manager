@@ -1,4 +1,4 @@
-import { forwardRef, useEffect, useImperativeHandle, useRef, type TextareaHTMLAttributes } from 'react'
+import React, { forwardRef, useEffect, useImperativeHandle, useRef, type TextareaHTMLAttributes } from 'react'
 
 export default forwardRef(function TextareaInput (
   { className = '', isFocused = false, ...props }: TextareaHTMLAttributes<HTMLTextAreaElement> & { isFocused?: boolean },
