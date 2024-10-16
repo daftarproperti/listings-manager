@@ -5,6 +5,13 @@ import forms from '@tailwindcss/forms';
 import colors from 'tailwindcss/colors';
 import withMT from '@material-tailwind/react/utils/withMT';
 
+// Remove old colors to suppress warnings.
+delete colors.lightBlue;
+delete colors.warmGray;
+delete colors.trueGray;
+delete colors.coolGray;
+delete colors.blueGray;
+
 export default withMT({
     content: [
         './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',
