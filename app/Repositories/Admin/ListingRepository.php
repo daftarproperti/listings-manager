@@ -15,7 +15,7 @@ class ListingRepository
      */
     public function list(array $input = [], int $itemsPerPage = 10): LengthAwarePaginator
     {
-        $query = Listing::query();
+        $query = Listing::with('adminAttentions');
 
         $user = null;
         if (isset($input['q'])) {

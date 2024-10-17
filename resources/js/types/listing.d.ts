@@ -34,6 +34,7 @@ export interface Listing {
   cancellationNote: CancellationNote
   expiredAt: Date
   rawExpiredAt: Date
+  adminAttentions: AdminAttention[]
 }
 
 export interface User {
@@ -68,6 +69,11 @@ export interface LikelyConnectedListing {
   title: string
   address: string
   pictureUrls: string[]
+}
+
+export interface AdminAttention {
+  listingId: string
+  listingUpdatedAt: Date
 }
 
 export interface ListingChange {

@@ -55,7 +55,8 @@ class GenerateListingFromTextTest extends TestCase
             'floorCount' => 2,
             'electricPower' => 2500,
             'facing' => 'unknown',
-            'ownership' => 'shm'
+            'ownership' => 'shm',
+            'adminAttentions' => []
         ];
 
         $extractorMock = Mockery::mock(Extractor::class);

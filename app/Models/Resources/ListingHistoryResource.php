@@ -51,7 +51,11 @@ class ListingHistoryResource extends JsonResource
         $changes = json_decode($this->changes, true);
         if (isset($changes) && is_array($changes)) {
             foreach ($changes as $field => $change) {
-                $humanReadableField = $this->fieldMap[$field] ?? $field;
+                if (!isset($this->fieldMap[$field])) {
+                    continue;
+                }
+
+                $humanReadableField = $this->fieldMap[$field];
 
                 // Format the change into readable structure
                 $formattedChanges[$humanReadableField] = [

@@ -66,6 +66,7 @@ use MongoDB\BSON\UTCDateTime;
  * @property Carbon $updated_at
  * @property Carbon $created_at
  * @property Carbon $expiredAt
+ * @property \Illuminate\Support\Collection<int, AdminAttention>|null $adminAttentions
  * @property GeoJsonObject $indexedCoordinate
  */
 class Listing extends Model
@@ -115,6 +116,16 @@ class Listing extends Model
     public function listingHistories()
     {
         return $this->hasMany(ListingHistory::class, 'listingId');
+    }
+
+    /**
+     * Get all admin attentions for this listing
+     *
+     * @return HasMany<AdminAttention>
+     */
+    public function adminAttentions()
+    {
+        return $this->hasMany(AdminAttention::class, 'listingId');
     }
 
     /**

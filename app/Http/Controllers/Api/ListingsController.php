@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\ListingRequest;
 use App\Helpers\Queue;
 use App\Jobs\GenerateListingFromText;
+use App\Models\AdminAttention;
 use App\Models\Coordinate;
 use App\Models\CancellationNote;
 use App\Models\Enums\CancellationStatus;
@@ -23,6 +24,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use OpenApi\Attributes as OA;
 
@@ -407,6 +409,10 @@ class ListingsController extends Controller
         $this->fillCreateUpdateListing($validatedRequest, $listing);
         $listing->save();
 
+        if ($listing->wasChanged()) {
+            $this->upsertAdminAttention($listing);
+        }
+
         return new ListingResource($listing);
     }
 
@@ -437,6 +443,10 @@ class ListingsController extends Controller
         $this->fillCreateUpdateListing($validatedRequest, $listing);
         $listing->user = $this->getListingUser();
         $listing->save();
+
+        if ($listing->wasRecentlyCreated) {
+            $this->upsertAdminAttention($listing);
+        }
 
         return new ListingResource($listing);
     }
@@ -651,6 +661,23 @@ class ListingsController extends Controller
         return response()->json(['connectedListings' => $connectedListings], 200);
     }
 
+    /**
+     * @param Listing $listing
+     */
+    private function upsertAdminAttention(Listing $listing): void
+    {
+        try {
+            AdminAttention::updateOrCreate(
+                ['listingId' => $listing->id],
+                [
+                    'listingId' => $listing->id,
+                    'listingUpdatedAt' => $listing->updated_at,
+                ],
+            );
+        } catch (\Throwable $th) {
+            Log::error('Error writing histories: ' . $th->getMessage());
+        }
+    }
 
     /**
      * @param array<string, mixed> $data

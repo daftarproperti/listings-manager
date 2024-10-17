@@ -33,13 +33,18 @@ class ListingsController extends Controller
             'sortOrder',
         ]);
 
-        $listing = $repository->list($input);
-        $listingCollection = new ListingCollection($listing);
+        $listings = $repository->list($input);
+
+        $listingCollection = new ListingCollection($listings);
+
+        logger()->info('Listing Collection', [
+            'collection' => $listingCollection->collection->toArray(),
+        ]);
 
         return Inertia::render('Admin/Listings/index', [
             'data' => [
                 'listings' => $listingCollection->collection,
-                'lastPage' => $listing->lastPage(),
+                'lastPage' => $listings->lastPage(),
                 'verifyStatusOptions' => VerifyStatus::options(),
                 'activeStatusOptions' => ActiveStatus::options(),
             ],
@@ -68,6 +73,8 @@ class ListingsController extends Controller
         $rawListingHistory = $listing->listingHistories()->get();
         $listingHistories = ListingHistoryResource::collection($rawListingHistory);
 
+        $needsAdminAttention = ($listing->adminAttentions ?? collect())->isNotEmpty();
+
         return Inertia::render('Admin/Listings/Detail/index', [
             'data' => [
                 'listing' => $resourceData->resolve(),
@@ -75,6 +82,7 @@ class ListingsController extends Controller
                 'likelyConnectedListing' => $connectedListings,
                 'verifyStatusOptions' => VerifyStatus::options(),
                 'activeStatusOptions' => ActiveStatus::options(),
+                'needsAdminAttention' => $needsAdminAttention,
             ],
         ]);
     }
@@ -101,5 +109,17 @@ class ListingsController extends Controller
         $listing->save();
 
         return Redirect::to($request->url());
+    }
+
+    public function removeAttention(string|int $listingId): RedirectResponse
+    {
+        $listing = ListingHelper::getListingByIdOrListingId($listingId);
+        if (is_null($listing)) {
+            abort(404);
+        }
+
+        $listing->adminAttentions()->delete();
+
+        return Redirect::back()->with('success', 'Atensi berhasil dihapus.');
     }
 }

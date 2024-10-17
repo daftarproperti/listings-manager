@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\AdminAttention;
 use App\Models\Listing;
 use App\Models\User;
 use DateTime;
@@ -36,6 +37,7 @@ class ListingApiTest extends TestCase
         // Ensure each test case starts with empty database.
         Listing::truncate();
         User::truncate();
+        AdminAttention::truncate();
 
         // Create fake user that will use token authentication
         $this->user = User::factory()->create([
@@ -230,6 +232,9 @@ class ListingApiTest extends TestCase
             $this->assertEquals(false, $updatedListing->isPrivate);
             $this->assertEquals(true, $updatedListing->withRewardAgreement);
             $this->assertEquals(true, $updatedListing->isMultipleUnits);
+
+            // Assert that admin attention exist when a listing is updated
+            $this->assertEquals($updatedListing->adminAttentions->isNotEmpty(), true);
         });
     }
 
@@ -260,6 +265,13 @@ class ListingApiTest extends TestCase
             $this->assertDatabaseHas('listings', [
                 'address' => 'Jl. itu',
                 'verifyStatus' => 'on_review',
+            ]);
+
+            $listingId = $response->json('id');
+            
+            // Assert that admin attention exist when a listing is created
+            $this->assertDatabaseHas('admin_attentions', [
+                'listingId' => $listingId,
             ]);
         });
     }

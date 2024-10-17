@@ -74,9 +74,15 @@ export default function ListingDetailPage({
     likelyConnectedListing: LikelyConnectedListing[]
     verifyStatusOptions: Option[]
     activeStatusOptions: Option[]
+    needsAdminAttention: boolean
   }
 }>): JSX.Element {
-  const { listing, verifyStatusOptions, activeStatusOptions } = data
+  const {
+    listing,
+    verifyStatusOptions,
+    activeStatusOptions,
+    needsAdminAttention,
+  } = data
   const [coord, setBaseCoord] = useState<google.maps.LatLngLiteral>({
     lat: listing.coordinate.latitude,
     lng: listing.coordinate.longitude,
@@ -89,6 +95,7 @@ export default function ListingDetailPage({
   const [aiReviewResponse, setAiReviewResponse] = useState<string[]>([])
   const [aiReviewStatus, setAiReviewStatus] = useState<string>('')
   const [aiReviewIsOutdated, setAiReviewIsOutdated] = useState(true)
+  const [attentionRemoved, setAttentionRemoved] = useState(!needsAdminAttention)
 
   const handleDate = (dateInput: string): Date => {
     const months: Record<string, string> = {
@@ -135,6 +142,19 @@ export default function ListingDetailPage({
       },
     })
     setUnsavedChanges(false)
+  }
+
+  const handleRemoveAttention = async () => {
+    try {
+      router.delete(`/admin/listings/${listing.id}/remove-attention`, {
+        onSuccess: () => {
+          setAttentionRemoved(true)
+          router.reload()
+        },
+      })
+    } catch (error) {
+      console.error('Error removing attention:', error)
+    }
   }
 
   const doAiReview = async (): Promise<void> => {
@@ -301,6 +321,16 @@ export default function ListingDetailPage({
                 </span>
               </div>
             )}
+            <div className="lg:justify-end lg:text-right">
+              <Button
+                color="blue"
+                onClick={handleRemoveAttention}
+                disabled={attentionRemoved}
+                className="mb-2 lg:mb-0"
+              >
+                Hapus Atensi
+              </Button>
+            </div>
             <div className="lg:justify-end lg:text-right">
               <Button
                 color="blue"

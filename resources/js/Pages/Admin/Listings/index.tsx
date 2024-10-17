@@ -214,6 +214,7 @@ export default function ListingsPage({
                       verifyStatus,
                       activeStatus,
                       createdAt,
+                      adminAttentions,
                     },
                     index,
                   ) => (
@@ -235,6 +236,13 @@ export default function ListingsPage({
                               {address.length > 10
                                 ? `${address.substring(0, 15)}...`
                                 : address}
+                              {adminAttentions?.length > 0 && (
+                                <span
+                                  style={{ color: 'red', marginLeft: '8px' }}
+                                >
+                                  !
+                                </span>
+                              )}
                             </span>
                           </Tooltip>
                         )}

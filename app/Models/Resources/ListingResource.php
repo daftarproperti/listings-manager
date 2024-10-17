@@ -153,6 +153,14 @@ class ListingResource extends JsonResource
             'rawExpiredAt' => isset($prop->expiredAt) && $prop->expiredAt instanceof Carbon
                 ? $prop->expiredAt->format('Y-m-d H:i')
                 : null,
+            'adminAttentions' => $prop->adminAttentions
+                ? $prop->adminAttentions->map(function ($attention) {
+                    return [
+                        'listingId' => $attention->listingId,
+                        'listingUpdatedAt' => $attention->listingUpdatedAt->toIso8601ZuluString(),
+                    ];
+                })->toArray()
+                : [],
         ];
     }
 }

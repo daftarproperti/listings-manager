@@ -51,6 +51,10 @@ Route::group(['prefix' => 'admin'], function () {
                 Route::post('/', [AiReviewController::class, 'doReview'])->name('review');
                 Route::get('/', [AiReviewController::class, 'getReview'])->name('detail');
             });
+
+            Route::group(['prefix' => '{listing}/remove-attention'], function () {
+                Route::delete('/', [AdminListingsController::class, 'removeAttention'])->name('removeAttention');
+            });
         });
 
         Route::group(['prefix' => 'closings', 'as' => 'closing.'], function () {
