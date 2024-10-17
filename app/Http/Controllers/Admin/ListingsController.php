@@ -70,7 +70,7 @@ class ListingsController extends Controller
             ? $responseData['connectedListings']
         : [];
 
-        $rawListingHistory = $listing->listingHistories()->get();
+        $rawListingHistory = $listing->listingHistories()->orderBy('created_at', 'desc')->get();
         $listingHistories = ListingHistoryResource::collection($rawListingHistory);
 
         $needsAdminAttention = ($listing->adminAttentions ?? collect())->isNotEmpty();

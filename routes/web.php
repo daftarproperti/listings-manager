@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\AiReviewController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\GoogleLoginController;
 use App\Http\Controllers\Admin\ListingsController as AdminListingsController;
+use App\Http\Controllers\Admin\ListingsWithAttentionController as AdminListingsWithAttentionController;
 use App\Http\Controllers\Admin\MembersController;
 use App\Http\Controllers\Admin\ClosingsController as AdminClosingsController;
 use App\Http\Controllers\Admin\CancelController as AdminCancelController;
@@ -55,6 +56,10 @@ Route::group(['prefix' => 'admin'], function () {
             Route::group(['prefix' => '{listing}/remove-attention'], function () {
                 Route::delete('/', [AdminListingsController::class, 'removeAttention'])->name('removeAttention');
             });
+        });
+
+        Route::group(['prefix' => 'listingsWithAttention', 'as' => 'listingsWithAttention.'], function () {
+            Route::get('/', [AdminListingsWithAttentionController::class, 'index'])->name('index');
         });
 
         Route::group(['prefix' => 'closings', 'as' => 'closing.'], function () {

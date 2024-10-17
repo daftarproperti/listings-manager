@@ -11,10 +11,14 @@ class ListingRepository
 {
     /**
      * @param array<mixed> $input
+     * @param bool $hasAdminAttention
      * @return LengthAwarePaginator<Listing>
      */
-    public function list(array $input = [], int $itemsPerPage = 10): LengthAwarePaginator
-    {
+    public function list(
+        array $input = [],
+        bool $hasAdminAttention = false,
+        int $itemsPerPage = 10,
+    ): LengthAwarePaginator {
         $query = Listing::with('adminAttentions');
 
         $user = null;
@@ -37,6 +41,10 @@ class ListingRepository
             $query->orderBy($input['sortBy'], $input['sortOrder']);
         } else {
             $query->orderBy('created_at', 'desc');
+        }
+
+        if ($hasAdminAttention) {
+            $query->whereHas('adminAttentions');
         }
 
         return $query->paginate($itemsPerPage);
