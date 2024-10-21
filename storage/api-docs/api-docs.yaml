@@ -891,6 +891,9 @@ components:
         isMultipleUnits:
           type: boolean
           example: true
+        revision:
+          type: integer
+          example: 0
       type: object
     UserProfileRequest:
       properties:
@@ -1304,6 +1307,8 @@ components:
         rawExpiredAt:
           type: string
           format: date-time
+        revision:
+          type: integer
       type: object
     PublicListing:
       description: 'Representation of a Listing which is available publicly.'

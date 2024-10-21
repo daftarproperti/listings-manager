@@ -139,6 +139,7 @@ class ListingObserver
 
         $listing->verifyStatus = VerifyStatus::ON_REVIEW;
         $listing->listingId = random_int(1, PHP_INT_MAX);
+        $listing->revision = 0;
 
         $attributes = $listing->getAttributes();
         $minimumFill = 50;

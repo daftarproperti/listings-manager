@@ -26,6 +26,7 @@ use MongoDB\BSON\UTCDateTime;
  *                          This id is useful to prevent double import.
  *                          May be deleted once strapi migration is done completely.
  * @property int $listingId The unique canonical ID known by external
+ * @property int $revision Identifier to indicate current Listing data state
  * @property string $sourceText
  * @property PropertyType $propertyType
  * @property ListingType $listingType
@@ -106,6 +107,7 @@ class Listing extends Model
         'address' => 'string',
         'description' => 'string',
         'expiredAt' => 'datetime',
+        'revision' => 'int',
     ];
 
     /**

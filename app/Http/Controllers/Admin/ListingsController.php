@@ -14,9 +14,12 @@ use App\Models\Resources\ListingHistoryResource;
 use App\Models\Resources\ListingResource;
 use App\Repositories\Admin\ListingRepository;
 use Carbon\Carbon;
+use Illuminate\Contracts\Cache\LockTimeoutException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -91,18 +94,39 @@ class ListingsController extends Controller
         }
 
         $data = $request->validated();
-        $adminNoteMessage = $data['adminNote'] ?? '';
-        $adminNote = [
-            'message' => $adminNoteMessage,
-            'email' => Auth::user()?->email,
-            'date' => Carbon::now(),
-        ];
-        $data['adminNote'] = AdminNote::from($adminNote);
+        $lock = Cache::lock('update-listing-' . $listing->id, 4);
+        try {
+            $lock->block(4);
+            if (isset($data['revision'])) {
+                if ($listing->revision !== null && $listing->revision !== $data['revision']) {
+                    return Redirect::back()->withErrors([
+                        'error' => 'Data Listing telah diubah. Mohon muat ulang halaman ini.',
+                    ]);
+                }
+            }
 
-        foreach ($data as $key => $value) {
-            $listing->{$key} = $value;
-        };
-        $listing->save();
+            $adminNoteMessage = $data['adminNote'] ?? '';
+            $adminNote = [
+                'message' => $adminNoteMessage,
+                'email' => Auth::user()?->email,
+                'date' => Carbon::now(),
+            ];
+            $data['adminNote'] = AdminNote::from($adminNote);
+
+            foreach ($data as $key => $value) {
+                $listing->{$key} = $value;
+            };
+
+            if ($listing->isDirty()) {
+                $listing->revision = (isset($listing->revision) ? (int)$listing->revision : 0) + 1;
+            }
+
+            $listing->save();
+        } catch (LockTimeoutException) {
+            Log::error('Could not acquire lock update-listing');
+        } finally {
+            $lock->release();
+        }
 
         return Redirect::to($request->url());
     }

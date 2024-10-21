@@ -20,10 +20,12 @@ use App\Models\Resources\ListingResource;
 use App\Models\User;
 use App\Repositories\ListingRepository;
 use Carbon\Carbon;
+use Illuminate\Contracts\Cache\LockTimeoutException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use OpenApi\Attributes as OA;
@@ -405,12 +407,34 @@ class ListingsController extends Controller
     )]
     public function update(Listing $listing, ListingRequest $request): JsonResource
     {
+        /** @var array{revision?: int|null} $validatedRequest */
         $validatedRequest = $request->validated();
-        $this->fillCreateUpdateListing($validatedRequest, $listing);
-        $listing->save();
 
-        if ($listing->wasChanged()) {
-            $this->upsertAdminAttention($listing);
+        $lock = Cache::lock('update-listing-' . $listing->id, 4);
+        try {
+            $lock->block(4);
+
+            if (isset($validatedRequest['revision'])) {
+                if ($listing->revision !== null && $listing->revision !== (int) $validatedRequest['revision']) {
+                    throw new \Exception('Data Listing telah diubah. Mohon muat ulang halaman ini', 409);
+                }
+            }
+
+            $this->fillCreateUpdateListing($validatedRequest, $listing);
+
+            if ($listing->isDirty()) {
+                $listing->revision = (isset($listing->revision) ? (int)$listing->revision : 0) + 1;
+            }
+
+            $listing->save();
+
+            if ($listing->wasChanged()) {
+                $this->upsertAdminAttention($listing);
+            }
+        } catch (LockTimeoutException) {
+            Log::error('Could not acquire lock update-listing');
+        } finally {
+            $lock->release();
         }
 
         return new ListingResource($listing);

@@ -36,6 +36,7 @@ export interface Listing {
   expiredAt: Date
   rawExpiredAt: Date
   adminAttentions: AdminAttention[]
+  revision: number
 }
 
 export interface User {

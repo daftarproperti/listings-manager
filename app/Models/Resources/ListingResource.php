@@ -75,6 +75,7 @@ class ListingResource extends JsonResource
     #[OA\Property(property: 'createdAt', type: 'string', format: 'date-time')]
     #[OA\Property(property: 'expiredAt', type: 'string', format: 'date-time')]
     #[OA\Property(property: 'rawExpiredAt', type: 'string', format: 'date-time')]
+    #[OA\Property(property: 'revision', type: 'integer')]
 
     public static $wrap = null;
 
@@ -161,6 +162,7 @@ class ListingResource extends JsonResource
                     ];
                 })->toArray()
                 : [],
+            'revision' => $prop->revision,
         ];
     }
 }

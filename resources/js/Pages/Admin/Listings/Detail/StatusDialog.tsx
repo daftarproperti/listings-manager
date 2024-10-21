@@ -24,6 +24,7 @@ interface StatusDialogProps {
   currentVerifyStatus: string
   currentActiveStatus: string
   currentExpiredAt: Date
+  revision: number
 }
 
 const StatusDialog: React.FC<StatusDialogProps> = ({
@@ -35,6 +36,7 @@ const StatusDialog: React.FC<StatusDialogProps> = ({
   currentVerifyStatus,
   currentActiveStatus,
   currentExpiredAt,
+  revision,
 }) => {
   const [verifyStatus, setVerifyStatus] = useState(currentVerifyStatus)
   const [activeStatus, setActiveStatus] = useState(currentActiveStatus)
@@ -90,6 +92,7 @@ const StatusDialog: React.FC<StatusDialogProps> = ({
         verifyStatus,
         activeStatus,
         expiredAt: expiredAt != null ? expiredAt.toISOString() : null,
+        revision,
       },
       {
         preserveState: true,

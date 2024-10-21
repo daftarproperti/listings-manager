@@ -194,7 +194,7 @@ class ListingApiTest extends TestCase
         });
     }
 
-    public function test_can_update_Listing(): void
+    public function test_can_update_Listing_with_no_revision(): void
     {
         $listing = $this->addListing("Jl. itu", $this->fakeUserId);
 
@@ -235,6 +235,48 @@ class ListingApiTest extends TestCase
 
             // Assert that admin attention exist when a listing is updated
             $this->assertEquals($updatedListing->adminAttentions->isNotEmpty(), true);
+        });
+    }
+
+    public function test_can_update_Listing_with_revision(): void
+    {
+        $listing = $this->addListing("Jl. ini 1", $this->fakeUserId);
+
+        $this->testWithAuth(function (self $makesHttpRequests) use ($listing) {
+            $response = $makesHttpRequests->post("/api/app/listings/{$listing->id}", [
+                'address' => 'Jl. ini 1',
+                'description' => 'Dijual rumah bagus',
+                'price' => '1000000000',
+                'rentPrice' => '40000000',
+                'lotSize' => '230',
+                'buildingSize' => '200',
+                'city' => 'Jakarta',
+                'cityId' => 1,
+                'bedroomCount' => '3',
+                'bathroomCount' => '2',
+                'listingForSale' => true,
+                'listingForRent' => true,
+                'isPrivate' => false,
+                'withRewardAgreement' => true,
+                'isMultipleUnits' => true,
+                'revision' => 0,
+            ]);
+
+            $response->assertStatus(200);
+
+            $updatedListing = Listing::find($listing->id);
+            // Assert that the listing properties have been updated
+            $this->assertEquals('Jl. ini 1', $updatedListing->address);
+            $this->assertEquals('Dijual rumah bagus', $updatedListing->description);
+            $this->assertEquals('1000000000', $updatedListing->price);
+            $this->assertEquals('230', $updatedListing->lotSize);
+            $this->assertEquals('200', $updatedListing->buildingSize);
+            $this->assertEquals('Jakarta', $updatedListing->city);
+            $this->assertEquals('3', $updatedListing->bedroomCount);
+            $this->assertEquals('2', $updatedListing->bathroomCount);
+            $this->assertEquals(false, $updatedListing->isPrivate);
+            $this->assertEquals(true, $updatedListing->withRewardAgreement);
+            $this->assertEquals(true, $updatedListing->isMultipleUnits);
         });
     }
 

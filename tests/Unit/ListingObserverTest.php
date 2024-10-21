@@ -93,6 +93,19 @@ class ListingObserverTest extends TestCase
         $this->assertGreaterThan(0, $listing->listingId);
     }
 
+    public function test_listing_creation_sets_revision(): void
+    {
+        $listing = Listing::factory()->make([
+            'description' => 'Rumah Luas dan sangat bagus'
+        ]);
+
+        $listing->save();
+
+        $this->assertEquals(0, $listing->revision);
+        $this->assertNotNull($listing->listingId);
+        $this->assertGreaterThan(0, $listing->listingId);
+    }
+
     public function test_listing_creation_with_history(): void
     {
         $listing = Listing::factory()->make([

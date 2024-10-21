@@ -31,6 +31,7 @@ class ListingRequest extends FormRequest
             'coordinate.latitude' => 'nullable|numeric',
             'coordinate.longitude' => 'nullable|numeric',
             'expiredAt' => 'nullable|date',
+            'revision' => 'nullable|integer',
         ];
     }
 }

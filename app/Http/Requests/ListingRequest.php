@@ -47,6 +47,7 @@ class ListingRequest extends BaseApiRequest
     #[OA\Property(property: 'isPrivate', type: 'boolean', example: false)]
     #[OA\Property(property: 'withRewardAgreement', type: 'boolean', example: true)]
     #[OA\Property(property: 'isMultipleUnits', type: 'boolean', example: true)]
+    #[OA\Property(property: 'revision', type: 'integer', example: 0)]
 
     public function authorize()
     {
@@ -86,6 +87,7 @@ class ListingRequest extends BaseApiRequest
             'propertyType' => ['nullable', Rule::in(PropertyType::cases())],
             'listingForSale' => 'required|boolean',
             'listingForRent' => 'required|boolean',
+            'revision' => 'nullable|integer',
         ];
     }
 }

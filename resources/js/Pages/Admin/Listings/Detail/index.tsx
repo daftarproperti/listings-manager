@@ -6,7 +6,7 @@ import React, {
   useEffect,
   useState,
 } from 'react'
-import { Head, router } from '@inertiajs/react'
+import { Head, router, usePage } from '@inertiajs/react'
 import { Button, Carousel, Tooltip, Typography } from '@material-tailwind/react'
 import {
   InformationCircleIcon,
@@ -87,6 +87,7 @@ export default function ListingDetailPage({
     lat: listing.coordinate.latitude,
     lng: listing.coordinate.longitude,
   })
+  const { errors } = usePage().props
   const [showDialog, setShowDialog] = useState(false)
   const [showAdminNote, setShowAdminNote] = useState(false)
   const [note, setNote] = useState<string>(listing.adminNote?.message ?? '')
@@ -96,6 +97,7 @@ export default function ListingDetailPage({
   const [aiReviewStatus, setAiReviewStatus] = useState<string>('')
   const [aiReviewIsOutdated, setAiReviewIsOutdated] = useState(true)
   const [attentionRemoved, setAttentionRemoved] = useState(!needsAdminAttention)
+  const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
   const handleDate = (dateInput: string): Date => {
     const months: Record<string, string> = {
@@ -140,6 +142,7 @@ export default function ListingDetailPage({
         latitude: coord.lat,
         longitude: coord.lng,
       },
+      revision: listing.revision,
     })
     setUnsavedChanges(false)
   }
@@ -230,6 +233,13 @@ export default function ListingDetailPage({
   }
 
   useEffect(() => {
+    if (errors?.error) {
+      setErrorMessage(errors.error)
+      setShowDialog(false)
+    }
+  }, [errors])
+
+  useEffect(() => {
     void (async () => {
       const fetchAiReview = async (): Promise<void> => {
         await getAiReview() // Call your async function
@@ -258,6 +268,7 @@ export default function ListingDetailPage({
       `/admin/listings/${listing.id}`,
       {
         adminNote: note,
+        revision: listing.revision,
       },
       {
         preserveScroll: true,
@@ -347,8 +358,12 @@ export default function ListingDetailPage({
       }
     >
       <Head title="Listings" />
-
       <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
+        {errorMessage && (
+          <div className="mb-4 mt-2 rounded bg-red-100 p-4 text-red-700">
+            {errorMessage}
+          </div>
+        )}
         {listing.pictureUrls.length > 0 ? (
           <Carousel className="h-[512px] w-full bg-neutral-700">
             {listing.pictureUrls.map((url, index) => (
@@ -879,6 +894,7 @@ export default function ListingDetailPage({
         currentVerifyStatus={listing.verifyStatus}
         currentActiveStatus={listing.activeStatus}
         currentExpiredAt={listing.rawExpiredAt}
+        revision={listing.revision}
       />
     </AuthenticatedLayout>
   )
