@@ -2007,6 +2007,9 @@
                     "isPublicProfile": {
                         "type": "boolean"
                     },
+                    "isDelegateEligible": {
+                        "type": "boolean"
+                    },
                     "secretKey": {
                         "type": "string"
                     }

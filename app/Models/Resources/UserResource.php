@@ -28,6 +28,7 @@ class UserResource extends JsonResource
     #[OA\Property(property: 'picture', type: 'string')]
     #[OA\Property(property: 'company', type: 'string')]
     #[OA\Property(property: 'isPublicProfile', type: 'bool')]
+    #[OA\Property(property: 'isDelegateEligible', type: 'bool')]
     #[OA\Property(property: 'secretKey', type: 'string')]
 
     public static $wrap = null;
@@ -57,7 +58,8 @@ class UserResource extends JsonResource
             'description' => $prop->description,
             'company' => $prop->company,
             'picture' => $prop->picture ? Photo::getGcsUrlFromFileName($prop->picture) : null,
-            'isPublicProfile' => $prop->isPublicProfile,
+            'isPublicProfile' => $prop->isPublicProfile ?? false,
+            'isDelegateEligible' => $prop->isDelegateEligible ?? false,
             'secretKey' => $prop->secretKey,
 
             // Deprecated
@@ -67,7 +69,7 @@ class UserResource extends JsonResource
                 'city' => $prop->city,
                 'description' => $prop->description,
                 'picture' => $prop->picture ? Photo::getGcsUrlFromFileName($prop->picture) : null,
-                'isPublicProfile' => $prop->isPublicProfile,
+                'isPublicProfile' => $prop->isPublicProfile ?? false,
                 'company' => $prop->company,
             ],
         ];
