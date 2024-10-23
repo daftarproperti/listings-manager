@@ -1405,6 +1405,8 @@ components:
           type: boolean
         secretKey:
           type: string
+        delegatePhone:
+          type: string
       type: object
     UserProfile:
       properties:

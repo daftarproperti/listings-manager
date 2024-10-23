@@ -30,6 +30,7 @@ class UserResource extends JsonResource
     #[OA\Property(property: 'isPublicProfile', type: 'bool')]
     #[OA\Property(property: 'isDelegateEligible', type: 'bool')]
     #[OA\Property(property: 'secretKey', type: 'string')]
+    #[OA\Property(property: 'delegatePhone', type: 'string')]
 
     public static $wrap = null;
 
@@ -61,6 +62,7 @@ class UserResource extends JsonResource
             'isPublicProfile' => $prop->isPublicProfile ?? false,
             'isDelegateEligible' => $prop->isDelegateEligible ?? false,
             'secretKey' => $prop->secretKey,
+            'delegatePhone' => $prop->delegatePhone,
 
             // Deprecated
             'profile' => [

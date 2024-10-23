@@ -9,6 +9,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use MongoDB\Laravel\Eloquent\Casts\ObjectId;
 use OTPHP\TOTP;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * @property string $id
@@ -27,6 +28,7 @@ use OTPHP\TOTP;
  * @property bool $isPublicProfile
  * @property bool $isDelegateEligible
  * @property ?string $secretKey
+ * @property ?string $delegatePhone
  */
 class User extends Authenticatable
 {
@@ -61,6 +63,7 @@ class User extends Authenticatable
         'isPublicProfile',
         'isDelegateEligible',
         'secretKey',
+        'delegatePhone',
     ];
 
     /**
@@ -84,6 +87,16 @@ class User extends Authenticatable
         'password' => 'hashed',
         'secretKey' => 'encrypted',
     ];
+
+    /**
+     * Get delegate user
+     *
+     * @return BelongsTo<User, User>
+     */
+    public function delegateUser(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'delegatePhone', 'phoneNumber');
+    }
 
     public function toListingUser(): ListingUser
     {
