@@ -7,7 +7,7 @@ import React, {
   useState,
 } from 'react'
 import { Head, router } from '@inertiajs/react'
-import { Button, Carousel, Tooltip } from '@material-tailwind/react'
+import { Button, Carousel, Tooltip, Typography } from '@material-tailwind/react'
 import {
   InformationCircleIcon,
   ChevronDownIcon,
@@ -406,6 +406,9 @@ export default function ListingDetailPage({
                 </table>
               </div>
             )}
+            <Typography variant="small" className="mb-2">
+              Listing ID: {listing.listingIdStr}
+            </Typography>
             <div className="text-lg font-semibold text-slate-500 md:text-xl">
               {listing.address}
             </div>

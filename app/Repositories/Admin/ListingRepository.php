@@ -23,10 +23,14 @@ class ListingRepository
 
         $user = null;
         if (isset($input['q'])) {
+            $q = $input['q'];
             /** @var User|null $user */
-            $user = User::where('phoneNumber', $input['q'])->first();
-            $query->where('address', 'like', '%' . $input['q'] . '%')
-                  ->orWhere('_id', $input['q']);
+            $user = User::where('phoneNumber', $q)->first();
+            $query->where('address', 'like', '%' . $q . '%')
+                  ->orWhere('_id', $q);
+            if (is_numeric($q)) {
+                $query->orWhere('listingId', (int)$q);
+            }
 
             if ($user) {
                 $query->orWhere('user.userId', $user->user_id);

@@ -4,6 +4,7 @@ export interface Listing {
   updatedAt: ReactNode
   createdAt: ReactNode
   id: string
+  listingIdStr: string
   title: string
   address: string
   description: string
