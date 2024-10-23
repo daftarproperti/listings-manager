@@ -24,6 +24,10 @@ class CreateGcpLogger
             'batchEnabled' => true,
         ]);
 
-        return new Logger('gcp', [new PsrHandler($logger)]);
+        $monolog = new Logger('gcp', [new PsrHandler($logger)]);
+
+        $monolog->pushProcessor(new AddUserIdProcessor());
+
+        return $monolog;
     }
 }
