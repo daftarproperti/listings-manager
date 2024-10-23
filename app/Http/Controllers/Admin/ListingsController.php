@@ -37,10 +37,6 @@ class ListingsController extends Controller
 
         $listingCollection = new ListingCollection($listings);
 
-        logger()->info('Listing Collection', [
-            'collection' => $listingCollection->collection->toArray(),
-        ]);
-
         return Inertia::render('Admin/Listings/index', [
             'data' => [
                 'listings' => $listingCollection->collection,
