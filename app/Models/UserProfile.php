@@ -17,6 +17,7 @@ use Spatie\LaravelData\Data;
         new OA\Property(property: 'company', type: 'string', example: 'Company Name', nullable: true),
         new OA\Property(property: 'picture', type: 'string', example: 'https://example.com/image.jpg', nullable: true),
         new OA\Property(property: 'isPublicProfile', type: 'boolean', example: true, nullable: true),
+        new OA\Property(property: 'delegatePhone', type: 'string', example: '+6281234567899', nullable: true),
     ],
 )]
 class UserProfile extends Data
@@ -30,4 +31,5 @@ class UserProfile extends Data
     public ?string $company = null;
     public ?string $picture = null;
     public ?bool $isPublicProfile = null;
+    public ?string $delegatePhone = null;
 }

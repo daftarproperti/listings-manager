@@ -137,6 +137,20 @@ class User extends Authenticatable
         return $otp->getSecret();
     }
 
+    public static function hashPhoneNumber(string $phoneNumber): string
+    {
+        // The hash of userid:phone.
+        //
+        // User ID is added so that it's difficult to brute force which phone number results to this hash.
+        // It is also difficult to check whether a particular phone number results to this hash.
+        //
+        // This still allows listing registrant to detect their own listings since they know their user id +
+        // phone number and can check whether userid:phone equals this hash. This is a feature by design.
+        $dataToHash = sprintf('%s:%s', self::generateUserId($phoneNumber), $phoneNumber);
+
+        return hash('sha256', $dataToHash);
+    }
+
     protected static function boot()
     {
         parent::boot();

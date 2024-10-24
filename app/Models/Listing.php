@@ -192,6 +192,7 @@ class Listing extends Model
                 $profile->company = $appUser->company;
                 $profile->picture = $appUser->picture;
                 $profile->isPublicProfile = $appUser->isPublicProfile;
+                $profile->delegatePhone = $appUser->delegatePhone;
 
                 return $profile;
             default:

@@ -99,19 +99,11 @@ class PublicListingResource extends JsonResource
                 'phoneNumberEncrypted' => $pubKey && $listing->user_profile?->phoneNumber ?
                     Ecies::encryptString($pubKey, $listing->user_profile->phoneNumber) :
                     null,
-                // The hash of userid:phone.
-                //
-                // User ID is added so that it's difficult to brute force which phone number results to this hash.
-                // It is also difficult to check whether a particular phone number results to this hash.
-                //
-                // This still allows listing registrant to detect their own listings since they know their user id +
-                // phone number and can check whether userid:phone equals this hash. This is a feature by design.
                 'phoneNumberHash' => $listing->user_profile?->phoneNumber ?
-                    hash(
-                        'sha256',
-                        User::generateUserId($listing->user_profile->phoneNumber) . ':' .
-                            $listing->user_profile->phoneNumber,
-                    ) :
+                    User::hashPhoneNumber($listing->user_profile->phoneNumber) :
+                    null,
+                'delegatePhoneHash' => $listing->user_profile?->delegatePhone ?
+                    User::hashPhoneNumber($listing->user_profile->delegatePhone) :
                     null,
                 'profilePictureURL' => $listing->user_profile?->picture ?
                     Photo::getGcsUrlFromFileName($listing->user_profile->picture) :

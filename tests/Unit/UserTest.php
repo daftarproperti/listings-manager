@@ -36,4 +36,14 @@ class UserTest extends TestCase
 
         $this->assertNull($principal->delegateUser);
     }
+
+    public function test_hash_phone_number_is_correct(): void
+    {
+        $user = User::factory()->create([
+            'phoneNumber' => '081239129323',
+        ]);
+
+        $hashPhone = User::hashPhoneNumber($user->phoneNumber);
+        $this->assertTrue(hash_equals(hash('sha256', $user->user_id.':'.$user->phoneNumber), $hashPhone));
+    }
 }
