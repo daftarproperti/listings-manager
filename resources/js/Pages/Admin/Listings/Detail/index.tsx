@@ -428,11 +428,26 @@ export default function ListingDetailPage({
               {listing.address}
             </div>
             <div className="mt-1 text-2xl font-semibold leading-8 text-slate-800 md:text-3xl">
-              {new Intl.NumberFormat('id-ID', {
-                currency: 'IDR',
-                style: 'currency',
-                notation: 'compact',
-              }).format(listing.price)}
+              {listing.listingForSale && (
+                <span>
+                  {new Intl.NumberFormat('id-ID', {
+                    currency: 'IDR',
+                    style: 'currency',
+                    notation: 'compact',
+                  }).format(listing.price)}
+                </span>
+              )}
+              {listing.listingForRent && (
+                <span>
+                  {listing.listingForSale && ' / '}
+                  {new Intl.NumberFormat('id-ID', {
+                    currency: 'IDR',
+                    style: 'currency',
+                    notation: 'compact',
+                  }).format(listing.rentPrice)}{' '}
+                  / tahun
+                </span>
+              )}
             </div>
             <div className="mt-1.5 line-clamp-3 flex justify-between text-xs leading-4 text-slate-500 md:text-sm">
               <div>

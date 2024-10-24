@@ -205,6 +205,7 @@ export default function ListingsPage({
                       address,
                       user,
                       price,
+                      rentPrice,
                       lotSize,
                       buildingSize,
                       bedroomCount,
@@ -214,6 +215,8 @@ export default function ListingsPage({
                       verifyStatus,
                       activeStatus,
                       createdAt,
+                      listingForRent,
+                      listingForSale,
                       adminAttentions,
                     },
                     index,
@@ -250,11 +253,26 @@ export default function ListingsPage({
                       <Table.BodyItem>{user?.name}</Table.BodyItem>
                       <Table.BodyItem>{user?.phoneNumber}</Table.BodyItem>
                       <Table.BodyItem>
-                        {new Intl.NumberFormat('id-ID', {
-                          currency: 'IDR',
-                          style: 'currency',
-                          notation: 'compact',
-                        }).format(price)}
+                        {listingForSale && (
+                          <span>
+                            {new Intl.NumberFormat('id-ID', {
+                              currency: 'IDR',
+                              style: 'currency',
+                              notation: 'compact',
+                            }).format(price)}
+                          </span>
+                        )}
+                        {listingForRent && (
+                          <span>
+                            {listingForSale && ' / '}
+                            {new Intl.NumberFormat('id-ID', {
+                              currency: 'IDR',
+                              style: 'currency',
+                              notation: 'compact',
+                            }).format(rentPrice)}{' '}
+                            / tahun
+                          </span>
+                        )}
                       </Table.BodyItem>
                       <Table.BodyItem className="font-normal text-neutral-600">
                         {`${lotSize}`} m&sup2;

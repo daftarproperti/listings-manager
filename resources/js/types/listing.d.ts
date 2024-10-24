@@ -9,6 +9,7 @@ export interface Listing {
   address: string
   description: string
   price: number
+  rentPrice: number
   lotSize: number
   buildingSize: number
   bedroomCount: number
@@ -32,6 +33,8 @@ export interface Listing {
   user?: User
   isMultipleUnits: boolean
   withRewardAgreement: boolean
+  listingForSale: boolean
+  listingForRent: boolean
   cancellationNote: CancellationNote
   expiredAt: Date
   rawExpiredAt: Date
