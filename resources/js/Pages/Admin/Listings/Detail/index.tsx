@@ -9,6 +9,7 @@ import React, {
 import { Head, router, usePage } from '@inertiajs/react'
 import {
   Button,
+  Card,
   Carousel,
   Chip,
   Tooltip,
@@ -822,13 +823,13 @@ export default function ListingDetailPage({
                     )}
                 </h2>
                 {Object.keys(history.changes).length > 0 ? (
-                  <div className="overflow-x-auto">
+                  <Card className="overflow-x-auto rounded-md shadow-none">
                     <table className="min-w-full table-auto text-left text-sm text-gray-500">
                       <thead>
-                        <tr className="bg-gray-100 text-xs uppercase text-gray-700">
-                          <th className="px-6 py-3">Atribut</th>
-                          <th className="px-6 py-3">Sebelum</th>
-                          <th className="px-6 py-3">Sesudah</th>
+                        <tr className="border-b border-blue-gray-50 text-xs uppercase text-gray-700">
+                          <th className="bg-blue-gray-50 px-6 py-3">Atribut</th>
+                          <th className="bg-blue-gray-50 px-6 py-3">Sebelum</th>
+                          <th className="bg-blue-gray-50 px-6 py-3">Sesudah</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -839,6 +840,9 @@ export default function ListingDetailPage({
                         ) ? (
                           Object.keys(history.changes).map(
                             (field, fieldIndex) => {
+                              const isLast =
+                                fieldIndex ===
+                                Object.keys(history.changes).length - 1
                               const before = history.changes[field]?.before
                               const after = history.changes[field]?.after
                               if (
@@ -846,7 +850,14 @@ export default function ListingDetailPage({
                                 typeof after === 'object'
                               ) {
                                 return (
-                                  <tr key={fieldIndex} className="border-b">
+                                  <tr
+                                    key={fieldIndex}
+                                    className={
+                                      isLast
+                                        ? ''
+                                        : 'border-b border-blue-gray-100'
+                                    }
+                                  >
                                     <td className="px-6 py-4 text-gray-900">
                                       {field}
                                     </td>
@@ -887,7 +898,7 @@ export default function ListingDetailPage({
                         )}
                       </tbody>
                     </table>
-                  </div>
+                  </Card>
                 ) : (
                   <p className="text-sm text-gray-500">Tidak ada perubahan</p>
                 )}
