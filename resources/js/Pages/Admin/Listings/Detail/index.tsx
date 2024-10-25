@@ -7,7 +7,13 @@ import React, {
   useState,
 } from 'react'
 import { Head, router, usePage } from '@inertiajs/react'
-import { Button, Carousel, Tooltip, Typography } from '@material-tailwind/react'
+import {
+  Button,
+  Carousel,
+  Chip,
+  Tooltip,
+  Typography,
+} from '@material-tailwind/react'
 import {
   InformationCircleIcon,
   ChevronDownIcon,
@@ -424,6 +430,16 @@ export default function ListingDetailPage({
             <Typography variant="small" className="mb-2">
               Listing ID: {listing.listingIdStr}
             </Typography>
+            <div className="mb-2 flex gap-2">
+              {/* TODO: Convert the enum to presentation value, e.g. house -> Rumah */}
+              <Chip variant="outlined" value={listing.propertyType} />
+              {listing.listingForSale && (
+                <Chip variant="outlined" value="Dijual" />
+              )}
+              {listing.listingForRent && (
+                <Chip variant="outlined" value="Disewakan" />
+              )}
+            </div>
             <div className="text-lg font-semibold text-slate-500 md:text-xl">
               {listing.address}
             </div>
