@@ -37,7 +37,7 @@ import type {
   Option,
   PageProps,
 } from '@/types'
-import { type ListingHistory } from '@/types/listing'
+import { type AdminAttention, type ListingHistory } from '@/types/listing'
 
 export const LISTING_ICON: Record<string, JSX.Element> = {
   buildingSize: <HouseIconSVG />,
@@ -80,15 +80,11 @@ export default function ListingDetailPage({
     likelyConnectedListing: LikelyConnectedListing[]
     verifyStatusOptions: Option[]
     activeStatusOptions: Option[]
-    needsAdminAttention: boolean
+    adminAttention: AdminAttention | null
   }
 }>): JSX.Element {
-  const {
-    listing,
-    verifyStatusOptions,
-    activeStatusOptions,
-    needsAdminAttention,
-  } = data
+  const { listing, verifyStatusOptions, activeStatusOptions, adminAttention } =
+    data
   const [coord, setBaseCoord] = useState<google.maps.LatLngLiteral>({
     lat: listing.coordinate.latitude,
     lng: listing.coordinate.longitude,
@@ -102,7 +98,9 @@ export default function ListingDetailPage({
   const [aiReviewResponse, setAiReviewResponse] = useState<string[]>([])
   const [aiReviewStatus, setAiReviewStatus] = useState<string>('')
   const [aiReviewIsOutdated, setAiReviewIsOutdated] = useState(true)
-  const [attentionRemoved, setAttentionRemoved] = useState(!needsAdminAttention)
+  const [attentionRemoved, setAttentionRemoved] = useState(
+    adminAttention === null,
+  )
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
   const handleDate = (dateInput: string): Date => {
@@ -807,7 +805,7 @@ export default function ListingDetailPage({
           {data.listingHistory.length > 0 ? (
             data.listingHistory.map((history, index) => (
               <div key={index} className="mb-6">
-                <h2 className="text-md mb-2 font-semibold text-slate-800">
+                <h2 className="text-md mb-2 flex items-center gap-2 font-semibold text-slate-800">
                   Perubahan pada{' '}
                   {new Date(history.created_at).toLocaleDateString('en-US', {
                     year: 'numeric',
@@ -816,7 +814,12 @@ export default function ListingDetailPage({
                     hour: '2-digit',
                     minute: '2-digit',
                     second: '2-digit',
-                  })}
+                  })}{' '}
+                  {adminAttention?.listingUpdatedAt &&
+                    new Date(adminAttention.listingUpdatedAt).getTime() <=
+                      new Date(history.created_at).getTime() && (
+                      <Chip color="red" value="!" className="rounded-full" />
+                    )}
                 </h2>
                 {Object.keys(history.changes).length > 0 ? (
                   <div className="overflow-x-auto">

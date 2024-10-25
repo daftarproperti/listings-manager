@@ -429,7 +429,7 @@ class ListingsController extends Controller
             $listing->save();
 
             if ($listing->wasChanged()) {
-                $this->upsertAdminAttention($listing);
+                $this->createFirstAdminAttention($listing);
             }
         } catch (LockTimeoutException) {
             Log::error('Could not acquire lock update-listing');
@@ -469,7 +469,7 @@ class ListingsController extends Controller
         $listing->save();
 
         if ($listing->wasRecentlyCreated) {
-            $this->upsertAdminAttention($listing);
+            $this->createFirstAdminAttention($listing);
         }
 
         return new ListingResource($listing);
@@ -664,14 +664,14 @@ class ListingsController extends Controller
         $radius = 100 / 6371000;
 
         $result = Listing::where('coordinate', '!=', null)
-                        ->where('_id', '!=', $listing->id)
-                        ->where('verifyStatus', 'approved')
-                        ->where('indexedCoordinate', 'geoWithin', [
-                            '$centerSphere' => [
-                                [$longitude, $latitude], $radius,
-                            ],
-                        ])
-                        ->get();
+            ->where('_id', '!=', $listing->id)
+            ->where('verifyStatus', 'approved')
+            ->where('indexedCoordinate', 'geoWithin', [
+                '$centerSphere' => [
+                    [$longitude, $latitude], $radius,
+                ],
+            ])
+            ->get();
 
         $connectedListings = $result->map(function ($listing) {
             /** @var Listing $listing */
@@ -688,15 +688,12 @@ class ListingsController extends Controller
     /**
      * @param Listing $listing
      */
-    private function upsertAdminAttention(Listing $listing): void
+    private function createFirstAdminAttention(Listing $listing): void
     {
         try {
-            AdminAttention::updateOrCreate(
+            AdminAttention::firstOrCreate(
                 ['listingId' => $listing->id],
-                [
-                    'listingId' => $listing->id,
-                    'listingUpdatedAt' => $listing->updated_at,
-                ],
+                ['listingUpdatedAt' => $listing->updated_at],
             );
         } catch (\Throwable $th) {
             Log::error('Error writing histories: ' . $th->getMessage());

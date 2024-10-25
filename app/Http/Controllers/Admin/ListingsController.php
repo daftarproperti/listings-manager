@@ -72,7 +72,7 @@ class ListingsController extends Controller
         $rawListingHistory = $listing->listingHistories()->orderBy('created_at', 'desc')->get();
         $listingHistories = ListingHistoryResource::collection($rawListingHistory);
 
-        $needsAdminAttention = ($listing->adminAttentions ?? collect())->isNotEmpty();
+        $adminAttention = $listing->adminAttentions?->first();
 
         return Inertia::render('Admin/Listings/Detail/index', [
             'data' => [
@@ -81,7 +81,7 @@ class ListingsController extends Controller
                 'likelyConnectedListing' => $connectedListings,
                 'verifyStatusOptions' => VerifyStatus::options(),
                 'activeStatusOptions' => ActiveStatus::options(),
-                'needsAdminAttention' => $needsAdminAttention,
+                'adminAttention' => $adminAttention,
             ],
         ]);
     }

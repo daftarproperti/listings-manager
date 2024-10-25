@@ -219,6 +219,7 @@ class ListingApiTest extends TestCase
 
             $response->assertStatus(200);
 
+            /** @var Listing $updatedListing */
             $updatedListing = Listing::find($listing->id);
             // Assert that the listing properties have been updated
             $this->assertEquals('Jl. itu', $updatedListing->address);
@@ -235,6 +236,34 @@ class ListingApiTest extends TestCase
 
             // Assert that admin attention exist when a listing is updated
             $this->assertEquals($updatedListing->adminAttentions->isNotEmpty(), true);
+            $adminAttention = $updatedListing->adminAttentions->first();
+
+            // Delay 10ms to make sure we test the update at later time.
+            usleep(10000);
+            $response = $makesHttpRequests->post("/api/app/listings/{$listing->id}", [
+                'address' => 'Jl. itu',
+                'description' => 'Dijual rumah bagus',
+                'price' => '1000000000',
+                'rentPrice' => '40000000',
+                'lotSize' => '230',
+                'buildingSize' => '200',
+                'city' => 'Jakarta',
+                'cityId' => 1,
+                'bedroomCount' => '3',
+                'bathroomCount' => '2',
+                'listingForSale' => true,
+                'listingForRent' => true,
+                'isPrivate' => false,
+                'withRewardAgreement' => true,
+                'isMultipleUnits' => true,
+            ]);
+            $response->assertStatus(200);
+
+            /** @var Listing $updatedListing */
+            $updatedListing = Listing::find($listing->id);
+            // admin attention should not be updated with the new time,
+            // it should still point to the first unattended attention.
+            $this->assertEquals($adminAttention, $updatedListing->adminAttentions->first());
         });
     }
 
@@ -310,7 +339,7 @@ class ListingApiTest extends TestCase
             ]);
 
             $listingId = $response->json('id');
-            
+
             // Assert that admin attention exist when a listing is created
             $this->assertDatabaseHas('admin_attentions', [
                 'listingId' => $listingId,
