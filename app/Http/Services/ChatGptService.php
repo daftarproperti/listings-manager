@@ -19,7 +19,7 @@ class ChatGptService
         $this->modelVersion = type(config('services.chatgpt.model_version'))->asString();
     }
 
-    public function seekAnswerWithRetry(string $question): string
+    public function seekAnswerWithRetry(string $question, string $model = null): string
     {
         $retryAttempts = 3;
         $retryDelay = 2;
@@ -27,10 +27,11 @@ class ChatGptService
 
         for ($attempt = 0; $attempt < $retryAttempts; $attempt++) {
             try {
-                $answer = $this->seekAnswer($question);
+                $answer = $this->seekAnswer($question, $model);
                 if (json_validate($answer)) {
                     return $answer;
                 }
+                Log::error("Answer not valid JSON:\n" . $answer);
             } catch (RequestException $e) {
                 Log::error('Error occurred while making HTTP request: ' . $e->getMessage());
             }

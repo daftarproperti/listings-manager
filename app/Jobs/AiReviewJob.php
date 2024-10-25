@@ -2,11 +2,11 @@
 
 namespace App\Jobs;
 
-use App\Helpers\AiReviewPrompt;
-use App\Http\Services\ChatGptService;
+use App\Helpers\Cast;
+use App\Helpers\Extractor;
 use App\Models\Enums\AiReviewStatus;
 use App\Models\Listing;
-use App\Models\Resources\AiReviewListingGptResource;
+use App\Models\Resources\ListingResource;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -23,53 +23,72 @@ class AiReviewJob implements ShouldQueue
 
     protected Listing $listing;
 
-    /**
-     * Create a new job instance.
-     *
-     * @return void
-     */
     public function __construct(Listing $listing)
     {
         $this->listing = $listing;
     }
 
     /**
-     * Execute the job.
+     * @param array<string, mixed> $extracted
+     * @param array<string, mixed> $original
+     *
+     * @return array<string>
+     */
+    private static function listingDiff(array $extracted, array $original): array
+    {
+        $mismatches = [];
+
+        $checkedFields = [
+            'propertyType',
+            'bedroomCount',
+            'additionalBedroomCount',
+            'bathroomCount',
+            'additionalBathroomCount',
+            'floorCount',
+            'electricPower',
+            'facing',
+            'ownership',
+        ];
+
+        foreach ($extracted as $field => $val) {
+            if (!in_array($field, $checkedFields)) {
+                continue;
+            }
+
+            if (isset($val) && isset($original[$field])) {
+                $extractedField = Cast::toString($val);
+                $originalField = Cast::toString($original[$field]);
+                if ($extractedField != $originalField) {
+                    $mismatches[] = "Field $field tidak cocok: data = $originalField vs deskripsi = $extractedField";
+                }
+            }
+        }
+
+        return $mismatches;
+    }
+
+    /**
+     * Runs automated review of a listing.
+     *
+     * Currently this job implements reviewing description vs fields accuracy only.
+     * Eventually we should be able to automate all the cases in https://daftarproperti.org/checklist.
      *
      * @return void
      */
-    public function handle(ChatGptService $chatGptService)
+    public function handle(Extractor $extractor)
     {
         try {
-            $listingReviewData = (new AiReviewListingGptResource($this->listing))->resolve();
-            $reviewPrompt = AiReviewPrompt::generatePrompt($listingReviewData, $this->listing->description);
+            $extractedListing = $extractor->extractSingleListingFromMessage($this->listing->description, 'gpt-4');
 
-            $promptMessage[] = [
-                'role' => 'user',
-                'content' => $reviewPrompt,
-            ];
+            // TODO: No need to convert to JSON back and forth, but the extraction from LLM can be directly array.
+            /** @var array<string, mixed> $extracted */
+            $extracted = json_decode(type(json_encode($extractedListing))->asString(), true);
 
-            $firstPromptResponse = $chatGptService->seekAnswerWihtCustomMessagesRole($promptMessage, 'gpt-4');
-
-            // Keep context from the first response
-            $promptMessage[] = [
-                'role' => 'assistant',
-                'content' => $firstPromptResponse,
-            ];
-
-            $validationPrompt = AiReviewPrompt::validationPrompt();
-            $promptMessage[] = [
-                'role' => 'user',
-                'content' => $validationPrompt,
-            ];
-
-            $finalResponse = $chatGptService->seekAnswerWihtCustomMessagesRole($promptMessage, 'gpt-4');
-
-            /** @var array<array<string>> $finalJsonResponse */
-            $finalJsonResponse = json_decode($finalResponse, true);
-
+            $results = self::listingDiff($extracted, (new ListingResource($this->listing))->resolve());
+            // TODO: Add results from field validations as well.
+            // Looks like field validations need to be prompted one per field to achieve good accuracy.
             $this->listing->aiReview()->update([
-                'results' => $finalJsonResponse['results'] ?? [],
+                'results' => $results,
                 'status' => (AiReviewStatus::DONE)->value,
             ]);
         } catch (\Throwable $th) {

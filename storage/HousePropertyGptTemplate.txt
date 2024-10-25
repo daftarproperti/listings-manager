@@ -81,6 +81,9 @@
         "bathroomCount": "[Number of bathrooms]",
         "additionalBathroomCount": "[Number of additional bathrooms]",
 
+        // Extract the number of floors. Usually mentioned like "1 lantai", "2 lantai", "X lantai".
+        // But "lantai 3" means it is on floor 3, not that there are 3 floors.
+        // Leave this field undefined or null if not mentioned in the text.
         "floorCount": "[Number of floors]",
         "electricPower" : "[Number of electric power]",
 

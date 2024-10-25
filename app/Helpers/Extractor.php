@@ -164,10 +164,9 @@ EOD;
      * @param string $message
      * @return stdClass
      */
-    public function extractSingleListingFromMessage($message): stdClass
+    public function extractSingleListingFromMessage($message, string $model = null): stdClass
     {
-
-        $answer = $this->chatGptService->seekAnswerWithRetry(Extractor::generatePrompt($message));
+        $answer = $this->chatGptService->seekAnswerWithRetry(Extractor::generatePrompt($message), $model);
 
         Log::debug('Answer from LLM = ' . $answer);
 
