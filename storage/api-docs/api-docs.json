@@ -404,6 +404,41 @@
                 }
             }
         },
+        "/api/app/delegates/user/{phoneNumber}": {
+            "get": {
+                "tags": [
+                    "Delegates"
+                ],
+                "summary": "Get isDelegateEligible user by phone number",
+                "operationId": "delegates.getUserByPhoneNumber",
+                "parameters": [
+                    {
+                        "name": "phoneNumber",
+                        "in": "path",
+                        "description": "User Phone Number",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/User"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "User not found"
+                    }
+                }
+            }
+        },
         "/api/app/listings": {
             "get": {
                 "tags": [
@@ -2071,6 +2106,11 @@
                     "isPublicProfile": {
                         "type": "boolean",
                         "example": true,
+                        "nullable": true
+                    },
+                    "delegatePhone": {
+                        "type": "string",
+                        "example": "+6281234567899",
                         "nullable": true
                     }
                 },

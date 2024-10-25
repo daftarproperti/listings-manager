@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CityController;
 use App\Http\Controllers\Api\ClosingsController;
+use App\Http\Controllers\Api\DelegateController;
 use App\Http\Controllers\Api\DevController;
 use App\Http\Controllers\Api\PhotoController;
 use App\Http\Controllers\Api\UserController;
@@ -47,6 +48,10 @@ Route::group(['prefix' => 'app', 'middleware' => ['dp-app']], function () {
         Route::post('/profile', [UserController::class, 'updateProfile']);
         Route::post('/secret-key', [UserController::class, 'generateSecretKey']);
         Route::delete('/secret-key', [UserController::class, 'deleteSecretKey']);
+    });
+
+    Route::prefix('delegates')->group(function () {
+        Route::get('/user/{phoneNumber}', [DelegateController::class, 'getUserByPhoneNumber']);
     });
 
     Route::post('upload/image', [PhotoController::class, 'uploadImage']);
