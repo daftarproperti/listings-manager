@@ -5,8 +5,10 @@ namespace App\Observers;
 use App\Helpers\Queue;
 use App\Jobs\SyncListingToGCS;
 use App\Jobs\Web3Listing;
+use App\Models\AdminNote;
 use App\Models\ListingHistory;
 use App\Models\Enums\VerifyStatus;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Listing;
 use App\Models\User;
@@ -150,6 +152,15 @@ class ListingObserver
             Log::warning('Not creating Listing due to empty detected: ' . print_r($listing->attributesToArray(), true));
             return false;
         }
+
+        $adminNote = [
+            'message' => "Listing baru akan melalui proses tinjauan oleh admin.\n" .
+                "Jika ada informasi yang harus diubah, maka akan ditambahkan di catatan ini.\n" .
+                "Silahkan pantau catatan ini.\n",
+            'email' => 'system@daftarproperti.org',
+            'date' => Carbon::now()->floorSecond(),
+        ];
+        $listing->adminNote = AdminNote::from($adminNote);
 
         return true;
     }

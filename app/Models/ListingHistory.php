@@ -8,9 +8,10 @@ use MongoDB\Laravel\Eloquent\Model;
 
 /**
  * @property string $id
+ * @property string $listingId
  * @property array<string, string> $before
  * @property array<string, string> $after
- * @property array<string, string> $changes
+ * @property string $changes
  * @property Carbon $timestamp
  */
 class ListingHistory extends Model
@@ -30,7 +31,6 @@ class ListingHistory extends Model
     protected $casts = [
         'before' => 'array',
         'after' => 'array',
-        'changes' => 'array',
     ];
 
     /**

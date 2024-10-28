@@ -116,7 +116,6 @@ class ListingObserverTest extends TestCase
         $rawListingHistory = ListingHistory::where('listingId', $listing->id)->first();
 
         $this->assertEquals($listing->id, $rawListingHistory->listingId);
-
     }
 
     public function test_listing_update_with_history(): void
@@ -132,6 +131,7 @@ class ListingObserverTest extends TestCase
         $listing->price = 1200000000;
         $listing->save();
 
+        /** @var ListingHistory|null $rawListingHistory */
         $rawListingHistory = ListingHistory::where('listingId', $listing->id)
             ->orderBy('created_at', 'desc')
             ->first();
@@ -140,9 +140,24 @@ class ListingObserverTest extends TestCase
         $this->assertEquals($listing->id, $rawListingHistory->listingId);
 
         $changes = json_decode($rawListingHistory->changes, true);
+        $listing->refresh(); // To get the updated at.
         $expectedChanges = [
             'description' => ['before' => 'Rumah Luas dan sangat bagus', 'after' => 'Rumah Modern dengan desain minimalis'],
-            'price' => ['before' => 1000000000, 'after' => 1200000000]
+            'price' => ['before' => 1000000000, 'after' => 1200000000],
+            'adminNote' => [
+                'before' => null,
+                'after' => [
+                    'message' => "Listing baru akan melalui proses tinjauan oleh admin.\n" .
+                        "Jika ada informasi yang harus diubah, maka akan ditambahkan di catatan ini.\n" .
+                        "Silahkan pantau catatan ini.\n",
+                    'email' => 'system@daftarproperti.org',
+                    'date' => [
+                        '$date' => [
+                            '$numberLong' => (string)$listing->adminNote->date->getPreciseTimestamp(3),
+                        ]
+                    ],
+                ],
+            ],
         ];
         $this->assertEquals($expectedChanges, $changes);
     }

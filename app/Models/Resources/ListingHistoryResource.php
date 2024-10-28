@@ -19,6 +19,7 @@ class ListingHistoryResource extends JsonResource
      */
     protected $fieldMap = [
         'address' => 'alamat',
+        'adminNote' => 'catatan admin',
         'listingType' => 'tipe listing',
         'price' => 'harga',
         'status' => 'status',

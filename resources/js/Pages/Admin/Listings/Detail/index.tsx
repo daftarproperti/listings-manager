@@ -92,7 +92,7 @@ export default function ListingDetailPage({
   })
   const { errors } = usePage().props
   const [showDialog, setShowDialog] = useState(false)
-  const [showAdminNote, setShowAdminNote] = useState(false)
+  const [showAdminNote, setShowAdminNote] = useState(true)
   const [note, setNote] = useState<string>(listing.adminNote?.message ?? '')
   const [showNoteForm, setShowNoteForm] = useState(false)
   const [unsavedChanges, setUnsavedChanges] = useState(false)
