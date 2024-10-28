@@ -337,15 +337,26 @@ export default function ListingDetailPage({
                 </span>
               </div>
             )}
-            <div className="lg:justify-end lg:text-right">
-              <Button
-                color="blue"
-                onClick={handleRemoveAttention}
-                disabled={attentionRemoved}
-                className="mb-2 lg:mb-0"
+            <div className="flex gap-2 lg:justify-end lg:text-right">
+              <Tooltip
+                className="border bg-amber-100 text-gray-800"
+                content={
+                  <div>
+                    Klik untuk hapus tanda perhatian, jika sudah di-review.
+                    <br />
+                    Silahkan perhatikan tabel perubahan di bawah halaman ini.
+                  </div>
+                }
               >
-                Hapus Atensi
-              </Button>
+                <Button
+                  color="amber"
+                  onClick={handleRemoveAttention}
+                  disabled={attentionRemoved}
+                  className="mb-2 lg:mb-0"
+                >
+                  Perlu Perhatian
+                </Button>
+              </Tooltip>
             </div>
             <div className="lg:justify-end lg:text-right">
               <Button
@@ -678,7 +689,7 @@ export default function ListingDetailPage({
                 </span>
                 :
               </div>
-              <div className="mb-5 rounded-lg bg-gray-200 p-4">
+              <div className="my-2 rounded-lg border bg-amber-100 p-4">
                 <div className="flex justify-between">
                   {listing.adminNote?.message !== undefined &&
                     listing.adminNote?.message !== '' && (
@@ -718,7 +729,7 @@ export default function ListingDetailPage({
                     ></textarea>
                     <div className="mt-2 flex justify-end gap-3">
                       <Button
-                        color="gray"
+                        variant="text"
                         onClick={() => {
                           setShowNoteForm(!showNoteForm)
                         }}
@@ -819,7 +830,11 @@ export default function ListingDetailPage({
                   {adminAttention?.listingUpdatedAt &&
                     new Date(adminAttention.listingUpdatedAt).getTime() <=
                       new Date(history.created_at).getTime() && (
-                      <Chip color="red" value="!" className="rounded-full" />
+                      <Chip
+                        color="amber"
+                        value="Perlu Perhatian"
+                        className="rounded-full"
+                      />
                     )}
                 </h2>
                 {Object.keys(history.changes).length > 0 ? (

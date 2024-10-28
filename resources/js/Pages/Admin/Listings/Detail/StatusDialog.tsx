@@ -223,6 +223,7 @@ const StatusDialog: React.FC<StatusDialogProps> = ({
           </div>
           <div className="actions mt-8 flex justify-end gap-3">
             <Button
+              variant="text"
               type="button"
               onClick={() => {
                 setShowDialog(false)
