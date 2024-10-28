@@ -10,6 +10,7 @@ use App\Http\Services\OTPService;
 use App\Models\Resources\UserResource;
 use App\Models\User;
 use App\Rules\IndonesiaPhoneFormat;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -321,7 +322,13 @@ class AuthController extends Controller
             $user->save();
         }
 
-        $token = $user->createToken('loginToken', ['*'], $expiryDate)->plainTextToken;
+        /** @var User $currentUser */
+        $currentUser = Auth::user();
+        $metaData = [
+            'impersonated_by:' . $currentUser->phoneNumber,
+            'impersonated_at:' . Carbon::now()->timestamp,
+        ];
+        $token = $user->createToken('loginToken', $metaData, $expiryDate)->plainTextToken;
 
         return response()->json([
             'success' => true,

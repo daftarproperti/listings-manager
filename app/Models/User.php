@@ -29,6 +29,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property bool $isDelegateEligible
  * @property ?string $secretKey
  * @property ?string $delegatePhone
+ * @property ?string $impersonatedBy
  */
 class User extends Authenticatable
 {
@@ -40,6 +41,7 @@ class User extends Authenticatable
 
     protected $connection = 'mongodb';
 
+    protected ?string $impersonatedBy = null;
     protected const INDIVIDUAL = 'individual';
     protected const PROFESSIONAL = 'professional';
 
@@ -149,6 +151,27 @@ class User extends Authenticatable
         $dataToHash = sprintf('%s:%s', self::generateUserId($phoneNumber), $phoneNumber);
 
         return hash('sha256', $dataToHash);
+    }
+
+    /**
+     * Get the ID of the user who impersonates this user.
+     *
+     * @return ?string
+     */
+    public function getImpersonatedBy(): ?string
+    {
+        return $this->impersonatedBy;
+    }
+
+    /**
+     * Set the ID of the user who impersonates this user.
+     *
+     * @param ?string $phoneNumber
+     * @return void
+     */
+    public function setImpersonatedBy(?string $phoneNumber): void
+    {
+        $this->impersonatedBy = $phoneNumber;
     }
 
     protected static function boot()

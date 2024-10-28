@@ -43,6 +43,35 @@ trait TokenValidation
             return null;
         }
 
-        return $accessToken->tokenable;
+        $abilities = $accessToken->abilities;
+        $impersonatedBy = $this->extractAbility($abilities, 'impersonated_by');
+
+        $user = $accessToken->tokenable;
+        if ($impersonatedBy) {
+            $user->setImpersonatedBy($impersonatedBy);
+        }
+
+        return $user;
+    }
+
+    /**
+     * Helper function to extract a specific ability from token abilities.
+     *
+     * @param array<int, string>|null $abilities
+     * @param string $prefix
+     * @return string|null
+     */
+    private function extractAbility(?array $abilities, string $prefix): ?string
+    {
+        if (is_null($abilities)) {
+            return null;
+        }
+
+        foreach ($abilities as $ability) {
+            if (str_starts_with($ability, $prefix . ':')) {
+                return explode(':', $ability, 2)[1];
+            }
+        }
+        return null;
     }
 }
