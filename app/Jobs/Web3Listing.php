@@ -51,7 +51,7 @@ class Web3Listing implements ShouldQueue
         string $hash,
         string $operationType,
     ): void {
-        $web3 = new Web3(type(env('ETH_NODE'))->asString());
+        $web3 = new Web3(type(env('ETH_NODE'))->asString(), /*timeout=*/ 5);
 
         $abi = type(file_get_contents(storage_path('blockchain/ListingsV0.abi.json')))->asString();
         $contractAddress = type(env('ETH_LISTINGS_CONTRACT_ADDRESS'))->asString();
@@ -149,7 +149,7 @@ class Web3Listing implements ShouldQueue
         string $hash,
         string $operationType,
     ): void {
-        $web3 = new Web3(type(env('ETH_NODE'))->asString());
+        $web3 = new Web3(type(env('ETH_NODE'))->asString(), /*timeout=*/ 5);
 
         $abi = type(file_get_contents(storage_path('blockchain/ListingsV1.abi.json')))->asString();
         $contractAddress = type(env('ETH_LISTINGS_CONTRACT_ADDRESS'))->asString();
