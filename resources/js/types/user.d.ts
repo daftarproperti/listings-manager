@@ -4,18 +4,10 @@ export interface DPUser {
   user_id: number
   username: string
   phoneNumber: string
-  name: string
-  cityId: number
-  company: string
-  profile?: Profile
-}
-
-export interface Profile {
-  name: string
-  phoneNumber: string
-  city: string
-  description: string
-  company: string
-  picture: string
-  isPublicProfile: boolean
+  name?: string
+  cityName?: string
+  company?: string
+  picture?: string
+  isDelegateEligible?: boolean
+  delegatePhone?: string
 }
