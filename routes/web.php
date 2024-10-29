@@ -39,7 +39,11 @@ Route::get('/_blockchain', [BlockchainInfoController::class, 'index']);
 
 Route::group(['prefix' => 'admin'], function () {
     Route::group(['middleware' => ['auth:admin']], function () {
-        Route::get('/members', [MembersController::class, 'index'])->name('members');
+        Route::group(['prefix' => 'members', 'as' => 'members.'], function () {
+            Route::get('/', [MembersController::class, 'index'])->name('index');
+            Route::get('/search', [MembersController::class, 'search'])->name('search');
+        });
+
         Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
         Route::post('/logout', [GoogleLoginController::class, 'handleLogout'])->name('logout');
 

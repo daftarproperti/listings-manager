@@ -1,11 +1,14 @@
 import { useState } from 'react'
 import { Head, router } from '@inertiajs/react'
+import { XMarkIcon } from '@heroicons/react/20/solid'
 import AsyncSelect from 'react-select/async'
+import debounce from 'lodash.debounce'
+import axios from 'axios'
 
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout'
 import TextInput from '@/Components/TextInput'
 import Table from '@/Components/Table'
-import { type DPUser, type PageProps } from '@/types'
+import { type Option, type DPUser, type PageProps } from '@/types'
 import { getSearchParams, paginationRange } from '@/utils'
 import SecondaryButton from '@/Components/SecondaryButton'
 import SelectInput from '@/Components/SelectInput'
@@ -16,27 +19,80 @@ const Member = ({
 }: PageProps<{
   data: { members: DPUser[]; lastPage: number }
 }>): JSX.Element => {
-  const [keyword, setKeyword] = useState(getSearchParams('q') ?? '')
-  const [pageNumber, setPageNumber] = useState(
-    parseInt(getSearchParams('page') ?? '1'),
-  )
+  const q = getSearchParams('q') ?? ''
+  const page = parseInt(getSearchParams('page') ?? '1')
+  const delegatePhone = getSearchParams('delegatePhone') ?? ''
+  const isDelegateEligible = getSearchParams('isDelegateEligible') ?? ''
+
+  const [keyword, setKeyword] = useState(q)
+  const [pageNumber, setPageNumber] = useState(page)
+  const [isDelegate, setIsDelegate] = useState(isDelegateEligible)
+  const [delegatePhoneNumber, setDelegatePhoneNumber] = useState(delegatePhone)
+  const [delegatePhoneInput, setDelegatePhoneInput] = useState('')
 
   const [startPage, endPage] = paginationRange(pageNumber, data.lastPage)
 
   const TABLE_HEAD = ['Member', 'Nomor HP', 'Kota', 'Perusahaan', 'Delegasi']
 
-  const fetchData = (q?: string, page?: number): void => {
+  const fetchData = (
+    q?: string,
+    page?: number,
+    delegatePhone?: string,
+    isDelegateEligible?: string,
+  ): void => {
     router.get(
       '/admin/members',
       {
         ...(q !== '' ? { q } : {}),
         ...(page !== 1 ? { page } : {}),
+        ...(delegatePhone !== '' ? { delegatePhone } : {}),
+        ...(isDelegateEligible !== '' ? { isDelegateEligible } : {}),
       },
       {
         preserveState: true,
         preserveScroll: true,
       },
     )
+  }
+
+  const fetchUsers = async (inputValue: string): Promise<Option[]> => {
+    const re = /^[0-9\b]+$/
+    if (inputValue === '' || !re.test(inputValue)) {
+      return []
+    }
+
+    try {
+      const { data } = await axios.get<{ members: DPUser[] }>(
+        `/admin/members/search?q=${encodeURIComponent(inputValue)}`,
+      )
+      if (data && Array.isArray(data.members)) {
+        return data.members.map((m) => ({
+          label: m.phoneNumber,
+          value: m.phoneNumber,
+        }))
+      }
+      return []
+    } catch (error) {
+      console.error('Error fetching cities:', error)
+      return []
+    }
+  }
+
+  const debouncedFetchUsers = debounce(
+    (
+      inputValue: string,
+      resolve: (result: Option[]) => void,
+      reject: (error: string) => void,
+    ) => {
+      fetchUsers(inputValue).then(resolve).catch(reject)
+    },
+    500,
+  )
+
+  const onLoadOptions = async (inputValue: string): Promise<Option[]> => {
+    return new Promise((resolve, reject) => {
+      debouncedFetchUsers(inputValue, resolve, reject)
+    })
   }
 
   return (
@@ -62,16 +118,24 @@ const Member = ({
               <div className="col-span-4 md:col-span-1">
                 <SelectInput
                   className="w-full"
+                  value={isDelegate}
                   options={[
                     { value: '', label: 'Semua' },
                     { value: 'true', label: 'Delegasi' },
                   ]}
+                  onChange={(e) => {
+                    const value = e.currentTarget.value
+                    setPageNumber(1)
+                    setIsDelegate(value)
+                    fetchData(keyword, 1, delegatePhoneNumber, value)
+                  }}
                 />
               </div>
               <div className="col-span-4 md:col-span-1">
                 <AsyncSelect
+                  isClearable
                   cacheOptions
-                  defaultOptions
+                  defaultOptions={false}
                   placeholder="No HP Delegasi"
                   noOptionsMessage={() => 'Ketik nomor HP untuk mencari'}
                   classNames={{
@@ -87,6 +151,28 @@ const Member = ({
                       },
                     }),
                   }}
+                  inputValue={delegatePhoneInput}
+                  onInputChange={(inputValue) => {
+                    const re = /^[0-9\b]+$/
+                    if (inputValue === '' || re.test(inputValue)) {
+                      setDelegatePhoneInput(inputValue)
+                    }
+                  }}
+                  loadOptions={onLoadOptions}
+                  value={
+                    delegatePhoneNumber !== ''
+                      ? {
+                          label: delegatePhoneNumber,
+                          value: delegatePhoneNumber,
+                        }
+                      : undefined
+                  }
+                  onChange={(e) => {
+                    const value = e?.value ?? ''
+                    setPageNumber(1)
+                    setDelegatePhoneNumber(value)
+                    fetchData(keyword, 1, value, isDelegateEligible)
+                  }}
                 />
               </div>
               <div className="col-span-4 md:col-span-1">
@@ -94,9 +180,21 @@ const Member = ({
                   value={keyword}
                   placeholder="No HP atau nama"
                   className="w-full"
+                  icon={
+                    q ? (
+                      <XMarkIcon
+                        className="size-5 cursor-pointer text-gray-400"
+                        onClick={() => {
+                          setKeyword('')
+                          setPageNumber(1)
+                          fetchData('', 1, delegatePhoneNumber, isDelegate)
+                        }}
+                      />
+                    ) : null
+                  }
                   onKeyDown={(e) => {
                     if (e.key === 'Enter') {
-                      fetchData(keyword, 1)
+                      fetchData(keyword, 1, delegatePhoneNumber, isDelegate)
                       setPageNumber(1)
                     }
                   }}
@@ -152,7 +250,7 @@ const Member = ({
                 onClick={() => {
                   setPageNumber((prev) => {
                     const page = prev - 1
-                    fetchData(keyword, page)
+                    fetchData(keyword, page, delegatePhoneNumber, isDelegate)
                     return page
                   })
                 }}
@@ -170,7 +268,12 @@ const Member = ({
                       className={pageNumber === item + 1 ? 'bg-stone-200' : ''}
                       onClick={() => {
                         const page = item + 1
-                        fetchData(keyword, page)
+                        fetchData(
+                          keyword,
+                          page,
+                          delegatePhoneNumber,
+                          isDelegate,
+                        )
                         setPageNumber(page)
                       }}
                     >
@@ -182,7 +285,7 @@ const Member = ({
                 onClick={() => {
                   setPageNumber((prev) => {
                     const page = prev + 1
-                    fetchData(keyword, page)
+                    fetchData(keyword, page, delegatePhoneNumber, isDelegate)
                     return page
                   })
                 }}

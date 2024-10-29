@@ -42,7 +42,7 @@ export default function Authenticated({
     },
     {
       name: 'Members',
-      href: 'members',
+      href: 'members.index',
     },
   ]
 

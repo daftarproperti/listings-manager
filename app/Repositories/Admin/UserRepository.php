@@ -17,11 +17,18 @@ class UserRepository
         $query = User::query();
         $query->when(isset($input['q']), function ($query) use ($input) {
             $query->where(function ($q) use ($input) {
-                $q->where('user_id', 'like', '%' . $input['q'] . '%')
-                    ->orWhere('username', 'like', '%' . $input['q'] . '%')
-                    ->orWhere('name', 'like', '%' . $input['q'] . '%')
+                $q->where('name', 'like', '%' . $input['q'] . '%')
                     ->orWhere('phoneNumber', 'like', '%' . $input['q'] . '%');
             });
+        });
+
+        $query->when(isset($input['delegatePhone']), function ($query) use ($input) {
+            $query->where('delegatePhone', $input['delegatePhone']);
+        });
+
+        $query->when(isset($input['isDelegateEligible']), function ($query) use ($input) {
+            $input['isDelegateEligible'] = filter_var($input['isDelegateEligible'], FILTER_VALIDATE_BOOLEAN);
+            $query->where('isDelegateEligible', $input['isDelegateEligible']);
         });
 
         return $query->paginate($itemsPerPage);

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Resources\UserCollection;
 use App\Repositories\Admin\UserRepository;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -13,9 +14,11 @@ class MembersController extends Controller
 {
     public function index(Request $request, UserRepository $repository): Response
     {
-        $input = [
-            'q' => $request->input('q'),
-        ];
+        $input = $request->only([
+            'q',
+            'delegatePhone',
+            'isDelegateEligible',
+        ]);
 
         $member = $repository->list($input);
         $memberCollection = new UserCollection($member);
@@ -26,5 +29,12 @@ class MembersController extends Controller
                 'lastPage' => $member->lastPage(),
             ],
         ]);
+    }
+
+    public function search(Request $request, UserRepository $repository): JsonResource
+    {
+        $input = $request->only(['q']);
+
+        return new UserCollection($repository->list($input));
     }
 }
