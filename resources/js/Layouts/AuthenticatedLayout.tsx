@@ -1,4 +1,4 @@
-import React, { type PropsWithChildren, type ReactNode, useState } from 'react'
+import { type PropsWithChildren, type ReactNode, useState } from 'react'
 import { Link } from '@inertiajs/react'
 import { Transition } from '@headlessui/react'
 
@@ -19,6 +19,33 @@ export default function Authenticated({
   const [showingNavigationDropdown, setShowingNavigationDropdown] =
     useState(false)
 
+  const Menu = [
+    {
+      name: 'Listings',
+      href: 'listing.index',
+    },
+    {
+      name: 'Attention Listings',
+      href: 'listingsWithAttention.index',
+    },
+    {
+      name: 'Closings Report',
+      href: 'closing.index',
+    },
+    {
+      name: 'Cancellation Report',
+      href: 'cancel.index',
+    },
+    {
+      name: 'Expired Listings',
+      href: 'expired.index',
+    },
+    {
+      name: 'Members',
+      href: 'members',
+    },
+  ]
+
   return (
     <div className="min-h-screen bg-gray-100">
       <nav className="border-b border-gray-100 bg-white">
@@ -30,54 +57,19 @@ export default function Authenticated({
                   <ApplicationLogo className="block h-9 w-auto fill-current text-gray-800" />
                 </Link>
               </div>
-              <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                <NavLink
-                  href={route('listing.index')}
-                  active={route().current('listing.index')}
+              {Menu.map((item, index) => (
+                <div
+                  key={index}
+                  className="hidden space-x-8 md:-my-px md:ms-10 md:flex"
                 >
-                  Listings
-                </NavLink>
-              </div>
-              <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                <NavLink
-                  href={route('listingsWithAttention.index')}
-                  active={route().current('listingsWithAttention.index')}
-                >
-                  Attention Listings
-                </NavLink>
-              </div>
-              <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                <NavLink
-                  href={route('closing.index')}
-                  active={route().current('closing.index')}
-                >
-                  Closings Report
-                </NavLink>
-              </div>
-              <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                <NavLink
-                  href={route('cancel.index')}
-                  active={route().current('cancel.index')}
-                >
-                  Cancellation Report
-                </NavLink>
-              </div>
-              <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                <NavLink
-                  href={route('expired.index')}
-                  active={route().current('expired.index')}
-                >
-                  Expired Listings
-                </NavLink>
-              </div>
-              <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                <NavLink
-                  href={route('members')}
-                  active={route().current('members')}
-                >
-                  Members
-                </NavLink>
-              </div>
+                  <NavLink
+                    href={route(item.href)}
+                    active={route().current(item.href)}
+                  >
+                    {item.name}
+                  </NavLink>
+                </div>
+              ))}
             </div>
 
             <div className="hidden sm:ms-6 sm:flex sm:items-center">
@@ -168,12 +160,15 @@ export default function Authenticated({
           leaveTo="transform scale-95 opacity-0 max-h-0"
         >
           <div className="space-y-1 pb-3 pt-2">
-            <ResponsiveNavLink
-              href={route('members')}
-              active={route().current('members')}
-            >
-              Members
-            </ResponsiveNavLink>
+            {Menu.map((item, index) => (
+              <ResponsiveNavLink
+                key={index}
+                href={route(item.href)}
+                active={route().current(item.href)}
+              >
+                {item.name}
+              </ResponsiveNavLink>
+            ))}
           </div>
 
           <div className="border-t border-gray-200 pb-1 pt-4">

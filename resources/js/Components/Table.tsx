@@ -1,4 +1,4 @@
-import React, {
+import {
   type HTMLAttributes,
   type TableHTMLAttributes,
   type TdHTMLAttributes,
@@ -11,12 +11,14 @@ const Table = ({
   ...props
 }: TableHTMLAttributes<HTMLTableElement>): JSX.Element => {
   return (
-    <table
-      className={`w-full min-w-max table-fixed text-left ${className}`}
-      {...props}
-    >
-      {children}
-    </table>
+    <div className="full-size overflow-auto">
+      <table
+        className={`w-full min-w-max table-auto text-left md:table-fixed ${className}`}
+        {...props}
+      >
+        {children}
+      </table>
+    </div>
   )
 }
 
@@ -43,7 +45,9 @@ const TableHeaderItem = ({
       {...props}
     >
       {typeof children === 'string' ? (
-        <p className="font-normal leading-none text-neutral-500">{children}</p>
+        <p className="truncate font-normal leading-none text-neutral-500">
+          {children}
+        </p>
       ) : (
         children
       )}

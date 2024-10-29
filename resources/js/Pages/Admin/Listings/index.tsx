@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Head, router } from '@inertiajs/react'
 import { Tooltip } from '@material-tailwind/react'
 
@@ -112,12 +112,12 @@ export default function ListingsPage({
         <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
           <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg">
             <div className="mb-2 grid grid-cols-4 gap-4 p-6 md:flex-row md:items-center md:gap-8">
-              <div className="col-span-3 md:col-span-1">
+              <div className="col-span-4 md:col-span-1">
                 <p className="text-2xl font-bold leading-none text-neutral-700">
                   Daftar Listing
                 </p>
               </div>
-              <div className="col-span-3 md:col-span-1">
+              <div className="col-span-4 md:col-span-1">
                 <SelectInput
                   value={`${currentSortBy}|${currentSortOrder}`}
                   options={[
@@ -136,7 +136,7 @@ export default function ListingsPage({
                   onChange={handleSortChange}
                 />
               </div>
-              <div className="col-span-3 md:col-span-1">
+              <div className="col-span-4 md:col-span-1">
                 <SelectInput
                   value={status}
                   options={[
@@ -157,7 +157,7 @@ export default function ListingsPage({
                   }}
                 />
               </div>
-              <div className="col-span-3 md:col-span-1">
+              <div className="col-span-4 md:col-span-1">
                 <TextInput
                   value={keyword}
                   placeholder="Cari berdasarkan alamat, id atau no HP"
@@ -292,7 +292,7 @@ export default function ListingsPage({
                       </Table.BodyItem>
                       <Table.BodyItem>{`${String(createdAt)}`}</Table.BodyItem>
                       <Table.BodyItem>
-                        <span
+                        <p
                           className={`${
                             verifyStatus === 'approved'
                               ? 'bg-green-100 text-green-800'
@@ -301,13 +301,13 @@ export default function ListingsPage({
                                 : verifyStatus === 'on_review'
                                   ? 'bg-yellow-100 text-yellow-800'
                                   : 'bg-gray-100 text-gray-800'
-                          } me-2 truncate rounded-full px-2.5 py-0.5 text-xs font-medium`}
+                          } me-2 truncate rounded-full px-2.5 py-0.5 text-center text-xs font-medium`}
                         >
                           {getVerifyStatusLabel(verifyStatus)}
-                        </span>
+                        </p>
                       </Table.BodyItem>
                       <Table.BodyItem>
-                        <span
+                        <p
                           className={`${
                             activeStatus === 'active'
                               ? 'bg-green-100 text-green-800'
@@ -316,10 +316,10 @@ export default function ListingsPage({
                                 : activeStatus === 'waitlisted'
                                   ? 'bg-yellow-100 text-yellow-800'
                                   : 'bg-gray-100 text-gray-800'
-                          } me-2 truncate rounded-full px-2.5 py-0.5 text-xs font-medium`}
+                          } me-2 truncate rounded-full px-2.5 py-0.5 text-center text-xs font-medium`}
                         >
                           {getActiveStatusLabel(activeStatus)}
-                        </span>
+                        </p>
                       </Table.BodyItem>
                     </tr>
                   ),
@@ -327,7 +327,7 @@ export default function ListingsPage({
                 {data.listings.length === 0 && (
                   <tr>
                     <Table.BodyItem
-                      colSpan={12}
+                      colSpan={11}
                       className="text-center text-sm"
                     >
                       No data
