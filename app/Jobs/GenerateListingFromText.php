@@ -56,11 +56,9 @@ class GenerateListingFromText implements ShouldQueue
             'name' => $extractedListing->contact->name,
             'company' => $extractedListing->contact->company,
         ];
+
         $extractedListing->updated_at = Carbon::now();
-        $extractedListing->user_profile = null;
-        $extractedListing->adminNote = null;
-        $extractedListing->cancellationNote = null;
-        $extractedListing->closings = null;
+        $extractedListing->created_at = Carbon::now();
 
         $listing = new ListingResource($extractedListing);
         Log::info('Broadcasting GenerateListingsFromTextResult', ['result' => $listing->toJson()]);

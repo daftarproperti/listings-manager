@@ -6,9 +6,7 @@ use Mockery;
 use App\Helpers\Extractor;
 use App\Jobs\GenerateListingFromText;
 use App\Models\GeneratedListing;
-use App\Models\Resources\ListingResource;
 use Illuminate\Support\Facades\Log;
-use Mockery\MockInterface;
 use Tests\TestCase;
 
 class GenerateListingFromTextTest extends TestCase
@@ -56,7 +54,7 @@ class GenerateListingFromTextTest extends TestCase
             'electricPower' => 2500,
             'facing' => 'unknown',
             'ownership' => 'shm',
-            'adminAttentions' => [],
+            'adminAttentions' => collect([]),
             'revision' => 0
         ];
 

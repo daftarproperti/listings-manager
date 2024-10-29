@@ -3,6 +3,10 @@
 namespace App\Models\Resources;
 
 use App\Helpers\Photo;
+use App\Models\FacingDirection;
+use App\Models\ListingType;
+use App\Models\PropertyOwnership;
+use App\Models\PropertyType;
 use Carbon\Carbon;
 use Illuminate\Http\Resources\Json\JsonResource;
 use OpenApi\Attributes as OA;
@@ -92,25 +96,27 @@ class ListingResource extends JsonResource
             'listingId' => $prop->listingId,
             'listingIdStr' => (string)$prop->listingId,
             'sourceText' => $prop->sourceText,
-            'propertyType' => $prop->propertyType,
-            'listingType' => $prop->listingType,
+            'propertyType' => $prop->propertyType ?? PropertyType::Unknown->value,
+            'listingType' => $prop->listingType ?? ListingType::Unknown->value,
             'listingForSale' => $prop->listingForSale ?? false,
             'listingForRent' => $prop->listingForRent ?? false,
-            'address' => $prop->address,
-            'description' => $prop->description,
-            'price' => $prop->price ? (int) $prop->price : null,
-            'rentPrice' => $prop->rentPrice ? (int) $prop->rentPrice : null,
-            'lotSize' => $prop->lotSize ? (int) $prop->lotSize : null,
-            'buildingSize' => $prop->buildingSize ? (int) $prop->buildingSize : null,
-            'carCount' => $prop->carCount ? (int) $prop->carCount : null,
-            'bedroomCount' => $prop->bedroomCount ? (int) $prop->bedroomCount : null,
-            'additionalBedroomCount' => $prop->additionalBedroomCount ? (int) $prop->additionalBedroomCount : null,
-            'bathroomCount' => $prop->bathroomCount ? (int) $prop->bathroomCount : null,
-            'additionalBathroomCount' => $prop->additionalBathroomCount ? (int) $prop->additionalBathroomCount : null,
-            'floorCount' => $prop->floorCount ? (int) $prop->floorCount : null,
-            'electricPower' => $prop->electricPower ? (int) $prop->electricPower : null,
-            'facing' => $prop->facing,
-            'ownership' => $prop->ownership,
+            'address' => $prop->address ?? null,
+            'description' => $prop->description ?? null,
+            'price' => isset($prop->price) ? (int) $prop->price : null,
+            'rentPrice' => isset($prop->rentPrice) ? (int) $prop->rentPrice : null,
+            'lotSize' => isset($prop->lotSize) ? (int) $prop->lotSize : null,
+            'buildingSize' => isset($prop->buildingSize) ? (int) $prop->buildingSize : null,
+            'carCount' => isset($prop->carCount) ? (int) $prop->carCount : null,
+            'bedroomCount' => isset($prop->bedroomCount) ? (int) $prop->bedroomCount : null,
+            'additionalBedroomCount' => isset($prop->additionalBedroomCount) ?
+                (int) $prop->additionalBedroomCount : null,
+            'bathroomCount' => isset($prop->bathroomCount) ? (int) $prop->bathroomCount : null,
+            'additionalBathroomCount' => isset($prop->additionalBathroomCount) ?
+                (int) $prop->additionalBathroomCount : null,
+            'floorCount' => isset($prop->floorCount) ? (int) $prop->floorCount : null,
+            'electricPower' => isset($prop->electricPower) ? (int) $prop->electricPower : null,
+            'facing' => $prop->facing ?? FacingDirection::Unknown->value,
+            'ownership' => $prop->ownership ?? PropertyOwnership::Unknown->value,
             'verifyStatus' => $prop->verifyStatus ?? '',
             'activeStatus' => $prop->activeStatus ?? '',
             'cityName' => $prop->cityName ?? '',
@@ -141,13 +147,15 @@ class ListingResource extends JsonResource
             'isPrivate' => $prop->isPrivate ?? false,
             'withRewardAgreement' => $prop->withRewardAgreement ?? false,
             'isMultipleUnits' => $prop->isMultipleUnits ?? false,
-            'adminNote' => $prop->adminNote ? AdminNoteResource::make($prop->adminNote)->resolve() : null,
-            'cancellationNote' => $prop->cancellationNote
+            'adminNote' => isset($prop->adminNote) ? AdminNoteResource::make($prop->adminNote)->resolve() : null,
+            'cancellationNote' => isset($prop->cancellationNote)
                 ? CancellationNoteResource::make($prop->cancellationNote)->resolve()
                 : null,
-            'closings' => $prop->closings ? ClosingCollection::make($prop->closings)->resolve() : null,
-            'updatedAt' => $prop->updated_at->isoFormat('D MMMM YYYY'),
-            'createdAt' => $prop->created_at->isoFormat('D MMMM YYYY'),
+            'closings' => isset($prop->closings) ? ClosingCollection::make($prop->closings)->resolve() : null,
+            'updatedAt' => isset($prop->updated_at) && $prop->updated_at instanceof Carbon
+                ? $prop->updated_at->isoFormat('D MMMM YYYY') : null,
+            'createdAt' => isset($prop->created_at) && $prop->created_at instanceof Carbon
+                ? $prop->created_at->isoFormat('D MMMM YYYY') : null,
             'expiredAt' => isset($prop->expiredAt) && $prop->expiredAt instanceof Carbon
                 ? $prop->expiredAt->isoFormat('D MMMM YYYY')
                 : null,
@@ -162,7 +170,7 @@ class ListingResource extends JsonResource
                     ];
                 })->toArray()
                 : [],
-            'revision' => $prop->revision,
+            'revision' => $prop->revision ?? null,
         ];
     }
 }
