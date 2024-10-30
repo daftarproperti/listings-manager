@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Rules\IndonesiaPhoneFormat;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use OpenApi\Attributes as OA;
 
 class DelegateController extends Controller
@@ -49,6 +50,13 @@ class DelegateController extends Controller
         ]);
 
         $phoneNumber = PhoneNumber::canonicalize($phoneNumber);
+
+        /** @var User $currentUser */
+        $currentUser = Auth::user();
+
+        if ($currentUser->isDelegateEligible) {
+            abort(422, 'Not eligible to delegate');
+        }
 
         $user = User::where('phoneNumber', $phoneNumber)
             ->where('isDelegateEligible', true)

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Helpers\PhoneNumber;
 use App\Http\Controllers\Controller;
 use App\Models\Resources\UserResource;
 use App\Http\Requests\UserProfileRequest;
@@ -65,6 +66,14 @@ class UserController extends Controller
                 // Since phone number is used as identifier, it will not be updated
                 continue;
             }
+
+            if ($key === 'delegatePhone') {
+                $value = PhoneNumber::canonicalize(type($value)->asString());
+                if (!$this->canDelegate($currentUser, $value)) {
+                    abort(422, 'Not eligible to delegate');
+                }
+            }
+
             $currentUser->$key = $value;
         }
 
@@ -120,5 +129,17 @@ class UserController extends Controller
         $currentUser->secretKey = null;
         $currentUser->save();
         return new UserResource($currentUser);
+    }
+
+
+    private function canDelegate(User $principal, string $delegatePhone): bool
+    {
+        if ($principal->isDelegateEligible) {
+            return false;
+        }
+
+        return User::where('phoneNumber', $delegatePhone)
+            ->where('isDelegateEligible', true)
+            ->exists();
     }
 }
