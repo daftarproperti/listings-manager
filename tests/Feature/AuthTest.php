@@ -267,17 +267,78 @@ class AuthTest extends TestCase
     }
 
     public function testImpersonateWithNormalUser() {
-        $phoneNumber = '+6281212341234';
+        $principalPhoneNumber = '+6281212341234';
+        $delegatePhoneNumber = '+6281210112011';
         $otpCode = '123456';
         $time = Carbon::create(2024, 05, 20, 10, 01);
         Carbon::setTestNow($time);
 
         $timestamp = $time->timestamp;
         $salt = config('app.key');
-        $token = Hash::make($phoneNumber . $otpCode . $timestamp . $salt);
+        $token = Hash::make($delegatePhoneNumber . $otpCode . $timestamp . $salt);
+
+        User::create([
+            'phoneNumber' => $delegatePhoneNumber,
+            'name' => 'test delegate person',
+            'email' => 'test@delegate.com',
+            'description' => 'this is the delegate',
+            'isDelegateEligible' => true
+        ]);
+
+        User::create([
+            'phoneNumber' => $principalPhoneNumber,
+            'name' => 'test principal person',
+            'email' => 'test@principal.com',
+            'description' => 'this is the principal',
+            'delegatePhone' => $delegatePhoneNumber
+        ]);
 
         $response = $this->postJson('/api/auth/verify-otp', [
-            'phoneNumber' => $phoneNumber,
+            'phoneNumber' => $delegatePhoneNumber,
+            'token' => $token,
+            'timestamp' => $timestamp,
+            'otpCode' => $otpCode,
+        ]);
+
+        $response->assertStatus(200)
+                 ->assertJsonStructure(['accessToken', 'success', 'user'])
+                 ->assertJson(['success' => true]);
+
+        $json = $response->json();
+        $accessToken = $json['accessToken'];
+
+        $response = $this->withHeaders([
+            'Authorization' => 'Bearer ' . $accessToken,
+        ])->postJson('/api/auth/impersonate', [
+            'phoneNumber' => $principalPhoneNumber,
+        ]);
+
+        $response->assertStatus(200)
+                 ->assertJsonStructure(['accessToken', 'success', 'user'])
+                 ->assertJson(['success' => true]);
+    }
+
+    public function testNormalUserImpersonateRoot() {
+        $rootPhoneNumber = '+6281211112222';
+        $principalPhoneNumber = '+6281212341234';
+        $otpCode = '123456';
+        $time = Carbon::create(2024, 05, 20, 10, 01);
+        Carbon::setTestNow($time);
+
+        $timestamp = $time->timestamp;
+        $salt = config('app.key');
+        $token = Hash::make($principalPhoneNumber . $otpCode . $timestamp . $salt);
+
+        User::create([
+            'phoneNumber' => $principalPhoneNumber,
+            'name' => 'test principal person',
+            'email' => 'test@principal.com',
+            'description' => 'this is the principal',
+            'delegatePhone' => $rootPhoneNumber
+        ]);
+
+        $response = $this->postJson('/api/auth/verify-otp', [
+            'phoneNumber' => $principalPhoneNumber,
             'token' => $token,
             'timestamp' => $timestamp,
             'otpCode' => $otpCode,
@@ -288,7 +349,7 @@ class AuthTest extends TestCase
                  ->assertJson(['success' => true]);
 
         $this->assertDatabaseHas('users', [
-            'phoneNumber' => '+6281212341234',
+            'phoneNumber' => $principalPhoneNumber,
         ]);
 
         $json = $response->json();
@@ -297,7 +358,7 @@ class AuthTest extends TestCase
         $response = $this->withHeaders([
             'Authorization' => 'Bearer ' . $accessToken,
         ])->postJson('/api/auth/impersonate', [
-            'phoneNumber' => '081210112011',
+            'phoneNumber' => $rootPhoneNumber,
         ]);
 
         $response->assertStatus(403)

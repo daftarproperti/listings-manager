@@ -67,7 +67,7 @@ Route::prefix('auth')->group(function () {
     Route::post('/verify-otp', [AuthController::class, 'verifyOTP'])->middleware('throttle-otp-request:token');
     Route::post('/logout', [AuthController::class, 'logout'])->middleware('dp-app');
 
-    Route::post('/impersonate', [AuthController::class, 'impersonate'])->middleware('impersonate');
+    Route::post('/impersonate', [AuthController::class, 'impersonate'])->middleware('dp-app');
 
     Route::post('/verify-totp', [AuthController::class, 'verifyTOTP'])->middleware('throttle-otp-request:phoneNumber');
 });

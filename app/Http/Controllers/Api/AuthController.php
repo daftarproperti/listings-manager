@@ -311,8 +311,8 @@ class AuthController extends Controller
         $phoneNumber = $validatedRequest['phoneNumber'];
         $phoneNumber = PhoneNumber::canonicalize($phoneNumber);
 
-        $expiryDate = new DateTime();
-        $expiryDate->modify('+3 hour');
+        /** @var User $currentUser */
+        $currentUser = Auth::user();
 
         /** @var User|null $user */
         $user = User::where('phoneNumber', $phoneNumber)->first();
@@ -322,12 +322,17 @@ class AuthController extends Controller
             $user->save();
         }
 
-        /** @var User $currentUser */
-        $currentUser = Auth::user();
+        if (!$this->isImpersonationAllowed($currentUser, $user)) {
+            return response()->json(['error' => 'Unauthorized'], 403);
+        }
+
         $metaData = [
             'impersonated_by:' . $currentUser->phoneNumber,
             'impersonated_at:' . Carbon::now()->timestamp,
         ];
+
+        $expiryDate = new DateTime();
+        $expiryDate->modify('+3 hour');
         $token = $user->createToken('loginToken', $metaData, $expiryDate)->plainTextToken;
 
         return response()->json([
@@ -421,5 +426,24 @@ class AuthController extends Controller
             'accessToken' => $token,
             'user' => new UserResource($user),
         ]);
+    }
+
+    private function isImpersonationAllowed(User $currentUser, User $targetUser): bool
+    {
+        $rootUsers = type(config('services.root_users'))->asArray();
+        if (in_array($currentUser->phoneNumber, $rootUsers)) {
+            return true;
+        }
+
+        // user is not root, allow only if target user has current user as delegate
+        // and target user cannot be root user.
+        if (
+            !in_array($targetUser->phoneNumber, $rootUsers) &&
+            $targetUser->delegatePhone === $currentUser->phoneNumber
+        ) {
+            return true;
+        }
+
+        return false;
     }
 }
