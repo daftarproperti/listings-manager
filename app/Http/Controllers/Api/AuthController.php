@@ -76,7 +76,7 @@ class AuthController extends Controller
     public function sendOTP(Request $request): JsonResponse
     {
         $validatedRequest = $request->validate([
-            'phoneNumber' => 'required', 'string', new IndonesiaPhoneFormat(),
+            'phoneNumber' => ['required', 'string', new IndonesiaPhoneFormat()],
         ]);
         $phoneNumber = $validatedRequest['phoneNumber'];
         $phoneNumber = PhoneNumber::canonicalize($phoneNumber);
@@ -160,7 +160,7 @@ class AuthController extends Controller
     public function verifyOTP(Request $request): JsonResponse
     {
         $validatedRequest = $request->validate([
-            'phoneNumber' => 'required', 'string', new IndonesiaPhoneFormat(),
+            'phoneNumber' => ['required', 'string', new IndonesiaPhoneFormat()],
             'token' => ['required', 'string'],
             'timestamp' => ['required', 'numeric'],
             'otpCode' => ['required', 'string'],
@@ -306,7 +306,7 @@ class AuthController extends Controller
     public function impersonate(Request $request): JsonResponse
     {
         $validatedRequest = $request->validate([
-            'phoneNumber' => 'required', 'string', new IndonesiaPhoneFormat(),
+            'phoneNumber' => ['required', 'string', new IndonesiaPhoneFormat()],
         ]);
         $phoneNumber = $validatedRequest['phoneNumber'];
         $phoneNumber = PhoneNumber::canonicalize($phoneNumber);
@@ -383,8 +383,8 @@ class AuthController extends Controller
     public function verifyTOTP(Request $request): JsonResponse
     {
         $validatedRequest = $request->validate([
-            'phoneNumber' => 'required', 'string', new IndonesiaPhoneFormat(),
-            'totpCode' => 'required', 'string',
+            'phoneNumber' => ['required', 'string', new IndonesiaPhoneFormat()],
+            'totpCode' => ['required', 'string'],
         ]);
         $phoneNumber = $validatedRequest['phoneNumber'];
         $totpCode = $validatedRequest['totpCode'];

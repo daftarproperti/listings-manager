@@ -52,6 +52,18 @@ class AuthTest extends TestCase
                  ->assertJsonStructure(['token', 'timestamp']);
     }
 
+    public function testSendOTPInvalidPhoneNumber()
+    {
+        $phoneNumber = '+34255551212';
+
+        $response = $this->postJson('/api/auth/send-otp', [
+            'phoneNumber' => $phoneNumber,
+        ]);
+
+        $response->assertStatus(422)
+            ->assertJson(['message' => 'Phone number is not a valid Indonesian phone number']);
+    }
+
     public function testVerifyOTPWithValidToken()
     {
         $phoneNumber = '+6281210112011';
