@@ -23,10 +23,10 @@ class IndonesiaPhoneFormat implements ValidationRule
             $fail('Phone number can not be empty');
         }
 
-        // Check if the number starts with 08 and has 10 to 13 digits
+        // Check if the number starts with 08 or 62 and has 10 to 13 digits
         /** @var string $phoneNumber */
-        if (!preg_match('/^08\d{8,11}$/', $phoneNumber)) {
-            $fail('Phone number is not a valid Indonesia phone number');
+        if (!preg_match('/^(?:08\d{8,11}|62\d{8,11})$/', $phoneNumber)) {
+            $fail('Phone number is not a valid Indonesian phone number');
         }
     }
 }
