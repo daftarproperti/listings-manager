@@ -43,6 +43,7 @@ Route::group(['prefix' => 'admin'], function () {
             Route::get('/', [MembersController::class, 'index'])->name('index');
             Route::get('/search', [MembersController::class, 'search'])->name('search');
             Route::get('/{member}', [MembersController::class, 'show'])->name('show');
+            Route::put('/{member}', [MembersController::class, 'update'])->name('update');
         });
 
         Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');

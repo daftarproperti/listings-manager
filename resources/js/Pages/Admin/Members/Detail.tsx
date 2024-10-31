@@ -1,5 +1,7 @@
-import { Head } from '@inertiajs/react'
-import { Input, Typography } from '@material-tailwind/react'
+import { useState } from 'react'
+import { Head, router } from '@inertiajs/react'
+import { Button, Checkbox, Input, Typography } from '@material-tailwind/react'
+import { toast } from 'react-toastify'
 
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout'
 import { type DPUser, type PageProps } from '@/types'
@@ -10,6 +12,26 @@ const Detail = ({
 }: PageProps<{
   data: { member: DPUser }
 }>): JSX.Element => {
+  const [isDelegate, setIsDelegate] = useState(data.member.isDelegateEligible)
+
+  const handleSave = (): void => {
+    router.put(
+      `/admin/members/${data.member.id}`,
+      {
+        isDelegateEligible: isDelegate,
+      },
+      {
+        preserveState: true,
+        onSuccess: () => {
+          toast.success('Berhasil disimpan')
+        },
+        onError: (errors) => {
+          toast.error(`Maaf, terjadi kesalahan: ${errors.message}`)
+        },
+      },
+    )
+  }
+
   return (
     <AuthenticatedLayout
       user={auth.user}
@@ -22,7 +44,7 @@ const Detail = ({
     >
       <Head title="Members" />
       <div className="mx-auto max-w-7xl p-6 lg:px-8">
-        <div className="grid grid-cols-1 gap-4 md:grid-flow-col md:grid-cols-2 md:grid-rows-7 lg:grid-cols-3">
+        <div className="grid grid-cols-1 gap-4 md:grid-flow-col md:grid-cols-2 md:grid-rows-9 lg:grid-cols-3">
           <div className="space-y-1 md:col-span-2 md:row-span-3 lg:col-span-3">
             <Typography variant="h6" color="blue-gray">
               Foto Profil
@@ -39,7 +61,7 @@ const Detail = ({
             </Typography>
             <Input value={data.member.name ?? '-'} disabled />
           </div>
-          <div className="col-span-1 space-y-1 md:row-span-2">
+          <div className="col-span-1 space-y-1 md:row-span-4">
             <Typography variant="h6" color="blue-gray">
               Nomor HP
             </Typography>
@@ -56,6 +78,29 @@ const Detail = ({
               Kota
             </Typography>
             <Input value={data.member.cityName ?? '-'} disabled />
+          </div>
+          <div className="col-span-1 grid items-start space-y-1 md:row-span-2 md:grid-cols-2">
+            <Checkbox
+              checked={isDelegate}
+              onChange={(e) => setIsDelegate(e.target.checked)}
+              label={
+                <Typography
+                  color="gray"
+                  variant="small"
+                  className="font-normal"
+                >
+                  Sebagai Delegasi
+                </Typography>
+              }
+              containerProps={{ className: '-ml-2.5' }}
+            />
+            {data.member.isDelegateEligible !== isDelegate ? (
+              <div className="inline-block text-right">
+                <Button variant="text" onClick={handleSave}>
+                  Simpan
+                </Button>
+              </div>
+            ) : null}
           </div>
         </div>
       </div>

@@ -1,6 +1,8 @@
 import { type PropsWithChildren, type ReactNode, useState } from 'react'
 import { Link } from '@inertiajs/react'
 import { Transition } from '@headlessui/react'
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 import ApplicationLogo from '@/Components/ApplicationLogo'
 import Dropdown from '@/Components/Dropdown'
@@ -203,6 +205,8 @@ export default function Authenticated({
       )}
 
       <main>{children}</main>
+
+      <ToastContainer />
     </div>
   )
 }

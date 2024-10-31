@@ -6,8 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Models\Resources\UserCollection;
 use App\Models\Resources\UserResource;
 use App\Repositories\Admin\UserRepository;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -40,6 +42,39 @@ class MembersController extends Controller
                 'member' => $resourceData->resolve(),
             ],
         ]);
+    }
+
+    public function update(string $id, Request $request, UserRepository $repository): RedirectResponse
+    {
+        $data = $request->only([
+            'isDelegateEligible',
+        ]);
+
+        $member = $repository->getById($id);
+        if (is_null($member)) {
+            abort(404);
+        }
+
+        $input['delegatePhone'] = $member->phoneNumber;
+        $principle = new UserCollection($repository->list($input));
+        if ($principle->count()) {
+            return Redirect::route('members.show', $member->id)->withErrors(
+                ['message' => 'Member sudah terdaftar sebagai delegasi'],
+            );
+        }
+
+        $data['isDelegateEligible'] = filter_var($data['isDelegateEligible'], FILTER_VALIDATE_BOOLEAN);
+
+        if (!is_null($member->delegatePhone) && $data['isDelegateEligible']) {
+            return Redirect::route('members.show', $member->id)->withErrors(
+                ['message' => 'Member sudah memiliki delegasi'],
+            );
+        }
+
+        $member->isDelegateEligible = $data['isDelegateEligible'];
+        $member->save();
+
+        return Redirect::route('members.show', $member->id);
     }
 
     public function search(Request $request, UserRepository $repository): JsonResource
