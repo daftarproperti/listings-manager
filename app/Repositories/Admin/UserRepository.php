@@ -33,4 +33,9 @@ class UserRepository
 
         return $query->paginate($itemsPerPage);
     }
+
+    public function getById(string $id): ?User
+    {
+        return User::query()->findOrFail($id);
+    }
 }

@@ -212,7 +212,17 @@ const Member = ({
               </Table.Header>
               <Table.Body>
                 {data.members.map((member, index) => (
-                  <tr key={index}>
+                  <tr
+                    key={index}
+                    className="cursor-pointer"
+                    onClick={(event) => {
+                      if (event.metaKey || event.ctrlKey) {
+                        window.open(`/admin/members/${member.id}`, '_blank')
+                      } else {
+                        router.get(`/admin/members/${member.id}`)
+                      }
+                    }}
+                  >
                     <Table.BodyItem>
                       <div className="flex items-center gap-3">
                         <img
