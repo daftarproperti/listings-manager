@@ -36,10 +36,32 @@ class MembersController extends Controller
 
     public function show(string $id, UserRepository $repository): Response
     {
-        $resourceData = new UserResource($repository->getById($id));
+        $member = $repository->getById($id);
+        if (is_null($member)) {
+            abort(404);
+        }
+
+        $resourceData = new UserResource($member);
+
+        if (!is_null($member->delegatePhone)) {
+            $delegate = $repository->getByPhone($member->delegatePhone);
+            $delegateResource = new UserResource($delegate);
+
+            return Inertia::render('Admin/Members/Detail', [
+                'data' => [
+                    'member' => $resourceData->resolve(),
+                    'delegate' => $delegateResource->resolve(),
+                ],
+            ]);
+        }
+
+        $input['delegatePhone'] = $member->phoneNumber;
+        $principals = new UserCollection($repository->list($input));
+
         return Inertia::render('Admin/Members/Detail', [
             'data' => [
                 'member' => $resourceData->resolve(),
+                'principals' => $principals->collection,
             ],
         ]);
     }
@@ -56,8 +78,8 @@ class MembersController extends Controller
         }
 
         $input['delegatePhone'] = $member->phoneNumber;
-        $principle = new UserCollection($repository->list($input));
-        if ($principle->count()) {
+        $principal = new UserCollection($repository->list($input));
+        if ($principal->count()) {
             return Redirect::route('members.show', $member->id)->withErrors(
                 ['message' => 'Member sudah terdaftar sebagai delegasi'],
             );

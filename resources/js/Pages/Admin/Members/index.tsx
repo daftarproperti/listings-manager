@@ -5,9 +5,10 @@ import AsyncSelect from 'react-select/async'
 import debounce from 'lodash.debounce'
 import axios from 'axios'
 
+import MemberTable from './MemberTable'
+
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout'
 import TextInput from '@/Components/TextInput'
-import Table from '@/Components/Table'
 import { type Option, type DPUser, type PageProps } from '@/types'
 import { getSearchParams, paginationRange } from '@/utils'
 import SecondaryButton from '@/Components/SecondaryButton'
@@ -32,7 +33,28 @@ const Member = ({
 
   const [startPage, endPage] = paginationRange(pageNumber, data.lastPage)
 
-  const TABLE_HEAD = ['Member', 'Nomor HP', 'Kota', 'Perusahaan', 'Delegasi']
+  const TABLE_HEAD = [
+    {
+      label: 'Member',
+      key: 'name',
+    },
+    {
+      label: 'Nomor HP',
+      key: 'phoneNumber',
+    },
+    {
+      label: 'Kota',
+      key: 'cityName',
+    },
+    {
+      label: 'Perusahaan',
+      key: 'company',
+    },
+    {
+      label: 'Delegasi',
+      key: 'isDelegateEligible',
+    },
+  ]
 
   const fetchData = (
     q?: string,
@@ -204,57 +226,7 @@ const Member = ({
                 />
               </div>
             </div>
-            <Table>
-              <Table.Header>
-                {TABLE_HEAD.map((head) => (
-                  <Table.HeaderItem key={head}>{head}</Table.HeaderItem>
-                ))}
-              </Table.Header>
-              <Table.Body>
-                {data.members.map((member, index) => (
-                  <tr
-                    key={index}
-                    className="cursor-pointer"
-                    onClick={(event) => {
-                      if (event.metaKey || event.ctrlKey) {
-                        window.open(`/admin/members/${member.id}`, '_blank')
-                      } else {
-                        router.get(`/admin/members/${member.id}`)
-                      }
-                    }}
-                  >
-                    <Table.BodyItem>
-                      <div className="flex items-center gap-3">
-                        <img
-                          className="inline-block size-10 rounded-full ring-2 ring-white"
-                          src={
-                            member?.picture ??
-                            '/images/logo_icon.svg' /* TODO: Wire picture URL here */
-                          }
-                          alt={member.name}
-                        />
-                        <p className="font-normal leading-none text-neutral-600">
-                          {member?.name ?? '-'}
-                        </p>
-                      </div>
-                    </Table.BodyItem>
-                    <Table.BodyItem>{member.phoneNumber}</Table.BodyItem>
-                    <Table.BodyItem>{member?.cityName ?? '-'}</Table.BodyItem>
-                    <Table.BodyItem>{member?.company ?? '-'}</Table.BodyItem>
-                    <Table.BodyItem>
-                      {member?.isDelegateEligible ? 'Ya' : '-'}
-                    </Table.BodyItem>
-                  </tr>
-                ))}
-                {data.members.length === 0 && (
-                  <tr>
-                    <Table.BodyItem colSpan={5} className="text-center text-sm">
-                      No data
-                    </Table.BodyItem>
-                  </tr>
-                )}
-              </Table.Body>
-            </Table>
+            <MemberTable headers={TABLE_HEAD} members={data.members} />
             <div className="grid grid-cols-3 items-center justify-stretch p-4">
               <SecondaryButton
                 onClick={() => {

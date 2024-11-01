@@ -13,7 +13,7 @@ export type PageProps<
   }
 }
 
-export type { Option } from './option'
+export type { Option, OptionWithKey } from './option'
 export type { Listing, LikelyConnectedListing } from './listing'
 export type { Agent, Profile } from './agent'
 export type { DPUser } from './user'

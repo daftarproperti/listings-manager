@@ -38,4 +38,9 @@ class UserRepository
     {
         return User::query()->findOrFail($id);
     }
+
+    public function getByPhone(string $phone): ?User
+    {
+        return User::query()->where('phoneNumber', $phone)->first();
+    }
 }
