@@ -842,6 +842,7 @@ export default function ListingDetailPage({
                     <table className="min-w-full table-auto text-left text-sm text-gray-500">
                       <thead>
                         <tr className="border-b border-blue-gray-50 text-xs uppercase text-gray-700">
+                          <th className="bg-blue-gray-50 px-6 py-3">Aktor</th>
                           <th className="bg-blue-gray-50 px-6 py-3">Atribut</th>
                           <th className="bg-blue-gray-50 px-6 py-3">Sebelum</th>
                           <th className="bg-blue-gray-50 px-6 py-3">Sesudah</th>
@@ -860,6 +861,26 @@ export default function ListingDetailPage({
                                 Object.keys(history.changes).length - 1
                               const before = history.changes[field]?.before
                               const after = history.changes[field]?.after
+                              const actorLink = (
+                                <a
+                                  href={`${window.location.origin}/admin/members?q=${history.actor}`}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="text-blue-600 hover:underline"
+                                >
+                                  {history.actor}
+                                </a>
+                              )
+                              const impersonatorLink = history.impersonator ? (
+                                <a
+                                  href={`${window.location.origin}/admin/members?q=${history.impersonator}`}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="text-blue-600 hover:underline"
+                                >
+                                  {history.impersonator}
+                                </a>
+                              ) : null
                               if (
                                 typeof before === 'object' ||
                                 typeof after === 'object'
@@ -873,6 +894,12 @@ export default function ListingDetailPage({
                                         : 'border-b border-blue-gray-100'
                                     }
                                   >
+                                    <td className="px-6 py-4 text-gray-900">
+                                      {actorLink}
+                                      {impersonatorLink && (
+                                        <span> ({impersonatorLink})</span>
+                                      )}
+                                    </td>
                                     <td className="px-6 py-4 text-gray-900">
                                       {field}
                                     </td>
@@ -889,6 +916,12 @@ export default function ListingDetailPage({
                               if (before !== null && after !== null) {
                                 return (
                                   <tr key={fieldIndex} className="border-b">
+                                    <td className="px-6 py-4 text-gray-900">
+                                      {actorLink}
+                                      {impersonatorLink && (
+                                        <span> ({impersonatorLink})</span>
+                                      )}
+                                    </td>
                                     <td className="px-6 py-4 text-gray-900">
                                       {field}
                                     </td>

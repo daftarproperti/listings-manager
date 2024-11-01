@@ -2,6 +2,7 @@
 
 namespace Tests\Unit;
 
+use Carbon\Carbon;
 use App\Models\Listing;
 use App\Models\Enums\VerifyStatus;
 use App\Models\ListingHistory;
@@ -9,11 +10,14 @@ use App\Models\User;
 use Tests\TestCase;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
-
+use Illuminate\Support\Facades\Hash;
 
 class ListingObserverTest extends TestCase
 {
     private User $user;
+    private const ADMIN_REVIEW_MESSAGE = "Listing baru akan melalui proses tinjauan oleh admin.\n" .
+                                         "Jika ada informasi yang harus diubah, maka akan ditambahkan di catatan ini.\n" .
+                                         "Silahkan pantau catatan ini.\n";
 
     protected function setUp(): void
     {
@@ -31,6 +35,8 @@ class ListingObserverTest extends TestCase
             'description' => 'About the user.',
             'picture' => 'some_picture.jpg',
         ]);
+
+        Auth::setUser($this->user);
     }
 
     public function test_empty_listing_creation(): void
@@ -116,6 +122,7 @@ class ListingObserverTest extends TestCase
         $rawListingHistory = ListingHistory::where('listingId', $listing->id)->first();
 
         $this->assertEquals($listing->id, $rawListingHistory->listingId);
+        $this->assertEquals($this->user->phoneNumber, $rawListingHistory->actor);
     }
 
     public function test_listing_update_with_history(): void
@@ -138,6 +145,7 @@ class ListingObserverTest extends TestCase
 
         $this->assertNotNull($rawListingHistory);
         $this->assertEquals($listing->id, $rawListingHistory->listingId);
+        $this->assertEquals($this->user->phoneNumber, $rawListingHistory->actor);
 
         $changes = json_decode($rawListingHistory->changes, true);
         $listing->refresh(); // To get the updated at.
@@ -147,9 +155,54 @@ class ListingObserverTest extends TestCase
             'adminNote' => [
                 'before' => null,
                 'after' => [
-                    'message' => "Listing baru akan melalui proses tinjauan oleh admin.\n" .
-                        "Jika ada informasi yang harus diubah, maka akan ditambahkan di catatan ini.\n" .
-                        "Silahkan pantau catatan ini.\n",
+                    'message' => self::ADMIN_REVIEW_MESSAGE,
+                    'email' => 'system@daftarproperti.org',
+                    'date' => [
+                        '$date' => [
+                            '$numberLong' => (string)$listing->adminNote->date->getPreciseTimestamp(3),
+                        ]
+                    ],
+                ],
+            ],
+        ];
+        $this->assertEquals($expectedChanges, $changes);
+    }
+
+    public function test_impersonator_listing_update_with_history(): void
+    {
+        $listing = Listing::factory()->make([
+            'description' => 'Rumah Luas dan sangat bagus',
+            'price' => 1000000000
+        ]);
+
+        $listing->save();
+
+        $impersonatorPhoneNumber = '+6281212341234';
+        $this->user->setImpersonatedBy($impersonatorPhoneNumber);
+
+        $listing->description = 'Rumah Modern dengan desain minimalis';
+        $listing->price = 1200000000;
+        $listing->save();
+
+        /** @var ListingHistory|null $rawListingHistory */
+        $rawListingHistory = ListingHistory::where('listingId', $listing->id)
+            ->orderBy('created_at', 'desc')
+            ->first();
+
+        $this->assertNotNull($rawListingHistory);
+        $this->assertEquals($listing->id, $rawListingHistory->listingId);
+        $this->assertEquals($this->user->phoneNumber, $rawListingHistory->actor);
+        $this->assertEquals($impersonatorPhoneNumber, $rawListingHistory->impersonator);
+
+        $changes = json_decode($rawListingHistory->changes, true);
+        $listing->refresh();
+        $expectedChanges = [
+            'description' => ['before' => 'Rumah Luas dan sangat bagus', 'after' => 'Rumah Modern dengan desain minimalis'],
+            'price' => ['before' => 1000000000, 'after' => 1200000000],
+            'adminNote' => [
+                'before' => null,
+                'after' => [
+                    'message' => self::ADMIN_REVIEW_MESSAGE,
                     'email' => 'system@daftarproperti.org',
                     'date' => [
                         '$date' => [

@@ -6,6 +6,8 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
  * @property string $changes
+ * @property string $actor
+ * @property string $impersonator
  * @property string $listingId
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
@@ -68,6 +70,8 @@ class ListingHistoryResource extends JsonResource
 
         return [
             'listingId' => $this->listingId,
+            'actor' => $this->actor,
+            'impersonator' => $this->impersonator,
             'changes' => $formattedChanges,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,

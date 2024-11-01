@@ -88,6 +88,8 @@ export interface ListingChange {
 
 export interface ListingHistory {
   listingId: string
+  actor: string
+  impersonator: string
   changes: Record<string, ListingChange>
   created_at: string
   updated_at: string

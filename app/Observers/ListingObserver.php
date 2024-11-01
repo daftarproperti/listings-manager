@@ -31,8 +31,14 @@ class ListingObserver
         }
 
         try {
+            /** @var User $user */
+            $user = Auth::user();
+            $impersonator = $user->getImpersonatedBy();
+
             ListingHistory::create([
                 'listingId' => $listing->id,
+                'actor' => $user->phoneNumber,
+                'impersonator' => $impersonator,
                 'before' => json_encode([]),
                 'after' => json_encode($listing->attributesToArray()),
                 'changes' => json_encode([
@@ -76,8 +82,14 @@ class ListingObserver
                 ];
             }
 
+            /** @var User $user */
+            $user = Auth::user();
+            $impersonator = $user->getImpersonatedBy();
+
             ListingHistory::create([
                 'listingId' => $listing->id,
+                'actor' => $user->phoneNumber,
+                'impersonator' => $impersonator,
                 'before' => json_encode($originalAttributes),
                 'after' => json_encode($updatedAttributes),
                 'changes' => json_encode($changes),

@@ -9,6 +9,8 @@ use MongoDB\Laravel\Eloquent\Model;
 /**
  * @property string $id
  * @property string $listingId
+ * @property string $actor
+ * @property string $impersonator
  * @property array<string, string> $before
  * @property array<string, string> $after
  * @property string $changes
@@ -23,6 +25,8 @@ class ListingHistory extends Model
 
     protected $fillable = [
         'listingId',
+        'actor',
+        'impersonator',
         'before',
         'after',
         'changes',
