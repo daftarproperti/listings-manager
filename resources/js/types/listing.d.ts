@@ -71,7 +71,6 @@ export interface CancellationNote {
 
 export interface LikelyConnectedListing {
   id: string
-  title: string
   address: string
   pictureUrls: string[]
 }

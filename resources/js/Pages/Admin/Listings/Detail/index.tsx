@@ -6,7 +6,7 @@ import React, {
   useEffect,
   useState,
 } from 'react'
-import { Head, router, usePage } from '@inertiajs/react'
+import { Head, Link, router, usePage } from '@inertiajs/react'
 import {
   Button,
   Card,
@@ -395,46 +395,46 @@ export default function ListingDetailPage({
         <div className="pt-4 md:pt-6">
           <div className="px-4 md:px-6">
             {data.likelyConnectedListing.length > 0 && (
-              <div className="mb-4 rounded-lg bg-red-600 p-3 text-white">
-                <h3 className="font-semibold">
+              <div className="mb-4 rounded-lg bg-red-600 p-4 text-white shadow-lg">
+                <h3 className="text-lg font-semibold">
                   Sepertinya ada data yang mirip dengan Listing ini. Silahkan
                   cek daftar berikut:
                 </h3>
-                <br />
-                <table className="min-w-full text-sm md:text-base">
-                  <thead>
-                    <tr className="text-left">
-                      <th className="pb-2">Address</th>
-                      <th className="pb-2">Pictures</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {data.likelyConnectedListing.map((connectedListing) => (
-                      <tr
-                        key={connectedListing.id}
-                        className="border-t border-red-500"
-                      >
-                        <td className="py-2">{connectedListing.address}</td>
-                        <td className="py-2">
-                          <div className="group relative">
-                            <Carousel className="size-24">
+                <div className="mt-3 overflow-hidden pb-4">
+                  <div className="flex space-x-4 overflow-x-hidden transition-all duration-300 ease-in-out hover:overflow-x-auto">
+                    {data.likelyConnectedListing.map(
+                      (connectedListing, index) => (
+                        <Link
+                          key={connectedListing.id}
+                          href={`/admin/listings/${connectedListing.id}`}
+                          className="mb-2 flex w-full min-w-[250px] flex-col rounded border bg-white text-black shadow-md transition-transform duration-200 ease-in-out hover:bg-gray-200"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <p className="p-2 text-center text-sm font-medium">
+                            {connectedListing.address}
+                          </p>
+                          <div className="flex grow items-center justify-center">
+                            <div
+                              className={`flex ${index >= 3 ? 'overflow-x-auto' : ''} flex-nowrap`}
+                            >
                               {connectedListing.pictureUrls
-                                .slice(0, 3)
-                                .map((url, index) => (
+                                .slice(0, 1)
+                                .map((url, imgIndex) => (
                                   <img
                                     src={url}
-                                    alt={`Image ${index + 1}`}
-                                    key={index}
-                                    className="size-full rounded object-cover shadow"
+                                    alt={`Image ${imgIndex + 1}`}
+                                    key={imgIndex}
+                                    className="m-1 size-32 rounded object-cover shadow"
                                   />
                                 ))}
-                            </Carousel>
+                            </div>
                           </div>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+                        </Link>
+                      ),
+                    )}
+                  </div>
+                </div>
               </div>
             )}
             <Typography variant="small" className="mb-2">
