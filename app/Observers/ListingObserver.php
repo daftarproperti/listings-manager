@@ -10,6 +10,7 @@ use App\Models\ListingHistory;
 use App\Models\Enums\VerifyStatus;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Admin;
 use App\Models\Listing;
 use App\Models\User;
 use Illuminate\Support\Facades\Log;
@@ -31,13 +32,13 @@ class ListingObserver
         }
 
         try {
-            /** @var User $user */
+            /** @var User|Admin $user */
             $user = Auth::user();
-            $impersonator = $user->getImpersonatedBy();
+            $impersonator = ($user instanceof User) ? $user->getImpersonatedBy() : null;
 
             ListingHistory::create([
                 'listingId' => $listing->id,
-                'actor' => $user->phoneNumber,
+                'actor' => ($user instanceof User) ? $user->phoneNumber : $user->email,
                 'impersonator' => $impersonator,
                 'before' => json_encode([]),
                 'after' => json_encode($listing->attributesToArray()),
@@ -82,13 +83,15 @@ class ListingObserver
                 ];
             }
 
-            /** @var User $user */
+            // TODO: In many places, Auth::user() can return 2 different types, User and Admin. Implement a mechanism
+            // to avoid the mistake of assuming that this is always of type User.
+            /** @var User|Admin $user */
             $user = Auth::user();
-            $impersonator = $user->getImpersonatedBy();
+            $impersonator = ($user instanceof User) ? $user->getImpersonatedBy() : null;
 
             ListingHistory::create([
                 'listingId' => $listing->id,
-                'actor' => $user->phoneNumber,
+                'actor' => ($user instanceof User) ? $user->phoneNumber : $user->email,
                 'impersonator' => $impersonator,
                 'before' => json_encode($originalAttributes),
                 'after' => json_encode($updatedAttributes),

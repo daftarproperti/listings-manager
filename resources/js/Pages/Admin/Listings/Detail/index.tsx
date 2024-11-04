@@ -861,7 +861,9 @@ export default function ListingDetailPage({
                                 Object.keys(history.changes).length - 1
                               const before = history.changes[field]?.before
                               const after = history.changes[field]?.after
-                              const actorLink = (
+                              const actorLink = history.actor?.startsWith(
+                                '+',
+                              ) ? (
                                 <a
                                   href={`${window.location.origin}/admin/members?q=${history.actor}`}
                                   target="_blank"
@@ -870,6 +872,8 @@ export default function ListingDetailPage({
                                 >
                                   {history.actor}
                                 </a>
+                              ) : (
+                                history.actor
                               )
                               const impersonatorLink = history.impersonator ? (
                                 <a

@@ -7,6 +7,10 @@ use MongoDB\Laravel\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
+/**
+ * @property string $name
+ * @property string $email
+ */
 class Admin extends Authenticatable
 {
     use HasApiTokens;
