@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\DTO\GeoJsonObject;
 use App\Http\Controllers\Api\ListingsController as ApiListingsController;
 use App\Helpers\ListingHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\ListingRequest;
 use App\Models\AdminNote;
+use App\Models\Coordinate;
 use App\Models\Enums\VerifyStatus;
 use App\Models\Enums\ActiveStatus;
 use App\Models\Resources\ListingCollection;
@@ -114,6 +116,17 @@ class ListingsController extends Controller
             $data['adminNote'] = AdminNote::from($adminNote);
 
             foreach ($data as $key => $value) {
+                if ($key == 'coordinate') {
+                    # Supports both coordinate and indexed coordinate for backward compatibility
+                    # TODO: DRY this since this is needed in several places (the other one being in
+                    # Api/ListingsController).
+                    $listing->coordinate = Coordinate::from($value);
+                    $listing->indexedCoordinate = GeoJsonObject::from([
+                        'type' => 'Point',
+                        'coordinates' => $listing->coordinate,
+                    ]);
+                    continue;
+                }
                 $listing->{$key} = $value;
             };
 
