@@ -77,6 +77,17 @@ class ListingObserver
             foreach ($rawChanges as $field => $newValue) {
                 $originalValue = $listing->getOriginal($field);
 
+                // Since coordinate always detected as changes
+                // Manually check if the data has been modified or not
+                if ($field === 'coordinate') {
+                    $originalCoordinateJson = json_encode($originalValue);
+                    $newCoordinateJson = json_encode($newValue);
+
+                    if ($originalCoordinateJson === $newCoordinateJson) {
+                        continue;
+                    }
+                }
+
                 $changes[$field] = [
                     'before' => $originalValue,
                     'after' => $newValue,
