@@ -13,7 +13,7 @@ const Table = ({
   return (
     <div className="full-size overflow-auto">
       <table
-        className={`w-full min-w-max table-auto text-left md:table-fixed ${className}`}
+        className={`w-full min-w-full table-auto text-left md:table-fixed ${className}`}
         {...props}
       >
         {children}
