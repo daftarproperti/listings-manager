@@ -11,6 +11,9 @@ class Cast
     public static function toString(mixed $value): string
     {
         try {
+            if ($value instanceof \BackedEnum) {
+                return strval($value->value);
+            }
             return strval($value); // @phpstan-ignore-line we are safely catching the error.
         } catch (\Error) {
             return 'not stringable';
