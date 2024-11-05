@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Helpers\ListingHelper;
+use App\Helpers\Queue;
 use App\Http\Controllers\Controller;
 use App\Jobs\AiReviewJob;
 use App\Models\Enums\AiReviewStatus;
@@ -27,7 +28,7 @@ class AiReviewController extends Controller
             'status' => (AiReviewStatus::PROCESSING)->value,
         ]);
 
-        AiReviewJob::dispatch($listing);
+        AiReviewJob::dispatch($listing)->onQueue(Queue::getQueueName('generic'));
 
         return redirect()->back();
     }
