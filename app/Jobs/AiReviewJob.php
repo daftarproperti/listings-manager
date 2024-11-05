@@ -69,7 +69,7 @@ class AiReviewJob implements ShouldQueue
     }
 
     /**
-     * @return array<string>
+     * @return array<string> Messages to be displayed to user
      */
     private function checkAddressFormat(ChatGptService $chatGptService, string $address): array
     {
@@ -119,6 +119,41 @@ EOD;
     }
 
     /**
+     * @return array<string> Messages to be displayed to user
+     */
+    private function checkMultipleSpecs(ChatGptService $chatGptService, string $description): array
+    {
+        $prompt = <<<EOD
+I am going to give you a real estate listing description in Indonesia. I want you to review whether this listing
+contains a single set of spec or whether it contains multiple sets specs.
+
+A listing with multiple sets of specs usually mention several types of the same property, maybe it's advertising
+apartment with several different unit models. So detection may be based on:
+* whether the listing mentions several different number of bedrooms, different size (luas bangunan)
+* whether the listing explicitly mentions that several types are available (e.g. tersedia 2 model)
+
+I need you to output in JSON format like this:
+{
+  multipleSpecsReason: "", // here explain why you determine this listing to be multiple specs, in Bahasa Indonesia
+}
+
+If it's not multiple spec, set`multipleSpecsReason` to be null.
+
+Here is the listing desription:
+$description
+EOD;
+        $answer = $chatGptService->seekAnswer($prompt, 'gpt-4-turbo', 'json_object');
+        logger()->info('answer ' . $answer);
+        $multiSpecsAnswer = json_decode($answer, true);
+        if (is_array($multiSpecsAnswer) && isset($multiSpecsAnswer['multipleSpecsReason'])) {
+            return ['Kemungkinan listing ini ada beberapa tipe/model: ' . $multiSpecsAnswer['multipleSpecsReason']];
+        } else {
+            logger()->error('error decoding answer of LLM multiple specs check');
+        }
+        return [];
+    }
+
+    /**
      * Runs automated review of a listing.
      *
      * Currently this job implements reviewing description vs fields accuracy only.
@@ -129,7 +164,11 @@ EOD;
     public function handle(ChatGptService $chatGptService, Extractor $extractor)
     {
         try {
-            $extractedListing = $extractor->extractSingleListingFromMessage($this->listing->description, 'gpt-4');
+            $extractedListing = $extractor->extractSingleListingFromMessage(
+                $this->listing->description,
+                'gpt-4-turbo',
+                'json_object',
+            );
 
             // TODO: No need to convert to JSON back and forth, but the extraction from LLM can be directly array.
             /** @var array<string, mixed> $extracted */
@@ -141,6 +180,10 @@ EOD;
 
             $addressResults = $this->checkAddressFormat($chatGptService, $this->listing->address);
             $results = array_merge($results, $addressResults);
+
+            $multipleSpecsResults = $this->checkMultipleSpecs($chatGptService, $this->listing->description);
+            $results = array_merge($results, $multipleSpecsResults);
+
             $this->listing->aiReview()->update([
                 'results' => $results,
                 'status' => (AiReviewStatus::DONE)->value,

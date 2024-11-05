@@ -19,7 +19,7 @@ class ChatGptService
         $this->modelVersion = type(config('services.chatgpt.model_version'))->asString();
     }
 
-    public function seekAnswerWithRetry(string $question, string $model = null): string
+    public function seekAnswerWithRetry(string $question, string $model = null, string $responseType = 'text'): string
     {
         $retryAttempts = 3;
         $retryDelay = 2;
@@ -27,7 +27,7 @@ class ChatGptService
 
         for ($attempt = 0; $attempt < $retryAttempts; $attempt++) {
             try {
-                $answer = $this->seekAnswer($question, $model);
+                $answer = $this->seekAnswer($question, $model, $responseType);
                 if (json_validate($answer)) {
                     return $answer;
                 }
