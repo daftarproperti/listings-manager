@@ -143,12 +143,49 @@ Here is the listing desription:
 $description
 EOD;
         $answer = $chatGptService->seekAnswer($prompt, 'gpt-4-turbo', 'json_object');
-        logger()->info('answer ' . $answer);
         $multiSpecsAnswer = json_decode($answer, true);
         if (is_array($multiSpecsAnswer) && isset($multiSpecsAnswer['multipleSpecsReason'])) {
             return ['Kemungkinan listing ini ada beberapa tipe/model: ' . $multiSpecsAnswer['multipleSpecsReason']];
         } else {
             logger()->error('error decoding answer of LLM multiple specs check');
+        }
+        return [];
+    }
+
+    /**
+     * @return array<string> Messages to be displayed to user
+     */
+    private function checkNoContact(ChatGptService $chatGptService, string $description): array
+    {
+        $prompt = <<<EOD
+I am going to give you a real estate listing description in Indonesia. I want you to review whether this listing
+contains a contact information of the listing registrant, because we prohibit such content since we want the registrant
+to only provide a contact number in a separate field.
+
+A listing is considered containing contact information if it mentions about phone number or social media handles, but
+it is okay to mention registrant name and company. A phone number in Indonesia may look like +62xxx or 08xxx, and
+sometimes this is encoded not in a standard way, e.g. using spaces between numbers, or using emoji numbers instead.
+You should be able to detect variations of this.
+
+I need you to output in JSON format like this:
+{
+  // here explain in Bahasa Indonesia why you determine this listing contains a contact information.
+  containsContactReason: "",
+}
+
+If it does not contain contact information, set the `containsContactReason` to null.
+
+Here is the listing desription:
+$description
+EOD;
+        $answer = $chatGptService->seekAnswer($prompt, 'gpt-4-turbo', 'json_object');
+        $multiSpecsAnswer = json_decode($answer, true);
+        if (is_array($multiSpecsAnswer) && isset($multiSpecsAnswer['containsContactReason'])) {
+            return [
+                'Kemungkinan listing ini mengandung informasi kontak: ' . $multiSpecsAnswer['containsContactReason'],
+            ];
+        } else {
+            logger()->error('error decoding answer of LLM no contact check');
         }
         return [];
     }
@@ -175,14 +212,15 @@ EOD;
             $extracted = json_decode(type(json_encode($extractedListing))->asString(), true);
 
             $results = self::listingDiff($extracted, (new ListingResource($this->listing))->resolve());
-            // TODO: Add results from field validations as well.
-            // Looks like field validations need to be prompted one per field to achieve good accuracy.
 
             $addressResults = $this->checkAddressFormat($chatGptService, $this->listing->address);
             $results = array_merge($results, $addressResults);
 
             $multipleSpecsResults = $this->checkMultipleSpecs($chatGptService, $this->listing->description);
             $results = array_merge($results, $multipleSpecsResults);
+
+            $noContactResults = $this->checkNoContact($chatGptService, $this->listing->description);
+            $results = array_merge($results, $noContactResults);
 
             $this->listing->aiReview()->update([
                 'results' => $results,
