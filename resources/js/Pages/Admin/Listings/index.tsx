@@ -341,7 +341,13 @@ export default function ListingsPage({
                 onClick={() => {
                   setPageNumber((prev) => {
                     const page = prev - 1
-                    fetchData(keyword, page, status)
+                    fetchData(
+                      keyword,
+                      page,
+                      status,
+                      currentSortBy,
+                      currentSortOrder,
+                    )
                     return page
                   })
                 }}
@@ -360,9 +366,15 @@ export default function ListingsPage({
                         page === item + 1 ? 'bg-stone-200' : 'hidden md:block'
                       }
                       onClick={() => {
-                        const page = item + 1
-                        fetchData(keyword, page, status)
-                        setPageNumber(page)
+                        const newPage = item + 1
+                        fetchData(
+                          keyword,
+                          newPage,
+                          status,
+                          currentSortBy,
+                          currentSortOrder,
+                        )
+                        setPageNumber(newPage)
                       }}
                     >
                       {item + 1}
@@ -373,7 +385,13 @@ export default function ListingsPage({
                 onClick={() => {
                   setPageNumber((prev) => {
                     const page = prev + 1
-                    fetchData(keyword, page, status)
+                    fetchData(
+                      keyword,
+                      page,
+                      status,
+                      currentSortBy,
+                      currentSortOrder,
+                    )
                     return page
                   })
                 }}
