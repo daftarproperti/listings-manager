@@ -3,7 +3,6 @@
 namespace App\Observers;
 
 use App\Helpers\Queue;
-use App\Jobs\SyncListingToGCS;
 use App\Jobs\Web3Listing;
 use App\Models\AdminNote;
 use App\Models\ListingHistory;
@@ -22,15 +21,6 @@ class ListingObserver
      */
     public function created(Listing $listing): void
     {
-        try {
-            // Sync to web3 of this Listing created event.
-            $listingId = $listing->listingId;
-
-            SyncListingToGCS::dispatch($listingId)->onQueue(Queue::getQueueName('generic'));
-        } catch (\Throwable $th) {
-            Log::error('Error copy to property: ' . $th->getMessage());
-        }
-
         try {
             /** @var User|Admin $user */
             $user = Auth::user();
@@ -59,12 +49,6 @@ class ListingObserver
      */
     public function updated(Listing $listing): void
     {
-        try {
-            SyncListingToGCS::dispatch($listing->listingId)->onQueue(Queue::getQueueName('generic'));
-        } catch (\Throwable $th) {
-            Log::error('Error sync to property: ' . $th->getMessage());
-        }
-
         try {
             $originalAttributes = $listing->getOriginal();
             $updatedAttributes = $listing->getAttributes();
