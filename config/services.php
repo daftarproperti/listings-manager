@@ -66,5 +66,7 @@ return [
 
     'root_users' => explode(',', env('ROOT_USERS', '')),
 
-    'max_listings_per_user' => env('MAX_LISTINGS_PER_USER', null)
+    'max_listings_per_user' => env('MAX_LISTINGS_PER_USER', null),
+
+    'post_approval_change_users' => explode(',', env('POST_APPROVAL_CHANGE_USERS', '')),
 ];

@@ -12,6 +12,7 @@ use App\Models\AdminAttention;
 use App\Models\Coordinate;
 use App\Models\CancellationNote;
 use App\Models\Enums\CancellationStatus;
+use App\Models\Enums\VerifyStatus;
 use App\Models\FilterSet;
 use App\Models\GeneratedListing;
 use App\Models\Listing;
@@ -422,6 +423,9 @@ class ListingsController extends Controller
             $this->fillCreateUpdateListing($validatedRequest, $listing);
 
             if ($listing->isDirty()) {
+                if ($listing->allowPostApprovalChange) {
+                    $this->setPostApprovalChange($listing);
+                }
                 $listing->revision = (isset($listing->revision) ? (int)$listing->revision : 0) + 1;
             }
 
@@ -664,7 +668,7 @@ class ListingsController extends Controller
 
         $result = Listing::where('coordinate', '!=', null)
             ->where('_id', '!=', $listing->id)
-            ->where('verifyStatus', 'approved')
+            ->whereIn('verifyStatus', [VerifyStatus::APPROVED->value, VerifyStatus::POST_APPROVAL_CHANGE->value])
             ->where('indexedCoordinate', 'geoWithin', [
                 '$centerSphere' => [
                     [$longitude, $latitude], $radius,
@@ -764,6 +768,17 @@ class ListingsController extends Controller
     {
         $user = DPAuth::appUser();
         return $user->toListingUser();
+    }
+
+    /**
+     * Flag the listing as post approval change if the listing is approved but the data has changed.
+     * @param Listing $listing
+     */
+    private function setPostApprovalChange(Listing &$listing): void
+    {
+        if ($listing->verifyStatus === VerifyStatus::APPROVED) {
+            $listing->verifyStatus = VerifyStatus::POST_APPROVAL_CHANGE;
+        }
     }
 
     /**

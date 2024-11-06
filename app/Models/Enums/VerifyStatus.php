@@ -21,6 +21,7 @@ enum VerifyStatus: string
     case ON_REVIEW = 'on_review';
     case APPROVED = 'approved';
     case REJECTED = 'rejected';
+    case POST_APPROVAL_CHANGE = 'post_approval_change';
 
     public function display(): string
     {
@@ -28,6 +29,7 @@ enum VerifyStatus: string
             self::ON_REVIEW => 'Sedang Ditinjau',
             self::APPROVED => 'Disetujui',
             self::REJECTED => 'Ditolak',
+            self::POST_APPROVAL_CHANGE => 'Tinjauan Perubahan',
         };
     }
 }

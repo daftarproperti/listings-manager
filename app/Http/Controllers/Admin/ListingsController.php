@@ -97,6 +97,16 @@ class ListingsController extends Controller
         }
 
         $data = $request->validated();
+
+        if (
+            $listing->verifyStatus === VerifyStatus::POST_APPROVAL_CHANGE &&
+            $data['verifyStatus'] !== VerifyStatus::APPROVED->value
+        ) {
+            return Redirect::back()->withErrors([
+                'error' => 'Perubahan status tidak diperbolehkan. Mohon muat ulang halaman ini.',
+            ]);
+        }
+
         $lock = Cache::lock('update-listing-' . $listing->id, 4);
         try {
             $lock->block(4);

@@ -97,6 +97,13 @@ class ListingObserver
         try {
             $originalVerifyStatus = $listing->getOriginal('verifyStatus');
 
+            // if the listing is approved, but data is changed
+            // Don't publish to web3
+            if ($listing->verifyStatus === VerifyStatus::POST_APPROVAL_CHANGE) {
+                return;
+            }
+
+            // if the listing is approved
             if ($originalVerifyStatus === VerifyStatus::APPROVED) {
                 // If the status is not approved anymore
                 // Publish the delete listing to web3
@@ -114,7 +121,7 @@ class ListingObserver
                     return;
                 }
 
-                $operationType = 'ADD';
+                $operationType = $originalVerifyStatus === VerifyStatus::POST_APPROVAL_CHANGE ? 'UPDATE' : 'ADD';
             }
 
             Web3Listing::dispatch(
@@ -210,7 +217,7 @@ class ListingObserver
 
             // If an approved listing is deleted
             // Delete it from web3
-            if ($originalVerifyStatus === VerifyStatus::APPROVED) {
+            if (in_array($originalVerifyStatus, [VerifyStatus::APPROVED, VerifyStatus::POST_APPROVAL_CHANGE])) {
                 Web3Listing::dispatch(
                     $listing,
                     `DELETE`,

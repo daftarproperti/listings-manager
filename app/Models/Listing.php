@@ -203,6 +203,18 @@ class Listing extends Model
         }
     }
 
+    public function getAllowPostApprovalChangeAttribute(): bool
+    {
+        $postApprovalChangeUsers = array_filter(type(config('services.post_approval_change_users'))->asArray());
+        $userPhoneNumber = $this->userProfile?->phoneNumber;
+
+        if (!empty($postApprovalChangeUsers)) {
+            return in_array($userPhoneNumber, $postApprovalChangeUsers);
+        }
+
+        return false;
+    }
+
     /**
      * @return \Illuminate\Database\Eloquent\Casts\Attribute<array<string>, array<string>>
      */
