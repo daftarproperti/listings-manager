@@ -20,6 +20,8 @@ import {
   ChevronDownIcon,
   SparklesIcon,
 } from '@heroicons/react/24/outline'
+import { type Change, diffWords } from 'diff'
+import { format } from 'date-fns-tz'
 
 import StatusDialog from './StatusDialog'
 
@@ -284,6 +286,78 @@ export default function ListingDetailPage({
         },
       },
     )
+  }
+
+  interface DiffProps {
+    diffResults: Change[]
+  }
+
+  const DiffBefore: React.FC<DiffProps> = ({ diffResults }) => {
+    return (
+      <>
+        {diffResults.map((part, index) => {
+          if (part.removed) {
+            return (
+              <span key={index} className="bg-red-200 text-red-800">
+                {part.value}
+              </span>
+            )
+          } else if (!part.added) {
+            return <React.Fragment key={index}>{part.value}</React.Fragment>
+          }
+          return <></>
+        })}
+      </>
+    )
+  }
+
+  const DiffAfter: React.FC<DiffProps> = ({ diffResults }) => {
+    return (
+      <>
+        {diffResults.map((part, index) => {
+          if (part.added) {
+            return (
+              <span key={index} className="bg-green-200 text-green-800">
+                {part.value}
+              </span>
+            )
+          } else if (!part.removed) {
+            return <React.Fragment key={index}>{part.value}</React.Fragment>
+          }
+          return <></>
+        })}
+      </>
+    )
+  }
+
+  const formatJsonToText = (json: unknown): string => {
+    if (typeof json === 'object' && json !== null) {
+      // TODO: We should fix the data from the backend so that frontend does
+      // not need to have custom replacer when stringify JSON.
+      const replacer = (key: string, value: unknown) => {
+        // Special handling to stringify the "$date" format with "$numberLong"
+        if (value && typeof value === 'object' && '$date' in value) {
+          const dateObj = value['$date']
+          if (
+            dateObj &&
+            typeof dateObj === 'object' &&
+            '$numberLong' in dateObj
+          ) {
+            const timestamp = Number(dateObj['$numberLong'])
+            return format(new Date(timestamp), "yyyy-MM-dd'T'HH:mm:ssXXX", {
+              timeZone: 'Asia/Jakarta',
+            })
+          }
+        }
+
+        // Use generic serializer for other things
+        return value
+      }
+
+      return JSON.stringify(json, replacer, 2)
+    }
+
+    return String(json)
   }
 
   return (
@@ -889,6 +963,13 @@ export default function ListingDetailPage({
                                 typeof before === 'object' ||
                                 typeof after === 'object'
                               ) {
+                                const beforeString = formatJsonToText(before)
+                                const afterString = formatJsonToText(after)
+                                const diffResults = diffWords(
+                                  beforeString,
+                                  afterString,
+                                )
+
                                 return (
                                   <tr
                                     key={fieldIndex}
@@ -907,19 +988,33 @@ export default function ListingDetailPage({
                                     <td className="px-6 py-4 text-gray-900">
                                       {field}
                                     </td>
-                                    <td className="px-6 py-4">
-                                      {JSON.stringify(before) ?? '-'}
+                                    <td className="whitespace-pre-wrap px-6 py-4">
+                                      <DiffBefore diffResults={diffResults} />
                                     </td>
-                                    <td className="px-6 py-4">
-                                      {JSON.stringify(after) ?? '-'}
+                                    <td className="whitespace-pre-wrap px-6 py-4">
+                                      <DiffAfter diffResults={diffResults} />
                                     </td>
                                   </tr>
                                 )
                               }
 
                               if (before !== null && after !== null) {
+                                const beforeText = formatJsonToText(before)
+                                const afterText = formatJsonToText(after)
+                                const diffResults = diffWords(
+                                  beforeText,
+                                  afterText,
+                                )
+
                                 return (
-                                  <tr key={fieldIndex} className="border-b">
+                                  <tr
+                                    key={fieldIndex}
+                                    className={
+                                      isLast
+                                        ? ''
+                                        : 'border-b border-blue-gray-100'
+                                    }
+                                  >
                                     <td className="px-6 py-4 text-gray-900">
                                       {actorLink}
                                       {impersonatorLink && (
@@ -929,11 +1024,11 @@ export default function ListingDetailPage({
                                     <td className="px-6 py-4 text-gray-900">
                                       {field}
                                     </td>
-                                    <td className="px-6 py-4">
-                                      {before ?? '-'}
+                                    <td className="whitespace-pre-wrap px-6 py-4">
+                                      <DiffBefore diffResults={diffResults} />
                                     </td>
-                                    <td className="px-6 py-4">
-                                      {after ?? '-'}
+                                    <td className="whitespace-pre-wrap px-6 py-4">
+                                      <DiffAfter diffResults={diffResults} />
                                     </td>
                                   </tr>
                                 )
