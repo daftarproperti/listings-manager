@@ -117,7 +117,7 @@ export default function CancelPage({
                   className="w-full"
                   onKeyDown={(e) => {
                     if (e.key === 'Enter') {
-                      fetchData(keyword, 1)
+                      fetchData(keyword, 1, currentSortBy, currentSortOrder)
                       setPageNumber(1)
                     }
                   }}
@@ -211,7 +211,7 @@ export default function CancelPage({
                 onClick={() => {
                   setPageNumber((prev) => {
                     const page = prev - 1
-                    fetchData(keyword, page, status)
+                    fetchData(keyword, page, currentSortBy, currentSortOrder)
                     return page
                   })
                 }}
@@ -231,7 +231,12 @@ export default function CancelPage({
                       }
                       onClick={() => {
                         const page = item + 1
-                        fetchData(keyword, page, status)
+                        fetchData(
+                          keyword,
+                          page,
+                          currentSortBy,
+                          currentSortOrder,
+                        )
                         setPageNumber(page)
                       }}
                     >
@@ -243,7 +248,7 @@ export default function CancelPage({
                 onClick={() => {
                   setPageNumber((prev) => {
                     const page = prev + 1
-                    fetchData(keyword, page, status)
+                    fetchData(keyword, page, currentSortBy, currentSortOrder)
                     return page
                   })
                 }}

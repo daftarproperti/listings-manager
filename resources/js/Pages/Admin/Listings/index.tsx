@@ -95,6 +95,7 @@ export default function ListingsPage({
     setSortBy(sortBy)
     setSortOrder(sortOrder)
     fetchData(keyword, 1, status, sortBy, sortOrder)
+    setPageNumber(1)
   }
 
   return (

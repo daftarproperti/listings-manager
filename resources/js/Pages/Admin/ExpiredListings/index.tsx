@@ -22,7 +22,7 @@ export default function ExpiredListingsPage({
 }>): JSX.Element {
   const q = getSearchParams('q') ?? ''
   const page = parseInt(getSearchParams('page') ?? '1')
-  const sortByParam = getSearchParams('sortBy') ?? 'created_at'
+  const sortByParam = getSearchParams('sortBy') ?? 'expiredAt'
   const sortOrderParam = getSearchParams('sortOrder') ?? 'desc'
 
   const [startPage, endPage] = paginationRange(page, data.lastPage)
@@ -102,7 +102,7 @@ export default function ExpiredListingsPage({
                   className="w-full"
                   onKeyDown={(e) => {
                     if (e.key === 'Enter') {
-                      fetchData(keyword, 1)
+                      fetchData(keyword, 1, currentSortBy, currentSortOrder)
                       setPageNumber(1)
                     }
                   }}
@@ -173,7 +173,7 @@ export default function ExpiredListingsPage({
                 onClick={() => {
                   setPageNumber((prev) => {
                     const page = prev - 1
-                    fetchData(keyword, page, status)
+                    fetchData(keyword, page, currentSortBy, currentSortOrder)
                     return page
                   })
                 }}
@@ -193,7 +193,12 @@ export default function ExpiredListingsPage({
                       }
                       onClick={() => {
                         const page = item + 1
-                        fetchData(keyword, page, status)
+                        fetchData(
+                          keyword,
+                          page,
+                          currentSortBy,
+                          currentSortOrder,
+                        )
                         setPageNumber(page)
                       }}
                     >
@@ -205,7 +210,7 @@ export default function ExpiredListingsPage({
                 onClick={() => {
                   setPageNumber((prev) => {
                     const page = prev + 1
-                    fetchData(keyword, page, status)
+                    fetchData(keyword, page, currentSortBy, currentSortOrder)
                     return page
                   })
                 }}

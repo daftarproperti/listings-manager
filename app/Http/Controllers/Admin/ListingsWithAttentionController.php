@@ -20,9 +20,10 @@ class ListingsWithAttentionController extends Controller
             'q',
             'verifyStatus',
             'activeStatus',
-            'sortBy',
-            'sortOrder',
         ]);
+
+        $input['sortBy'] = $request->input('sortBy', 'updated_at');
+        $input['sortOrder'] = $request->input('sortOrder', 'desc');
 
         $listings = $repository->list($input, true);
         $listingCollection = new ListingCollection($listings);

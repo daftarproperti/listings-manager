@@ -24,7 +24,7 @@ export default function ListingsPage({
   const q = getSearchParams('q') ?? ''
   const page = parseInt(getSearchParams('page') ?? '1')
   const status = getSearchParams('verifyStatus') ?? ''
-  const sortByParam = getSearchParams('sortBy') ?? 'created_at'
+  const sortByParam = getSearchParams('sortBy') ?? 'updated_at'
   const sortOrderParam = getSearchParams('sortOrder') ?? 'desc'
 
   const [startPage, endPage] = paginationRange(page, data.lastPage)
@@ -95,6 +95,7 @@ export default function ListingsPage({
     setSortBy(sortBy)
     setSortOrder(sortOrder)
     fetchData(keyword, 1, status, sortBy, sortOrder)
+    setPageNumber(1)
   }
 
   return (
@@ -304,7 +305,7 @@ export default function ListingsPage({
                 {data.listings.length === 0 && (
                   <tr>
                     <Table.BodyItem
-                      colSpan={12}
+                      colSpan={11}
                       className="text-center text-sm"
                     >
                       No data
@@ -318,7 +319,13 @@ export default function ListingsPage({
                 onClick={() => {
                   setPageNumber((prev) => {
                     const page = prev - 1
-                    fetchData(keyword, page, status)
+                    fetchData(
+                      keyword,
+                      page,
+                      status,
+                      currentSortBy,
+                      currentSortOrder,
+                    )
                     return page
                   })
                 }}
@@ -337,9 +344,15 @@ export default function ListingsPage({
                         page === item + 1 ? 'bg-stone-200' : 'hidden md:block'
                       }
                       onClick={() => {
-                        const page = item + 1
-                        fetchData(keyword, page, status)
-                        setPageNumber(page)
+                        const newPage = item + 1
+                        fetchData(
+                          keyword,
+                          newPage,
+                          status,
+                          currentSortBy,
+                          currentSortOrder,
+                        )
+                        setPageNumber(newPage)
                       }}
                     >
                       {item + 1}
@@ -350,7 +363,13 @@ export default function ListingsPage({
                 onClick={() => {
                   setPageNumber((prev) => {
                     const page = prev + 1
-                    fetchData(keyword, page, status)
+                    fetchData(
+                      keyword,
+                      page,
+                      status,
+                      currentSortBy,
+                      currentSortOrder,
+                    )
                     return page
                   })
                 }}
