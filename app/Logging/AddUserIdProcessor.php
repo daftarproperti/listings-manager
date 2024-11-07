@@ -2,8 +2,8 @@
 
 namespace App\Logging;
 
+use App\Helpers\DPAuth;
 use App\Models\User;
-use Illuminate\Support\Facades\Auth;
 use Monolog\LogRecord;
 
 /**
@@ -15,7 +15,7 @@ class AddUserIdProcessor
 {
     public function __invoke(LogRecord $record): LogRecord
     {
-        $user = Auth::user();
+        $user = DPAuth::user();
         if ($user instanceof User) {
             return $record->with(context: array_merge($record->context, [
                 'dp_user_id' => (string)$user->user_id,

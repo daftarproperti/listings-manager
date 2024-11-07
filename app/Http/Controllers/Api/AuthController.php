@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Helpers\DPAuth;
 use App\Helpers\PhoneNumber;
 use DateTime;
 use Carbon\Carbon;
@@ -10,7 +11,6 @@ use App\Http\Services\OTPService;
 use App\Models\Resources\UserResource;
 use App\Models\User;
 use App\Rules\IndonesiaPhoneFormat;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -311,8 +311,7 @@ class AuthController extends Controller
         $phoneNumber = $validatedRequest['phoneNumber'];
         $phoneNumber = PhoneNumber::canonicalize($phoneNumber);
 
-        /** @var User $currentUser */
-        $currentUser = Auth::user();
+        $currentUser = DPAuth::appUser();
 
         /** @var User|null $user */
         $user = User::where('phoneNumber', $phoneNumber)->first();

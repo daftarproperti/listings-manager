@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\DTO\GeoJsonObject;
 use App\Http\Controllers\Api\ListingsController as ApiListingsController;
+use App\Helpers\DPAuth;
 use App\Helpers\ListingHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\ListingRequest;
@@ -19,7 +20,6 @@ use Carbon\Carbon;
 use Illuminate\Contracts\Cache\LockTimeoutException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
@@ -110,7 +110,7 @@ class ListingsController extends Controller
             $adminNoteMessage = $data['adminNote'] ?? '';
             $adminNote = [
                 'message' => $adminNoteMessage,
-                'email' => Auth::user()?->email,
+                'email' => DPAuth::userAsAdmin()->email,
                 'date' => Carbon::now(),
             ];
             $data['adminNote'] = AdminNote::from($adminNote);

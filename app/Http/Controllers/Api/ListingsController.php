@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\DTO\GeoJsonObject;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ListingRequest;
+use App\Helpers\DPAuth;
 use App\Helpers\Queue;
 use App\Jobs\GenerateListingFromText;
 use App\Models\AdminAttention;
@@ -17,14 +18,12 @@ use App\Models\Listing;
 use App\Models\ListingUser;
 use App\Models\Resources\ListingCollection;
 use App\Models\Resources\ListingResource;
-use App\Models\User;
 use App\Repositories\ListingRepository;
 use Carbon\Carbon;
 use Illuminate\Contracts\Cache\LockTimeoutException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
@@ -308,7 +307,7 @@ class ListingsController extends Controller
         }
 
         if (boolval($filterSet->collection)) {
-            $currentUser = Auth::user();
+            $currentUser = DPAuth::appUser();
             $currentUserId = $currentUser->user_id ?? 0;
             $filterSet->userId = $currentUserId;
         }
@@ -763,8 +762,7 @@ class ListingsController extends Controller
 
     private function getListingUser(): ListingUser
     {
-        /** @var User $user */
-        $user = Auth::user();
+        $user = DPAuth::appUser();
         return $user->toListingUser();
     }
 

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\DTO\GeoJsonObject;
 use App\Helpers\Cast;
+use App\Helpers\DPAuth;
 use App\Helpers\NumFormatter;
 use App\Helpers\Photo;
 use App\Models\Enums\ActiveStatus;
@@ -16,7 +17,6 @@ use MongoDB\Laravel\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Support\Facades\Auth;
 use MongoDB\BSON\UTCDateTime;
 
 /**
@@ -155,7 +155,8 @@ class Listing extends Model
 
     public function getUserCanEditAttribute(): bool
     {
-        $currentUserId = Auth::user()->user_id ?? null;
+        $user = DPAuth::user();
+        $currentUserId = ($user instanceof User) ? $user->user_id : null;
 
         if (!$currentUserId) {
             return false;

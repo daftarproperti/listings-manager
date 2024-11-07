@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Helpers\DPAuth;
 use App\Helpers\PhoneNumber;
 use App\Http\Controllers\Controller;
 use App\Models\Resources\UserResource;
@@ -9,7 +10,6 @@ use App\Models\User;
 use App\Rules\IndonesiaPhoneFormat;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use OpenApi\Attributes as OA;
 
 class DelegateController extends Controller
@@ -51,8 +51,7 @@ class DelegateController extends Controller
 
         $phoneNumber = PhoneNumber::canonicalize($phoneNumber);
 
-        /** @var User $currentUser */
-        $currentUser = Auth::user();
+        $currentUser = DPAuth::appUser();
 
         if ($currentUser->isDelegateEligible) {
             abort(422, 'Not eligible to delegate');

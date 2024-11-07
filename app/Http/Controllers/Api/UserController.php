@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Helpers\DPAuth;
 use App\Helpers\PhoneNumber;
 use App\Http\Controllers\Controller;
 use App\Models\Resources\UserResource;
 use App\Http\Requests\UserProfileRequest;
 use App\Models\User;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Support\Facades\Auth;
 use OpenApi\Attributes as OA;
 
 class UserController extends Controller
@@ -31,7 +31,7 @@ class UserController extends Controller
     )]
     public function profile(): JsonResource
     {
-        $currentUser = Auth::user();
+        $currentUser = DPAuth::appUser();
         return new UserResource($currentUser);
     }
 
@@ -57,8 +57,7 @@ class UserController extends Controller
     )]
     public function updateProfile(UserProfileRequest $request): JsonResource
     {
-        /** @var User $currentUser */
-        $currentUser = Auth::user();
+        $currentUser = DPAuth::appUser();
 
         $validatedRequest = $request->validated();
         foreach ($validatedRequest as $key => $value) {
@@ -97,8 +96,7 @@ class UserController extends Controller
     )]
     public function generateSecretKey(): JsonResource
     {
-        /** @var User $currentUser */
-        $currentUser = Auth::user();
+        $currentUser = DPAuth::appUser();
         if ($currentUser->secretKey) {
             return new UserResource($currentUser);
         }
@@ -124,8 +122,7 @@ class UserController extends Controller
     )]
     public function deleteSecretKey(): JsonResource
     {
-        /** @var User $currentUser */
-        $currentUser = Auth::user();
+        $currentUser = DPAuth::appUser();
         $currentUser->secretKey = null;
         $currentUser->save();
         return new UserResource($currentUser);
