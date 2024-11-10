@@ -47,7 +47,7 @@
                         <p class="text-gray-500 text-sm">Memastikan data yang tersedia untuk publik seakurat mungkin sehingga menciptakan budaya saling melengkapi antara pengguna.</p>
                     </div>
                 </div>
-                <div class="flex flex-wrap md:flex-nowrap justify-between columns-2 md:gap-2 px-2 mb-20 md:mb-16 pt-1">
+                <div class="flex flex-wrap md:flex-nowrap justify-between columns-2 md:gap-2 px-2 pt-1">
                     <div class="w-full py-4 px-2 order-2 md:order-1">
                         <div class="flex items-center pt-2 md:pt-4 pl-2">
                             <div class="w-1 h-6 bg-blue-400 -mt-9 md:-mt-5"></div>
@@ -70,6 +70,29 @@
                             Setelah properti terjual/tersewa, lakukan <i>update</i> di Daftar Properti sehingga pemasaran dapat berhenti.
                             Data penjualan/penyewaan akan disediakan secara terbuka untuk umum (secara anonim, privasi terjaga)
                             sehingga industri jual/beli properti menjadi lebih efisien.
+                            </p>
+                        </article>
+                    </div>
+                </div>
+                <div class="flex flex-wrap md:flex-nowrap justify-between columns-2 md:gap-2 px-2 mb-10">
+                    <div class="w-full py-4 px-2 order-2 md:order-1">
+                        <div class="flex items-center pt-4 pl-2">
+                            <div class="w-1 h-6 bg-blue-400 -mt-9 md:-mt-5"></div>
+                            <h2 class="font-newsreader text-4xl ml-5 pt-0 md:pt-5 mb-3">Untuk Pemasar</h2>
+                        </div>
+                        <article class="prose px-6 py-0 max-w-none">
+                            <p>
+                            Listing-listing di Daftar Properti bersifat terbuka, maka pemasar diperbolehkan dan dipermudah
+                            untuk mengambil data dari Daftar Properti untuk digunakan di bisnis aplikasi seperti
+                            portal pencarian properti.
+                            </p>
+                            <p>
+                                  <a target="_blank" href="/for-marketers" class="flex flex-row items-center gap-2 text-base font-semibold text-blue-600 hover:text-blue-700 group-hover:text-white transition-all duration-500">
+                                      Pelajari Lebih Lanjut
+                                      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                          <path d="M7.5 15L11.0858 11.4142C11.7525 10.7475 12.0858 10.4142 12.0858 10C12.0858 9.58579 11.7525 9.25245 11.0858 8.58579L7.5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                                      </svg>
+                                  </a>
                             </p>
                         </article>
                     </div>
