@@ -28,6 +28,7 @@ class ExpiredListingsController extends Controller
             'data' => [
                 'listings' => $listingCollection->collection,
                 'lastPage' => $listing->lastPage(),
+                'totalListings' => $listing->total(),
             ],
         ]);
     }

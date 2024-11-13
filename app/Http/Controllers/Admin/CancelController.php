@@ -35,6 +35,7 @@ class CancelController extends Controller
                 'listings' => $listingCollection->collection,
                 'cancellationStatusOptions' => CancellationStatus::options(),
                 'lastPage' => $listing->lastPage(),
+                'totalListings' => $listing->total(),
             ],
         ]);
     }

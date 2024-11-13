@@ -18,7 +18,7 @@ const Member = ({
   auth,
   data,
 }: PageProps<{
-  data: { members: DPUser[]; lastPage: number }
+  data: { members: DPUser[]; lastPage: number; totalMembers: number }
 }>): JSX.Element => {
   const q = getSearchParams('q') ?? ''
   const page = parseInt(getSearchParams('page') ?? '1')
@@ -133,8 +133,11 @@ const Member = ({
           <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg">
             <div className="mb-2 grid grid-cols-4 gap-4 p-6 md:flex-row md:items-center md:gap-8">
               <div className="col-span-4 md:col-span-1">
-                <p className="text-2xl font-bold leading-none text-neutral-700">
+                <p className="mb-2 text-2xl font-bold leading-none text-neutral-700">
                   Daftar Member
+                </p>
+                <p className="text-sm font-bold leading-none text-neutral-700">
+                  Total : {data.totalMembers} Member
                 </p>
               </div>
               <div className="col-span-4 md:col-span-1">

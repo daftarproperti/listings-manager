@@ -34,6 +34,7 @@ class ClosingsController extends Controller
             'data' => [
                 'closings' => $closingsCollection->collection,
                 'lastPage' => $closings->lastPage(),
+                'totalClosings' => $closings->total(),
             ],
         ]);
     }

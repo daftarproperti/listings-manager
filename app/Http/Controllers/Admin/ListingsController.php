@@ -46,6 +46,7 @@ class ListingsController extends Controller
             'data' => [
                 'listings' => $listingCollection->collection,
                 'lastPage' => $listings->lastPage(),
+                'totalListings' => $listings->total(),
                 'verifyStatusOptions' => VerifyStatus::options(),
                 'activeStatusOptions' => ActiveStatus::options(),
             ],

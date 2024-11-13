@@ -17,6 +17,7 @@ export default function ListingsPage({
   data: {
     listings: Listing[]
     lastPage: number
+    totalListings: number
     verifyStatusOptions: Option[]
     activeStatusOptions: Option[]
   }
@@ -114,8 +115,11 @@ export default function ListingsPage({
           <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg">
             <div className="mb-2 grid grid-cols-4 gap-4 p-6 md:flex-row md:items-center md:gap-8">
               <div className="col-span-4 md:col-span-1">
-                <p className="text-2xl font-bold leading-none text-neutral-700">
+                <p className="mb-2 text-2xl font-bold leading-none text-neutral-700">
                   Daftar Listing
+                </p>
+                <p className="text-sm font-bold leading-none text-neutral-700">
+                  Total : {data.totalListings} Listing
                 </p>
               </div>
               <div className="col-span-4 md:col-span-1">

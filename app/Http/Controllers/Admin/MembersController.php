@@ -30,6 +30,7 @@ class MembersController extends Controller
             'data' => [
                 'members' => $memberCollection->collection,
                 'lastPage' => $member->lastPage(),
+                'totalMembers' => $member->total(),
             ],
         ]);
     }
