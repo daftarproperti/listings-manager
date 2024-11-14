@@ -121,6 +121,9 @@ Route::get('/checklist', function () {
 Route::get('/whitepaper', function () {
     return view('whitepaper');
 });
+Route::get('/essay', function () {
+    return view('essay');
+});
 Route::get('/for-marketers', function () {
     return view('for-marketers');
 });

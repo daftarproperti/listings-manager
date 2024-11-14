@@ -34,6 +34,29 @@
                     <div class="text-center">
                         <a
                           target="_blank"
+                          href="/essay"
+                          class="mr-2 mb-8 md:mb-16 w-full md:w-auto inline-flex items-center justify-center py-3 px-7 text-base font-semibold text-center rounded-lg border border-blue-600 shadow-xs hover:bg-blue-50 transition-all duration-500"
+                        >
+                          Why We Exist
+                          <svg
+                            class="ml-2"
+                            width="20"
+                            height="20"
+                            viewBox="0 0 20 20"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M7.5 15L11.0858 11.4142C11.7525 10.7475 12.0858 10.4142 12.0858 10C12.0858 9.58579 11.7525 9.25245 11.0858 8.58579L7.5 5"
+                              stroke="currentColor"
+                              stroke-width="2"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            />
+                          </svg>
+                        </a>
+                        <a
+                          target="_blank"
                           href="https://docs.google.com/forms/d/e/1FAIpQLSfsb3FvhXnlx4UDVCG0LPLA0TdUSXm-GorG8sprT98VzST1IA/viewform?usp=sf_link"
                           class="mb-8 md:mb-16 w-full md:w-auto inline-flex items-center justify-center py-3 px-7 text-base font-semibold text-center text-white rounded-lg bg-blue-600 shadow-xs hover:bg-blue-700 transition-all duration-500"
                         >

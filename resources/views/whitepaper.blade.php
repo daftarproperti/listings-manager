@@ -108,6 +108,10 @@ The Referral Tracking System consists of two main processes: Marketer registrati
 ## 3. Conclusion
 
 The proposed blockchain-based real estate listing and referral system aims to address the inefficiencies and lack of transparency in the real estate market. By leveraging the immutability and decentralized nature of blockchain technology, the system incentivizes each participant to perform their roles in the most effective manner while maintaining transparency, ensuring efficiency, and providing useful public information. Over time, this system has the potential to strengthen the real estate industry and benefit all stakeholders involved.
+
+*This whitepaper has been assisted by a Large Language Model (LLM) to enhance clarity, structure, and flow.
+The original version can be accessed [here](/docs/whitepaper.txt).*
+
 </x-markdown>
 
                 </article>

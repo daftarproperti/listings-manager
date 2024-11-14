@@ -1,0 +1,46 @@
+# Classifieds model of property listings is obsolete
+
+In many property markets, especially Indonesia, real estate properties on sale needs solution on how to spread the information.
+Unfortunately, the current solution is that there are some providers of "advertisement boards" (also called classifieds) where
+property owners or agents post "advertisements" on it, with their business model being "pay me and you can post anything on my board".
+While it helped in the past, where information moved slowly before information technology, nowadays it presents more problems than solutions.
+For example, the system encourages agents to be not transparent by hiding address and exact location because prisoner's dilemma problem:
+"If I am the one who is the most helpful information provider, every other agent will quickly be as good as me by copying my information and posting the same things on the ad board".
+This hurts potential buyers' experience, where the system drives towards an advertisement boards full of duplications and lack of transparency of location information,
+which ironically is the most important variable in deciding whether to be interested in a property.
+Furthermore, this is exemplified by the advertisement board owners' incentive to make more money by encouraging large volumes of advertisements regardless of duplications or transparency. The advertisement board owners are also incentivized to keep the "ads" closed to their system and this prevents tech innovation that could otherwise help sort those listings or augment with more clarity/transparency. The result is property owners who fail to send the message to potential buyers, agents who fail to compete healthily, and buyers who fail to see the market with clarity.
+This looks like a minor problem, but in practice this inefficiency leads to most properties staying in the market for months and even years before getting a buyer.
+
+## Proposed Solution
+
+We believe the industry should reform and build an alternative. The alternative that we propose is by building an open shared system of registry
+of properties on the market. This may sound like an advertisement board, but it is quite the opposite. This, being a registry as opposed to an ad board, only accepts "registration" of verified listings so that each listing must be transparent (contain exact address and coordinate, and photos that can identify the property uniquely) and there is no
+duplications (first registrant owns the listing of a specific property). The technology to do that is out of scope of this essay, but we all know that modern technology is able to build such registry in a cost effective way, for example integration with Large Language Models can make verification process very efficient. This system encourages property owners or agents to be transparent since they are not worried about their good work being diluted by people copying their good clear information and post to the same boards.
+
+This registry is also quite different from ad board, in that it does not make its data "closed" in its own system, but rather allows and even encourages other businesses to pull up to date high quality listings data from the registry and process it any way the business wants. For example a business could build a search engine that helps potential buyers find the properties they need with transparency. Another could build a market analysis for decision making of property development or even unrelated decisions like city planning or retail location planning. Again modern technology can facilitate this so that it's easy to build on the registry.
+
+In order to achieve that, the registry needs an incentive model so that the registry is incentivized to do its job and the ecosystem on it are incentivized to build. We propose that
+the most important incentive is for marketers to earn commission for successful referral. For example, the listing owner (either agent or property owner) needs to agree beforehand 
+that in order to register in the registry they must agree that they will pay 0.5% commission to the Marketer that successfully, determined by the registry. Note that
+the registry itself does not earn commission to prevent it to compete with Marketers and instead focus on being the fair "referee" to determine the successful referrer.
+For businesses to trust the registry for fair referrer determination, we build an open, verifiable, referral tracking log using blockchain. This way, businesses can trust the system without any doubt of any party cheating. Additionally, the Marketer does not pay
+to get the data, but they pay to the registry for each entry into the open referral log. This incentivized marketers to not implement the strategy of 
+"spamming by forcing people to click as many times as they can" and also provide revenue model for the registry. Additionally, the registry is built fully open source,
+to encourage collaboration rather than duplication of competing registries. This openness is also the main difference compared to the existing "ad boards".
+
+In order for the referral tracking to work, we also need registrants to agree to report closings to the registry so that the system can detect who referred the buyer.
+Asking registrants to cooperate with the rules seems like a difficult problem, but a small scale version of this system has shown that registrants are likely to comply
+due the nature of the registry's difference from "ad boards", which is being open, protecting registrants' transparency, and does not monetize by "pay to appear" model.
+
+So far the system looks good for property owners, seller's agents, and buyers. One may think that this system does not give space to buyer's agents, but this is quite the opposite.
+We believe that search engine alone won't perform well to get buyers, and this incentivized another type of business to be built on the ecosystem, which is a system
+that helps buyers' agent refer to buyers without being afraid of being transparent. This protects buyers agent so that they don't have to hurt their clients experience
+by hiding the location and forcing them to meet at location which is very inefficient. Before this system, buyers agents do that because of afraid not being fairly
+rewarded for their service, but with this system buyers agents can be confident that they will be rewarded without hurting transparency to their clients.
+
+When implemented fully, this system will result in property owners being able to reach potential buyers, agents being able to compete healthily, and buyers who can gain
+a lot of efficiency in decision making. The effect can snowball into outside the real estate industry as well, since this registry gives open information to
+other businesses for decision making, and also policy makers.
+
+## Appendix
+The proposed blockchain system is detailed in this whitepaper (link).
