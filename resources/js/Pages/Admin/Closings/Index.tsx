@@ -42,7 +42,6 @@ const Closings = ({
     'Date',
     'Status',
     'Commission Status',
-    '',
   ]
 
   const fetchData = (q?: string, page?: number): void => {
