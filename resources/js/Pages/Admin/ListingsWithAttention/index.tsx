@@ -9,6 +9,7 @@ import TextInput from '@/Components/TextInput'
 import { type Option, type Listing, type PageProps } from '@/types'
 import { getSearchParams, paginationRange } from '@/utils'
 import SelectInput from '@/Components/SelectInput'
+import { formatCurrencyToIDRText } from '@/utils/formatCurrencyToIDRText'
 
 export default function ListingsPage({
   auth,
@@ -250,11 +251,7 @@ export default function ListingsPage({
                       <Table.BodyItem>{user?.name}</Table.BodyItem>
                       <Table.BodyItem>{user?.phoneNumber}</Table.BodyItem>
                       <Table.BodyItem>
-                        {new Intl.NumberFormat('id-ID', {
-                          currency: 'IDR',
-                          style: 'currency',
-                          notation: 'compact',
-                        }).format(price)}
+                        {formatCurrencyToIDRText(price)}
                       </Table.BodyItem>
                       <Table.BodyItem className="font-normal text-neutral-600">
                         {`${lotSize}`} m&sup2;

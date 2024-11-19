@@ -41,6 +41,7 @@ import type {
   PageProps,
 } from '@/types'
 import { type AdminAttention, type ListingHistory } from '@/types/listing'
+import { formatCurrencyToIDRText } from '@/utils/formatCurrencyToIDRText'
 
 export const LISTING_ICON: Record<string, JSX.Element> = {
   buildingSize: <HouseIconSVG />,
@@ -529,23 +530,12 @@ export default function ListingDetailPage({
             </div>
             <div className="mt-1 text-2xl font-semibold leading-8 text-slate-800 md:text-3xl">
               {listing.listingForSale && (
-                <span>
-                  {new Intl.NumberFormat('id-ID', {
-                    currency: 'IDR',
-                    style: 'currency',
-                    notation: 'compact',
-                  }).format(listing.price)}
-                </span>
+                <span>{formatCurrencyToIDRText(listing.price)}</span>
               )}
               {listing.listingForRent && (
                 <span>
                   {listing.listingForSale && ' / '}
-                  {new Intl.NumberFormat('id-ID', {
-                    currency: 'IDR',
-                    style: 'currency',
-                    notation: 'compact',
-                  }).format(listing.rentPrice)}{' '}
-                  / tahun
+                  {formatCurrencyToIDRText(listing.rentPrice)} / tahun
                 </span>
               )}
             </div>

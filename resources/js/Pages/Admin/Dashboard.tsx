@@ -7,6 +7,7 @@ import SecondaryButton from '@/Components/SecondaryButton'
 import TextInput from '@/Components/TextInput'
 import { type Listing, type PageProps } from '@/types'
 import { getSearchParams, paginationRange } from '@/utils'
+import { formatCurrencyToIDRText } from '@/utils/formatCurrencyToIDRText'
 
 export default function Dashboard({
   auth,
@@ -103,11 +104,7 @@ export default function Dashboard({
                       <Table.BodyItem colSpan={3}>{title}</Table.BodyItem>
                       <Table.BodyItem>{user?.name}</Table.BodyItem>
                       <Table.BodyItem>
-                        {new Intl.NumberFormat('id-ID', {
-                          currency: 'IDR',
-                          style: 'currency',
-                          notation: 'compact',
-                        }).format(price)}
+                        {formatCurrencyToIDRText(price)}
                       </Table.BodyItem>
                       <Table.BodyItem>{`${lotSize}`}</Table.BodyItem>
                       <Table.BodyItem>{`${buildingSize}`}</Table.BodyItem>

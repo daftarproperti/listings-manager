@@ -9,6 +9,7 @@ import TextInput from '@/Components/TextInput'
 import { type Option, type Listing, type PageProps } from '@/types'
 import { getSearchParams, paginationRange } from '@/utils'
 import SelectInput from '@/Components/SelectInput'
+import { formatCurrencyToIDRText } from '@/utils/formatCurrencyToIDRText'
 
 export default function ListingsPage({
   auth,
@@ -259,22 +260,14 @@ export default function ListingsPage({
                       <Table.BodyItem>{user?.phoneNumber}</Table.BodyItem>
                       <Table.BodyItem>
                         {listingForSale && (
-                          <span>
-                            {new Intl.NumberFormat('id-ID', {
-                              currency: 'IDR',
-                              style: 'currency',
-                              notation: 'compact',
-                            }).format(price)}
-                          </span>
+                          <span>{formatCurrencyToIDRText(price)}</span>
                         )}
                         {listingForRent && (
                           <span>
                             {listingForSale && ' / '}
-                            {new Intl.NumberFormat('id-ID', {
-                              currency: 'IDR',
-                              style: 'currency',
-                              notation: 'compact',
-                            }).format(rentPrice)}{' '}
+                            {
+                              <span>{formatCurrencyToIDRText(rentPrice)}</span>
+                            }{' '}
                             / tahun
                           </span>
                         )}
