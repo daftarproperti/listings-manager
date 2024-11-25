@@ -9,7 +9,9 @@ manual_scaling:
 # based on https://cloud.google.com/appengine/docs/standard/lifecycle/support-schedule#php
 runtime_config:
   operating_system: "ubuntu22"
-  runtime_version: "8.3"
+  # Pin to exactly 8.3.13 since there is regression about GMP in 8.3.14
+  # TODO: Unpin to latest 8.3 once issue is resolved by GCP.
+  runtime_version: "8.3.13"
   document_root: public
   # Enable log daemon so our app isn't blocked
   # https://cloud.google.com/logging/docs/setup/php#gae-config

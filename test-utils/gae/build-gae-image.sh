@@ -37,9 +37,9 @@ cp -a public/build $TEMP_DIR/public/
 
 # Change to temp dir to do the buildpack in a clean checkout.
 pushd $TEMP_DIR
-pack build daftarproperti --builder gcr.io/gae-runtimes/buildpacks/google-gae-22/php/builder \
+pack build daftarproperti --builder gcr.io/serverless-runtimes/google-22-full/builder/php:latest \
     --env GOOGLE_COMPOSER_VERSION=2.6.5 \
-    --env GOOGLE_RUNTIME_VERSION=8.3 \
+    --env GOOGLE_RUNTIME_VERSION=8.3.13 \
     --env GOOGLE_RUNTIME=php \
     --env GAE_APPLICATION_YAML_PATH=./app.yaml
 
