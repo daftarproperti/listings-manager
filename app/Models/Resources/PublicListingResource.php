@@ -92,6 +92,7 @@ class PublicListingResource extends JsonResource
             ],
             'withRewardAgreement' => $listing->withRewardAgreement,
             'isMultipleUnits' => $listing->isMultipleUnits,
+            'createdAt' => $listing->created_at->toIso8601String(),
             'updatedAt' => $listing->updated_at->toIso8601String(),
             'registrant' => [
                 'name' => $listing->user_profile?->name,
