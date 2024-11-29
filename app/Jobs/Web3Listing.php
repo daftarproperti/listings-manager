@@ -3,6 +3,8 @@
 namespace App\Jobs;
 
 use App\Models\Listing;
+use App\Models\Resources\PublicListingResource;
+use App\Helpers\EthWrapper;
 use App\Helpers\Photo;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Cache\LockTimeoutException;
@@ -32,32 +34,52 @@ class Web3Listing implements ShouldQueue
         //
     }
 
-    private function hasListing(Contract $contract, int $id): bool
+    private function hasListingV0(Contract $contract, int $id): bool
     {
-        $exists = false;
-        $contract->call('getListing', $id, function ($err, $ret) use (&$exists) {
-            if ($err !== null) {
-                return;
+        $wrapper = new EthWrapper($contract);
+
+        try {
+            $wrapper->call('getListing', $id);
+        } catch (\Exception) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * @return array<int, mixed> The key value pair depends on the ABI version.
+     */
+    private function getExistingListingV1(Contract $contract, Listing $listing): array|null
+    {
+        $wrapper = new EthWrapper($contract);
+
+        try {
+            $ret = $wrapper->call('getListing', $listing->listingId);
+            if (!is_array($ret)) {
+                return null;
             }
-            $exists = true;
-        });
-        return $exists;
+            return $ret;
+        } catch (\Exception) {
+            return null;
+        }
     }
 
     private function executeListingContractV0(
-        int $id,
-        int $cityId,
+        Listing $listing,
         string $offChainLink,
         string $hash,
         string $operationType,
     ): void {
+        $id = $listing->listingId;
+        $cityId = $listing->cityId;
         $web3 = new Web3(type(env('ETH_NODE'))->asString(), /*timeout=*/ 5);
 
         $abi = type(file_get_contents(storage_path('blockchain/ListingsV0.abi.json')))->asString();
         $contractAddress = type(env('ETH_LISTINGS_CONTRACT_ADDRESS'))->asString();
 
         $contract = (new Contract($web3->getProvider(), $abi))->at($contractAddress);
-        $exists = $this->hasListing($contract, $id);
+        $exists = $this->hasListingV0($contract, $id);
 
         $gasPrice = '0x0';
         /** @phpstan-ignore-next-line */
@@ -143,19 +165,20 @@ class Web3Listing implements ShouldQueue
     }
 
     private function executeListingContractV1(
-        int $id,
-        int $cityId,
+        Listing $listing,
         string $offChainLink,
         string $hash,
         string $operationType,
     ): void {
+        $id = $listing->listingId;
+        $cityId = $listing->cityId;
         $web3 = new Web3(type(env('ETH_NODE'))->asString(), /*timeout=*/ 5);
 
         $abi = type(file_get_contents(storage_path('blockchain/ListingsV1.abi.json')))->asString();
         $contractAddress = type(env('ETH_LISTINGS_CONTRACT_ADDRESS'))->asString();
 
         $contract = (new Contract($web3->getProvider(), $abi))->at($contractAddress);
-        $exists = $this->hasListing($contract, $id);
+        $existingV1 = $this->getExistingListingV1($contract, $listing);
 
         $gasPrice = '0x0';
         /** @phpstan-ignore-next-line */
@@ -179,21 +202,28 @@ class Web3Listing implements ShouldQueue
         switch ($operationType) {
             case 'ADD':
                 $operation = 'addListing';
-                if ($exists) {
-                    logger()->info("Listing $id already exist. skipping addition");
-                    return;
+                if ($existingV1) {
+                    $existingOffChainLink = isset($existingV1[2]) ? $existingV1[2] : null;
+                    // Skip only if the listing already exists in blockchain with the same exact offChainLink, otherwise
+                    // consider that we need to update to make sure listing is sync to blockchain.
+                    if ($existingOffChainLink == $offChainLink) {
+                        logger()->info("Listing $id already exist. skipping addition");
+                        return;
+                    }
+                    logger()->info("Listing $id already exist but different schema version, forcing update.");
+                    $operation = 'updateListing';
                 }
                 break;
             case 'UPDATE':
                 $operation = 'updateListing';
-                if (!$exists) {
+                if (!$existingV1) {
                     logger()->info("Listing $id does not exist. adding it as new listing");
                     $operation = 'addListing';
                 }
                 break;
             case 'DELETE':
                 $operation = 'deleteListing';
-                if (!$exists) {
+                if (!$existingV1) {
                     logger()->info("Listing $id does not exist. skipping deletion");
                     return;
                 }
@@ -264,6 +294,13 @@ class Web3Listing implements ShouldQueue
         return hash('sha256', $content);
     }
 
+    public static function getOffChainFileName(Listing $listing): string
+    {
+        $updatedAt = $listing->updated_at->toIso8601ZuluString();
+        $versionSuffix = '-v' . PublicListingResource::VERSION;
+        return "listings/{$listing->listingId}/{$listing->listingId}-$updatedAt$versionSuffix.json";
+    }
+
     /**
      * Execute the job.
      */
@@ -275,8 +312,7 @@ class Web3Listing implements ShouldQueue
         }
 
         $listing = $this->listing;
-        $updatedAt = $listing->updated_at->toIso8601ZuluString();
-        $fileName = "listings/{$listing->listingId}/{$listing->listingId}-$updatedAt.json";
+        $fileName = self::getOffChainFileName($listing);
 
         $offChainLink = Photo::getGcsUrlFromFileName($fileName);
         try {
@@ -309,8 +345,7 @@ class Web3Listing implements ShouldQueue
         try {
             $lock->block(120);
             $contractVersionMap[$contractVersion](
-                $listing->listingId,
-                $listing->cityId,
+                $listing,
                 $offChainLink,
                 $hash,
                 $this->operationType,

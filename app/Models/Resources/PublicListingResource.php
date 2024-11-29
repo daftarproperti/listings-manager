@@ -52,6 +52,10 @@ class PublicListingResource extends JsonResource
 
     public static $wrap = null;
 
+    // This structure is versioned so that we can keep track the version of public Listing JSON, particularly in
+    // blockchain off chain link. Such use case is that we can update listings with old struct version.
+    public const VERSION = 1;
+
     /**
      * @return array<mixed>
      */

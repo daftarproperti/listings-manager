@@ -42,8 +42,7 @@ class SyncListingToGCS implements ShouldQueue
         logger()->debug('syncing listing ' . $json);
 
         $googleStorageService = new GoogleStorageService();
-        $updatedAt = $listing->updated_at->toIso8601ZuluString();
-        $fileName = "listings/{$this->listingId}/{$this->listingId}-$updatedAt.json";
+        $fileName = Web3Listing::getOffChainFileName($listing);
         logger()->debug("writing to file $fileName");
         $googleStorageService->uploadFile($json, $fileName);
 
