@@ -91,7 +91,21 @@ The Referral Tracking System consists of two main processes: Marketer registrati
 5. The Marketer posts this log to the blockchain, ensuring their involvement is recorded and cannot be cheated.
 6. The Marketer displays the decrypted contact number to the potential buyer to continue interaction with the Listing representative.
 
-#### 2.3.3 Closing Process
+#### 2.3.3 Referral Tracking Participation Fee
+To participate in the referral tracking process, a Marketer must log their involvement in a transaction by inserting a record into the blockchain.
+As part of this process, the Marketer is required to make a small payment, approximately 1/500 of the projected commission.
+This payment serves multiple purposes:
+
+1. **Preventing Spam**: By attaching a cost to each referral log, the system discourages Marketers from using spam tactics or submitting low-quality or irrelevant referrals.
+2. **Encouraging Transparency**: Since each referral carries a cost, Marketers are incentivized to only log referrals where they genuinely contributed, fostering a more transparent ecosystem.
+3. **Maintaining Free and Democratized Data**: Unlike traditional systems where data is sold or restricted, the Listing Registry ensures that all listing data remains free and publicly accessible. Instead of monetizing the data, the system uses the referral tracking fee to sustain operations and align incentives.
+
+The payment itself may not always be in monetary terms. Instead, the blockchain contract tracks a "Referral Tracking Token" (RTT) balance for each Marketer. Key details include:
+
+* **Token Deduction**: When a Marketer logs a referral, the cost (equivalent to 1/500 of the projected commission) is deducted from their RTT balance. The balance can even go negative, allowing Marketers to operate flexibly within the system.
+* **Token Adjustment upon Successful Referrals**: When a referral leads to a successful transaction, the commission that the Marketer receives is adjusted by subtracting the RTT spent on the relevant referral logs. This ensures that Marketers remain accountable for their activity while aligning costs with actual success.
+
+#### 2.3.4 Closing Process
 
 1. Closing is reported by either the Listing representative, the buyer/renter, or a third party.
 2. Upon confirmation by the Listing Registry, the closing is logged to the blockchain, containing:
