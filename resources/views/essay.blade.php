@@ -17,7 +17,7 @@
     <div class="min-h-screen mx-auto w-full font-inter">
         @include('partials.header')
         <main>
-            <div class="max-w-6xl mx-auto px-4 py-12 bg-white min-h-96">
+            <div class="max-w-6xl mx-auto px-4 pb-12 pt-4 bg-white min-h-96">
                 <article class="prose">
 <x-markdown>
 # Classifieds Model of Property Listings is Obsolete

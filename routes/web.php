@@ -127,6 +127,9 @@ Route::get('/essay', function () {
 Route::get('/for-marketers', function () {
     return view('for-marketers');
 });
+Route::get('/developer-guide', function () {
+    return view('developer-guide');
+});
 Route::get('/persetujuan', function () {
     return view('persetujuan');
 });

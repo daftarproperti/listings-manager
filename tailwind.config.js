@@ -43,6 +43,18 @@ export default withMT({
                     950: '#11295A',
                 },
             },
+            typography: ({ theme }) => ({
+                DEFAULT: {
+                    css: {
+                        h1: {
+                            marginTop: theme('spacing.8'),
+                        },
+                        h2: {
+                            marginTop: theme('spacing.8'),
+                        },
+                    }
+                }
+            }),
         },
         colors: colors,
     },
