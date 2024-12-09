@@ -8,12 +8,12 @@ return [
                 'title' => 'Daftar Properti Swagger UI',
             ],
 
-            'routes' => [
+            'routes' => env('APP_ENV') !== 'production' ? [
                 /*
                  * Route for accessing api documentation interface
                 */
                 'api' => 'api/documentation',
-            ],
+            ] : [],
             'paths' => [
                 /*
                  * Edit to include full URL in ui for assets
