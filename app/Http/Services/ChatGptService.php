@@ -18,16 +18,26 @@ class ChatGptService
         $this->apiUrl = type(config('services.chatgpt.endpoint'))->asString();
         $this->modelVersion = type(config('services.chatgpt.model_version'))->asString();
     }
-
-    public function seekAnswerWithRetry(string $question, string $model = null, string $responseType = 'text'): string
-    {
+    /**
+     * @param string|array<int,array<string, mixed>> $question can be a simple string or a complex nested array
+     *                                    depending on the question to ask
+     * @param string $model AI model to use
+     * @param array<string,mixed> $responseFormat can be as simple as ['type' => 'text'] or
+     *                            ['type' => 'json_object'] but also the more complex
+     *                            ['type' => 'json_schema', 'schema' => [...]]
+     */
+    public function seekAnswerWithRetry(
+        string|array $question,
+        string $model = null,
+        array $responseFormat = ['type' => 'text'],
+    ): string {
         $retryAttempts = 3;
         $retryDelay = 2;
         $maxDelay = 64;
 
         for ($attempt = 0; $attempt < $retryAttempts; $attempt++) {
             try {
-                $answer = $this->seekAnswer($question, $model, $responseType);
+                $answer = $this->seekAnswer($question, $model, $responseFormat);
                 if (json_validate($answer)) {
                     return $answer;
                 }
@@ -43,9 +53,19 @@ class ChatGptService
 
         throw new \ErrorException('Failed to get response after ' . $retryAttempts . ' attempts.');
     }
-
-    public function seekAnswer(string $question, string $model = null, string $responseType = 'text'): string
-    {
+    /**
+     * @param string|array<int,array<string, mixed>> $question can be a simple string or a complex
+     *                                    array depending on the question to ask
+     * @param string $model AI model to use
+     * @param array<string,mixed> $responseFormat can be as simple as ['type' => 'text'] or
+     *                            ['type' => 'json_object'] but also the more complex
+     *                            ['type' => 'json_schema', 'schema' => [...]]
+     */
+    public function seekAnswer(
+        string|array $question,
+        string $model = null,
+        array $responseFormat = ['type' => 'text'],
+    ): string {
         $response = Http::withHeaders([
             'Authorization' => 'Bearer ' . $this->apiKey,
             'Content-Type' => 'application/json',
@@ -55,7 +75,7 @@ class ChatGptService
                 'messages' => [
                     ['role' => 'user', 'content' => $question],
                 ],
-                'response_format' => ['type' => $responseType],
+                'response_format' => $responseFormat,
             ]);
 
         if (!$response->successful()) {

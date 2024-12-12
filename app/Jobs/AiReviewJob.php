@@ -14,6 +14,9 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Process;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\File;
 
 class AiReviewJob implements ShouldQueue
 {
@@ -104,7 +107,7 @@ If the address is already correct, set both `errors` and `fix` as null.
 Here is the address to check:
 $address
 EOD;
-        $answer = $chatGptService->seekAnswer($prompt, 'gpt-4-turbo', 'json_object');
+        $answer = $chatGptService->seekAnswer($prompt, 'gpt-4-turbo', ['type' => 'json_object']);
         $addressAnswer = json_decode($answer, true);
         if (is_array($addressAnswer) && isset($addressAnswer['errors'])) {
             $results = ['Format alamat: ' . implode(', ', $addressAnswer['errors'])];
@@ -142,7 +145,7 @@ If it's not multiple spec, set`multipleSpecsReason` to be null.
 Here is the listing desription:
 $description
 EOD;
-        $answer = $chatGptService->seekAnswer($prompt, 'gpt-4-turbo', 'json_object');
+        $answer = $chatGptService->seekAnswer($prompt, 'gpt-4-turbo', ['type' => 'json_object']);
         $multiSpecsAnswer = json_decode($answer, true);
         if (is_array($multiSpecsAnswer) && isset($multiSpecsAnswer['multipleSpecsReason'])) {
             return ['Kemungkinan listing ini ada beberapa tipe/model: ' . $multiSpecsAnswer['multipleSpecsReason']];
@@ -178,7 +181,7 @@ If it does not contain contact information, set the `containsContactReason` to n
 Here is the listing desription:
 $description
 EOD;
-        $answer = $chatGptService->seekAnswer($prompt, 'gpt-4-turbo', 'json_object');
+        $answer = $chatGptService->seekAnswer($prompt, 'gpt-4-turbo', ['type' => 'json_object']);
         $multiSpecsAnswer = json_decode($answer, true);
         if (is_array($multiSpecsAnswer) && isset($multiSpecsAnswer['containsContactReason'])) {
             return [
@@ -188,6 +191,210 @@ EOD;
             logger()->error('error decoding answer of LLM no contact check');
         }
         return [];
+    }
+    /**
+     * Get a base64 encoded data URL representation of an image URL. In case of failure, exception shall be thrown
+     *
+     * @param string $url URL to the image
+     *
+     * @return string base64 encoded data URL of the image file
+     */
+    private function imageToBase64EncodedDataURL(string $url): string
+    {
+        $response = Http::get($url);
+        $reason = $response->body();
+        if ($response->failed()) {
+            throw new \ErrorException('Failed to fetch image from URL: ' . $reason);
+        }
+
+        // Aliasing for readability
+        $imageData = $reason;
+
+        // Determine the MIME type (e.g., image/jpeg, image/png)
+        $imageInfo = getimagesizefromstring($imageData);
+        if ($imageInfo === false) {
+            throw new \ErrorException('Failed to get image information');
+        }
+        $mimeType = $imageInfo['mime']; // e.g., "image/jpeg"
+
+        // Convert to base64
+        $base64Image = base64_encode($imageData);
+
+        // Create a Data URL
+        $dataUrl = "data:$mimeType;base64,$base64Image";
+
+        return $dataUrl;
+    }
+    /**
+     * Create a temporary file in the given directory
+     *
+     * @param string $directory directory to create the temporary file name in, sys_get_temp_dir() recommended
+     * @param string $prefix    prefix to prepend to the temporary file name
+     * @param string $extension extension of the temporary file name, e.g.: jpg (right, without the dot)
+     */
+    private function createTemporaryFileWithPrefix(string $directory, string $prefix, string $extension): string
+    {
+        $initTempFileName = tempnam($directory, $prefix);
+        if ($initTempFileName === false) {
+            throw new \ErrorException('Failed to create temporary file');
+        }
+        $tempFileName = $initTempFileName . '.' . $extension;
+        File::move($initTempFileName, $tempFileName);
+
+        return $tempFileName;
+    }
+    /**
+     * Query street view for images at given $latitude and $longitude pair, optionally setting $pitch then stitch the
+     * images using a script calling OpenCV Stitcher (currently written in Python due to missing Stitcher class in the
+     * latest but unofficial PHP binding php-opencv). Resulting image will be saved in a temporary file that's not
+     * automatically deleted, so please DON'T FORGET TO DELETE IT after use. Failure to get any of the images or any
+     * file related operations will result in exception being thrown
+     *
+     * @param string $apiKey Google API key capable of hitting Street View Static Image API
+     * @param float|null $latitude latitude of the location
+     * @param float|null $longitude longitude of the location
+     * @param int $pitch in case you want to see up/down, as degrees (-90..90, default is looking straight at 0° degree
+     *            angle)
+     *
+     * @return string path to the stitched panorama image
+     */
+    private function get360PanoramaStreetView(
+        string $apiKey,
+        float|null $latitude,
+        float|null $longitude,
+        int $pitch = 0,
+    ): string {
+        $latlong = $latitude . ',' . $longitude;
+        $tempDir = sys_get_temp_dir();
+
+        try {
+            $imagePaths = [];
+            foreach ([0,90,180,270] as $heading) {
+                // 640x640 is the maximum limit, tried 650x650 but it still returns 640x640
+                $url = "https://maps.googleapis.com/maps/api/streetview?size=640x640&location=$latlong&fov=120&heading="
+                     . "$heading&pitch=$pitch&key=$apiKey";
+                $response = Http::get($url);
+                $reason = $response->body();
+                if ($response->failed()) {
+                    throw new \ErrorException('Failed to fetch image from URL: ' . $reason);
+                }
+
+                // aliasing for readability
+                $imageBlob = $reason;
+                $tempFileName = $this->createTemporaryFileWithPrefix($tempDir, '360', 'jpg');
+                $imagePaths[] = $tempFileName;
+                File::put($tempFileName, $imageBlob);
+            }
+
+            $tempFileName = $this->createTemporaryFileWithPrefix($tempDir, '360', 'jpg');
+
+            $success = false;
+            // lower confidence threshold may result in a wider image, promoting chances of more successful housing(s)
+            // identification, but doesn't always work, hence the iterative attempt
+            foreach ([0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0] as $confidenceThreshold) {
+                $pythonPath = type(config('python.interpreter_path'))->asString();
+                $scriptPath = base_path('app/Scripts/Python/pano_stitch.py');
+                $command = [
+                    $pythonPath,
+                    $scriptPath,
+                    ...$imagePaths,
+                    $confidenceThreshold,
+                    $tempFileName,
+                ];
+
+                $result = Process::run($command);
+                if ($result->successful()) {
+                    // we just need 1 successful attempt
+                    $success = true;
+                    break;
+                }
+
+                // do we need this? I mean, it may not happen only due to confidence threshold being too low...
+                Log::warning('Failed to execute panorama stitcher script: ' . $result->errorOutput());
+            }
+
+            // if all attempts fail, throw exception
+            if (!$success) {
+                throw new \ErrorException('Failed to stitch panorama');
+            }
+        } finally {
+            // delete the partial images in any cases for a clean exit
+            File::delete($imagePaths);
+        }
+
+        return $tempFileName;
+    }
+    /**
+     * Try to give a verdict of uploaded images by validating it against street view images of the listing's coordinate
+     *
+     * @param $chatGptService ChatGptService instance used to prompt the AI to do validation
+     *
+     * @return mixed containing indices of uploaded images (they seem ordered, so this should be reliable), 1-based,
+     *               may be empty, may be null in a very specific corner case where the returned JSON is not valid
+     */
+    public function validateUploadedImages(ChatGptService $chatGptService): mixed
+    {
+        $apikey = type(config('services.google.maps_api_key'))->asString();
+        $panoramaFileName = $this->get360PanoramaStreetView(
+            $apikey,
+            $this->listing->coordinate->latitude,
+            $this->listing->coordinate->longitude,
+        );
+
+        $content = [
+            [
+                'type' => 'text',
+                'text' =>  'The first image is the haystack. The rest of the images are needles. I need you to find '
+                          . 'housing(s) in the needles, then find whether the same housing(s) exist(s) in the haystack.'
+                          . 'Answer as an array of image numbers (1, 2, and so on) whose housing(s) are found. Return '
+                          . 'empty array if none found.'
+                          // . 'Explain your answer.' // uncomment this for debugging, e.g. to read how the AI
+                                                      // determines its verdict
+                          ,
+            ],
+            [
+                'type' => 'image_url',
+                'image_url' => [
+                    'url' => $this->imageToBase64EncodedDataURL($panoramaFileName),
+                ],
+            ],
+        ];
+
+        // we're done with the panorama file
+        File::delete($panoramaFileName);
+
+        foreach ($this->listing->pictureUrls as $pictureUrl) {
+            $content[] = [
+                'type' => 'image_url',
+                'image_url' => [
+                    'url' => $this->imageToBase64EncodedDataURL($pictureUrl),
+                ],
+            ];
+        }
+
+        $responseFormat = [
+            'type' => 'json_schema',
+            'json_schema' => [
+                'strict' => true,
+                'name' => 'IdentificationResult',
+                'schema' => [
+                    'type' => 'object',
+                    'properties' => [
+                        'result' => [
+                            'type' => 'array',
+                            'items' => [
+                                'type' => 'integer',
+                            ],
+                        ],
+                    ],
+                    'required' => ['result'],
+                    'additionalProperties' => false,
+                ],
+            ],
+        ];
+        // $responseFormat = ['type' => 'text']; // uncomment this for debugging, sync with 'Explain your answer' above
+
+        return json_decode($chatGptService->seekAnswer($content, 'gpt-4o-mini', $responseFormat), true);
     }
 
     /**
@@ -204,7 +411,7 @@ EOD;
             $extractedListing = $extractor->extractSingleListingFromMessage(
                 $this->listing->description,
                 'gpt-4-turbo',
-                'json_object',
+                ['type' => 'json_object'],
             );
 
             // TODO: No need to convert to JSON back and forth, but the extraction from LLM can be directly array.

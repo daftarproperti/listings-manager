@@ -162,12 +162,14 @@ EOD;
 
     /**
      * @param string $message
+     * @param string $model
+     * @param array<string, mixed> $responseType
      * @return stdClass
      */
     public function extractSingleListingFromMessage(
         $message,
         string $model = null,
-        string $responseType = 'text',
+        array $responseType = ['type' => 'text'],
     ): stdClass {
         $answer = $this->chatGptService->seekAnswerWithRetry(
             Extractor::generatePrompt($message),

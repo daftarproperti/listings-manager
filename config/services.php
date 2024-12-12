@@ -45,6 +45,7 @@ return [
         // Socialite can resolve the relative URL to absolute:
         // https://github.com/laravel/socialite/blob/v5.12.1/src/SocialiteManager.php#L219
         'redirect' => '/admin/login/google/callback',
+        'maps_api_key' => env('GOOGLE_MAPS_API_KEY')
     ],
 
     'default_listing_city' => env('DEFAULT_LISTING_CITY', ''),
@@ -69,4 +70,8 @@ return [
     'max_listings_per_user' => env('MAX_LISTINGS_PER_USER', null),
 
     'post_approval_change_users' => explode(',', env('POST_APPROVAL_CHANGE_USERS', '')),
+
+    'python' => [
+        'interpreter_path' => env('PYTHON_INTERPRETER_PATH', '/usr/bin/python3'),
+    ],
 ];
