@@ -19,6 +19,8 @@ import {
   InformationCircleIcon,
   ChevronDownIcon,
   SparklesIcon,
+  CheckBadgeIcon,
+  QuestionMarkCircleIcon,
 } from '@heroicons/react/24/outline'
 import { type Change, diffWords } from 'diff'
 import { format } from 'date-fns-tz'
@@ -101,6 +103,12 @@ export default function ListingDetailPage({
   const [unsavedChanges, setUnsavedChanges] = useState(false)
   const [aiReviewResponse, setAiReviewResponse] = useState<string[]>([])
   const [aiReviewStatus, setAiReviewStatus] = useState<string>('')
+  const [aiReviewStreetViewImages, setAiReviewStreetViewImages] = useState<
+    string[]
+  >([])
+  const [aiReviewVerifiedImages, setAiReviewVerifiedImages] = useState<
+    string[]
+  >([])
   const [aiReviewIsOutdated, setAiReviewIsOutdated] = useState(true)
   const [attentionRemoved, setAttentionRemoved] = useState(
     adminAttention === null,
@@ -172,6 +180,8 @@ export default function ListingDetailPage({
     try {
       setAiReviewStatus('processing')
       setAiReviewResponse([])
+      setAiReviewStreetViewImages([])
+      setAiReviewVerifiedImages([])
       router.post(`/admin/listings/${listing.id}/ai-review`)
 
       await getAiReview()
@@ -195,6 +205,8 @@ export default function ListingDetailPage({
 
         let results: string[] = []
         let status: string = 'processing'
+        let streetViewImages: string[] = []
+        let verifiedImages: string[] = []
 
         if (Array.isArray(data.results)) {
           results = data.results
@@ -204,8 +216,18 @@ export default function ListingDetailPage({
           status = data.status
         }
 
+        if (Array.isArray(data.streetViewImages)) {
+          streetViewImages = data.streetViewImages
+        }
+
+        if (Array.isArray(data.verifiedImageUrls)) {
+          verifiedImages = data.verifiedImageUrls
+        }
+
         setAiReviewResponse(results)
         setAiReviewStatus(status)
+        setAiReviewStreetViewImages(streetViewImages)
+        setAiReviewVerifiedImages(verifiedImages)
 
         if (status === 'done') {
           const listingDate = handleDateInput(listing.updatedAt)
@@ -456,17 +478,51 @@ export default function ListingDetailPage({
           </div>
         )}
         {listing.pictureUrls.length > 0 ? (
-          <Carousel className="h-[512px] w-full bg-neutral-700">
+          <Carousel className="w-full bg-neutral-700">
             {listing.pictureUrls.map((url, index) => (
-              <img
-                src={url}
-                alt={url}
+              <div
                 key={index}
-                className="size-full object-contain"
-              />
+                className={`${aiReviewStatus == 'done' ? 'pb-20' : ''} h-[512px]`}
+              >
+                <img src={url} alt={url} className="size-full object-contain" />
+                {aiReviewStatus == 'done' && (
+                  <div className="mt-2 w-full bg-white/30 py-1">
+                    <div className="flex items-center justify-center gap-2 text-white">
+                      {aiReviewVerifiedImages.includes(url) ? (
+                        <>
+                          Foto di atas terdeteksi di street view{' '}
+                          <CheckBadgeIcon className="size-6 rounded-full bg-green-500 text-white" />
+                        </>
+                      ) : (
+                        <>
+                          Foto di atas tidak terdeteksi di street view{' '}
+                          <QuestionMarkCircleIcon className="size-6 rounded-full bg-yellow-500 text-white" />
+                        </>
+                      )}
+                    </div>
+                  </div>
+                )}
+              </div>
             ))}
           </Carousel>
         ) : null}
+
+        {aiReviewStreetViewImages.length > 0 && (
+          <div className="my-4 border border-gray-200 p-4">
+            <h3 className="mb-4 flex items-center gap-2 text-lg font-semibold text-indigo-500">
+              <SparklesIcon color="indigo-500" className="mr-2 size-4" />
+              Foto-foto dari Street View yang digunakan oleh AI:
+            </h3>
+            <div className="flex gap-2">
+              {aiReviewStreetViewImages.map((url, index) => (
+                <div key={index} className="w-1/4 md:w-32">
+                  <img className="w-full" src={url} />
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
         <div className="pt-4 md:pt-6">
           <div className="px-4 md:px-6">
             {data.likelyConnectedListing.length > 0 && (

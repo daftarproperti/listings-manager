@@ -74,4 +74,6 @@ return [
     'python' => [
         'interpreter_path' => env('PYTHON_INTERPRETER_PATH', '/usr/bin/python3'),
     ],
+
+    'ai_review_images' => env('AI_REVIEW_IMAGES', false),
 ];

@@ -20,6 +20,8 @@ class AiReviewResource extends JsonResource
             'id' => $prop->id,
             'listingId' => $prop->listing->listingId,
             'results' => $prop->results,
+            'streetViewImages' => $prop->streetViewImages ?? [],
+            'verifiedImageUrls' => $prop->verifiedImageUrls ?? [],
             'status' => $prop->status,
             'updatedAt' => $prop->updated_at->toIso8601ZuluString(),
         ];

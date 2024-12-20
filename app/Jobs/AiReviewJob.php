@@ -4,6 +4,7 @@ namespace App\Jobs;
 
 use App\Helpers\Cast;
 use App\Helpers\Extractor;
+use App\Helpers\UrlHelper;
 use App\Http\Services\ChatGptService;
 use App\Models\Enums\AiReviewStatus;
 use App\Models\Listing;
@@ -346,9 +347,19 @@ EOD;
      *
      * @param $chatGptService ChatGptService instance used to prompt the AI to do validation
      *
-     * @return array<string, mixed> containing indices of uploaded images (they seem ordered, so this should be
-     *                              reliable), 1-based, may be empty, may be null in a very specific corner case where
-     *                              the returned JSON is not valid, alongside the image URLs used for validation
+     * @return array{
+     *   found_image_indices: array{
+     *      indices: array<int>,
+     *      explanation: string,
+     *   },
+     *   image_urls: array<string>,
+     * }
+     * containing indices of uploaded images (they seem ordered, so this should be reliable),
+     * 1-based, may be empty, may be null in a very specific corner case where
+     * the returned JSON is not valid, alongside the image URLs used for validation
+     *
+     * Note that the returned  image URLs contain API keys and callers should use this carefully,
+     * e.g. don't log it in plain text or save it to database.
      */
     public function validateUploadedImages(ChatGptService $chatGptService): array
     {
@@ -359,11 +370,12 @@ EOD;
             [
                 'type' => 'text',
                 'text' =>  'The first image is the haystack. The rest of the images are needles. I need you to find '
-                          . 'housing(s) in the needles, then find whether the same housing(s) exist(s) in the haystack.'
-                          . 'Answer as an array of image numbers (1, 2, and so on) whose housing(s) are found. Return '
-                          . 'empty array if none found.'
-                          // . 'Explain your answer.' // uncomment this for debugging, e.g. to read how the AI
-                                                      // determines its verdict
+                          . 'housing(s) in the needles, then find whether the same housing(s) exist(s) '
+                          . 'and match in the haystack. '
+                          . 'Answer as 2 fields: '
+                          . ' * indices: an array of image indices (1, 2, and so on) whose housing(s) are found. '
+                          . 'Return empty array if none found.'
+                          . ' * explanation: your reasoning for answering for those indices'
                           ,
             ],
             [
@@ -394,29 +406,35 @@ EOD;
                 'schema' => [
                     'type' => 'object',
                     'properties' => [
-                        'result' => [
+                        'indices' => [
                             'type' => 'array',
                             'items' => [
                                 'type' => 'integer',
                             ],
                         ],
+                        'explanation' => [
+                            'type' => 'string',
+                        ],
                     ],
-                    'required' => ['result'],
+                    'required' => ['indices','explanation'],
                     'additionalProperties' => false,
                 ],
             ],
         ];
         // $responseFormat = ['type' => 'text']; // uncomment this for debugging, sync with 'Explain your answer' above
 
-        return [
-            'found_image_indices' => json_decode(
-                $chatGptService->seekAnswer(
-                    $content,
-                    'gpt-4o-mini',
-                    $responseFormat,
-                ),
-                true,
+        /** @var array{indices: array<int>, explanation: string} $foundImageIndices */
+        $foundImageIndices = json_decode(
+            $chatGptService->seekAnswer(
+                $content,
+                'gpt-4o-mini',
+                $responseFormat,
             ),
+            true,
+        );
+
+        return [
+            'found_image_indices' => $foundImageIndices,
             'image_urls' => $streetViewImageURLs,
         ];
     }
@@ -453,12 +471,38 @@ EOD;
             $noContactResults = $this->checkNoContact($chatGptService, $this->listing->description);
             $results = array_merge($results, $noContactResults);
 
-            $this->listing->aiReview()->update([
+            $aiReviewData = [
                 'results' => $results,
                 'status' => (AiReviewStatus::DONE)->value,
-            ]);
+            ];
+
+            if (boolval(config('services.ai_review_images'))) {
+                $validatedImagesResults = $this->validateUploadedImages($chatGptService);
+                $verifiedImageIndexes = $validatedImagesResults['found_image_indices']['indices'];
+
+                if (empty($verifiedImageIndexes)) {
+                    $aiReviewData['results'] = array_merge($results, [
+                        'Foto tidak ditemukan di street view dengan koordinat yang diberikan pendaftar.',
+                    ]);
+                }
+
+                $pictureURLs = $this->listing->pictureUrls;
+
+                $aiReviewData = array_merge($aiReviewData, [
+                    'streetViewImages' =>  array_map(
+                        fn ($url) => UrlHelper::removeQueryParamFromUrl('key', $url),
+                        $validatedImagesResults['image_urls'],
+                    ),
+                    'verifiedImageUrls' => array_map(
+                        fn ($index) => $pictureURLs[$index - 1] ?? '',
+                        $verifiedImageIndexes,
+                    ),
+                ]);
+            }
+
+            $this->listing->aiReview()->update($aiReviewData);
         } catch (\Throwable $th) {
-            Log::error('Ai Review Job error: ', ['error' => $th->getMessage()]);
+            Log::error('AI Review Job error: ', ['error' => $th->getMessage()]);
             //Rollback aiReview status to processable state ("done")
             $this->listing->aiReview()->update(['status' => (AiReviewStatus::DONE)->value]);
         }
