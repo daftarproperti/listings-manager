@@ -201,10 +201,21 @@ EOD;
      */
     private function imageToBase64EncodedDataURL(string $url): string
     {
-        $response = Http::get($url);
-        $reason = $response->body();
-        if ($response->failed()) {
-            throw new \ErrorException('Failed to fetch image from URL: ' . $reason);
+        $reason = null;
+        if (filter_var($url, FILTER_VALIDATE_URL)) {
+            $response = Http::get($url);
+            $reason = $response->body();
+            if ($response->failed()) {
+                throw new \ErrorException('Failed to fetch image from URL: ' . $reason);
+            }
+        } else {
+            $reason = File::get($url);
+            // Laravel documentation says nothing, but the source code actually calls file_get_contenst which can
+            // return false on failure, must cast because the File facade only reports string as the return value
+            // Ref: https://github.com/laravel/framework/blob/v10.48.25/src/Illuminate/Filesystem/Filesystem.php#L55
+            if ((bool) $reason === false) {
+                throw new \ErrorException('Failed to read image file');
+            }
         }
 
         // Aliasing for readability
@@ -244,36 +255,43 @@ EOD;
         return $tempFileName;
     }
     /**
-     * Query street view for images at given $latitude and $longitude pair, optionally setting $pitch then stitch the
-     * images using a script calling OpenCV Stitcher (currently written in Python due to missing Stitcher class in the
-     * latest but unofficial PHP binding php-opencv). Resulting image will be saved in a temporary file that's not
-     * automatically deleted, so please DON'T FORGET TO DELETE IT after use. Failure to get any of the images or any
-     * file related operations will result in exception being thrown
+     * Get URLs of street view images, will be used both for stitching panorama as well as returned alongside
+     * validation result
      *
-     * @param string $apiKey Google API key capable of hitting Street View Static Image API
-     * @param float|null $latitude latitude of the location
-     * @param float|null $longitude longitude of the location
-     * @param int $pitch in case you want to see up/down, as degrees (-90..90, default is looking straight at 0° degree
-     *            angle)
+     * @return array<string> $imageURLs array of image URLs at the listing's coordinate
+     */
+    private function getStreetViewImageURLs(): array
+    {
+        $coordinate = $this->listing->coordinate;
+        $latlong = $coordinate->latitude . ',' . $coordinate->longitude;
+        $apiKey = type(config('services.google.maps_api_key'))->asString();
+
+        $imageURLs = [];
+        foreach ([0,90,180,270] as $heading) {
+            // 640x640 is the maximum limit, tried 650x650 but it still returns 640x640
+            $imageURLs[] = "https://maps.googleapis.com/maps/api/streetview?size=640x640&location=$latlong&fov=120&"
+                         . "heading=$heading&key=$apiKey";
+        }
+
+        return $imageURLs;
+    }
+    /**
+     * Retrieve images at given $imageURLs then stitch the images using a script calling OpenCV Stitcher (currently
+     * written in Python due to missing Stitcher class in the latest but unofficial PHP binding php-opencv). Resulting
+     * image will be saved in a temporary file that's not automatically deleted, so please DON'T FORGET TO DELETE IT
+     * after use. Failure to get any of the images or any file related operations will result in exception being thrown
+     *
+     * @param array<int, string> $imageURLs array of URLs to retrieve the images to be stiched from
      *
      * @return string path to the stitched panorama image
      */
-    private function get360PanoramaStreetView(
-        string $apiKey,
-        float|null $latitude,
-        float|null $longitude,
-        int $pitch = 0,
-    ): string {
-        $latlong = $latitude . ',' . $longitude;
-        $tempDir = sys_get_temp_dir();
-
+    private function get360PanoramaStreetViewFromImageURLs(array $imageURLs): string
+    {
         try {
+            $tempDir = sys_get_temp_dir();
             $imagePaths = [];
-            foreach ([0,90,180,270] as $heading) {
-                // 640x640 is the maximum limit, tried 650x650 but it still returns 640x640
-                $url = "https://maps.googleapis.com/maps/api/streetview?size=640x640&location=$latlong&fov=120&heading="
-                     . "$heading&pitch=$pitch&key=$apiKey";
-                $response = Http::get($url);
+            foreach ($imageURLs as $imageURL) {
+                $response = Http::get($imageURL);
                 $reason = $response->body();
                 if ($response->failed()) {
                     throw new \ErrorException('Failed to fetch image from URL: ' . $reason);
@@ -287,12 +305,11 @@ EOD;
             }
 
             $tempFileName = $this->createTemporaryFileWithPrefix($tempDir, '360', 'jpg');
-
             $success = false;
             // lower confidence threshold may result in a wider image, promoting chances of more successful housing(s)
             // identification, but doesn't always work, hence the iterative attempt
             foreach ([0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0] as $confidenceThreshold) {
-                $pythonPath = type(config('python.interpreter_path'))->asString();
+                $pythonPath = type(config('services.python.interpreter_path'))->asString();
                 $scriptPath = base_path('app/Scripts/Python/pano_stitch.py');
                 $command = [
                     $pythonPath,
@@ -329,17 +346,14 @@ EOD;
      *
      * @param $chatGptService ChatGptService instance used to prompt the AI to do validation
      *
-     * @return mixed containing indices of uploaded images (they seem ordered, so this should be reliable), 1-based,
-     *               may be empty, may be null in a very specific corner case where the returned JSON is not valid
+     * @return array<string, mixed> containing indices of uploaded images (they seem ordered, so this should be
+     *                              reliable), 1-based, may be empty, may be null in a very specific corner case where
+     *                              the returned JSON is not valid, alongside the image URLs used for validation
      */
-    public function validateUploadedImages(ChatGptService $chatGptService): mixed
+    public function validateUploadedImages(ChatGptService $chatGptService): array
     {
-        $apikey = type(config('services.google.maps_api_key'))->asString();
-        $panoramaFileName = $this->get360PanoramaStreetView(
-            $apikey,
-            $this->listing->coordinate->latitude,
-            $this->listing->coordinate->longitude,
-        );
+        $streetViewImageURLs = $this->getStreetViewImageURLs();
+        $panoramaFileName = $this->get360PanoramaStreetViewFromImageURLs($streetViewImageURLs);
 
         $content = [
             [
@@ -394,7 +408,17 @@ EOD;
         ];
         // $responseFormat = ['type' => 'text']; // uncomment this for debugging, sync with 'Explain your answer' above
 
-        return json_decode($chatGptService->seekAnswer($content, 'gpt-4o-mini', $responseFormat), true);
+        return [
+            'found_image_indices' => json_decode(
+                $chatGptService->seekAnswer(
+                    $content,
+                    'gpt-4o-mini',
+                    $responseFormat,
+                ),
+                true,
+            ),
+            'image_urls' => $streetViewImageURLs,
+        ];
     }
 
     /**
