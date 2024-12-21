@@ -1,28 +1,13 @@
 version: '3.8'
 services:
   test-mongodb:
-    build:
-      context: .
-      dockerfile: Dockerfile-mongodb
+    image: mongo:7.0
+    command: ["--replSet", "rs0", "--bind_ip_all", "--port", "27017"]
     ports:
       - "27017:27017"
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: admin
-      MONGO_INITDB_ROOT_PASSWORD: testpassword
-    # Some mongodb features require using replica set (e.g. change stream).
-    # To use replica set, we need a key, to generate:
-    # https://www.mongodb.com/docs/manual/tutorial/enforce-keyfile-access-control-in-existing-replica-set/#create-a-keyfile
-    #   openssl rand -base64 756 > <path-to-keyfile>
-    #   chmod 400 <path-to-keyfile>
-    # To set the key when running mongodb:
-    # MONGO_KEYFILE_CONTENT=$(cat /path/to/mongo-keyfile | tr -d '\n') docker-compose up
-    # But before running it with replSet, run it without first (comment out the command below)
-    # to allow username and password to be set.
-    # Then stop the container without deleting the container and restart, this time with
-    # the custom command below.
-    command: >
-      bash -c "
-        echo $MONGO_KEYFILE_CONTENT > /data/keyfile &&
-        chmod 600 /data/keyfile &&
-        mongod --replSet rs0 --bind_ip_all --keyFile /data/keyfile --auth
-        "
+    healthcheck:
+      test: echo "try { rs.status() } catch (err) { rs.initiate() }" | mongosh --port 27017 --quiet
+      interval: 5s
+      timeout: 30s
+      start_period: 0s
+      retries: 30
