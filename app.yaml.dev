@@ -73,3 +73,4 @@ env_variables:
   IPINFO_TOKEN: "secret"
   POST_APPROVAL_CHANGE_USERS: ""
   AI_REVIEW_IMAGES: "true"
+  PYTHON_INTERPRETER_PATH: "/layers/google.python.runtime/python/bin/python3"

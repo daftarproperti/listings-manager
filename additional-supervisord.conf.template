@@ -24,3 +24,14 @@ stdout_logfile = /dev/stdout
 stdout_logfile_maxbytes=0
 stderr_logfile = /dev/stderr
 stderr_logfile_maxbytes=0
+
+[program:install-python-dependencies]
+command=/layers/google.python.runtime/python/bin/pip3 install -r requirements.txt
+directory=/workspace/app/Scripts/Python
+autostart=true
+autorestart=false
+startretries=3
+stdout_logfile = /dev/stdout
+stdout_logfile_maxbytes=0
+stderr_logfile = /dev/stderr
+stderr_logfile_maxbytes=0
