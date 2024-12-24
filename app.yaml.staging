@@ -34,6 +34,7 @@ env_variables:
   GOOGLE_CLIENT_ID: "secret"
   GOOGLE_CLIENT_SECRET: "secret"
   GOOGLE_APPLICATION_CREDENTIALS: "/workspace/storage/gcp/service-account.json"
+  GOOGLE_MAPS_API_KEY: "secret"
   LOG_CHANNEL: "gcp"
   DB_CONNECTION: "mongodb"
   QUEUE_CONNECTION: "database"
