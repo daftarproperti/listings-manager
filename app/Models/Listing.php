@@ -203,9 +203,17 @@ class Listing extends Model
         }
     }
 
+    // TODO: Remove this function and its callers once we are fully migrated to using post approval change status.
     public function getAllowPostApprovalChangeAttribute(): bool
     {
-        $postApprovalChangeUsers = array_filter(type(config('services.post_approval_change_users'))->asArray());
+        $postApprovalChangeUsers = array_filter(
+            array_map(trim(...), type(config('services.post_approval_change_users'))->asArray()),
+        );
+
+        if (in_array('all', $postApprovalChangeUsers)) {
+            return true;
+        }
+
         $userPhoneNumber = $this->userProfile?->phoneNumber;
 
         if (!empty($postApprovalChangeUsers)) {
